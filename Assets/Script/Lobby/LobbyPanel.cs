@@ -28,6 +28,13 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         None,
     }
 
+    public enum CharClass
+    {
+        Soldier,
+        Shotgun,
+        Sniper,
+    }
+
     [System.Serializable]
     public class LobbyUI
     {
@@ -62,7 +69,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     public TextMeshProUGUI PlayerClassText;
     public GameObject StatInfo;
     public TextMeshProUGUI SkillInfoText;
-
+        
     private Dictionary<int, GameObject> playerInfoListEntries;
     private Dictionary<string, RoomInfo> cachedRoomList;
 
@@ -75,7 +82,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.SetPlayerCustomProperties(
             new ExitGames.Client.Photon.Hashtable()
-            { {"Char_Class", "Soldier"} }
+            { {"Char_Class", CharClass.Soldier} }
             );
         }
 
@@ -98,10 +105,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
     public override void OnJoinedLobby()
     {
-        PhotonNetwork.SetPlayerCustomProperties(
-            new ExitGames.Client.Photon.Hashtable()
-            { {"Char_Class", "Soldier"}}
-            );
+        
     }
 
     #region Button
