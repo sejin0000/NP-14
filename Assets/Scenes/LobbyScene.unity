@@ -593,7 +593,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 149664852}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1568722255}
+        m_TargetAssemblyTypeName: LobbyPanel, Assembly-CSharp
+        m_MethodName: OnLoginButtonClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &149664852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -850,7 +862,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 176183777}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1568722255}
+        m_TargetAssemblyTypeName: LobbyPanel, Assembly-CSharp
+        m_MethodName: OnCharacterSelectButtonClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &176183777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1408,7 +1432,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &401439257
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2812,7 +2836,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 573244751}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1568722255}
+        m_TargetAssemblyTypeName: LobbyPanel, Assembly-CSharp
+        m_MethodName: OnJoinRandomRoomButtonClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &573244751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4528,7 +4564,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 922569497}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1568722255}
+        m_TargetAssemblyTypeName: LobbyPanel, Assembly-CSharp
+        m_MethodName: OnCharacterSelectButtonClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &922569497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7338,7 +7386,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -220, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 200, y: 280}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1423479230
 GameObject:
@@ -8682,9 +8730,11 @@ MonoBehaviour:
   MainLobbyPanel: {fileID: 2099533330}
   Gold: {fileID: 1221515335}
   RoomPanel: {fileID: 1397847044}
+  PartyBox: {fileID: 1857915279}
   PlayerInfo: {fileID: 6706628801819849030, guid: abd6c8582ffaedf40ad020f743910e10, type: 3}
   ChatInput: {fileID: 1814743562}
   ChatObject: {fileID: 1580934528868145059, guid: 429e494743d959644ae76b8ceb04fb82, type: 3}
+  CharacterSelectPopup: {fileID: 1407201942}
   PlayerClassText: {fileID: 1857281645}
   StatInfo: {fileID: 7934161811500229392, guid: 4078d8937b0aebf4cb7ec2ca3bc27428, type: 3}
   SkillInfoText: {fileID: 1223699437}
@@ -9140,7 +9190,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1734189089}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1568722255}
+        m_TargetAssemblyTypeName: LobbyPanel, Assembly-CSharp
+        m_MethodName: OnClosePopupButtonClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1734189089
 MonoBehaviour:
   m_ObjectHideFlags: 0
