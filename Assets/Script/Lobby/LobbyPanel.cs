@@ -7,6 +7,8 @@ using Photon.Pun;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using Unity.Collections.LowLevel.Unsafe;
+using Unity.VisualScripting;
 
 public class LobbyPanel : MonoBehaviourPunCallbacks
 {
@@ -63,9 +65,11 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     public GameObject PartyBox;
     public GameObject PlayerInfo;
 
+    public Button StartButton;
+
     public TMP_InputField ChatInput;
     public GameObject ChatObject;
-
+    
     [Header("CharacterSelectPopup")]
     public GameObject CharacterSelectPopup;
     public TextMeshProUGUI PlayerClassText;
@@ -150,7 +154,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
             cachedRoomList.Clear();        
         }
 
-        SetPopup("None");
+        //SetPopup("None");
         SetPanel(RoomPanel.name);
 
         if (playerInfoListEntries == null)
@@ -158,24 +162,30 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
             playerInfoListEntries = new Dictionary<int, GameObject>();
         }
 
-        for (int i = 0; i < PhotonNetwork.PlayerList.Count(); i++)
+        // PartyPlayerInfo에서 받은 프리팹 정보를 각각의 프리팹에 적용.
+        int cnt = 0;
+        foreach (Player p in PhotonNetwork.PlayerList)
         {
-            GameObject playerInfo = Instantiate(PlayerInfo);
-            playerInfo.transform.SetParent(PartyBox.transform.GetChild(i));
+            GameObject playerInfoPrefab = Instantiate(PlayerInfo);
+            playerInfoPrefab.transform.SetParent(PartyBox.transform.GetChild(cnt), false);
+            playerInfoPrefab.transform.localScale = Vector3.one;
+            playerInfoPrefab.GetComponent<PartyPlayerInfo>().Initialize(cnt, p);
 
-            if (PhotonNetwork.PlayerList[i] == PhotonNetwork.LocalPlayer)
+            object isPlayerReady;
+            if (p.CustomProperties.TryGetValue("IsPlayerReady", out isPlayerReady))
             {
-                Debug.Log("YOU");
+                RoomPanel.GetComponent<RoomPanel>().SetPlayerReady((bool) isPlayerReady);
             }
 
-            // Ready 판별에 관한 부분 추가해야함
-            // playerInfoPrefab에 관한 스크립트 제작 후,,
+            playerInfoListEntries.Add(p.ActorNumber, playerInfoPrefab);
+            cnt++;
         }
+
+        StartButton.gameObject.SetActive(CheckPlayersReady());
     }
 
     public override void OnLeftRoom()
     {
-        SetPopup("None");
         SetPanel(MainLobbyPanel.name);
 
         foreach (GameObject playerInfo in playerInfoListEntries.Values) 
@@ -255,15 +265,11 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
     }
 
-    public void OnCharacterSelectButtonClicked()
-    {
-        SetPopup(CharacterSelectPopup.name);
-    }
+    //public void OnCharacterSelectButtonClicked()
+    //{
+    //    SetPopup(CharacterSelectPopup.name);
+    //}
 
-    public void OnClosePopupButtonClicked()
-    {
-        SetPopup("None");
-    }
 
     public void OnJoinRandomRoomButtonClicked()
     {
@@ -281,6 +287,8 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
             PhotonNetwork.JoinRandomRoom();
         }
     }
+
+
     #endregion
 
 
@@ -337,7 +345,32 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
                 cachedRoomList.Add(info.Name, info);
             }
         }
+    }
 
+    public bool CheckPlayersReady()
+    {
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            return false;
+        }
+
+        foreach (Player p in PhotonNetwork.PlayerList)
+        {
+            object isPlayerReady;
+            if (p.CustomProperties.TryGetValue("IsPlayerReady", out isPlayerReady))
+            {
+                if (!(bool) isPlayerReady)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
     #endregion
 }

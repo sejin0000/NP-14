@@ -15,31 +15,34 @@ public enum Char_Class_Kor
 }
 public class PlayerInfo : MonoBehaviour
 {
+    [Header("PlayerInfo")]
     public GameObject PlayerInfoPrefab;
-    public TextMeshProUGUI PlayerNickNameText;
-    public Sprite PlayerSprite;
+    public GameObject PartyBox;
 
-    public GameObject PlayerPrefab;
-    public Animator CharSampleAnim;
-
+    [Header("Button")]
     public Button CharChangeLeftButton;
     public Button CharChangeRightButton;
+    public Button ConfirmButton;
+    public Button BackButton;
 
+    [Header("CharacterStatInfo")]
     public ScrollRect playerStatScrollRect;
     public GameObject PlayerStatScrollContent;
     public TextMeshProUGUI playerClassText;
-    public GameObject playerStat;
+    public Animator CharSampleAnim;
+    public GameObject StatInfoPrefab;
     public TextMeshProUGUI playerSkillText;
+
+
     private int initCharType;
     private int curCharType;
 
     void Start()
     {
-        initCharType = GetCharClass();
-        curCharType = initCharType;
-        UpdateCharInfo();
         CharChangeLeftButton.onClick.AddListener(() => OnLeftButtonClicked());
         CharChangeRightButton.onClick.AddListener(() => OnRightButtonClicked());
+        ConfirmButton.onClick.AddListener(() => OnConfirmButtonClicked());
+        BackButton.onClick.AddListener(() => OnBackButtonClicked());
 
         playerStatScrollRect.normalizedPosition = new Vector2(1f, 1f);
         Vector2 size = playerStatScrollRect.content.sizeDelta;
@@ -81,9 +84,10 @@ public class PlayerInfo : MonoBehaviour
         //    Resources.Load($"Animations\\Player_Idle_Sample_{curCharType}")
         //    );
         CharSampleAnim.SetInteger("curNum", curCharType);
+        string playerClass = Enum.GetName(typeof(Char_Class_Kor), curCharType);
 
         // 직업명 적용
-        playerClassText.text = $"<{ Enum.GetName(typeof(Char_Class_Kor), curCharType)}>";
+        playerClassText.text = $"<{playerClass}>";
 
         // 캐릭터 스탯 적용
         // 스탯이 있다고 가정
@@ -91,19 +95,36 @@ public class PlayerInfo : MonoBehaviour
         Type type = player.GetType();
         FieldInfo[] fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance);
         
+        foreach (Transform child in PlayerStatScrollContent.transform)
+        {
+            Destroy(child.gameObject); 
+        }
+        
+        RectTransform statRect = PlayerStatScrollContent.GetComponent<RectTransform>();
+        Vector2 sizeDelta = statRect.sizeDelta;
+        sizeDelta.y = 70;
+
         foreach (FieldInfo field in fields)
         {
-            GameObject go = Instantiate(PlayerPrefab);
+            GameObject go = Instantiate(StatInfoPrefab);
+            // child 오브젝트가 둘다 같을 경우, 배열로 불러와서 처리함.
             TextMeshProUGUI[] texts = go.GetComponentsInChildren<TextMeshProUGUI>();
 
             texts[0].text = field.Name;
             texts[1].text = field.GetValue(player).ToString();
 
+            sizeDelta.y += 60;
             // 프리팹은 Scene에다가 오브젝트로 생성하는 건데, transform을 가져오는 과정에서 world 좌표를 유지하는 옵션을 켰기 때문에 오류가 나타남.
-            go.transform.SetParent(PlayerStatScrollContent.transform,false);
+            go.transform.SetParent(PlayerStatScrollContent.transform, false);
             go.transform.localScale = Vector3.one;
             go.SetActive(true);
         }
+
+        statRect.sizeDelta = sizeDelta;
+        StartCoroutine(DelayedLayoutRebuild(statRect));
+
+        // 캐릭터 스킬 적용
+        playerSkillText.text = $"{playerClass}의 스킬에 대한 설명입니다.";
     }
 
     #region button
@@ -125,7 +146,38 @@ public class PlayerInfo : MonoBehaviour
 
     public void OnConfirmButtonClicked()
     {
+        // 커스텀 프로퍼티 저장
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "Char_Class", curCharType } });
 
+        // 팝업 닫기
+        gameObject.SetActive(false);
     }
+
+    public void OnBackButtonClicked()
+    {
+        // 커스텀 프로퍼티 저장
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "Char_Class", initCharType } });
+
+        // 팝업 닫기
+        gameObject.SetActive(false);
+    }
+
+    public void OnCharacterButtonClicked()
+    {
+        this.gameObject.SetActive(true);
+        initCharType = GetCharClass();
+        curCharType = initCharType;
+        UpdateCharInfo();
+    }
+    #endregion
+
+    #region Utilty
+    private System.Collections.IEnumerator DelayedLayoutRebuild(RectTransform statRect)
+    {
+        yield return null; // 1프레임 대기
+        LayoutRebuilder.ForceRebuildLayoutImmediate(statRect); // 레이아웃 강제 재구성
+    }
+
+
     #endregion
 }
