@@ -99,6 +99,7 @@ public class PlayerInfo : MonoBehaviour
             texts[0].text = field.Name;
             texts[1].text = field.GetValue(player).ToString();
 
+            // 프리팹은 Scene에다가 오브젝트로 생성하는 건데, transform을 가져오는 과정에서 world 좌표를 유지하는 옵션을 켰기 때문에 오류가 나타남.
             go.transform.SetParent(PlayerStatScrollContent.transform,false);
             go.transform.localScale = Vector3.one;
             go.SetActive(true);
