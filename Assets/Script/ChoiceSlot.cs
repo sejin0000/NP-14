@@ -10,70 +10,49 @@ public class ChoiceSlot : MonoBehaviour
 {
     public TextMeshProUGUI Name;
     public TextMeshProUGUI Info;
-    public Istat stat;
+    public IAugment stat;
+    public bool Ispick = false;
+    public int listIndex;
     int rare;
     
 
-    [Range(1, 3)] int StatType;
+    //[Range(1, 3)] int StatType;
 
-    private void OnEnable()
+    private void OnEnable()// 이름,정보,색 업데이트
     {
         Name.text = stat.Name;
-
+        Ispick = false;
         Info.text = stat.func;
         rare = stat.Rare;
-        Image image = GetComponent<Image>();
+        Image image = gameObject.GetComponent<Image>();
+        //Debug.Log($"{rare}");
         switch (rare)
         {
             case 1:
-                image.color = new Color(image.color.r, image.color.g, image.color.b);
+                image.color = new Color(205 / 255f, 127 / 255f, 50 / 255f);//브
                 break;
 
             case 2:
+                image.color = new Color(192,192,192);//실
                 break;
 
             case 3:
+                image.color = new Color(255, 215, 0);//골
                 break;
         }
-    }
-
-    void exit() 
-    {
-        gameObject.SetActive(false);
     }
     public void pick()
     {
         string str = stat.Code;
-        Debug.Log(str);
+        //Debug.Log($"{str}");
         Invoke(str,0);
-
-        Open.Instance.close();
+        // 이제 원본 리스트에서 제거해야함
+        // 어떻게?
+        Ispick = true;
+        ResultManager.Instance.close();
     }
-    private void S1()
+    private void S1()//
     {
         Debug.Log("대충 스탯 더해준다는뜻");
     }
-    void wjrdyd() 
-    { 
-        //+= stat.Atk
-        //+= stat.Health;
-        //+= stat.Speed;
-        //+= stat.AtkSpeed
-        //+= stat.BulletSpread;
-        //+= stat.Cooltime;
-        //+= stat.Critical;
-
-        //if (stat is StatBonus) 
-        //{
-        //    StatBonus a = stat as StatBonus;
-        //    += a.MaxBullet;
-        //}
-    }
-    void TextUpdate(int i)
-    {
-
-           // Name[i].text = stat.Name;
-           // Info[i].text = stat.func;
-    }
-
 }

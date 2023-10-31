@@ -506,7 +506,7 @@ GameObject:
   - component: {fileID: 874395009}
   - component: {fileID: 874395012}
   m_Layer: 5
-  m_Name: Choice1
+  m_Name: Choice3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -548,6 +548,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: {fileID: 1862932097}
   Info: {fileID: 106050456}
+  Ispick: 0
+  listIndex: 0
 --- !u!114 &874395010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -561,7 +563,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.5613208, b: 0.5613208, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -656,7 +658,7 @@ GameObject:
   - component: {fileID: 1141041566}
   - component: {fileID: 1141041569}
   m_Layer: 5
-  m_Name: Choice2
+  m_Name: Choice1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -698,6 +700,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: {fileID: 2094954032}
   Info: {fileID: 411426334}
+  Ispick: 0
+  listIndex: 0
 --- !u!114 &1141041567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -711,7 +715,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.5896226, b: 0.5896226, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -997,7 +1001,7 @@ GameObject:
   - component: {fileID: 1665606990}
   - component: {fileID: 1665606993}
   m_Layer: 5
-  m_Name: Choice3
+  m_Name: Choice2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1039,6 +1043,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: {fileID: 1690820866}
   Info: {fileID: 1280621737}
+  Ispick: 0
+  listIndex: 0
 --- !u!114 &1665606991
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1052,7 +1058,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9811321, g: 0.5322179, b: 0.5322179, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
