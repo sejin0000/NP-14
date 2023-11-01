@@ -66,6 +66,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     public GameObject PlayerInfo;
 
     public Button StartButton;
+    public Button ReadyButton;
 
     public TMP_InputField ChatInput;
     public GameObject ChatObject;
@@ -157,7 +158,6 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
             cachedRoomList.Clear();        
         }
 
-        //SetPopup("None");
         SetPanel(RoomPanel.name);
 
         if (playerInfoListEntries == null)
@@ -210,7 +210,16 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         if (PhotonNetwork.LocalPlayer.ActorNumber == newMasterClient.ActorNumber)
         {
             // TODO : 호스트가 바뀌면, 바뀐 사람에게만 StartButton이 활성화되어야함.
+            // 이 readybutton 비활성화는 마스터클라이언트에서만 이루어지게...
+            ReadyButton.gameObject.SetActive(false);
             StartButton.gameObject.SetActive(CheckPlayersReady());
+        }
+        else
+        {
+            if (ReadyButton.gameObject == null)
+            {
+                ReadyButton.gameObject.SetActive(true);
+            }
         }
     }
 
@@ -255,15 +264,8 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
     }
 
-    //public void OnCharacterSelectButtonClicked()
-    //{
-    //    SetPopup(CharacterSelectPopup.name);
-    //}
-
-
     public void OnJoinRandomRoomButtonClicked()
     {
-        //PhotonNetwork.JoinRandomOrCreateRoom();
         if (cachedRoomList == null)
         {
             string roomName = $"Room {Random.Range(0, 200)}";
@@ -342,6 +344,10 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
             return false;
         }
 
+        if (PhotonNetwork.PlayerList.Count() < PhotonNetwork.CurrentRoom.MaxPlayers)
+        {
+            return false;
+        }
         foreach (Player p in PhotonNetwork.PlayerList)
         {
             object isPlayerReady;
@@ -364,25 +370,23 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     public void SetPartyPlayerInfo()
     {
         playerInfoListEntries.Clear();
+
+        for (int i = 0; i < PartyBox.transform.childCount; i++)
+        {
+            if (PartyBox.transform.GetChild(i).childCount > 0)
+            {
+                Destroy(PartyBox.transform.GetChild(i).GetChild(0).gameObject);
+            }
+        }
+
         int cnt = 0;
+
         foreach (Player p in PhotonNetwork.PlayerList)
         {
-            //GameObject playerInfoPrefab = PhotonNetwork.Instantiate("Prefabs/LobbyScene/PlayerInfo", Vector3.zero, Quaternion.identity);
-            // PhotonNetwork.Instatiate를 쓰면, 자기가 만든건 나갈 때 지워짐.
             GameObject playerInfoPrefab = Instantiate(PlayerInfo);
-            if (PartyBox.transform.GetChild(cnt).childCount > 0)
-            {
-                Destroy(PartyBox.transform.GetChild(cnt).GetChild(0).gameObject);
-            }
             playerInfoPrefab.transform.SetParent(PartyBox.transform.GetChild(cnt), false);
             playerInfoPrefab.transform.localScale = Vector3.one;
             playerInfoPrefab.GetComponent<PartyPlayerInfo>().Initialize(cnt, p);
-
-            object isPlayerReady;
-            if (p.CustomProperties.TryGetValue("IsPlayerReady", out isPlayerReady))
-            {
-                RoomPanel.GetComponent<RoomPanel>().SetPlayerReady((bool)isPlayerReady);
-            }
 
             playerInfoListEntries.Add(p.ActorNumber, playerInfoPrefab);
             cnt++;

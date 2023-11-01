@@ -1,5 +1,6 @@
+using ExitGames.Client.Photon;
 using Photon.Pun;
-using System.Collections;
+//using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -12,10 +13,15 @@ public class RoomPanel : MonoBehaviourPun
     public Button StartButton;
     public Button BackButton;
 
-    private bool isPlayerReady;
+    //private object isPlayerReady;    
 
     public void Start()
     {
+        if (!PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("IsPlayerReady", out object isPlayerReady))
+        {
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "IsPlayerReady", false } });
+        }
+
         StartButton.gameObject.SetActive(false);
 
         if (PhotonNetwork.IsMasterClient)
@@ -43,14 +49,23 @@ public class RoomPanel : MonoBehaviourPun
 
     public void OnReadyButtonClicked()
     {
-        isPlayerReady = !isPlayerReady;
-        SetPlayerReady(isPlayerReady);
-        var props = new ExitGames.Client.Photon.Hashtable() { { "IsPlayerReady", isPlayerReady } };
+        if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("IsPlayerReady", out object isPlayerReady))
+        {
+            isPlayerReady = !(bool)isPlayerReady;
+            SetPlayerReady((bool)isPlayerReady);
+        }
+        else
+        {
+            isPlayerReady = true;
+            SetPlayerReady(true);
+        }
+        var props = new Hashtable() { { "IsPlayerReady", isPlayerReady } };
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
     }
 
     public void OnBackButtonClicked()
     {
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable() { { "IsPlayerReady", false } });
         PhotonNetwork.LeaveRoom();
     }
 }

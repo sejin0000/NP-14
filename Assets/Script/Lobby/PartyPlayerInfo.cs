@@ -29,12 +29,12 @@ public class PartyPlayerInfo : MonoBehaviourPun
     public void Start()
     {
         // 인 게임적으로 추가할 프로퍼티 있다면 여기서 추가.
-        object isReady;
-        if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("isPlayerReady", out isReady))
-        {
-            Hashtable initProps = new Hashtable() { { "IsPlayerReady", isPlayerReady } };
-            PhotonNetwork.LocalPlayer.SetCustomProperties(initProps);
-        }
+        //object isReady;
+        //if (!PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("isPlayerReady", out isReady))
+        //{
+        //    Hashtable initProps = new Hashtable() { { "IsPlayerReady", isPlayerReady } };
+        //    PhotonNetwork.LocalPlayer.SetCustomProperties(initProps);
+        //}
               
 
         if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out object curClassType))
