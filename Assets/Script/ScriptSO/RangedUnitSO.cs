@@ -7,5 +7,6 @@ public class RangedUnitSO : UnitSO
 {
     [Header("RangedUnitSO")]
     public int launchVolume;        // 한번의 발사의 발사량
-    public int BulletSpread;        // 탄퍼짐
+    public int bulletSpread;        // 탄퍼짐
+    public int bulletLifeTime;      // 총알 유지시간
 }

@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7631d65756f48f41abb6547fd77efb3, type: 3}
+  m_Name: Player1
+  m_EditorClassIdentifier: 
+  atk: 10
+  hp: 100
+  unitSpeed: 2
+  atkSpeed: 0.3
+  unitScale: 1
+  launchVolume: 1
+  bulletSpread: 3
+  bulletLifeTime: 1
+  reloadCoolTime: 2
+  skillCoolTime: 0
+  rollCoolTime: 5
+  ammoMax: 0
+  characterClass: 0
+  critical: 0
+  sprite: {fileID: 7108339969198208228, guid: b7fdc512bf354b24782ea6f25690faed, type: 3}
