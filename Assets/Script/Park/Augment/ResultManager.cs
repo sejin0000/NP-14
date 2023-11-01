@@ -19,7 +19,7 @@ public class ResultManager : MonoBehaviour//vsÄÚµå
     void Start()
     {
         Instance = this;// ½Ì±ÛÅæ 
-        PickStatList(MakeAugmentListManager.stat1);//½ºÅÈ1 
+        //PickStatList(MakeAugmentListManager.stat1);//½ºÅÈ1 
         int Count = picklist.Length;
        
     }

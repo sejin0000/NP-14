@@ -96,26 +96,15 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌 동기
     //뇌피셜상 처음 스탯 증강은 punrpc로 호스트가 , 각자 뽑을 증강리스트는 개인이 만들어도 되지않을까? 하는 생각이듬
     // 이유는 리스트에서 뽑아서 적용 시키는것만 punrpc로 동기화 하면 되지않을까 싶기 때문 -- 정확하지 않음 
     void StatAugmentSetting(List<IAugment> list, string str)// 넣을 리스트 , 불러올csv파일명 csv파일을 불러와 리스트에 넣어줌
-    {
+    {//애도 지금 스탯 적용방법을 바꿔서 좀 쓸모없어짐 시간나면아래라 통합할 것
         List<Dictionary<string, object>> data = CSVReader.Read(str);
             for (var i = 0; i < data.Count; i++)
             {
                 StatAugment a = new StatAugment();
                 a.Name = (string)data[i]["Name"];
-                a.Atk = (int)data[i]["Atk"];
-                a.Health = (int)data[i]["Health"];
-                a.Speed = (int)data[i]["Speed"];
-                a.AtkSpeed = (int)data[i]["AtkSpeed"];
-                a.BulletSpread = (int)data[i]["BulletSpread"];
-                a.Cooltime = (int)data[i]["Cooltime"];
-                a.Critical = (int)data[i]["Critical"];
                 a.func = (string)data[i]["Func"];
                 a.Code = (int)data[i]["Code"];
                 a.Rare = (int)data[i]["Rare"];
-            if (isHasKey(data[i], "MaxBullet")) // 탄창수는 밸류가 높기 때문에 스탯증강 하위 (1)에서는 나오지 않음
-                {
-                    a.MaxBullet= (int)data[i]["MaxBullet"];
-                }
             list.Add(a);
         }
 
@@ -182,7 +171,7 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌 동기
             return list;
         }
     }
-    public static bool isHasKey<K, V>(Dictionary<K, V> dict, K key)//딕셔너리 키값 체크용 
+    public static bool isHasKey<K, V>(Dictionary<K, V> dict, K key)//딕셔너리 키값 체크용 인데 애도 필요없어질거같음 ;;;
     {
         foreach (KeyValuePair<K, V> kvp in dict)
         {
