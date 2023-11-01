@@ -10,12 +10,12 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌 동기
 
     //이게 맞나 모르겠는데 스탯은 모두가 사용가능하니 스태틱으로 하나만 만들어두고
     // 플레이 스타일 변화 증강 = 너무김 앞으로 스페셜증강으로 부르겠음
-    // 스페셜 증강은 목록에 직업증강도 나오기 때문에 플레이어의 캐릭터에 따라 처음에 만들고 넣어줘야할거 같음
+    // 
     public static List<IAugment> stat1 = new List<IAugment>();
     public static List<IAugment> stat2 = new List<IAugment>();
     public static List<IAugment> stat3 = new List<IAugment>();
 
-    public List<SpecialAugment> sniper1 = new List<SpecialAugment>();
+    public static List<SpecialAugment> sniper1 = new List<SpecialAugment>();
     public List<SpecialAugment> sniper2 = new List<SpecialAugment>();
     public List<SpecialAugment> sniper3 = new List<SpecialAugment>();
 
@@ -110,7 +110,7 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌 동기
                 a.Cooltime = (int)data[i]["Cooltime"];
                 a.Critical = (int)data[i]["Critical"];
                 a.func = (string)data[i]["Func"];
-                a.Code = (string)data[i]["Code"];
+                a.Code = (int)data[i]["Code"];
                 a.Rare = (int)data[i]["Rare"];
             if (isHasKey(data[i], "MaxBullet")) // 탄창수는 밸류가 높기 때문에 스탯증강 하위 (1)에서는 나오지 않음
                 {
@@ -130,7 +130,7 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌 동기
             SpecialAugment a = new SpecialAugment();
             a.Name = (string)data[i]["Name"];
             a.func = (string)data[i]["Func"];
-            a.Code = (string)data[i]["Code"];
+            a.Code = (int)data[i]["Code"];
             a.Rare = (int)data[i]["Rare"];
             list.Add(a);
         }

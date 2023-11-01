@@ -43,11 +43,9 @@ public class ChoiceSlot : MonoBehaviour
     }
     public void pick()
     {
-        string str = stat.Code;
-        //Debug.Log($"{str}");
+        string str = stat.Code.ToString();
+        Debug.Log($"{str}");
         Invoke(str,0);
-        // 이제 원본 리스트에서 제거해야함
-        // 어떻게?
         Ispick = true;
         ResultManager.Instance.close();
     }
