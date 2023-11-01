@@ -15,7 +15,7 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌 동기
     public static List<IAugment> stat2 = new List<IAugment>();
     public static List<IAugment> stat3 = new List<IAugment>();
 
-    public static List<SpecialAugment> sniper1 = new List<SpecialAugment>();
+    public List<SpecialAugment> sniper1 = new List<SpecialAugment>();
     public List<SpecialAugment> sniper2 = new List<SpecialAugment>();
     public List<SpecialAugment> sniper3 = new List<SpecialAugment>();
 

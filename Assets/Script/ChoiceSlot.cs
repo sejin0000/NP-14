@@ -33,23 +33,23 @@ public class ChoiceSlot : MonoBehaviour
                 break;
 
             case 2:
-                image.color = new Color(192,192,192);//Ω«
+                image.color = new Color(192 / 255f, 192 / 255f, 192 / 255f);//Ω«
                 break;
 
             case 3:
-                image.color = new Color(255, 215, 0);//∞Ò
+                image.color = new Color(255 / 255f, 215 / 255f, 0 / 255f);//∞Ò
                 break;
         }
     }
     public void pick()
     {
-        string str = stat.Code.ToString();
+        string str = "A"+stat.Code.ToString();
         Debug.Log($"{str}");
         Invoke(str,0);
         Ispick = true;
         ResultManager.Instance.close();
     }
-    private void S1()//
+    private void A999()//
     {
         Debug.Log("¥Î√Ê Ω∫≈» ¥ı«ÿ¡ÿ¥Ÿ¥¬∂Ê");
     }

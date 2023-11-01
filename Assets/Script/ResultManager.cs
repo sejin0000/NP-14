@@ -30,8 +30,8 @@ public class ResultManager : MonoBehaviour//vs코드
     }
     public void testbtnstat2()
     {
-        PickSpecialList(MakeAugmentListManager.sniper1);
-        Debug.Log($"{MakeAugmentListManager.sniper1.Count}");
+        PickSpecialList(MakeAugmentListManager.Instance.sniper2);
+        Debug.Log($"{MakeAugmentListManager.Instance.sniper2.Count}");
     }
     void PickStatList(List<IAugment> origin)// 고른게 안사리지는 타입 = 일반스탯
     {
@@ -83,31 +83,6 @@ public class ResultManager : MonoBehaviour//vs코드
             }
             picklist[i].gameObject.SetActive(false);
 
-        }
-    }
-    void uiUp() 
-    {
-        int Count = picklist.Length;
-        for (int i = 0; i < Count; ++i)
-        {
-            picklist[i].GetComponent<ChoiceSlot>().Name.text = pickSpecial3[i].Name;
-            picklist[i].GetComponent<ChoiceSlot>().Info.text = pickSpecial3[i].func;
-            int rare = pickSpecial3[i].Rare;
-            Image image = picklist[i].GetComponent<Image>();
-            switch (rare)
-            {
-                case 1:
-                    image.color = new Color(205, 127, 50);//브
-                    break;
-
-                case 2:
-                    image.color = new Color(192, 192, 192);//실
-                    break;
-
-                case 3:
-                    image.color = new Color(255, 215, 0);//골
-                    break;
-            }
         }
     }
 
