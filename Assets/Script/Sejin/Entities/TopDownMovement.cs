@@ -9,6 +9,8 @@ public class TopDownMovement : MonoBehaviour
 
     private Vector2 _movemewtDirection = Vector2.zero;
     private Rigidbody2D _rigidbody2D;
+    private Stats moveSpeed;
+
 
     private void Awake()
     {
@@ -19,6 +21,7 @@ public class TopDownMovement : MonoBehaviour
     private void Start()
     {
         _controller.OnMoveEvent += Move;
+        moveSpeed = _controller.playerStatHandler.Speed;
     }
 
     private void FixedUpdate()
@@ -33,7 +36,18 @@ public class TopDownMovement : MonoBehaviour
 
     private void ApplyMovment(Vector2 direction)
     {
-        direction = direction * 5;
+        direction = direction * moveSpeed.total;
         _rigidbody2D.velocity = direction;
+    }
+
+    private void Roll()
+    {
+
+
+    }
+
+    private void EndRoll() 
+    {
+        
     }
 }
