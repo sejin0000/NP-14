@@ -10,6 +10,7 @@ public class RoomPanel : MonoBehaviourPun
     [Header("button")]
     public Button ReadyButton;
     public Button StartButton;
+    public Button BackButton;
 
     private bool isPlayerReady;
 
@@ -28,7 +29,7 @@ public class RoomPanel : MonoBehaviourPun
 
     public void SetPlayerReady(bool playerReady)
     {
-        if (!playerReady)
+        if (playerReady)
         {
             ReadyButton.GetComponentInChildren<TextMeshProUGUI>().text = "√Îº“";
             ReadyButton.GetComponentInChildren<Image>().color = new Color(130 / 255f, 241 / 255f, 96 / 255f);
@@ -46,5 +47,10 @@ public class RoomPanel : MonoBehaviourPun
         SetPlayerReady(isPlayerReady);
         var props = new ExitGames.Client.Photon.Hashtable() { { "IsPlayerReady", isPlayerReady } };
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+    }
+
+    public void OnBackButtonClicked()
+    {
+        PhotonNetwork.LeaveRoom();
     }
 }

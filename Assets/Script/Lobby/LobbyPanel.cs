@@ -225,9 +225,11 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         if (playerInfoListEntries.TryGetValue(targetPlayer.ActorNumber, out playerInfo))
         {
             // TODO : 각 CharClass 번호에 맞추어 적용 시켜주는 거
+            SetPartyPlayerInfo();
         }
 
         // TODO : 플레이어가 준비를 눌렀나에 따라 변해야함.
+        StartButton.gameObject.SetActive(CheckPlayersReady());
     }
 
 
@@ -345,7 +347,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
             object isPlayerReady;
             if (p.CustomProperties.TryGetValue("IsPlayerReady", out isPlayerReady))
             {
-                if (!(bool) isPlayerReady)
+                if (!(bool) isPlayerReady && !p.IsMasterClient)
                 {
                     return false;
                 }
@@ -365,6 +367,8 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         int cnt = 0;
         foreach (Player p in PhotonNetwork.PlayerList)
         {
+            //GameObject playerInfoPrefab = PhotonNetwork.Instantiate("Prefabs/LobbyScene/PlayerInfo", Vector3.zero, Quaternion.identity);
+            // PhotonNetwork.Instatiate를 쓰면, 자기가 만든건 나갈 때 지워짐.
             GameObject playerInfoPrefab = Instantiate(PlayerInfo);
             if (PartyBox.transform.GetChild(cnt).childCount > 0)
             {
