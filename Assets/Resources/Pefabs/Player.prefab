@@ -428,8 +428,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 195ea67adfb040a468b2e0dbb499c836, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 11400000, guid: f71119c9b3c3aa14ca2eaeb140545241, type: 2}
+  playerStats: {fileID: 11400000, guid: 51fc923c710f94d4bb65b28de1424059, type: 2}
   Sprite: {fileID: 0}
+  CanReload: 0
+  CanSkill: 0
+  CanRoll: 0
 --- !u!114 &197272983730663190
 MonoBehaviour:
   m_ObjectHideFlags: 0

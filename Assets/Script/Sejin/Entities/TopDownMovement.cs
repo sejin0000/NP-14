@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TopDownMovement : MonoBehaviour
@@ -10,7 +11,9 @@ public class TopDownMovement : MonoBehaviour
     private Vector2 _movemewtDirection = Vector2.zero;
     private Rigidbody2D _rigidbody2D;
     private Stats moveSpeed;
+    private Vector2 mousePos;
 
+    private bool isRoll = false;
 
     private void Awake()
     {
@@ -21,12 +24,21 @@ public class TopDownMovement : MonoBehaviour
     private void Start()
     {
         _controller.OnMoveEvent += Move;
+        _controller.OnRollEvent += Roll;
+        _controller.OnLookEvent += MousePos;
         moveSpeed = _controller.playerStatHandler.Speed;
     }
 
     private void FixedUpdate()
     {
-        ApplyMovment(_movemewtDirection);
+        if (!isRoll)
+        {
+            ApplyMovment(_movemewtDirection);
+        }
+        else
+        {
+            ApplyRolling(mousePos);
+        }
     }
 
     private void Move(Vector2 direction)
@@ -39,15 +51,25 @@ public class TopDownMovement : MonoBehaviour
         direction = direction * moveSpeed.total;
         _rigidbody2D.velocity = direction;
     }
+    private void ApplyRolling(Vector2 direction)
+    {
+        direction = direction * moveSpeed.total * 1.5f;
+        _rigidbody2D.velocity = direction;
+    }
 
     private void Roll()
     {
-
-
+        isRoll = true;
+        Invoke("EndRoll",0.6f);
     }
 
     private void EndRoll() 
     {
-        
+        isRoll = false;
+    }
+
+    private void MousePos(Vector2 _mousePos)
+    {
+        mousePos = _mousePos.normalized;
     }
 }
