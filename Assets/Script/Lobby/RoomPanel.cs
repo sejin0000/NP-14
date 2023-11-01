@@ -13,7 +13,11 @@ public class RoomPanel : MonoBehaviourPun
     public Button StartButton;
     public Button BackButton;
 
-    //private object isPlayerReady;    
+    [Header("Chat")]
+    public TMP_InputField ChatInputField;
+    public Button SubmitButton;
+    public GameObject ChatLog;
+    public GameObject ChatScrollContent;
 
     public void Start()
     {
@@ -47,6 +51,15 @@ public class RoomPanel : MonoBehaviourPun
         }
     }
 
+    [PunRPC]
+    public void ChatInput(string inputText)
+    {
+        GameObject chatPrefab = Instantiate(ChatLog, ChatScrollContent.transform, false);
+        chatPrefab.GetComponent<ChatLog>().NickNameText.text = PhotonNetwork.LocalPlayer.NickName;        
+        chatPrefab.GetComponent<ChatLog>().ChatText.text = inputText;
+        chatPrefab.GetComponent<ChatLog>().ConfirmTextSize(ChatInputField);
+    }
+
     public void OnReadyButtonClicked()
     {
         if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("IsPlayerReady", out object isPlayerReady))
@@ -67,5 +80,14 @@ public class RoomPanel : MonoBehaviourPun
     {
         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable() { { "IsPlayerReady", false } });
         PhotonNetwork.LeaveRoom();
+    }
+
+    public void OnSubmitButtonClicked()
+    {
+        string inputText = ChatInputField.text;
+        photonView.RPC("ChatInput", RpcTarget.All, inputText);
+        ChatInputField.text = "";
+        // 다시 사용 가능하게,,
+        ChatInputField.ActivateInputField();
     }
 }
