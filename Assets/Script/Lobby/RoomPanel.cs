@@ -52,12 +52,12 @@ public class RoomPanel : MonoBehaviourPun
     }
 
     [PunRPC]
-    public void ChatInput(string inputText)
+    public void ChatInput(string inputText, string nickName)
     {
         GameObject chatPrefab = Instantiate(ChatLog, ChatScrollContent.transform, false);
         ChatLog chatLog = chatPrefab.GetComponent<ChatLog>();
-        
-        chatLog.NickNameText.text = PhotonNetwork.LocalPlayer.NickName;
+
+        chatLog.NickNameText.text = nickName;
         chatLog.ChatText.text = inputText;
         chatPrefab.transform.SetParent(ChatScrollContent.transform, false);
         chatLog.ConfirmTextSize(ChatInputField);
@@ -88,7 +88,8 @@ public class RoomPanel : MonoBehaviourPun
     public void OnSubmitButtonClicked()
     {
         string inputText = ChatInputField.text;
-        photonView.RPC("ChatInput", RpcTarget.All, inputText);
+        string nickName = PhotonNetwork.LocalPlayer.NickName;
+        photonView.RPC("ChatInput", RpcTarget.All, inputText, nickName);
         ChatInputField.text = "";
         // 다시 사용 가능하게,,
         ChatInputField.ActivateInputField();
