@@ -66,18 +66,18 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌 동기
         //{
         //Debug.Log($"{ sniper1[i].Name}");
         //}
-        Debug.Log($"스탯1리스트 갯수 {stat1.Count}");
-        Debug.Log($"스탯1리스트 갯수 {stat2.Count}");
-        Debug.Log($"스탯1리스트 갯수 {stat3.Count}");
-        Debug.Log($"스나1리스트 갯수  {sniper1.Count}");
-        Debug.Log($"스나2리스트 갯수 {sniper2.Count}");
-        Debug.Log($"스나3리스트 갯수 {sniper3.Count}");
-        Debug.Log($"샷건1리스트 갯수 {Shotgun1.Count}");
-        Debug.Log($"샷건2리스트 갯수 {Shotgun2.Count}");
-        Debug.Log($"샷건3리스트 갯수 {Shotgun3.Count}");
-        Debug.Log($"솔져1리스트 갯수 {Soldier1.Count}");
-        Debug.Log($"솔져2리스트 갯수 {Soldier2.Count}");
-        Debug.Log($"솔져3리스트 갯수 {Soldier3.Count}");
+        //Debug.Log($"스탯1리스트 갯수 {stat1.Count}");
+        //Debug.Log($"스탯1리스트 갯수 {stat2.Count}");
+        //Debug.Log($"스탯1리스트 갯수 {stat3.Count}");
+        //Debug.Log($"스나1리스트 갯수  {sniper1.Count}");
+        //Debug.Log($"스나2리스트 갯수 {sniper2.Count}");
+        //Debug.Log($"스나3리스트 갯수 {sniper3.Count}");
+        //Debug.Log($"샷건1리스트 갯수 {Shotgun1.Count}");
+        //Debug.Log($"샷건2리스트 갯수 {Shotgun2.Count}");
+        //Debug.Log($"샷건3리스트 갯수 {Shotgun3.Count}");
+        //Debug.Log($"솔져1리스트 갯수 {Soldier1.Count}");
+        //Debug.Log($"솔져2리스트 갯수 {Soldier2.Count}");
+        //Debug.Log($"솔져3리스트 갯수 {Soldier3.Count}");
 
 
 

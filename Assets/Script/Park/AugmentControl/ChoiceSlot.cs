@@ -13,23 +13,31 @@ public class ChoiceSlot : MonoBehaviour
     public IAugment stat;
     public bool Ispick = false;
     public int listIndex;
-    PlayerStatHandler playerstatHandler;
-    private void Start()
+    public PlayerStatHandler playerstatHandler;
+    private GameObject player;
+    int rare;
+
+    int atk = 5;
+    int hp = 10;
+    float speed = 1;
+    float atkspeed = 1f;
+    float bulletSpread = -1f;
+    int cooltime = -1;
+    int critical = 1;
+    int AmmoMax = 1;
+
+    private void Awake()
     {
         playerstatHandler = GameManager.Instance.Player.GetComponent<PlayerStatHandler>();
+        player = playerstatHandler.gameObject;
+    }
+    private void Start()
+    {
+        //playerstatHandler = GameManager.Instance.Player.GetComponent<PlayerStatHandler>();
     }
 
 
-    int rare;
 
-    int atk=5;
-    int hp=10;
-    float speed=1;
-    float atkspeed=1f;
-    float bulletSpread=-1f;
-    int cooltime=-1;
-    int critical=1;
-    int AmmoMax = 1;
 
     //[Range(1, 3)] int StatType;
 
@@ -58,11 +66,16 @@ public class ChoiceSlot : MonoBehaviour
     }
     public void pick()
     {
-        string str = "A"+stat.Code.ToString();
+        string str = "A" + stat.Code.ToString();
         Debug.Log($"{str}");
-        Invoke(str,0);
+        Invoke(str, 0);
         Ispick = true;
         ResultManager.Instance.close();
+    }
+    public void pick2()//내가 테스트 할려고 뒤숫자 바꾸면서 하는거 
+    {
+        string str = "A" + "0124";//뒷숫자컨
+        Invoke(str, 0);
     }
     private void A999(PlayerStatHandler PlayerStat)
     //처음의도 어차피 스탯은 걍 다 + 하는것이니 다 섞어버려야지 >> 0+0보다 코드 나눠서 한번에 하는게 좋은거아님??
@@ -109,10 +122,10 @@ public class ChoiceSlot : MonoBehaviour
         playerstatHandler.Critical.added += critical;
         Debug.Log(playerstatHandler.Critical.added);
     }
-
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 스탯2티어
     private void A911()//스탯 공 티어 2 @@@@@@@@@@@@@@@@@이아래 수정안함 해야함
     {
-        playerstatHandler.ATK.added += atk*2;
+        playerstatHandler.ATK.added += atk * 2;
     }
     private void A912()//스탯 체 티어 2
     {
@@ -143,7 +156,7 @@ public class ChoiceSlot : MonoBehaviour
     {
         playerstatHandler.AmmoMax.added += AmmoMax;
     }
-
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@스탯3티어
     private void A921()//스탯 공 티어 3
     {
         playerstatHandler.ATK.added += atk * 3;
@@ -177,4 +190,130 @@ public class ChoiceSlot : MonoBehaviour
     {
         playerstatHandler.AmmoMax.added += AmmoMax * 2;
     }
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@공용1티어
+    private void A0101()
+    {
+        Debug.Log("미완성");
+    }
+    private void A0102()
+    {
+        Debug.Log("미완성");
+    }
+    private void A0103()
+    {
+        Debug.Log("미완성");
+    }
+    private void A0104()
+    {
+        Debug.Log("미완성");
+    }
+    private void A0105()
+    {
+        Debug.Log("미완성");
+    }
+    private void A0106()
+    {
+        Debug.Log("미완성");
+    }
+    private void A0107()
+    {
+        Debug.Log("미완성");
+    }
+    private void A0108()
+    {
+        Debug.Log("미완성");
+    }
+    private void A0109()// 소형화 //테스트안해봄
+    {
+        float x = (player.transform.localScale.x * 0.5f);//절반
+        float y = (player.transform.localScale.y * 0.5f);//절반
+        player.transform.localScale = new Vector2(x,y);
+        //playerstatHandler.HP.coefficient -= 0.1f;
+        //playerstatHandler.Speed.coefficient += 0.2f;
+    }
+    private void A0110()//대형화 // 테스트아직안해봄
+    {
+        float x = (player.transform.localScale.x * 2f);//절반
+        float y = (player.transform.localScale.y * 2f);//절반
+        player.transform.localScale = new Vector2(x, y);
+        //playerstatHandler.HP.coefficient += 0.5f;
+        //playerstatHandler.Speed.coefficient += 0.2f;
+    }
+    private void A0111()
+    {
+        Debug.Log("미완성");
+    }
+    private void A0112()//빠른장전
+    {
+        //playerstatHandler.ReloadCoolTime -= 0.1f;
+    }
+    private void A0113()
+    {
+        Debug.Log("미완성");
+    }
+    private void A0114()
+    {
+        Debug.Log("미완성");
+    }
+    private void A0115()
+    {
+        Debug.Log("미완성");
+    }
+    private void A0116()
+    {
+        Debug.Log("미완성");
+    }
+    private void A0117()
+    {
+        Debug.Log("미완성");
+    }
+    private void A0118()
+    {
+        Debug.Log("미완성");
+    }
+    private void A0119()
+    {
+        Debug.Log("미완성");
+    }
+    private void A0120()
+    {
+        Debug.Log("미완성");
+    }
+    private void A0121()
+    {
+        Debug.Log("미완성");
+    }
+    private void A0122()
+    {
+        Debug.Log("미완성");
+    }
+    private void A0123()
+    {
+        Debug.Log("미완성");
+    }
+    //테스트 완료 그러나 이벤트로 작동하여 추가 테스트가 필요
+    private void A0124()//눈먼총잡이 : 시야가 대폭 감소 하며 공격 속도, 재장전 속도가 증가합니다.
+    {
+        player.AddComponent<A0124>();//A0124에서 화면어둡게 하는 프리팹 만들고 스테이지시작에 ON 끝에 OFF
+        playerstatHandler.AtkSpeed.added += 15;
+        playerstatHandler.ReloadCoolTime.added += 15;
+    }
+    private void A0125()
+    {
+        Debug.Log("미완성");
+    }
+    private void A0126()
+    {
+        Debug.Log("미완성");
+    }
+    private void A0127()
+    {
+        Debug.Log("미완성");
+    }
+    private void A0128()
+    {
+        Debug.Log("미완성");
+    }
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 공용2티어
+
 }
