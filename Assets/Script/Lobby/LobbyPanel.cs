@@ -286,6 +286,13 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         }
     }
 
+    public void OnStartButtonClicked()
+    {
+        PhotonNetwork.CurrentRoom.IsOpen = false;
+        PhotonNetwork.CurrentRoom.IsVisible = false;
+
+        PhotonNetwork.LoadLevel("MainGameScene");
+    }
 
     #endregion
 
