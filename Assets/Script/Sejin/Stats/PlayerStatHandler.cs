@@ -22,10 +22,12 @@ public class PlayerStatHandler : MonoBehaviour
     [HideInInspector] public SpriteLibraryAsset PlayerSprite; // 스프라이트
     [HideInInspector] public SpriteLibraryAsset WeaponSprite; // 스프라이트
 
-    [HideInInspector] public float curHP { get { return curHP;  } set { if (value > HP.total) curHP = HP.total;  } } //현재 체력
-    [HideInInspector] public bool CanReload;            //장전   가능한지
-    [HideInInspector] public bool CanSkill;             //스킬   가능한지
-    [HideInInspector] public bool CanRoll;              //구르기 가능한지
+    [HideInInspector] public float CurHP   { get { return CurHP;  } set { if (value > HP.total) CurHP = HP.total;  } }               //현재   체력
+    [HideInInspector] public float CurAmmo { get { return CurAmmo;  } set { if (value > AmmoMax.total) CurAmmo = AmmoMax.total;  } } //현재   잔탄
+    [HideInInspector] public bool  CanReload;                              //장전   가능한지
+    [HideInInspector] public bool  CanSkill;                               //스킬   가능한지
+    [HideInInspector] public bool  CanRoll;                                //구르기 가능한지
+    [HideInInspector] public bool  Invincibility;                          //무적
 
     private void Awake()
     {
@@ -41,10 +43,11 @@ public class PlayerStatHandler : MonoBehaviour
         AmmoMax        =  new Stats(playerStats.ammoMax);
         PlayerSprite   =  playerStats.playerSprite;
         WeaponSprite   =  playerStats.weaponSprite;
-        curHP          =  HP.total;
+        CurHP          =  HP.total;
         CanReload      =  true;
         CanSkill       =  true;
         CanRoll        =  true;
+        Invincibility  =  false;
     }
 
 }
