@@ -14,6 +14,7 @@ public class A3107 : MonoBehaviour
     private void Start()
     {
         objSize = target.Length;
+        transform.localPosition = Vector3.zero;
     }
     void Update()
     {
