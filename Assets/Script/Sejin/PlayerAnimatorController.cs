@@ -1,30 +1,33 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D.Animation;
 
 public class PlayerAnimatorController : MonoBehaviour
 {
-    [SerializeField] private GameObject mainSprite;
+    [SerializeField] private GameObject PlayerSprite;
+    [SerializeField] private GameObject weaponSprite;
+
+
     private TopDownCharacterController characterController;
     private PlayerStatHandler playerStatHandler;
 
-    private SpriteRenderer _mainRenderer;
+    private SpriteRenderer PlayerRenderer;
     private Animator _animation;
-    private SpriteLibrary _library;
-    SpriteLibraryAsset sprite;
+    private SpriteLibrary PlayerSpritelibrary;
+    private SpriteLibrary WeaponSpritelibrary;
 
     private void Awake()
     {
         characterController = GetComponent<TopDownCharacterController>();
-        _animation = mainSprite.GetComponent<Animator>();
-        _mainRenderer = mainSprite.GetComponent<SpriteRenderer>();
-        _library = mainSprite.GetComponent<SpriteLibrary>();
+        _animation = PlayerSprite.GetComponent<Animator>();
+        PlayerRenderer = PlayerSprite.GetComponent<SpriteRenderer>();
+        PlayerSpritelibrary = PlayerSprite.GetComponent<SpriteLibrary>();
+        WeaponSpritelibrary = weaponSprite.GetComponent<SpriteLibrary>();
         playerStatHandler = GetComponent<PlayerStatHandler>();
     }
     private void Start()
     {
-        _library.spriteLibraryAsset = playerStatHandler.Sprite;
+        PlayerSpritelibrary.spriteLibraryAsset = playerStatHandler.PlayerSprite;
+        WeaponSpritelibrary.spriteLibraryAsset = playerStatHandler.WeaponSprite;
         characterController.OnMoveEvent += MoveAnimator;
         characterController.OnRollEvent += RollAnimator;
     }

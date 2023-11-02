@@ -26,4 +26,5 @@ MonoBehaviour:
   ammoMax: 5
   characterClass: 3
   critical: 10
-  sprite: {fileID: 7108339969198208228, guid: 8ac51ed9faab6cc42b481e01451bdd28, type: 3}
+  playerSprite: {fileID: 7108339969198208228, guid: 8ac51ed9faab6cc42b481e01451bdd28, type: 3}
+  weaponSprite: {fileID: 7108339969198208228, guid: c2fcbd82c62ab0745b848a8ada31aa03, type: 3}

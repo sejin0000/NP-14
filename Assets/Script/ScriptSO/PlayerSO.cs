@@ -13,7 +13,10 @@ public class PlayerSO : RangedUnitSO
     public int ammoMax;              // 장탄수
     public int characterClass;       // 직업
     public int critical;             // 크리티컬
-    public SpriteLibraryAsset sprite;// 플레이어 스프라이트
+    public SpriteLibraryAsset playerSprite;// 플레이어 스프라이트
+    public SpriteLibraryAsset weaponSprite;// 무기 스프라이트
+
+
 }
 
 enum characterClass
