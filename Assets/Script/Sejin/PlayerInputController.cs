@@ -32,19 +32,19 @@ public class PlayerInputController : TopDownCharacterController
     public void OnAttack(InputValue value)
     {
         Debug.Log("OnAttack" + value.ToString());
-
+        CallAttackEvent();
     }
 
     public void OnSkill(InputValue value)
     {
         Debug.Log("OnSkill" + value.ToString());
-
+        CallSkillEvent();
     }
 
     public void OnRoll(InputValue value)
     {
         Debug.Log("OnRoll" + value.ToString());
-
+        CallRollEvent();
     }
 
 }
