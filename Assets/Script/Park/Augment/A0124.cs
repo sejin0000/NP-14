@@ -11,6 +11,7 @@ public class A0124 : MonoBehaviour
     private void Start()
     {
         A0124Prefabs = Resources.Load<GameObject>("A1024");
+        this.transform.SetSiblingIndex(0);
         Instantiate(A0124Prefabs);
         DarkEnd();
         GameManager.Instance.OnStageStart += DarkStart;

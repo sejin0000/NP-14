@@ -26,6 +26,8 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌 동기
     public List<SpecialAugment> Shotgun1 = new List<SpecialAugment>();
     public List<SpecialAugment> Shotgun2 = new List<SpecialAugment>();
     public List<SpecialAugment> Shotgun3 = new List<SpecialAugment>();
+
+    public List<SpecialAugment> test = new List<SpecialAugment>();
     //StatBonus a =new;
     // Start is called before the first frame update
     private void Awake()
@@ -39,29 +41,31 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌 동기
         SpecialAugmentSetting(sniper1, "Sniper1");
         SpecialAugmentSetting(sniper1, "All1");
 
+        SpecialAugmentSetting(test, "Test111"); //@만든증강적용테스트용 
+
         SpecialAugmentSetting(sniper2, "Sniper2");
         SpecialAugmentSetting(sniper2, "All2");
 
-        SpecialAugmentSetting(sniper3, "Sniper3");
-        SpecialAugmentSetting(sniper3, "All3");
+        //SpecialAugmentSetting(sniper3, "Sniper3");
+        //SpecialAugmentSetting(sniper3, "All3");
 
-        SpecialAugmentSetting(Shotgun1, "Shotgun1");
-        SpecialAugmentSetting(Shotgun1, "All1");
+        //SpecialAugmentSetting(Shotgun1, "Shotgun1");
+        //SpecialAugmentSetting(Shotgun1, "All1");
 
-        SpecialAugmentSetting(Shotgun2, "Shotgun2");
-        SpecialAugmentSetting(Shotgun2, "All2");
+        //SpecialAugmentSetting(Shotgun2, "Shotgun2");
+        //SpecialAugmentSetting(Shotgun2, "All2");
 
-        SpecialAugmentSetting(Shotgun3, "Shotgun3");
-        SpecialAugmentSetting(Shotgun3, "All3");
+        //SpecialAugmentSetting(Shotgun3, "Shotgun3");
+        //SpecialAugmentSetting(Shotgun3, "All3");
 
-        SpecialAugmentSetting(Soldier1, "Soldier1");
-        SpecialAugmentSetting(Soldier1, "All1");
+        //SpecialAugmentSetting(Soldier1, "Soldier1");
+        //SpecialAugmentSetting(Soldier1, "All1");
 
-        SpecialAugmentSetting(Soldier2, "Soldier2");
-        SpecialAugmentSetting(Soldier2, "All2");
+        //SpecialAugmentSetting(Soldier2, "Soldier2");
+        //SpecialAugmentSetting(Soldier2, "All2");
 
-        SpecialAugmentSetting(Soldier3, "Soldier3");
-        SpecialAugmentSetting(Soldier3, "All3");
+        //SpecialAugmentSetting(Soldier3, "Soldier3");
+        //SpecialAugmentSetting(Soldier3, "All3");
         //for (int i = 0; i < sniper1.Count; ++i) 
         //{
         //Debug.Log($"{ sniper1[i].Name}");
@@ -121,6 +125,7 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌 동기
             a.func = (string)data[i]["Func"];
             a.Code = (int)data[i]["Code"];
             a.Rare = (int)data[i]["Rare"];
+            //Debug.Log($"이름{a.Name}번호 {i}");
             list.Add(a);
         }
 

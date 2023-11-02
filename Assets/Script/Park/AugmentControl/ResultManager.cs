@@ -30,8 +30,13 @@ public class ResultManager : MonoBehaviour//vs코드
     }
     public void testbtnstat2()
     {
-        PickSpecialList(MakeAugmentListManager.Instance.sniper2);
-        Debug.Log($"{MakeAugmentListManager.Instance.sniper2.Count}");
+        PickSpecialList(MakeAugmentListManager.Instance.sniper1);
+        Debug.Log($"{MakeAugmentListManager.Instance.sniper1.Count}");
+    }
+    public void testbtnstat3()
+    {
+        PickSpecialList(MakeAugmentListManager.Instance.test);
+        //Debug.Log($"{MakeAugmentListManager.Instance.test.Count}");
     }
     void PickStatList(List<IAugment> origin)// 고른게 안사리지는 타입 = 일반스탯
     {

@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public event Action OnStageStart;
     public event Action OnStageEnd;
 
-    void Start()
+    void Awake()
     {
         Instance = this;
     }
