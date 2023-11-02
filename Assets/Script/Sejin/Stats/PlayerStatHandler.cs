@@ -6,6 +6,8 @@ using UnityEngine.U2D.Animation;
 
 public class PlayerStatHandler : MonoBehaviour
 {
+
+
     [SerializeField] private PlayerSO playerStats;
 
     public Stats ATK;                 // °ø°Ý·Â
@@ -50,4 +52,9 @@ public class PlayerStatHandler : MonoBehaviour
         Invincibility  =  false;
     }
 
+    public void CharacterChange(PlayerSO playerData)
+    {
+        playerStats = playerData;
+        Awake();
+    }
 }
