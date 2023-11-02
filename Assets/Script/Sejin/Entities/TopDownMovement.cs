@@ -13,7 +13,7 @@ public class TopDownMovement : MonoBehaviour
     private Stats moveSpeed;
     private Vector2 mousePos;
 
-    public bool isRoll = false;
+    private bool isRoll = false;
 
     private void Awake()
     {
@@ -53,7 +53,7 @@ public class TopDownMovement : MonoBehaviour
     }
     private void ApplyRolling(Vector2 direction)
     {
-        direction = direction * moveSpeed.total * 2f;
+        direction = direction * moveSpeed.total * 1.5f;
         _rigidbody2D.velocity = direction;
     }
 
@@ -70,10 +70,6 @@ public class TopDownMovement : MonoBehaviour
 
     private void MousePos(Vector2 _mousePos)
     {
-        if (!isRoll)
-        {
-
-            mousePos = _mousePos.normalized;
-        }
+        mousePos = _mousePos.normalized;
     }
 }
