@@ -9,22 +9,32 @@ public class ChatLog : MonoBehaviour
     public TextMeshProUGUI NickNameText;
     public TextMeshProUGUI ChatText;
 
+    private float prefabHeight;
+    private float prefabWidth;
+
+    public void Initialize()
+    {
+        prefabHeight = this.gameObject.GetComponent<RectTransform>().rect.height;
+        prefabWidth = this.gameObject.GetComponent<RectTransform>().rect.width;
+    }
     public void ConfirmTextSize(TMP_InputField textObject)
     {
-        float maxWidth = ChatText.gameObject.GetComponent<RectTransform>().rect.width;        
+        Initialize();
+        float prefabFontSize = ChatText.fontSize;
+        float inputFontSize = textObject.textComponent.fontSize;
+        float fontMultiplier = inputFontSize / prefabFontSize;
+        float maxWidth = ChatText.gameObject.GetComponent<RectTransform>().rect.width;
         float textWidth = textObject.preferredWidth;
 
+        Debug.Log($"chat : {ChatText.text}");
+        Debug.Log($"textWidth : {textWidth}");
+        Debug.Log($"maxWidth : {maxWidth}");
+
         if (textWidth > maxWidth)
-        {
-            Debug.Log("개행 발생");
-            int sizeMultiplier = (int)(textWidth / maxWidth);
-            LayoutElement layoutElement = ChatText.GetComponent<LayoutElement>();
-            LayoutElement parentElement = this.gameObject.GetComponent<LayoutElement>();
-            if (layoutElement != null)
-            {
-                layoutElement.preferredWidth *= sizeMultiplier;
-                parentElement.preferredWidth *= sizeMultiplier;
-            }
+        {            
+            int sizeMultiplier = (int)(textWidth / (maxWidth * fontMultiplier)) + 1;
+            this.gameObject.GetComponent<RectTransform>().sizeDelta = new Vector2(prefabWidth, prefabHeight * sizeMultiplier);
+            ChatText.GetComponent<RectTransform>().sizeDelta = new Vector2(maxWidth, prefabHeight * sizeMultiplier);
         }        
     } 
 }

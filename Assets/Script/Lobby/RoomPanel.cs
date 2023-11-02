@@ -55,9 +55,12 @@ public class RoomPanel : MonoBehaviourPun
     public void ChatInput(string inputText)
     {
         GameObject chatPrefab = Instantiate(ChatLog, ChatScrollContent.transform, false);
-        chatPrefab.GetComponent<ChatLog>().NickNameText.text = PhotonNetwork.LocalPlayer.NickName;        
-        chatPrefab.GetComponent<ChatLog>().ChatText.text = inputText;
-        chatPrefab.GetComponent<ChatLog>().ConfirmTextSize(ChatInputField);
+        ChatLog chatLog = chatPrefab.GetComponent<ChatLog>();
+        
+        chatLog.NickNameText.text = PhotonNetwork.LocalPlayer.NickName;
+        chatLog.ChatText.text = inputText;
+        chatPrefab.transform.SetParent(ChatScrollContent.transform, false);
+        chatLog.ConfirmTextSize(ChatInputField);
     }
 
     public void OnReadyButtonClicked()

@@ -69,7 +69,8 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     public Button ReadyButton;
 
     public TMP_InputField ChatInput;
-    public GameObject ChatObject;
+    public GameObject ChatLogPrefab;
+    public GameObject ChatBoxScrollContent;
     
     [Header("CharacterSelectPopup")]
     public GameObject CharacterSelectPopup;
@@ -182,6 +183,14 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
         playerInfoListEntries.Clear();
         playerInfoListEntries = null;
+
+        if (ChatBoxScrollContent.transform.childCount > 0)
+        {
+            for (int i = 0; i < ChatBoxScrollContent.transform.childCount; i++)
+            {
+                Destroy(ChatBoxScrollContent.transform.GetChild(i).gameObject);
+            }
+        }
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -202,7 +211,6 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         Debug.Log($"{otherPlayer.NickName} 퇴장");
 
         SetPartyPlayerInfo();
-        // TODO : 시작버튼 활성화 재확인
     }
 
     public override void OnMasterClientSwitched(Player newMasterClient)
@@ -233,11 +241,9 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         GameObject playerInfo;
         if (playerInfoListEntries.TryGetValue(targetPlayer.ActorNumber, out playerInfo))
         {
-            // TODO : 각 CharClass 번호에 맞추어 적용 시켜주는 거
             SetPartyPlayerInfo();
         }
 
-        // TODO : 플레이어가 준비를 눌렀나에 따라 변해야함.
         StartButton.gameObject.SetActive(CheckPlayersReady());
     }
 
@@ -297,19 +303,6 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     {
         CharacterSelectPopup.SetActive(popupName.Equals(CharacterSelectPopup.name));
     }
-
-    // Find 써야해서 폐기
-    //public void SetPanel(string activePanel)
-    //{
-    //    Array panelListArray = Enum.GetValues(typeof(PanelList));
-    //    Array popupListArray = Enum.GetValues(typeof(PopupList));
-        
-    //    foreach (string panelName in panelListArray)
-    //    {
-    //        Transform panelTransform = transform.Find(panelName);
-    //    }
-    //    //LoginPanel.SetActive(activePanel.Equals(LoginPanel.name));        
-    //}
 
     public void UpdateCachedRoomList(List<RoomInfo> roomList)
     {
