@@ -91,7 +91,6 @@ public class RoomPanel : MonoBehaviourPun
         string nickName = PhotonNetwork.LocalPlayer.NickName;
         photonView.RPC("ChatInput", RpcTarget.All, inputText, nickName);
         ChatInputField.text = "";
-        // 다시 사용 가능하게,,
         ChatInputField.ActivateInputField();
     }
 }
