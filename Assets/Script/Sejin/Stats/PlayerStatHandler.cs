@@ -19,12 +19,13 @@ public class PlayerStatHandler : MonoBehaviour
     public Stats Critical;            // 크리티컬
     public Stats AmmoMax;             // 장탄수
 
-    [HideInInspector] public SpriteLibraryAsset Sprite; // 스프라이트
+    [HideInInspector] public SpriteLibraryAsset PlayerSprite; // 스프라이트
+    [HideInInspector] public SpriteLibraryAsset WeaponSprite; // 스프라이트
 
-    public float curHP { get { return curHP;  } set { if (value > HP.total) curHP = HP.total;  } }               //현재 체력
-    public bool CanReload;            //사용 가능한지
-    public bool CanSkill;             //사용 가능한지
-    public bool CanRoll;              //사용 가능한지
+    [HideInInspector] public float curHP { get { return curHP;  } set { if (value > HP.total) curHP = HP.total;  } } //현재 체력
+    [HideInInspector] public bool CanReload;            //장전   가능한지
+    [HideInInspector] public bool CanSkill;             //스킬   가능한지
+    [HideInInspector] public bool CanRoll;              //구르기 가능한지
 
     private void Awake()
     {
@@ -38,11 +39,12 @@ public class PlayerStatHandler : MonoBehaviour
         BulletSpread   =  new Stats(playerStats.bulletSpread);
         Critical       =  new Stats(playerStats.critical);
         AmmoMax        =  new Stats(playerStats.ammoMax);
-        Sprite         =  playerStats.sprite;
+        PlayerSprite   =  playerStats.playerSprite;
+        WeaponSprite   =  playerStats.weaponSprite;
         curHP          =  HP.total;
-        CanReload     =  true;
-        CanSkill      =  true;
-        CanRoll       =  true;
+        CanReload      =  true;
+        CanSkill       =  true;
+        CanRoll        =  true;
     }
 
 }
