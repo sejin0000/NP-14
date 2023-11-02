@@ -6,28 +6,33 @@ using UnityEngine.U2D.Animation;
 
 public class PlayerStatHandler : MonoBehaviour
 {
+
+
     [SerializeField] private PlayerSO playerStats;
 
-    public Stats ATK;                 // °ø°İ·Â
-    public Stats HP;                  // Ã¼·Â
-    public Stats Speed;               // ÀÌµ¿ ¼Óµµ
-    public Stats AtkSpeed;            // °ø°İ ¼Óµµ
-    public Stats ReloadCoolTime;      // ÀåÀü   Äğ Å¸ÀÓ
-    public Stats SkillCoolTime;       // ½ºÅ³   Äğ Å¸ÀÓ
-    public Stats RollCoolTime;        // ±¸¸£±â Äğ Å¸ÀÓ
-    public Stats BulletSpread;        // ÅºÆÛÁü
-    public Stats Critical;            // Å©¸®Æ¼ÄÃ
-    public Stats AmmoMax;             // ÀåÅº¼ö
+    public Stats ATK;                 // ê³µê²©ë ¥
+    public Stats HP;                  // ì²´ë ¥
+    public Stats Speed;               // ì´ë™ ì†ë„
+    public Stats AtkSpeed;            // ê³µê²© ì†ë„
+    public Stats ReloadCoolTime;      // ì¥ì „   ì¿¨ íƒ€ì„
+    public Stats SkillCoolTime;       // ìŠ¤í‚¬   ì¿¨ íƒ€ì„
+    public Stats RollCoolTime;        // êµ¬ë¥´ê¸° ì¿¨ íƒ€ì„
+    public Stats BulletSpread;        // íƒ„í¼ì§
+    public Stats Critical;            // í¬ë¦¬í‹°ì»¬
+    public Stats AmmoMax;             // ì¥íƒ„ìˆ˜
 
-    [HideInInspector] public SpriteLibraryAsset PlayerSprite; // ½ºÇÁ¶óÀÌÆ®
-    [HideInInspector] public SpriteLibraryAsset WeaponSprite; // ½ºÇÁ¶óÀÌÆ®
+    [HideInInspector] public SpriteLibraryAsset PlayerSprite; // ìŠ¤í”„ë¼ì´íŠ¸
+    [HideInInspector] public SpriteLibraryAsset WeaponSprite; // ìŠ¤í”„ë¼ì´íŠ¸
 
-    // curHP { get { return curHP;  } = °Ù=curhp¸¦ ¸®ÅÏ curhp= get  get= return curhp ==¹«ÇÑ·çÇÁ
-    private float currentHp;
-    [HideInInspector] public float curHP { get { return currentHp;  } set { if (value > HP.total) currentHp = HP.total;  } } //ÇöÀç Ã¼·Â
-    [HideInInspector] public bool CanReload;            //ÀåÀü   °¡´ÉÇÑÁö
-    [HideInInspector] public bool CanSkill;             //½ºÅ³   °¡´ÉÇÑÁö
-    [HideInInspector] public bool CanRoll;              //±¸¸£±â °¡´ÉÇÑÁö
+    private float curHP;
+    [HideInInspector] public float CurHP   { get { return curHP;  } set { if (value > HP.total) curHP = HP.total;  } }               //í˜„ì¬   ì²´ë ¥
+
+    private float curAmmo;
+    [HideInInspector] public float CurAmmo { get { return curAmmo;  } set { if (value > AmmoMax.total) curAmmo = AmmoMax.total;  } } //í˜„ì¬   ì”íƒ„
+    [HideInInspector] public bool  CanReload;                              //ì¥ì „   ê°€ëŠ¥í•œì§€
+    [HideInInspector] public bool  CanSkill;                               //ìŠ¤í‚¬   ê°€ëŠ¥í•œì§€
+    [HideInInspector] public bool  CanRoll;                                //êµ¬ë¥´ê¸° ê°€ëŠ¥í•œì§€
+    [HideInInspector] public bool  Invincibility;                          //ë¬´ì 
 
     private void Awake()
     {
@@ -43,10 +48,16 @@ public class PlayerStatHandler : MonoBehaviour
         AmmoMax        =  new Stats(playerStats.ammoMax);
         PlayerSprite   =  playerStats.playerSprite;
         WeaponSprite   =  playerStats.weaponSprite;
-        curHP          =  HP.total;
+        CurHP          =  HP.total;
         CanReload      =  true;
         CanSkill       =  true;
         CanRoll        =  true;
+        Invincibility  =  false;
     }
 
+    public void CharacterChange(PlayerSO playerData)
+    {
+        playerStats = playerData;
+        Awake();
+    }
 }

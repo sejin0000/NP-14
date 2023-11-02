@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   atk: 20
   hp: 70
-  unitSpeed: 3
+  unitSpeed: 2
   atkSpeed: 1
   unitScale: 1
   launchVolume: 2
