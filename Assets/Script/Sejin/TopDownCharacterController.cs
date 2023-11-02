@@ -11,7 +11,6 @@ public class TopDownCharacterController : MonoBehaviour
     public event Action OnSkillEvent;
     public event Action OnRollEvent;
 
-    public PlayerStatHandler playerStatHandler;
 
     public void CallMoveEvent(Vector2 direction)
     {
@@ -35,9 +34,6 @@ public class TopDownCharacterController : MonoBehaviour
 
     public void CallRollEvent()
     {
-        if (playerStatHandler.CanRoll)
-        {
-            OnRollEvent?.Invoke();
-        }
+        OnRollEvent?.Invoke();
     }
 }
