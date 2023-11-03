@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
 
-public class A1107 : MonoBehaviour
+public class A1107 : MonoBehaviour//ÁÖº¯Èú
 {
     float time = 0;
     List<PlayerStatHandler> target= new List<PlayerStatHandler>();
@@ -53,9 +53,9 @@ public class A1107 : MonoBehaviour
     {
         for (int i = 0; i < target.Count; ++i) 
         {
-            target[i].curHP += healP;
+            target[i].CurHP += healP;
             Debug.Log((target.Count));
-            Debug.Log(target[i].curHP);
+            Debug.Log(target[i].CurHP);
         }
     }
 }

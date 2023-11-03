@@ -7,7 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ChoiceSlot : MonoBehaviour
+public class ChoiceSlot : MonoBehaviour//눌러서 골르는 증강 슬롯 열렸을때 해당증강 값을 불러오고 골랐을때 해당 증강을 호출함
 {
     public TextMeshProUGUI Name;
     public TextMeshProUGUI Info;
@@ -27,10 +27,10 @@ public class ChoiceSlot : MonoBehaviour
         rare = stat.Rare;
         Image image = gameObject.GetComponent<Image>();
         //Debug.Log($"{rare}");
-        switch (rare)
+        switch (rare)//증강 티어에 따라 색넣어주는데 색 뭔가 이상함 나중에 머터리얼 넣어줘야할듯
         {
             case 1:
-                image.color = new Color(205 / 255f, 127 / 255f, 50 / 255f);//브
+                image.color = new Color(205 / 255f, 127 / 255f, 50 / 255f);//브 
                 break;
 
             case 2:
@@ -50,7 +50,7 @@ public class ChoiceSlot : MonoBehaviour
         Ispick = true;
         ResultManager.Instance.close();
     }
-    public void pick2()//내가 테스트 할려고 뒤숫자 바꾸면서 하는거 
+    public void pick2()//테스트용 증강 나중에 없애야함
     {
         string str = "A" + "0124";//뒷숫자컨
         Invoke(str, 0);

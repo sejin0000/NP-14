@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌 동기화 위해 스크립트 적게만들라는말이 있던거 같은데 리절트매니저랑 합치는거 고려 해볼만한듯함
+public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
 {
     public static MakeAugmentListManager Instance;
 

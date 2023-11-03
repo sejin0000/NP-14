@@ -53,14 +53,12 @@ public class ResultManager : MonoBehaviour//vs코드
             picklist[i].gameObject.SetActive(true);
             list.RemoveAt(a);
         }
-        IsStat = true;
-        //uiUp();
+        IsStat = true;// 이걸로 리스트에서 제거인지 그대로인지 구별함
     }
 
-    void PickSpecialList(List<SpecialAugment> origin) // 고른게 사라지는 타입 == 플레이변화 증강 아직안만듬
+    void PickSpecialList(List<SpecialAugment> origin) // 고른게 사라지는 타입 == 플레이변화 증강
     {
         int Count = picklist.Length;
-        //여기서 스탯증강인지 특수 증강인지에 따라투리스트할지 그냥 받을지
         List<SpecialAugment> list = origin.ToList();
         tempList=origin;
         for (int i = 0; i < Count; ++i)
@@ -72,9 +70,8 @@ public class ResultManager : MonoBehaviour//vs코드
             list.RemoveAt(a);
         }
         IsStat = false;
-        // 현재까지 중복 뽑기시 제거임 픽일때 제거를 해줘야함 
     }
-    public void close()
+    public void close()//목록에서 골랐다면 띄운 ui를 닫아줌
     {
         int Count = picklist.Length;
         for (int i = 0; i < Count; ++i)

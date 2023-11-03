@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AugmentManager : MonoBehaviourPunCallbacks
+public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러오는곳 AugmentManager.Instance.Invoke(code,0); 을통해 해당 증강불러옴
 {
     public static AugmentManager Instance;
     public PlayerStatHandler playerstatHandler;
