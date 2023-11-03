@@ -4,13 +4,13 @@ using System.Text.RegularExpressions;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌 동기화 위해 스크립트 적게만들라는말이 있던거 같은데 리절트매니저랑 합치는거 고려 해볼만한듯함
+public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
 {
     public static MakeAugmentListManager Instance;
 
     //이게 맞나 모르겠는데 스탯은 모두가 사용가능하니 스태틱으로 하나만 만들어두고
     // 플레이 스타일 변화 증강 = 너무김 앞으로 스페셜증강으로 부르겠음
-    // 스페셜 증강은 목록에 직업증강도 나오기 때문에 플레이어의 캐릭터에 따라 처음에 만들고 넣어줘야할거 같음
+    // 
     public static List<IAugment> stat1 = new List<IAugment>();
     public static List<IAugment> stat2 = new List<IAugment>();
     public static List<IAugment> stat3 = new List<IAugment>();
@@ -26,6 +26,9 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌 동기
     public List<SpecialAugment> Shotgun1 = new List<SpecialAugment>();
     public List<SpecialAugment> Shotgun2 = new List<SpecialAugment>();
     public List<SpecialAugment> Shotgun3 = new List<SpecialAugment>();
+
+    public List<SpecialAugment> test = new List<SpecialAugment>();
+    public List<SpecialAugment> test2 = new List<SpecialAugment>();
     //StatBonus a =new;
     // Start is called before the first frame update
     private void Awake()
@@ -39,45 +42,49 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌 동기
         SpecialAugmentSetting(sniper1, "Sniper1");
         SpecialAugmentSetting(sniper1, "All1");
 
+
+        SpecialAugmentSetting(test, "Test111"); //@만든증강적용테스트용 
+        SpecialAugmentSetting(test2, "Test222"); //@만든증강적용테스트용 
+
         SpecialAugmentSetting(sniper2, "Sniper2");
         SpecialAugmentSetting(sniper2, "All2");
 
-        SpecialAugmentSetting(sniper3, "Sniper3");
-        SpecialAugmentSetting(sniper3, "All3");
+        //SpecialAugmentSetting(sniper3, "Sniper3");
+        //SpecialAugmentSetting(sniper3, "All3");
 
-        SpecialAugmentSetting(Shotgun1, "Shotgun1");
-        SpecialAugmentSetting(Shotgun1, "All1");
+        //SpecialAugmentSetting(Shotgun1, "Shotgun1");
+        //SpecialAugmentSetting(Shotgun1, "All1");
 
-        SpecialAugmentSetting(Shotgun2, "Shotgun2");
-        SpecialAugmentSetting(Shotgun2, "All2");
+        //SpecialAugmentSetting(Shotgun2, "Shotgun2");
+        //SpecialAugmentSetting(Shotgun2, "All2");
 
-        SpecialAugmentSetting(Shotgun3, "Shotgun3");
-        SpecialAugmentSetting(Shotgun3, "All3");
+        //SpecialAugmentSetting(Shotgun3, "Shotgun3");
+        //SpecialAugmentSetting(Shotgun3, "All3");
 
-        SpecialAugmentSetting(Soldier1, "Soldier1");
-        SpecialAugmentSetting(Soldier1, "All1");
+        //SpecialAugmentSetting(Soldier1, "Soldier1");
+        //SpecialAugmentSetting(Soldier1, "All1");
 
-        SpecialAugmentSetting(Soldier2, "Soldier2");
-        SpecialAugmentSetting(Soldier2, "All2");
+        //SpecialAugmentSetting(Soldier2, "Soldier2");
+        //SpecialAugmentSetting(Soldier2, "All2");
 
-        SpecialAugmentSetting(Soldier3, "Soldier3");
-        SpecialAugmentSetting(Soldier3, "All3");
+        //SpecialAugmentSetting(Soldier3, "Soldier3");
+        //SpecialAugmentSetting(Soldier3, "All3");
         //for (int i = 0; i < sniper1.Count; ++i) 
         //{
         //Debug.Log($"{ sniper1[i].Name}");
         //}
-        Debug.Log($"스탯1리스트 갯수 {stat1.Count}");
-        Debug.Log($"스탯1리스트 갯수 {stat2.Count}");
-        Debug.Log($"스탯1리스트 갯수 {stat3.Count}");
-        Debug.Log($"스나1리스트 갯수  {sniper1.Count}");
-        Debug.Log($"스나2리스트 갯수 {sniper2.Count}");
-        Debug.Log($"스나3리스트 갯수 {sniper3.Count}");
-        Debug.Log($"샷건1리스트 갯수 {Shotgun1.Count}");
-        Debug.Log($"샷건2리스트 갯수 {Shotgun2.Count}");
-        Debug.Log($"샷건3리스트 갯수 {Shotgun3.Count}");
-        Debug.Log($"솔져1리스트 갯수 {Soldier1.Count}");
-        Debug.Log($"솔져2리스트 갯수 {Soldier2.Count}");
-        Debug.Log($"솔져3리스트 갯수 {Soldier3.Count}");
+        //Debug.Log($"스탯1리스트 갯수 {stat1.Count}");
+        //Debug.Log($"스탯1리스트 갯수 {stat2.Count}");
+        //Debug.Log($"스탯1리스트 갯수 {stat3.Count}");
+        //Debug.Log($"스나1리스트 갯수  {sniper1.Count}");
+        //Debug.Log($"스나2리스트 갯수 {sniper2.Count}");
+        //Debug.Log($"스나3리스트 갯수 {sniper3.Count}");
+        //Debug.Log($"샷건1리스트 갯수 {Shotgun1.Count}");
+        //Debug.Log($"샷건2리스트 갯수 {Shotgun2.Count}");
+        //Debug.Log($"샷건3리스트 갯수 {Shotgun3.Count}");
+        //Debug.Log($"솔져1리스트 갯수 {Soldier1.Count}");
+        //Debug.Log($"솔져2리스트 갯수 {Soldier2.Count}");
+        //Debug.Log($"솔져3리스트 갯수 {Soldier3.Count}");
 
 
 
@@ -96,26 +103,15 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌 동기
     //뇌피셜상 처음 스탯 증강은 punrpc로 호스트가 , 각자 뽑을 증강리스트는 개인이 만들어도 되지않을까? 하는 생각이듬
     // 이유는 리스트에서 뽑아서 적용 시키는것만 punrpc로 동기화 하면 되지않을까 싶기 때문 -- 정확하지 않음 
     void StatAugmentSetting(List<IAugment> list, string str)// 넣을 리스트 , 불러올csv파일명 csv파일을 불러와 리스트에 넣어줌
-    {
+    {//애도 지금 스탯 적용방법을 바꿔서 좀 쓸모없어짐 시간나면아래라 통합할 것
         List<Dictionary<string, object>> data = CSVReader.Read(str);
             for (var i = 0; i < data.Count; i++)
             {
                 StatAugment a = new StatAugment();
                 a.Name = (string)data[i]["Name"];
-                a.Atk = (int)data[i]["Atk"];
-                a.Health = (int)data[i]["Health"];
-                a.Speed = (int)data[i]["Speed"];
-                a.AtkSpeed = (int)data[i]["AtkSpeed"];
-                a.BulletSpread = (int)data[i]["BulletSpread"];
-                a.Cooltime = (int)data[i]["Cooltime"];
-                a.Critical = (int)data[i]["Critical"];
                 a.func = (string)data[i]["Func"];
-                a.Code = (string)data[i]["Code"];
+                a.Code = (int)data[i]["Code"];
                 a.Rare = (int)data[i]["Rare"];
-            if (isHasKey(data[i], "MaxBullet")) // 탄창수는 밸류가 높기 때문에 스탯증강 하위 (1)에서는 나오지 않음
-                {
-                    a.MaxBullet= (int)data[i]["MaxBullet"];
-                }
             list.Add(a);
         }
 
@@ -130,8 +126,9 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌 동기
             SpecialAugment a = new SpecialAugment();
             a.Name = (string)data[i]["Name"];
             a.func = (string)data[i]["Func"];
-            a.Code = (string)data[i]["Code"];
+            a.Code = (int)data[i]["Code"];
             a.Rare = (int)data[i]["Rare"];
+            //Debug.Log($"이름{a.Name}번호 {i}");
             list.Add(a);
         }
 
@@ -182,7 +179,7 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌 동기
             return list;
         }
     }
-    public static bool isHasKey<K, V>(Dictionary<K, V> dict, K key)//딕셔너리 키값 체크용 
+    public static bool isHasKey<K, V>(Dictionary<K, V> dict, K key)//딕셔너리 키값 체크용 인데 애도 필요없어질거같음 ;;;
     {
         foreach (KeyValuePair<K, V> kvp in dict)
         {
