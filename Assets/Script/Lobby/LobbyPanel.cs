@@ -126,9 +126,10 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         }
         SetPanel(MainLobbyPanel.name);
 
-        if (player.transform.childCount > 0)
+        if (player.transform.childCount == 0)
         {
-            GameObject go = Instantiate(Resources.Load<GameObject>("Pefabs/Player"));
+            GameObject playerPrefab = Resources.Load<GameObject>("Pefabs/PlayerTest");
+            GameObject go = PhotonNetwork.Instantiate(playerPrefab.name, Vector3.zero, Quaternion.identity);
             go.transform.SetParent(player.transform);
         }
     }
@@ -394,6 +395,14 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
             playerInfoPrefab.GetComponent<PartyPlayerInfo>().Initialize(cnt, p);
 
             playerInfoListEntries.Add(p.ActorNumber, playerInfoPrefab);
+
+            //if (p != PhotonNetwork.LocalPlayer)
+            //{
+            //    GameObject playerPrefab = Resources.Load<GameObject>("Pefabs/PlayerTest");
+            //    GameObject go = PhotonNetwork.Instantiate(playerPrefab.name, Vector3.zero, Quaternion.identity);
+            //    go.transform.SetParent(player.transform);
+
+            //}
             cnt++;
         }
     }
