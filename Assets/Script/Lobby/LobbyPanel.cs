@@ -80,6 +80,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         
     private Dictionary<int, GameObject> playerInfoListEntries;
     private Dictionary<string, RoomInfo> cachedRoomList;
+    public GameObject player;
 
     public void Awake()
     {
@@ -102,7 +103,6 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.NetworkClientState == ClientState.Joined)
         {
-            Debug.Log("연결완료");
             SetPanel(LoginPanel.name);
         }
     }
@@ -111,7 +111,6 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         PhotonNetwork.JoinLobby();
-        Debug.Log("Connected");
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
@@ -126,6 +125,8 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
             cachedRoomList.Clear();
         }
         SetPanel(MainLobbyPanel.name);
+        GameObject go = Instantiate(Resources.Load<GameObject>("Pefabs/Player"));
+        go.transform.SetParent(player.transform);
     }
 
     public override void OnLeftLobby()
