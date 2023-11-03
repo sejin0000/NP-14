@@ -18,7 +18,7 @@ MonoBehaviour:
   atkSpeed: 0.3
   unitScale: 1
   launchVolume: 1
-  bulletSpread: 3
+  bulletSpread: 20
   bulletLifeTime: 2
   BulletSprite: {fileID: -1196469647, guid: 32dde5c63421a4043acc0dcb87475936, type: 3}
   reloadCoolTime: 2

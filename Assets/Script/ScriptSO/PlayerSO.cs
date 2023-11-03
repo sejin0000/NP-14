@@ -7,7 +7,7 @@ using UnityEngine.U2D.Animation;
 public class PlayerSO : RangedUnitSO
 {
     [Header("PlayerSO")]
-    public int reloadCoolTime;       // 장전 쿨타입
+    public float reloadCoolTime;       // 장전 쿨타입
     public int skillCoolTime;        // 스킬 쿨타입
     public int rollCoolTime;         // 구르기 쿨타입
     public int ammoMax;              // 장탄수
