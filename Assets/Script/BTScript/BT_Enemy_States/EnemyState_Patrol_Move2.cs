@@ -7,16 +7,17 @@ using myBehaviourTree;
 //BTAction 상속받는 이유?
 //==>실제 게임 오브젝트의 행동을 정의하기 때문.
 //override Status Update 메서드를 구현하여 실제 행동을 정의함
-public class EnemyState_Patrol_Rotation : BTAction
+public class EnemyState_Patrol_Move2 : BTAction
 {
     private GameObject owner;
 
-    private float intervalTime = 1.0f;
+    private float intervalTime;
     private Vector3 direction;
 
-    public EnemyState_Patrol_Rotation(GameObject currentOwner)
+    public EnemyState_Patrol_Move2(GameObject currentOwner)
     {
         owner = currentOwner;
+        intervalTime = 1.0f;
     }
 
     //행동 노드가 처음 실행 될 때 : 초기화 작업 (노드의 Start())
@@ -42,7 +43,9 @@ public class EnemyState_Patrol_Rotation : BTAction
         //실제 동작
         OnRotationByDir();
         //상태 반환
-        return Status.BT_Running;
+
+        return Status.BT_Success; //특정 조건에 따라 Running이나 Success반환 시키자
+        //return Status.BT_Running;
     }
 
     //상태에 따라 스프라이트 색상을 변경(그냥 임시 : 행동이 시각적으로 잘 보이게)
@@ -87,5 +90,11 @@ public class EnemyState_Patrol_Rotation : BTAction
 
         //방향 전환 시 부드럽게 회전
         owner.transform.rotation = Quaternion.Slerp(owner.transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime);
+    }
+
+
+    private bool CorrectDestination() //목적지 지정 시 벽 or 허공 구분
+    {
+        return false; // 아직 완료되지 않았다면 false 반환
     }
 }

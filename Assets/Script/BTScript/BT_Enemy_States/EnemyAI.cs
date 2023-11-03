@@ -10,11 +10,18 @@ using myBehaviourTree;
 public class EnemyAI : MonoBehaviour
 {
     private BTRoot TreeAIState;
-    
+
+    public EnemySO enemySO;          // 플레이어 정보 [모든 Action Node에 owner로 획득시킴]
+    public BoxCollider2D collider2D; // 콜라이더
+
+    public int currentHP;            // 현재 체력 계산
+    public bool isWall = false;      // 벽 감지
+
     void Awake()
     {
         //게임 오브젝트 활성화 시, 행동 트리 생성
         CreateTreeATState();
+        currentHP = enemySO.hp;
     }
     void Update()
     {
@@ -37,10 +44,11 @@ public class EnemyAI : MonoBehaviour
         //웨이포인트 지정 -> 이동
         BTSquence BTPatrol = new BTSquence();
         //순찰 액션을 Squence의 자식으로 추가
-        EnemyState_Patrol_WayPoint state_Patrol_WayPoint = new EnemyState_Patrol_WayPoint(gameObject);
-        BTPatrol.AddChild(state_Patrol_WayPoint);
-        EnemyState_Patrol_Rotation statePatrol_Rotation = new EnemyState_Patrol_Rotation(gameObject);
-        BTPatrol.AddChild(statePatrol_Rotation);
+
+        //EnemyState_Patrol_Move statePatrol_Move = new EnemyState_Patrol_Move(gameObject);
+        //BTPatrol.AddChild(statePatrol_Move);
+        EnemyState_Patrol_Move state_Patrol_Move = new EnemyState_Patrol_Move(gameObject);
+        BTPatrol.AddChild(state_Patrol_Move);
 
 
 
@@ -62,12 +70,20 @@ public class EnemyAI : MonoBehaviour
         //피격(상시 체크)
         //사망(상시 체크)
 
-
+        //셀렉터는 우선순위 높은 순서로 배치 : 생존 여부 -> 특수 패턴 -> 플레이어 체크(공격 여부) -> 이동 여부 순서로 셀렉터 배치 
         //메인 셀렉터 : Squence를 Selector의 자식으로 추가(자식 순서 중요함)
-        BTMainSelector.AddChild(BTPatrol);
-        BTMainSelector.AddChild(BTChase); // 조건 노드 O      
+        BTMainSelector.AddChild(BTChase); // 조건 노드 O 
+        BTMainSelector.AddChild(BTPatrol);             
 
         //작업이 끝난 Selector를 루트 노드에 붙이기
         TreeAIState.AddChild(BTMainSelector);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Finish")
+        {
+            isWall = true;
+        }
     }
 }
