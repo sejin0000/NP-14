@@ -18,6 +18,8 @@ public class PlayerStatHandler : MonoBehaviour
     public Stats SkillCoolTime;       // 스킬   쿨 타임
     public Stats RollCoolTime;        // 구르기 쿨 타임
     public Stats BulletSpread;        // 탄퍼짐
+    public Stats BulletLifeTime;      // 총알 사거리
+    public Stats LaunchVolume;        // 한번의 발사의 발사량
     public Stats Critical;            // 크리티컬
     public Stats AmmoMax;             // 장탄수
 
@@ -28,7 +30,7 @@ public class PlayerStatHandler : MonoBehaviour
     [HideInInspector] public float CurHP   { get { return curHP;  } set { if (value > HP.total) curHP = HP.total;  } }               //현재   체력
 
     private float curAmmo;
-    [HideInInspector] public float CurAmmo { get { return curAmmo;  } set { if (value > AmmoMax.total) curAmmo = AmmoMax.total;  } } //현재   잔탄
+    [HideInInspector] public float CurAmmo { get { return curAmmo;  } set { if (value > AmmoMax.total) curAmmo = AmmoMax.total; curAmmo = value; } } //현재   잔탄
     [HideInInspector] public bool  CanReload;                              //장전   가능한지
     [HideInInspector] public bool  CanSkill;                               //스킬   가능한지
     [HideInInspector] public bool  CanRoll;                                //구르기 가능한지
@@ -44,11 +46,14 @@ public class PlayerStatHandler : MonoBehaviour
         SkillCoolTime  =  new Stats(playerStats.skillCoolTime);
         RollCoolTime   =  new Stats(playerStats.rollCoolTime);
         BulletSpread   =  new Stats(playerStats.bulletSpread);
+        BulletLifeTime =  new Stats(playerStats.bulletLifeTime);
+        LaunchVolume   =  new Stats(playerStats.launchVolume);
         Critical       =  new Stats(playerStats.critical);
         AmmoMax        =  new Stats(playerStats.ammoMax);
         PlayerSprite   =  playerStats.playerSprite;
         WeaponSprite   =  playerStats.weaponSprite;
         CurHP          =  HP.total;
+        CurAmmo        =  AmmoMax.total;
         CanReload      =  true;
         CanSkill       =  true;
         CanRoll        =  true;

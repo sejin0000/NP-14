@@ -10,6 +10,8 @@ public class TopDownCharacterController : MonoBehaviour
     public event Action OnAttackEvent;
     public event Action OnSkillEvent;
     public event Action OnRollEvent;
+    public event Action OnReloadEvent;
+
 
     public PlayerStatHandler playerStatHandler;
     public TopDownMovement topDownMovement;
@@ -26,9 +28,16 @@ public class TopDownCharacterController : MonoBehaviour
 
     public void CallAttackEvent()
     {
-        if(topDownMovement.isRoll)
+        if(!topDownMovement.isRoll && playerStatHandler.CurAmmo > 0)
         {
             OnAttackEvent?.Invoke();
+            playerStatHandler.CurAmmo--;
+        }
+        else
+        {
+
+            Debug.Log(playerStatHandler.CurAmmo);
+            Debug.Log("공격 할 수 없습니다");
         }
     }
 
@@ -43,5 +52,14 @@ public class TopDownCharacterController : MonoBehaviour
         {
             OnRollEvent?.Invoke();
         }
+        else
+        {
+            Debug.Log("구르기 쿨타임 입니다");
+        }
+    }
+
+    public void CallReloadEvent()
+    {
+        OnReloadEvent?.Invoke();
     }
 }

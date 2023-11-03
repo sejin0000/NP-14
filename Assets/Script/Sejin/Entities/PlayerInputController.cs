@@ -47,4 +47,10 @@ public class PlayerInputController : TopDownCharacterController
         CallRollEvent();
     }
 
+    public void OnReload(InputValue value)
+    {
+        Debug.Log("OnReload" + value.ToString());
+        CallReloadEvent();
+    }
+
 }
