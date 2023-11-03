@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine.U2D.Animation;
 
 public class PlayerStatHandler : MonoBehaviour
 {
-
+    public Action HitEvent;
 
     [SerializeField] private PlayerSO playerStats;
 
@@ -36,7 +37,7 @@ public class PlayerStatHandler : MonoBehaviour
 
 
     private float curHP;
-    [HideInInspector] public float CurHP   { get { return curHP;  } set { if (value > HP.total) curHP = HP.total;  } }               //현재   체력
+    [HideInInspector] public float CurHP   { get { return curHP;  } set { if (value > HP.total) { curHP = HP.total; } HitEvent?.Invoke(); } }               //현재   체력
 
     private float curAmmo;
     [HideInInspector] public float CurAmmo { get { return curAmmo;  } set { if (value > AmmoMax.total) curAmmo = AmmoMax.total; curAmmo = value; } } //현재   잔탄
