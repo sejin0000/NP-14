@@ -27,6 +27,13 @@ public class PlayerStatHandler : MonoBehaviour
     [HideInInspector] public SpriteLibraryAsset WeaponSprite; // 스프라이트
     [HideInInspector] public Sprite BulletSprite; // 스프라이트
 
+    [HideInInspector] public SpriteLibrary PlayerSpriteCase; // 스프라이트
+    [HideInInspector] public SpriteLibrary WeaponSpriteCase; // 스프라이트
+
+
+    public GameObject _PlayerSprite;
+    public GameObject _WeaponSprite;
+
 
     private float curHP;
     [HideInInspector] public float CurHP   { get { return curHP;  } set { if (value > HP.total) curHP = HP.total;  } }               //현재   체력
@@ -41,6 +48,7 @@ public class PlayerStatHandler : MonoBehaviour
 
     private void Awake()
     {
+
         ATK            =  new Stats(playerStats.atk);
         HP             =  new Stats(playerStats.hp);
         Speed          =  new Stats(playerStats.unitSpeed);
@@ -65,6 +73,12 @@ public class PlayerStatHandler : MonoBehaviour
         CanSkill       =  true;
         CanRoll        =  true;
         Invincibility  =  false;
+
+        PlayerSpriteCase = _PlayerSprite.GetComponent<SpriteLibrary>();
+        WeaponSpriteCase = _WeaponSprite.GetComponent<SpriteLibrary>();
+
+        PlayerSpriteCase.spriteLibraryAsset = PlayerSprite;
+        WeaponSpriteCase.spriteLibraryAsset = WeaponSprite;
     }
 
     public void CharacterChange(PlayerSO playerData)
