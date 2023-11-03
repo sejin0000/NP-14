@@ -28,6 +28,7 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
     public List<SpecialAugment> Shotgun3 = new List<SpecialAugment>();
 
     public List<SpecialAugment> test = new List<SpecialAugment>();
+    public List<SpecialAugment> test2 = new List<SpecialAugment>();
     //StatBonus a =new;
     // Start is called before the first frame update
     private void Awake()
@@ -41,7 +42,9 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
         SpecialAugmentSetting(sniper1, "Sniper1");
         SpecialAugmentSetting(sniper1, "All1");
 
+
         SpecialAugmentSetting(test, "Test111"); //@만든증강적용테스트용 
+        SpecialAugmentSetting(test2, "Test222"); //@만든증강적용테스트용 
 
         SpecialAugmentSetting(sniper2, "Sniper2");
         SpecialAugmentSetting(sniper2, "All2");

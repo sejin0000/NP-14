@@ -10,7 +10,7 @@ public class A2201 : MonoBehaviour
     private void Awake()
     {
         controller = GetComponent<TopDownCharacterController>();
-        playerCool = GetComponent<GameObject>().GetComponent<CoolTimeController>();
+        playerCool = GetComponent<CoolTimeController>();
     }
     private void Start()
     {
@@ -19,6 +19,7 @@ public class A2201 : MonoBehaviour
 
     void RollingCoolTime()
     {
-        //playerCool.cooltime -= 0.1f; //쿨타임플로트값이 아직 캐릭에 없음
+        playerCool.curRollCool -= 2f;
+        //Debug.Log($"{playerCool.curRollCool}");
     }
 }

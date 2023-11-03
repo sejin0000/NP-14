@@ -159,9 +159,11 @@ private void A901()//스탯 공 티어 1
     {
         Debug.Log("미완성");
     }
-    private void A105()
+    private void A105()// 유리대포 //현재 최대 체력을 1로 만들고 그 값 의 절반 만큼 공업
     {
-        Debug.Log("미완성");
+        float up = ((int)playerstatHandler.HP.total - 1);
+        playerstatHandler.HP.added -= up;
+        playerstatHandler.ATK.added += up * 0.5f;
     }
     private void A106()
     {
@@ -177,16 +179,16 @@ private void A901()//스탯 공 티어 1
     }
     private void A109()// 소형화 //테스트안해봄
     {
-        float x = (player.transform.localScale.x * 0.5f);//절반
-        float y = (player.transform.localScale.y * 0.5f);//절반
+        float x = (player.transform.localScale.x * 0.75f);//절반
+        float y = (player.transform.localScale.y * 0.75f);//절반
         player.transform.localScale = new Vector2(x, y);
         playerstatHandler.HP.coefficient -= 0.1f;
         playerstatHandler.Speed.coefficient += 0.2f;
     }
     private void A110()//대형화 // 테스트안해봄
     {
-        float x = (player.transform.localScale.x * 2f);
-        float y = (player.transform.localScale.y * 2f);
+        float x = (player.transform.localScale.x * 1.25f);
+        float y = (player.transform.localScale.y * 1.25f);
         player.transform.localScale = new Vector2(x, y);
         playerstatHandler.HP.coefficient += 0.5f;
         playerstatHandler.Speed.coefficient += 0.2f;
@@ -397,11 +399,10 @@ private void A901()//스탯 공 티어 1
     {
         Debug.Log("미완성");
     }
-    private void A1105() // 유리대포 //현재 최대 체력을 1로 만들고 그 값 만큼 공업
+    private void A1105() 
     {
-        float up = ((int)playerstatHandler.HP.total -1);
-        playerstatHandler.HP.added -= up;
-        playerstatHandler.ATK.added += up;
+        Debug.Log("미완성");
+
     }
     private void A1106()
     {
@@ -495,13 +496,13 @@ private void A901()//스탯 공 티어 1
     {
         player.AddComponent<A2201>();
     }
-    private void A2202()
+    private void A2202()//티타임 구른후 스킬 재사용 대기시간 감소
     {
-        Debug.Log("미완성");
+        player.AddComponent<A2202>();
     }
-    private void A2203()
+    private void A2203()//구른자리에힐생성 테스트 ㄴ
     {
-        Debug.Log("미완성");
+        player.AddComponent<A2203_1>();
     }
     private void A2204()
     {
@@ -565,21 +566,25 @@ private void A901()//스탯 공 티어 1
 
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@샷건 2티어
-    private void A3201()
+    private void A3201() //굴러서 장전 << 구르기 2초증가 장탄수 +3으로 재장전
     {
-        Debug.Log("미완성");
+        playerstatHandler.RollCoolTime.added += 2f;
+        player.AddComponent<A3201>();
     }
     private void A3202()
     {
         Debug.Log("미완성");
     }
-    private void A3203()
+    private void A3203()//사이즈업 몸2배체력3배
     {
-        Debug.Log("미완성");
+        float x = (player.transform.localScale.x * 2f);//절반
+        float y = (player.transform.localScale.y * 2f);//절반
+        player.transform.localScale = new Vector2(x, y);
+        playerstatHandler.HP.coefficient *= 3;
     }
     private void A3204()
     {
-        Debug.Log("미완성");
+        player.AddComponent<A3204>();
     }
     private void A3205()
     {

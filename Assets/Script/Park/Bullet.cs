@@ -5,7 +5,7 @@ using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UIElements.Experimental;
 
-public class Bullet : MonoBehaviour
+public class Bullet1 : MonoBehaviour
 {
     [SerializeField] private LayerMask levelCollisionLayer;
     private float MoveSpeed;
@@ -78,7 +78,7 @@ public class Bullet : MonoBehaviour
             PlayerStatHandler stat = collision.gameObject.GetComponent<PlayerStatHandler>();
             if (stat != null)
             {
-                TDCController.CallHitEvent();
+                //TDCController.CallHitEvent();
                 //if()
                 //대충 데미지
             }

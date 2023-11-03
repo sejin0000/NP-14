@@ -9,7 +9,9 @@ public class TopDownCharacterController : MonoBehaviour
     public event Action<Vector2> OnLookEvent;
     public event Action OnAttackEvent;
     public event Action OnSkillEvent;
+    public event Action OnEndSkillEvent;
     public event Action OnRollEvent;
+    public event Action OnEndRollEvent;
     public event Action OnReloadEvent;
 
 
@@ -29,8 +31,8 @@ public class TopDownCharacterController : MonoBehaviour
             }
             else
             {
-                Debug.Log(playerStatHandler.CurAmmo);
-                Debug.Log("공격 할 수 없습니다");
+                //Debug.Log(playerStatHandler.CurAmmo);
+                //Debug.Log("공격 할 수 없습니다");
             }
         }
     }
@@ -60,11 +62,17 @@ public class TopDownCharacterController : MonoBehaviour
         if (playerStatHandler.CanRoll)
         {
             OnRollEvent?.Invoke();
+            Invoke("EndRollEvent", 0.6f);
+
         }
         else
         {
             Debug.Log("구르기 쿨타임 입니다");
         }
+    }
+    public void EndRollEvent()
+    {
+        OnEndRollEvent?.Invoke();
     }
 
     public void CallReloadEvent()

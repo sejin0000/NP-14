@@ -38,6 +38,11 @@ public class ResultManager : MonoBehaviour//vs코드
         PickSpecialList(MakeAugmentListManager.Instance.test);
         //Debug.Log($"{MakeAugmentListManager.Instance.test.Count}");
     }
+    public void testbtnstat4()
+    {
+        PickSpecialList(MakeAugmentListManager.Instance.test2);
+        //Debug.Log($"{MakeAugmentListManager.Instance.test.Count}");
+    }
     void PickStatList(List<IAugment> origin)// 고른게 안사리지는 타입 = 일반스탯
     {
         int Count = picklist.Length;
