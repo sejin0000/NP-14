@@ -125,8 +125,12 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
             cachedRoomList.Clear();
         }
         SetPanel(MainLobbyPanel.name);
-        GameObject go = Instantiate(Resources.Load<GameObject>("Pefabs/Player"));
-        go.transform.SetParent(player.transform);
+
+        if (player.transform.childCount > 0)
+        {
+            GameObject go = Instantiate(Resources.Load<GameObject>("Pefabs/Player"));
+            go.transform.SetParent(player.transform);
+        }
     }
 
     public override void OnLeftLobby()
