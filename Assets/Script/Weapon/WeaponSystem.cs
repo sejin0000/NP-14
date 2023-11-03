@@ -32,7 +32,7 @@ public class WeaponSystem : MonoBehaviour
         for (int i = 0; i < launchVolume.total; i++)
         {
             GameObject go;
-            Quaternion rot = new Quaternion(muzzleOfAGun.transform.rotation.x, muzzleOfAGun.transform.rotation.y, Random.Range(muzzleOfAGun.transform.rotation.z - (bulletSpread.total * 0.03f), muzzleOfAGun.transform.rotation.z + (bulletSpread.total * 0.03f)), 1);
+            Quaternion rot = new Quaternion(muzzleOfAGun.transform.rotation.x, muzzleOfAGun.transform.rotation.y, Random.Range(muzzleOfAGun.transform.rotation.z - (bulletSpread.total), muzzleOfAGun.transform.rotation.z + (bulletSpread.total)), 1);
             go = Instantiate(bullet, muzzleOfAGun.transform.position, rot);
 
             go.GetComponent<Bullet>().ATK = atk.total;

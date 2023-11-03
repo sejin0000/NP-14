@@ -175,18 +175,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3589027172050574313, guid: 72ba7a688beaf29478a84ffd3e9712cb, type: 3}
-      propertyPath: playerStats
-      value: 
-      objectReference: {fileID: 11400000, guid: f71119c9b3c3aa14ca2eaeb140545241, type: 2}
-    - target: {fileID: 3589027172050574313, guid: 72ba7a688beaf29478a84ffd3e9712cb, type: 3}
-      propertyPath: _PlayerSprite
-      value: 
-      objectReference: {fileID: 1803121192}
-    - target: {fileID: 3589027172050574313, guid: 72ba7a688beaf29478a84ffd3e9712cb, type: 3}
-      propertyPath: _WeaponSprite
-      value: 
-      objectReference: {fileID: 1903737275}
     - target: {fileID: 4451760300355011892, guid: 72ba7a688beaf29478a84ffd3e9712cb, type: 3}
       propertyPath: m_Name
       value: Player
@@ -196,11 +184,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 72ba7a688beaf29478a84ffd3e9712cb, type: 3}
---- !u!1 &1803121192 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2205835285002991242, guid: 72ba7a688beaf29478a84ffd3e9712cb, type: 3}
-  m_PrefabInstance: {fileID: 1213930199}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1888000298
 GameObject:
   m_ObjectHideFlags: 0
@@ -338,8 +321,3 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
---- !u!1 &1903737275 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6207264857355054772, guid: 72ba7a688beaf29478a84ffd3e9712cb, type: 3}
-  m_PrefabInstance: {fileID: 1213930199}
-  m_PrefabAsset: {fileID: 0}

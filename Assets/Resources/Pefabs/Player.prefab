@@ -314,6 +314,10 @@ MonoBehaviour:
   PlayerSprite: {fileID: 0}
   WeaponSprite: {fileID: 0}
   BulletSprite: {fileID: 0}
+  PlayerSpriteCase: {fileID: 0}
+  WeaponSpriteCase: {fileID: 0}
+  _PlayerSprite: {fileID: 2205835285002991242}
+  _WeaponSprite: {fileID: 6207264857355054772}
   CanFire: 0
   CanReload: 0
   CanSkill: 0
