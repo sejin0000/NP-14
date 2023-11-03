@@ -27,16 +27,7 @@ public class PartyPlayerInfo : MonoBehaviourPun
 
 
     public void Start()
-    {
-        // 인 게임적으로 추가할 프로퍼티 있다면 여기서 추가.
-        //object isReady;
-        //if (!PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("isPlayerReady", out isReady))
-        //{
-        //    Hashtable initProps = new Hashtable() { { "IsPlayerReady", isPlayerReady } };
-        //    PhotonNetwork.LocalPlayer.SetCustomProperties(initProps);
-        //}
-              
-
+    {      
         if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out object curClassType))
         {
             Debug.Log((int)curClassType);
@@ -59,57 +50,15 @@ public class PartyPlayerInfo : MonoBehaviourPun
     {
         playerNickNameText.text = player.NickName;
 
-        Sprite playerSprite;
+        Image playerImage;
         string spritePath = "Prefabs/CharacterInfoSprites/";
         PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out object curClassType);
-        playerSprite = Resources.Load<GameObject>($"{spritePath}Player_{curClassType}").GetComponent<Sprite>();
-        playerImage.sprite = playerSprite;
+        playerImage = Resources.Load<GameObject>($"{spritePath}Player_{curClassType}").GetComponent<Image>();
+        this.playerImage = playerImage;
     }
 
     private void OnPlayerNumberingChanged()
     {
 
     }
-
-    //OnJoinedRoom() 후반부에 붙었었음
-    //public void Save()
-    //{
-    //    int cnt = 0;
-    //    // 각자 플레이어의 custom property 접근
-    //    foreach (var player in PhotonNetwork.CurrentRoom.Players.Values)
-    //    {
-    //        GameObject playerInfo = Instantiate(PlayerInfo);
-    //        playerInfo.transform.SetParent(PartyBox.transform.GetChild(cnt), false);
-
-    //        // 플레이어 프리팹에 적용
-    //        playerInfo.GetComponentInChildren<TextMeshProUGUI>().text = player.NickName;
-    //        string spritePath = "Prefabs/CharacterInfoSprites/";
-
-    //        Sprite playerSprite;
-    //        if (player.CustomProperties.TryGetValue("Char_Class", out object curClassType))
-    //        {
-    //            Debug.Log((int)curClassType);
-    //            if (curClassType is int)
-    //            {
-    //                playerSprite = Resources.Load<GameObject>($"{spritePath}Player_{curClassType}").GetComponent<Sprite>();
-    //            }
-    //            else
-    //            {
-    //                playerSprite = Resources.Load<GameObject>($"{spritePath}Player_0").GetComponent<Sprite>();
-    //            }
-    //        }
-    //        else
-    //        {
-    //            ExitGames.Client.Photon.Hashtable charInitialProps = new ExitGames.Client.Photon.Hashtable() { { "Char_Class", 0 } };
-    //            player.SetCustomProperties(charInitialProps);
-    //            playerSprite = Resources.Load<GameObject>($"{spritePath}Player_0").GetComponent<Sprite>();
-    //        }
-
-    //        playerInfo.GetComponentInChildren<Image>().sprite = playerSprite;
-
-    //        cnt += 1;
-    //        // Ready 판별에 관한 부분 추가해야함
-    //        // playerInfoPrefab에 관한 스크립트 제작 후,,
-    //    }
-    //}
 }

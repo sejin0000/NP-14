@@ -274,9 +274,9 @@ GameObject:
   - component: {fileID: 197272983730663190}
   - component: {fileID: 734425243735503072}
   - component: {fileID: 3248445001908174623}
-  - component: {fileID: 6171265133594957645}
+  - component: {fileID: -5821051605897363943}
   m_Layer: 0
-  m_Name: Player
+  m_Name: PlayerNetTest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -296,7 +296,7 @@ Transform:
   m_Children:
   - {fileID: 5741406337349270041}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3589027172050574313
 MonoBehaviour:
@@ -406,7 +406,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 0
 --- !u!70 &5310507388964559557
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -521,7 +521,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   armPivot: {fileID: 4667943682073788265}
---- !u!114 &6171265133594957645
+--- !u!114 &-5821051605897363943
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -530,11 +530,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 4451760300355011892}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f818b88dc52a5242a52087ccae987d3, type: 3}
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 4332666643219821349, guid: ffaf2c7e3b6a9714398653f89e5593ca, type: 3}
-  muzzleOfAGun: {fileID: 8594405720344066638}
+  ObservedComponentsFoldoutOpen: 0
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &6207264857355054772
 GameObject:
   m_ObjectHideFlags: 0

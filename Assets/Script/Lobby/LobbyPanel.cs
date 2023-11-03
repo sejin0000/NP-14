@@ -80,6 +80,8 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         
     private Dictionary<int, GameObject> playerInfoListEntries;
     private Dictionary<string, RoomInfo> cachedRoomList;
+    public GameObject playerContainer;
+    private Dictionary<string, int> otherplayerClassInfoEntries;
 
     public void Awake()
     {
@@ -87,6 +89,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
         cachedRoomList = new Dictionary<string, RoomInfo>();
         playerInfoListEntries = new Dictionary<int, GameObject>();
+        otherplayerClassInfoEntries = new Dictionary<string, int>();
 
         ExitGames.Client.Photon.Hashtable playerCP = PhotonNetwork.LocalPlayer.CustomProperties;
         if (!playerCP.ContainsKey("Char_Class"))
@@ -102,7 +105,6 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.NetworkClientState == ClientState.Joined)
         {
-            Debug.Log("연결완료");
             SetPanel(LoginPanel.name);
         }
     }
@@ -111,7 +113,6 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         PhotonNetwork.JoinLobby();
-        Debug.Log("Connected");
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
@@ -126,6 +127,13 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
             cachedRoomList.Clear();
         }
         SetPanel(MainLobbyPanel.name);
+
+        if (playerContainer.transform.childCount == 0)
+        {
+            GameObject playerPrefab = Resources.Load<GameObject>("Pefabs/PlayerNetTest");
+            GameObject go = Instantiate(playerPrefab);
+            go.transform.SetParent(playerContainer.transform);
+        }
     }
 
     public override void OnLeftLobby()
@@ -155,8 +163,8 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     {
         Debug.Log($"{PhotonNetwork.LocalPlayer.NickName} 입장");
         if (cachedRoomList != null)
-        { 
-            cachedRoomList.Clear();        
+        {
+            cachedRoomList.Clear();
         }
 
         SetPanel(RoomPanel.name);
@@ -166,19 +174,51 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
             playerInfoListEntries = new Dictionary<int, GameObject>();
         }
 
+        if (otherplayerClassInfoEntries == null)
+        {
+            otherplayerClassInfoEntries = new Dictionary<string, int>();
+        }
+
+        // 네트워크 인스턴스
+        // 추후 수정 : prefab 경로
+        GameObject playerPrefab = playerContainer.transform.GetChild(0).gameObject;
+        playerPrefab.name = "Pefabs/PlayerNetTest";
+
+        GameObject playerNet = PhotonNetwork.Instantiate(playerPrefab.name, Vector3.zero, Quaternion.identity);
+        playerNet.name = $"{PhotonNetwork.LocalPlayer.NickName}";
+        playerNet.transform.SetParent(playerContainer.transform);
+
+        PlayerInfo playerInfo = CharacterSelectPopup.GetComponent<PlayerInfo>();
+        if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out object classNum))
+        {
+            playerInfo.SetClassType((int)classNum, playerNet);
+        }
+        else
+        {
+            playerInfo.SetClassType(0, playerNet);
+        }
+
+        Destroy(playerPrefab);
+
+
         // PartyPlayerInfo에서 받은 프리팹 정보를 각각의 프리팹에 적용.
         SetPartyPlayerInfo();
 
+        // 액터 번호
+
+
+        // 스타트 버튼 동기화
         StartButton.gameObject.SetActive(CheckPlayersReady());
     }
+
 
     public override void OnLeftRoom()
     {
         SetPanel(MainLobbyPanel.name);
 
-        foreach (GameObject playerInfo in playerInfoListEntries.Values) 
+        foreach (GameObject playerInfoEntry in playerInfoListEntries.Values) 
         {
-            Destroy(playerInfo.gameObject);
+            Destroy(playerInfoEntry.gameObject);
         }
 
         playerInfoListEntries.Clear();
@@ -191,6 +231,20 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
                 Destroy(ChatBoxScrollContent.transform.GetChild(i).gameObject);
             }
         }
+
+        PlayerInfo playerInfo = CharacterSelectPopup.GetComponent<PlayerInfo>();
+        GameObject playerPrefab = Resources.Load<GameObject>("Pefabs/PlayerNetTest");
+        GameObject go = Instantiate(playerPrefab);
+        go.transform.SetParent(playerContainer.transform);
+        if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out object classNum))
+        {
+            playerInfo.SetClassType((int)classNum, go);
+        }
+        else
+        {
+            playerInfo.SetClassType(0, go);
+        }
+
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -238,8 +292,8 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
             playerInfoListEntries = new Dictionary<int, GameObject>();
         }
 
-        GameObject playerInfo;
-        if (playerInfoListEntries.TryGetValue(targetPlayer.ActorNumber, out playerInfo))
+        GameObject playerInfoEntry;
+        if (playerInfoListEntries.TryGetValue(targetPlayer.ActorNumber, out playerInfoEntry))
         {
             SetPartyPlayerInfo();
         }
@@ -389,6 +443,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
             playerInfoPrefab.GetComponent<PartyPlayerInfo>().Initialize(cnt, p);
 
             playerInfoListEntries.Add(p.ActorNumber, playerInfoPrefab);
+
             cnt++;
         }
     }

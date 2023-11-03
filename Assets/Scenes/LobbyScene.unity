@@ -2226,7 +2226,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 532767949}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1568722255}
+        m_TargetAssemblyTypeName: LobbyPanel, Assembly-CSharp
+        m_MethodName: OnStartButtonClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &532767949
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2436,6 +2448,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 573244748}
   m_CullTransparentMesh: 1
+--- !u!1 &577453464
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 577453465}
+  m_Layer: 0
+  m_Name: Player
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &577453465
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 577453464}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &598920342
 GameObject:
   m_ObjectHideFlags: 0
@@ -5933,8 +5976,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3d010761e64c1f409d3cd2e9aa04c5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerInfoPrefab: {fileID: 6706628801819849030, guid: abd6c8582ffaedf40ad020f743910e10, type: 3}
-  PartyBox: {fileID: 0}
+  PlayerInfoPrefab: {fileID: 3808765961053771845, guid: ea3cd5d00deb56a4aa91d369b87a2fc0, type: 3}
+  PartyBox: {fileID: 1857915279}
   CharChangeLeftButton: {fileID: 2043921989}
   CharChangeRightButton: {fileID: 1500061318}
   ConfirmButton: {fileID: 1505178864}
@@ -5945,6 +5988,10 @@ MonoBehaviour:
   CharSampleAnim: {fileID: 42834114}
   StatInfoPrefab: {fileID: 7934161811500229392, guid: 4078d8937b0aebf4cb7ec2ca3bc27428, type: 3}
   playerSkillText: {fileID: 82980400}
+  soldierSO: {fileID: 11400000, guid: f71119c9b3c3aa14ca2eaeb140545241, type: 2}
+  shotGunSO: {fileID: 11400000, guid: 51fc923c710f94d4bb65b28de1424059, type: 2}
+  sniperSO: {fileID: 11400000, guid: 276572f99ad3b6b499dea3dffa918ff3, type: 2}
+  player: {fileID: 577453464}
 --- !u!1 &1419150513
 GameObject:
   m_ObjectHideFlags: 0
@@ -7093,6 +7140,7 @@ MonoBehaviour:
   PlayerClassText: {fileID: 1857281645}
   StatInfo: {fileID: 7934161811500229392, guid: 4078d8937b0aebf4cb7ec2ca3bc27428, type: 3}
   SkillInfoText: {fileID: 1223699437}
+  playerContainer: {fileID: 577453464}
 --- !u!1 &1611849638
 GameObject:
   m_ObjectHideFlags: 0
@@ -8526,7 +8574,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2099533330}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 

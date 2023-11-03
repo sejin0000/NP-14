@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.Reflection;
+using Unity.Collections.LowLevel.Unsafe;
+using UnityEngine.U2D.Animation;
 
 public enum Char_Class_Kor
 {
@@ -13,6 +15,7 @@ public enum Char_Class_Kor
     샷견,
     저격수,
 }
+
 public class PlayerInfo : MonoBehaviour
 {
     [Header("PlayerInfo")]
@@ -33,6 +36,13 @@ public class PlayerInfo : MonoBehaviour
     public GameObject StatInfoPrefab;
     public TextMeshProUGUI playerSkillText;
 
+    [Header("PlayerSO")]    
+    public PlayerSO soldierSO;
+    public PlayerSO shotGunSO;
+    public PlayerSO sniperSO;
+
+    [Header("Player")]
+    public GameObject player;
 
     private int initCharType;
     private int curCharType;
@@ -132,7 +142,7 @@ public class PlayerInfo : MonoBehaviour
     {
         int classNumber = Enum.GetNames(typeof(LobbyPanel.CharClass)).Length - 1;
         curCharType -= (curCharType != 0) ? 1 : -classNumber;
-        Debug.Log(curCharType);
+        Debug.Log($"왼쪽 클릭 후 : {curCharType}");
         UpdateCharInfo();
     }
 
@@ -140,7 +150,7 @@ public class PlayerInfo : MonoBehaviour
     {
         int classNumber = Enum.GetNames(typeof(LobbyPanel.CharClass)).Length - 1;
         curCharType += (curCharType != classNumber) ? 1 : -classNumber;
-        Debug.Log(curCharType);
+        Debug.Log($"오른쪽 클릭 후 : {curCharType}");
         UpdateCharInfo();
     }
 
@@ -148,7 +158,26 @@ public class PlayerInfo : MonoBehaviour
     {
         // 커스텀 프로퍼티 저장
         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "Char_Class", curCharType } });
+        
+        // 적용
+        if (PhotonNetwork.InLobby)
+        {
+            SetClassType(curCharType);
+        }
+        if (PhotonNetwork.InRoom)
+        {
+            GameObject targetPlayer;
+            for (int i = 0; i < player.transform.childCount; i++)
+            {
+                if (player.transform.GetChild(i).gameObject.GetComponent<PhotonView>().IsMine)
+                {
+                    targetPlayer = player.transform.GetChild(i).gameObject;
+                    SetClassType(curCharType, targetPlayer);
+                }
+            }
 
+            SetClassType(curCharType);
+        }
         // 팝업 닫기
         gameObject.SetActive(false);
     }
@@ -178,6 +207,32 @@ public class PlayerInfo : MonoBehaviour
         LayoutRebuilder.ForceRebuildLayoutImmediate(statRect); // 레이아웃 강제 재구성
     }
 
+    public void SetClassType(int charType, GameObject playerGo = null)
+    {
+        PlayerStatHandler statSO;
+        if (playerGo != null) 
+        {
+            Debug.Log($"적용 오브젝트 : {playerGo.name}");
+            statSO = playerGo.GetComponent<PlayerStatHandler>();
+        }
+        else
+        {
+            Debug.Log($"적용 오브젝트 : PlayerContainer");
+            statSO = player.GetComponentInChildren<PlayerStatHandler>();
+        }
 
+        switch (charType) 
+        {
+            case (int)LobbyPanel.CharClass.Soldier:
+                statSO.CharacterChange(soldierSO);
+                break;
+            case (int)LobbyPanel.CharClass.Shotgun:
+                statSO.CharacterChange(shotGunSO);
+                break;
+            case (int)LobbyPanel.CharClass.Sniper:
+                statSO.CharacterChange(sniperSO);
+                break;
+        }
+    }
     #endregion
 }
