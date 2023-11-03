@@ -7140,7 +7140,7 @@ MonoBehaviour:
   PlayerClassText: {fileID: 1857281645}
   StatInfo: {fileID: 7934161811500229392, guid: 4078d8937b0aebf4cb7ec2ca3bc27428, type: 3}
   SkillInfoText: {fileID: 1223699437}
-  player: {fileID: 577453464}
+  playerContainer: {fileID: 577453464}
 --- !u!1 &1611849638
 GameObject:
   m_ObjectHideFlags: 0

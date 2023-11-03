@@ -158,8 +158,26 @@ public class PlayerInfo : MonoBehaviour
     {
         // 커스텀 프로퍼티 저장
         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "Char_Class", curCharType } });
-        SetClassType(curCharType);
+        
+        // 적용
+        if (PhotonNetwork.InLobby)
+        {
+            SetClassType(curCharType);
+        }
+        if (PhotonNetwork.InRoom)
+        {
+            GameObject targetPlayer;
+            for (int i = 0; i < player.transform.childCount; i++)
+            {
+                if (player.transform.GetChild(i).gameObject.GetComponent<PhotonView>().IsMine)
+                {
+                    targetPlayer = player.transform.GetChild(i).gameObject;
+                    SetClassType(curCharType, targetPlayer);
+                }
+            }
 
+            SetClassType(curCharType);
+        }
         // 팝업 닫기
         gameObject.SetActive(false);
     }
@@ -189,27 +207,30 @@ public class PlayerInfo : MonoBehaviour
         LayoutRebuilder.ForceRebuildLayoutImmediate(statRect); // 레이아웃 강제 재구성
     }
 
-    public void SetClassType(int charType)
+    public void SetClassType(int charType, GameObject playerGo = null)
     {
-        PlayerStatHandler statSO = player.GetComponentInChildren<PlayerStatHandler>();
-        SpriteLibrary playerSpriteLib = player.transform.GetChild(0).GetComponentInChildren<SpriteLibrary>();
-        SpriteLibrary playerWeaponSpriteLib = player.transform.GetChild(0).GetChild(0).GetChild(1).GetComponentInChildren<SpriteLibrary>();
+        PlayerStatHandler statSO;
+        if (playerGo != null) 
+        {
+            Debug.Log($"적용 오브젝트 : {playerGo.name}");
+            statSO = playerGo.GetComponent<PlayerStatHandler>();
+        }
+        else
+        {
+            Debug.Log($"적용 오브젝트 : PlayerContainer");
+            statSO = player.GetComponentInChildren<PlayerStatHandler>();
+        }
+
         switch (charType) 
         {
             case (int)LobbyPanel.CharClass.Soldier:
                 statSO.CharacterChange(soldierSO);
-                playerSpriteLib.spriteLibraryAsset = Resources.Load<SpriteLibraryAsset>($"SpriteLibrary/Player{(int)LobbyPanel.CharClass.Soldier + 1}");
-                playerWeaponSpriteLib.spriteLibraryAsset = Resources.Load<SpriteLibraryAsset>($"SpriteLibrary/Weapon{(int)LobbyPanel.CharClass.Soldier + 1}");
                 break;
             case (int)LobbyPanel.CharClass.Shotgun:
                 statSO.CharacterChange(shotGunSO);
-                playerSpriteLib.spriteLibraryAsset = Resources.Load<SpriteLibraryAsset>($"SpriteLibrary/Player{(int)LobbyPanel.CharClass.Shotgun + 1}");
-                playerWeaponSpriteLib.spriteLibraryAsset = Resources.Load<SpriteLibraryAsset>($"SpriteLibrary/Weapon{(int)LobbyPanel.CharClass.Shotgun + 1}");
                 break;
             case (int)LobbyPanel.CharClass.Sniper:
                 statSO.CharacterChange(sniperSO);
-                playerSpriteLib.spriteLibraryAsset = Resources.Load<SpriteLibraryAsset>($"SpriteLibrary/Player{(int)LobbyPanel.CharClass.Sniper + 1}");
-                playerWeaponSpriteLib.spriteLibraryAsset = Resources.Load<SpriteLibraryAsset>($"SpriteLibrary/Weapon{(int)LobbyPanel.CharClass.Sniper + 1}");
                 break;
         }
     }
