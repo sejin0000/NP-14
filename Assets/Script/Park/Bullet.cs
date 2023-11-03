@@ -13,6 +13,7 @@ public class Bullet : MonoBehaviour
     public float DuratoinTime;
     private float _currentDuration;
     private Vector2 _direction;
+    TopDownCharacterController TDCController;
 
     private Rigidbody2D _rigidbody;
     private Vector3 lastVelocity;
@@ -36,7 +37,7 @@ public class Bullet : MonoBehaviour
         player = GameManager.Instance.Player;
 
         //아래부터테스트용 지울것
-        DirectionSetting(Vector2.one, 250, 3, 50);
+        //DirectionSetting(Vector2.one, 250, 3, 50);
         canAngle = true;
     }
     private void Update()
@@ -53,7 +54,7 @@ public class Bullet : MonoBehaviour
 
     }
 
-    public void DirectionSetting(Vector2 direction, float bulletSpeed, float TotalDamege, float bulletTime) //
+    public void DirectionSetting(Vector2 direction, float bulletSpeed, float TotalDamege, float bulletTime,TopDownCharacterController Controller) //
     {//받는게 너무 많은거 같은데 플레이어 받는게 좋을지도
         _direction = direction;
         _currentDuration = 0;
@@ -61,6 +62,7 @@ public class Bullet : MonoBehaviour
         MoveSpeed = bulletSpeed;
         Damege= TotalDamege;
         DuratoinTime = bulletTime;
+        TDCController= Controller;
     }
 
     void sizeControl() //크기== 플레이어 크기 인데 이거 따로클래스를 내야할거 같은데 증강이라
@@ -76,6 +78,8 @@ public class Bullet : MonoBehaviour
             PlayerStatHandler stat = collision.gameObject.GetComponent<PlayerStatHandler>();
             if (stat != null)
             {
+                TDCController.CallHitEvent();
+                //if()
                 //대충 데미지
             }
         }

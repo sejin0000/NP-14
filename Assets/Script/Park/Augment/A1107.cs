@@ -54,8 +54,6 @@ public class A1107 : MonoBehaviour//ÁÖº¯Èú
         for (int i = 0; i < target.Count; ++i) 
         {
             target[i].CurHP += healP;
-            Debug.Log((target.Count));
-            Debug.Log(target[i].CurHP);
         }
     }
 }

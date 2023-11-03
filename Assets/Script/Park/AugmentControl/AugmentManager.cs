@@ -397,9 +397,11 @@ private void A901()//스탯 공 티어 1
     {
         Debug.Log("미완성");
     }
-    private void A1105()
+    private void A1105() // 유리대포 //현재 최대 체력을 1로 만들고 그 값 만큼 공업
     {
-        Debug.Log("미완성");
+        float up = ((int)playerstatHandler.HP.total -1);
+        playerstatHandler.HP.added -= up;
+        playerstatHandler.ATK.added += up;
     }
     private void A1106()
     {

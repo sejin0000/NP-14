@@ -14,6 +14,13 @@ public class TopDownCharacterController : MonoBehaviour
     public PlayerStatHandler playerStatHandler;
     public TopDownMovement topDownMovement;
 
+    public event Action OnHitEvent;
+
+    public void CallHitEvent() 
+    {
+        OnHitEvent?.Invoke();
+    }
+
     public void CallMoveEvent(Vector2 direction)
     {
         OnMoveEvent?.Invoke(direction);
