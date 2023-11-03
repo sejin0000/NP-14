@@ -20,7 +20,7 @@ MonoBehaviour:
   launchVolume: 2
   bulletSpread: 2
   bulletLifeTime: 3
-  BulletSprit: {fileID: 1241615625, guid: 32dde5c63421a4043acc0dcb87475936, type: 3}
+  BulletSprite: {fileID: 1241615625, guid: 32dde5c63421a4043acc0dcb87475936, type: 3}
   reloadCoolTime: 3
   skillCoolTime: 0
   rollCoolTime: 5

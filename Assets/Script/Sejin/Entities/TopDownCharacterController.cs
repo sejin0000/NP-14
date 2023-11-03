@@ -16,6 +16,25 @@ public class TopDownCharacterController : MonoBehaviour
     public PlayerStatHandler playerStatHandler;
     public TopDownMovement topDownMovement;
 
+    private bool AtkKeyhold = false;
+
+    private void Update()
+    {
+        if (AtkKeyhold)
+        {
+            if (!topDownMovement.isRoll && playerStatHandler.CurAmmo > 0 && playerStatHandler.CanFire)
+            {
+                OnAttackEvent?.Invoke();
+                playerStatHandler.CurAmmo--;
+            }
+            else
+            {
+                Debug.Log(playerStatHandler.CurAmmo);
+                Debug.Log("공격 할 수 없습니다");
+            }
+        }
+    }
+
     public void CallMoveEvent(Vector2 direction)
     {
         OnMoveEvent?.Invoke(direction);
@@ -26,19 +45,9 @@ public class TopDownCharacterController : MonoBehaviour
         OnLookEvent?.Invoke(direction);
     }
 
-    public void CallAttackEvent()
+    public void CallAttackEvent(bool hold)
     {
-        if(!topDownMovement.isRoll && playerStatHandler.CurAmmo > 0)
-        {
-            OnAttackEvent?.Invoke();
-            playerStatHandler.CurAmmo--;
-        }
-        else
-        {
-
-            Debug.Log(playerStatHandler.CurAmmo);
-            Debug.Log("공격 할 수 없습니다");
-        }
+        AtkKeyhold = hold;
     }
 
     public void CallSkillEvent()

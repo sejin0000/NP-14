@@ -313,6 +313,8 @@ MonoBehaviour:
   playerStats: {fileID: 11400000, guid: f71119c9b3c3aa14ca2eaeb140545241, type: 2}
   PlayerSprite: {fileID: 0}
   WeaponSprite: {fileID: 0}
+  BulletSprite: {fileID: 0}
+  CanFire: 0
   CanReload: 0
   CanSkill: 0
   CanRoll: 0
@@ -500,6 +502,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   curRollCool: 0
+  curReloadCool: 0
+  curAttackCool: 0
 --- !u!114 &3248445001908174623
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -9,5 +9,5 @@ public class RangedUnitSO : UnitSO
     public int launchVolume;        // 한번의 발사의 발사량
     public int bulletSpread;        // 탄퍼짐
     public int bulletLifeTime;      // 총알 유지시간
-    public Sprite BulletSprit;      // 총알 스프라이트
+    public Sprite BulletSprite;      // 총알 스프라이트
 }

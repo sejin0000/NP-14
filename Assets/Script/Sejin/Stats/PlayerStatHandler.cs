@@ -25,12 +25,15 @@ public class PlayerStatHandler : MonoBehaviour
 
     [HideInInspector] public SpriteLibraryAsset PlayerSprite; // 스프라이트
     [HideInInspector] public SpriteLibraryAsset WeaponSprite; // 스프라이트
+    [HideInInspector] public Sprite BulletSprite; // 스프라이트
+
 
     private float curHP;
     [HideInInspector] public float CurHP   { get { return curHP;  } set { if (value > HP.total) curHP = HP.total;  } }               //현재   체력
 
     private float curAmmo;
     [HideInInspector] public float CurAmmo { get { return curAmmo;  } set { if (value > AmmoMax.total) curAmmo = AmmoMax.total; curAmmo = value; } } //현재   잔탄
+    [HideInInspector] public bool  CanFire;                                //발사   가능한지
     [HideInInspector] public bool  CanReload;                              //장전   가능한지
     [HideInInspector] public bool  CanSkill;                               //스킬   가능한지
     [HideInInspector] public bool  CanRoll;                                //구르기 가능한지
@@ -50,10 +53,14 @@ public class PlayerStatHandler : MonoBehaviour
         LaunchVolume   =  new Stats(playerStats.launchVolume);
         Critical       =  new Stats(playerStats.critical);
         AmmoMax        =  new Stats(playerStats.ammoMax);
+
         PlayerSprite   =  playerStats.playerSprite;
         WeaponSprite   =  playerStats.weaponSprite;
+        BulletSprite   =  playerStats.BulletSprite;
         CurHP          =  HP.total;
         CurAmmo        =  AmmoMax.total;
+
+        CanFire        =  true;
         CanReload      =  true;
         CanSkill       =  true;
         CanRoll        =  true;

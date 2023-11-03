@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputController : TopDownCharacterController
 {
+    private bool IsAtking = false;
+
     private Camera _camera;
 
     private void Awake()
@@ -32,7 +34,17 @@ public class PlayerInputController : TopDownCharacterController
     public void OnAttack(InputValue value)
     {
         Debug.Log("OnAttack" + value.ToString());
-        CallAttackEvent();
+
+        if(!IsAtking)
+        {
+            IsAtking = true;
+        }
+        else
+        {
+            IsAtking = false;
+        }
+
+        CallAttackEvent(IsAtking);
     }
 
     public void OnSkill(InputValue value)

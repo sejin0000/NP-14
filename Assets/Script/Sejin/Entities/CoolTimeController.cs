@@ -7,9 +7,14 @@ using UnityEngine.InputSystem.XR;
 public class CoolTimeController : MonoBehaviour
 {
     private TopDownCharacterController controller;
+
+
     public float curRollCool = 0;
-    private float curReloadCool = 0;
-    private bool isReloadCool = false;
+
+    public float curReloadCool = 0;
+
+    public float curAttackCool = 0;
+
 
     private void Awake()
     {
@@ -19,6 +24,7 @@ public class CoolTimeController : MonoBehaviour
     {
         controller.OnRollEvent += RollCoolTime;
         controller.OnReloadEvent += ReloadCoolTime;
+        controller.OnAttackEvent += AttackCoolTime;
     }
 
 
@@ -37,9 +43,18 @@ public class CoolTimeController : MonoBehaviour
         {
             curReloadCool -= Time.deltaTime;
         }
-        if (isReloadCool == false && curReloadCool < 0)
+        if (controller.playerStatHandler.CanReload == false && curReloadCool < 0)
         {
             EndReloadCoolTime();
+        }
+
+        if (curAttackCool > 0)
+        {
+            curAttackCool -= Time.deltaTime;
+        }
+        if (controller.playerStatHandler.CanFire == false && curAttackCool < 0)
+        {
+            EndAttackCoolTime();
         }
     }
 
@@ -53,16 +68,29 @@ public class CoolTimeController : MonoBehaviour
     {
         controller.playerStatHandler.CanRoll = true;
     }
+
+
     private void ReloadCoolTime()
     {
         float coolTime = controller.playerStatHandler.ReloadCoolTime.total;
-        isReloadCool = false;
+        controller.playerStatHandler.CanReload = false;
         curReloadCool = coolTime;
     }
-
     private void EndReloadCoolTime()
     {
-        isReloadCool = true;
+        controller.playerStatHandler.CanReload = true;
         controller.playerStatHandler.CurAmmo = controller.playerStatHandler.AmmoMax.total;
+    }
+
+
+    private void AttackCoolTime()
+    {
+        float coolTime = controller.playerStatHandler.AtkSpeed.total;
+        controller.playerStatHandler.CanFire = false;
+        curAttackCool = coolTime;
+    }
+    private void EndAttackCoolTime()
+    {
+        controller.playerStatHandler.CanFire = true;
     }
 }

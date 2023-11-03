@@ -18,18 +18,26 @@ public class WeaponSystem : MonoBehaviour
     private void Start()
     {
         _controller    = GetComponent<TopDownCharacterController>();
+
         launchVolume   = _controller.playerStatHandler.LaunchVolume;
         bulletSpread   = _controller.playerStatHandler.BulletSpread;
         bulletLifeTime = _controller.playerStatHandler.BulletLifeTime;
-        atk = _controller.playerStatHandler.ATK;
-        _controller.OnAttackEvent += Shooting;
+        atk            = _controller.playerStatHandler.ATK;
 
+        _controller.OnAttackEvent += Shooting;
     }
 
     public void Shooting()
     {
-        GameObject go =  Instantiate(bullet, muzzleOfAGun.transform.position, muzzleOfAGun.transform.rotation);
-        go.GetComponent<Bullet>().ATK = atk.total;
-        go.GetComponent<Bullet>().BulletLifeTime = bulletLifeTime.total;
+        for (int i = 0; i < launchVolume.total; i++)
+        {
+            GameObject go;
+            Quaternion rot = new Quaternion(muzzleOfAGun.transform.rotation.x, muzzleOfAGun.transform.rotation.y, Random.Range(muzzleOfAGun.transform.rotation.z - (bulletSpread.total * 0.03f), muzzleOfAGun.transform.rotation.z + (bulletSpread.total * 0.03f)), 1);
+            go = Instantiate(bullet, muzzleOfAGun.transform.position, rot);
+
+            go.GetComponent<Bullet>().ATK = atk.total;
+            go.GetComponent<Bullet>().BulletLifeTime = bulletLifeTime.total;
+            go.GetComponent<SpriteRenderer>().sprite = _controller.playerStatHandler.BulletSprite;
+        }
     }
 }
