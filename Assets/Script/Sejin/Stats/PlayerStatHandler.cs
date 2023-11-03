@@ -10,32 +10,45 @@ public class PlayerStatHandler : MonoBehaviour
 
     [SerializeField] private PlayerSO playerStats;
 
-    public Stats ATK;                 // ê³µê²©ë ¥
-    public Stats HP;                  // ì²´ë ¥
-    public Stats Speed;               // ì´ë™ ì†ë„
-    public Stats AtkSpeed;            // ê³µê²© ì†ë„
-    public Stats ReloadCoolTime;      // ìž¥ì „   ì¿¨ íƒ€ìž„
-    public Stats SkillCoolTime;       // ìŠ¤í‚¬   ì¿¨ íƒ€ìž„
-    public Stats RollCoolTime;        // êµ¬ë¥´ê¸° ì¿¨ íƒ€ìž„
-    public Stats BulletSpread;        // íƒ„í¼ì§
-    public Stats Critical;            // í¬ë¦¬í‹°ì»¬
-    public Stats AmmoMax;             // ìž¥íƒ„ìˆ˜
+    public Stats ATK;                 // °ø°Ý·Â
+    public Stats HP;                  // Ã¼·Â
+    public Stats Speed;               // ÀÌµ¿ ¼Óµµ
+    public Stats AtkSpeed;            // °ø°Ý ¼Óµµ
+    public Stats ReloadCoolTime;      // ÀåÀü   Äð Å¸ÀÓ
+    public Stats SkillCoolTime;       // ½ºÅ³   Äð Å¸ÀÓ
+    public Stats RollCoolTime;        // ±¸¸£±â Äð Å¸ÀÓ
+    public Stats BulletSpread;        // ÅºÆÛÁü
+    public Stats BulletLifeTime;      // ÃÑ¾Ë »ç°Å¸®
+    public Stats LaunchVolume;        // ÇÑ¹øÀÇ ¹ß»çÀÇ ¹ß»ç·®
+    public Stats Critical;            // Å©¸®Æ¼ÄÃ
+    public Stats AmmoMax;             // ÀåÅº¼ö
 
-    [HideInInspector] public SpriteLibraryAsset PlayerSprite; // ìŠ¤í”„ë¼ì´íŠ¸
-    [HideInInspector] public SpriteLibraryAsset WeaponSprite; // ìŠ¤í”„ë¼ì´íŠ¸
+    [HideInInspector] public SpriteLibraryAsset PlayerSprite; // ½ºÇÁ¶óÀÌÆ®
+    [HideInInspector] public SpriteLibraryAsset WeaponSprite; // ½ºÇÁ¶óÀÌÆ®
+    [HideInInspector] public Sprite BulletSprite; // ½ºÇÁ¶óÀÌÆ®
+
+    [HideInInspector] public SpriteLibrary PlayerSpriteCase; // ½ºÇÁ¶óÀÌÆ®
+    [HideInInspector] public SpriteLibrary WeaponSpriteCase; // ½ºÇÁ¶óÀÌÆ®
+
+
+    public GameObject _PlayerSprite;
+    public GameObject _WeaponSprite;
+
 
     private float curHP;
-    [HideInInspector] public float CurHP   { get { return curHP;  } set { if (value > HP.total) curHP = HP.total;  } }               //í˜„ìž¬   ì²´ë ¥
+    [HideInInspector] public float CurHP   { get { return curHP;  } set { if (value > HP.total) curHP = HP.total;  } }               //ÇöÀç   Ã¼·Â
 
     private float curAmmo;
-    [HideInInspector] public float CurAmmo { get { return curAmmo;  } set { if (value > AmmoMax.total) curAmmo = AmmoMax.total;  } } //í˜„ìž¬   ìž”íƒ„
-    [HideInInspector] public bool  CanReload;                              //ìž¥ì „   ê°€ëŠ¥í•œì§€
-    [HideInInspector] public bool  CanSkill;                               //ìŠ¤í‚¬   ê°€ëŠ¥í•œì§€
-    [HideInInspector] public bool  CanRoll;                                //êµ¬ë¥´ê¸° ê°€ëŠ¥í•œì§€
-    [HideInInspector] public bool  Invincibility;                          //ë¬´ì 
+    [HideInInspector] public float CurAmmo { get { return curAmmo;  } set { if (value > AmmoMax.total) curAmmo = AmmoMax.total; curAmmo = value; } } //ÇöÀç   ÀÜÅº
+    [HideInInspector] public bool  CanFire;                                //¹ß»ç   °¡´ÉÇÑÁö
+    [HideInInspector] public bool  CanReload;                              //ÀåÀü   °¡´ÉÇÑÁö
+    [HideInInspector] public bool  CanSkill;                               //½ºÅ³   °¡´ÉÇÑÁö
+    [HideInInspector] public bool  CanRoll;                                //±¸¸£±â °¡´ÉÇÑÁö
+    [HideInInspector] public bool  Invincibility;                          //¹«Àû
 
     private void Awake()
     {
+
         ATK            =  new Stats(playerStats.atk);
         HP             =  new Stats(playerStats.hp);
         Speed          =  new Stats(playerStats.unitSpeed);
@@ -44,15 +57,28 @@ public class PlayerStatHandler : MonoBehaviour
         SkillCoolTime  =  new Stats(playerStats.skillCoolTime);
         RollCoolTime   =  new Stats(playerStats.rollCoolTime);
         BulletSpread   =  new Stats(playerStats.bulletSpread);
+        BulletLifeTime =  new Stats(playerStats.bulletLifeTime);
+        LaunchVolume   =  new Stats(playerStats.launchVolume);
         Critical       =  new Stats(playerStats.critical);
         AmmoMax        =  new Stats(playerStats.ammoMax);
+
         PlayerSprite   =  playerStats.playerSprite;
         WeaponSprite   =  playerStats.weaponSprite;
+        BulletSprite   =  playerStats.BulletSprite;
         CurHP          =  HP.total;
+        CurAmmo        =  AmmoMax.total;
+
+        CanFire        =  true;
         CanReload      =  true;
         CanSkill       =  true;
         CanRoll        =  true;
         Invincibility  =  false;
+
+        PlayerSpriteCase = _PlayerSprite.GetComponent<SpriteLibrary>();
+        WeaponSpriteCase = _WeaponSprite.GetComponent<SpriteLibrary>();
+
+        PlayerSpriteCase.spriteLibraryAsset = PlayerSprite;
+        WeaponSpriteCase.spriteLibraryAsset = WeaponSprite;
     }
 
     public void CharacterChange(PlayerSO playerData)

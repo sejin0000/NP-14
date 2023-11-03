@@ -19,11 +19,12 @@ MonoBehaviour:
   unitScale: 1
   launchVolume: 1
   bulletSpread: 3
-  bulletLifeTime: 1
+  bulletLifeTime: 2
+  BulletSprite: {fileID: -1196469647, guid: 32dde5c63421a4043acc0dcb87475936, type: 3}
   reloadCoolTime: 2
   skillCoolTime: 0
   rollCoolTime: 5
-  ammoMax: 0
+  ammoMax: 30
   characterClass: 0
   critical: 0
   playerSprite: {fileID: 7108339969198208228, guid: b7fdc512bf354b24782ea6f25690faed, type: 3}

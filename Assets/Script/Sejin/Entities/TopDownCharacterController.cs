@@ -10,15 +10,29 @@ public class TopDownCharacterController : MonoBehaviour
     public event Action OnAttackEvent;
     public event Action OnSkillEvent;
     public event Action OnRollEvent;
+    public event Action OnReloadEvent;
+
 
     public PlayerStatHandler playerStatHandler;
     public TopDownMovement topDownMovement;
 
-    public event Action OnHitEvent;
+    private bool AtkKeyhold = false;
 
-    public void CallHitEvent() 
+    private void Update()
     {
-        OnHitEvent?.Invoke();
+        if (AtkKeyhold)
+        {
+            if (!topDownMovement.isRoll && playerStatHandler.CurAmmo > 0 && playerStatHandler.CanFire)
+            {
+                OnAttackEvent?.Invoke();
+                playerStatHandler.CurAmmo--;
+            }
+            else
+            {
+                Debug.Log(playerStatHandler.CurAmmo);
+                Debug.Log("공격 할 수 없습니다");
+            }
+        }
     }
 
     public void CallMoveEvent(Vector2 direction)
@@ -31,12 +45,9 @@ public class TopDownCharacterController : MonoBehaviour
         OnLookEvent?.Invoke(direction);
     }
 
-    public void CallAttackEvent()
+    public void CallAttackEvent(bool hold)
     {
-        if(topDownMovement.isRoll)
-        {
-            OnAttackEvent?.Invoke();
-        }
+        AtkKeyhold = hold;
     }
 
     public void CallSkillEvent()
@@ -50,5 +61,14 @@ public class TopDownCharacterController : MonoBehaviour
         {
             OnRollEvent?.Invoke();
         }
+        else
+        {
+            Debug.Log("구르기 쿨타임 입니다");
+        }
+    }
+
+    public void CallReloadEvent()
+    {
+        OnReloadEvent?.Invoke();
     }
 }
