@@ -13,7 +13,7 @@ public class TopDownMovement : MonoBehaviour
     private Stats moveSpeed;
     private Vector2 mousePos;
 
-    public bool isRoll = false;
+    [HideInInspector]public bool isRoll = false;
 
     private void Awake()
     {

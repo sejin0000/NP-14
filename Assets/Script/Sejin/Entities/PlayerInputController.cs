@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,12 @@ public class PlayerInputController : TopDownCharacterController
     private void Awake()
     {
         _camera = Camera.main;
+
+
+        if(!GetComponent<PhotonView>().IsMine)
+        {
+            Destroy(GetComponent<PlayerInputController>());
+        }
     }
 
     public void OnMove(InputValue value)
