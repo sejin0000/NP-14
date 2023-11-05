@@ -80,8 +80,11 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         
     private Dictionary<int, GameObject> playerInfoListEntries;
     private Dictionary<string, RoomInfo> cachedRoomList;
+    private Dictionary<int, GameObject> playerObjectDict;
     public GameObject playerContainer;
-    private Dictionary<string, int> otherplayerClassInfoEntries;
+    public GameObject otherPlayerContainer;
+
+    private GameObject instantiatedPlayer;
 
     public void Awake()
     {
@@ -89,7 +92,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
         cachedRoomList = new Dictionary<string, RoomInfo>();
         playerInfoListEntries = new Dictionary<int, GameObject>();
-        otherplayerClassInfoEntries = new Dictionary<string, int>();
+        playerObjectDict = new Dictionary<int, GameObject>();
 
         ExitGames.Client.Photon.Hashtable playerCP = PhotonNetwork.LocalPlayer.CustomProperties;
         if (!playerCP.ContainsKey("Char_Class"))
@@ -133,6 +136,15 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
             GameObject playerPrefab = Resources.Load<GameObject>("Pefabs/PlayerNetTest");
             GameObject go = Instantiate(playerPrefab);
             go.transform.SetParent(playerContainer.transform);
+            
+            Player localPlayer = PhotonNetwork.LocalPlayer;
+
+            localPlayer.CustomProperties.TryGetValue("Char_Class", out object classNum);
+            if (classNum == null)
+            {
+                var classHashtable = new ExitGames.Client.Photon.Hashtable() { { "Char_Class", 0 } };
+                localPlayer.SetCustomProperties(classHashtable);
+            }
         }
     }
 
@@ -174,43 +186,36 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
             playerInfoListEntries = new Dictionary<int, GameObject>();
         }
 
-        if (otherplayerClassInfoEntries == null)
-        {
-            otherplayerClassInfoEntries = new Dictionary<string, int>();
-        }
-
-        // 네트워크 인스턴스
-        // 추후 수정 : prefab 경로
-        GameObject playerPrefab = playerContainer.transform.GetChild(0).gameObject;
-        playerPrefab.name = "Pefabs/PlayerNetTest";
-
-        GameObject playerNet = PhotonNetwork.Instantiate(playerPrefab.name, Vector3.zero, Quaternion.identity);
-        playerNet.name = $"{PhotonNetwork.LocalPlayer.NickName}";
-        playerNet.transform.SetParent(playerContainer.transform);
-
-        PlayerInfo playerInfo = CharacterSelectPopup.GetComponent<PlayerInfo>();
-        if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out object classNum))
-        {
-            playerInfo.SetClassType((int)classNum, playerNet);
-        }
-        else
-        {
-            playerInfo.SetClassType(0, playerNet);
-        }
-
-        Destroy(playerPrefab);
-
+        instantiatedPlayer = InstantiatePlayer();
 
         // PartyPlayerInfo에서 받은 프리팹 정보를 각각의 프리팹에 적용.
         SetPartyPlayerInfo();
 
-        // 액터 번호
-
+        // 
+        PlayerInfo playerInfo = CharacterSelectPopup.GetComponent<PlayerInfo>();
+        playerInfo.player = instantiatedPlayer;
 
         // 스타트 버튼 동기화
         StartButton.gameObject.SetActive(CheckPlayersReady());
     }
 
+    public GameObject InstantiatePlayer()
+    {
+        // 네트워크 인스턴스
+        // 추후 수정 : prefab 경로
+        GameObject playerPrefab = playerContainer.transform.GetChild(0).gameObject;
+        playerPrefab.name = "Pefabs/PlayerNetTest";
+
+        PlayerInfo playerInfo = CharacterSelectPopup.GetComponent<PlayerInfo>();
+        GameObject playerNet = PhotonNetwork.Instantiate(playerPrefab.name, Vector3.zero, Quaternion.identity);
+
+        object classNum;
+        PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out classNum);
+        playerInfo.SetClassType((int)classNum, playerNet);
+
+        Destroy(playerPrefab);
+        return playerNet;
+    }
 
     public override void OnLeftRoom()
     {
@@ -249,6 +254,8 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
+        Room currentRoom = PhotonNetwork.CurrentRoom;
+
         Debug.Log($"{newPlayer.NickName} 입장");
 
         SetPartyPlayerInfo();
