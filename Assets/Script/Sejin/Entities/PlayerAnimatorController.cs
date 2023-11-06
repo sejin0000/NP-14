@@ -35,7 +35,7 @@ public class PlayerAnimatorController : MonoBehaviour
         PlayerSpritelibrary.spriteLibraryAsset = playerStatHandler.PlayerSprite;
         WeaponSpritelibrary.spriteLibraryAsset = playerStatHandler.WeaponSprite;
         characterController.OnMoveEvent += MoveAnimator;
-        characterController.OnRollEvent += RollAnimator;
+        characterController.OnRollEvent += RPCRollAnimator;
         characterController.OnLookEvent += LookBack;
     }
 
@@ -67,6 +67,14 @@ public class PlayerAnimatorController : MonoBehaviour
             _animation.SetBool("IsRun", false);
         }
     }
+
+
+    private void RPCRollAnimator()
+    {
+        pv.RPC("RollAnimator", RpcTarget.AllBuffered);
+    }
+    [PunRPC]
+
     private void RollAnimator()
     {
         _animation.SetTrigger("IsRoll");

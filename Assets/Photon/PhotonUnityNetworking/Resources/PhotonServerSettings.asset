@@ -47,6 +47,11 @@ MonoBehaviour:
   - WeaponSortingOrder
   - WSO
   - BS
+  - ApplyClassChange
+  - RollAnimator
+  - RA
+  - Ra
+  - RPCRollAnimator
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
