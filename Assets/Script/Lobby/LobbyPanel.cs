@@ -198,6 +198,11 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         playerInfo.player = instantiatedPlayer;
         playerInfo.viewID = viewID;
 
+        //
+        object classNum;
+        PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out classNum);
+        instantiatedPlayer.GetComponent<PhotonView>().RPC("ApplyClassChange", RpcTarget.Others, (int)classNum, viewID);
+
         // 스타트 버튼 동기화
         StartButton.gameObject.SetActive(CheckPlayersReady());
     }
@@ -261,6 +266,12 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
         Debug.Log($"{newPlayer.NickName} 입장");
 
+        //
+        object classNum;
+        PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out classNum);
+        instantiatedPlayer.GetComponent<PhotonView>().RPC("ApplyClassChange", RpcTarget.Others, (int)classNum, viewID);
+
+        //
         SetPartyPlayerInfo();
     }
 
