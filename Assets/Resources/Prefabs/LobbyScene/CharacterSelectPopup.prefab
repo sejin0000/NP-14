@@ -1888,10 +1888,12 @@ MonoBehaviour:
   CharSampleAnim: {fileID: 5593018605164351683}
   StatInfoPrefab: {fileID: 7934161811500229392, guid: 4078d8937b0aebf4cb7ec2ca3bc27428, type: 3}
   playerSkillText: {fileID: 411765317577423499}
+  playerDataSetting: {fileID: 4222933106460291288, guid: aeaa042007b36a44894885df6729f270, type: 3}
+  player: {fileID: 0}
+  viewID: {fileID: 0}
   soldierSO: {fileID: 11400000, guid: f71119c9b3c3aa14ca2eaeb140545241, type: 2}
   shotGunSO: {fileID: 11400000, guid: 51fc923c710f94d4bb65b28de1424059, type: 2}
   sniperSO: {fileID: 11400000, guid: 276572f99ad3b6b499dea3dffa918ff3, type: 2}
-  player: {fileID: 0}
 --- !u!1 &7329815093369326730
 GameObject:
   m_ObjectHideFlags: 0
