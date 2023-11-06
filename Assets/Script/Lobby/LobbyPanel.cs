@@ -77,11 +77,16 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     public TextMeshProUGUI PlayerClassText;
     public GameObject StatInfo;
     public TextMeshProUGUI SkillInfoText;
+
+    [Header("Shop")]
+    public GameObject Shop;
         
     private Dictionary<int, GameObject> playerInfoListEntries;
     private Dictionary<string, RoomInfo> cachedRoomList;
     public GameObject playerContainer;
-    private Dictionary<string, int> otherplayerClassInfoEntries;
+
+    private GameObject instantiatedPlayer;
+    private int viewID;
 
     public void Awake()
     {
@@ -89,7 +94,6 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
         cachedRoomList = new Dictionary<string, RoomInfo>();
         playerInfoListEntries = new Dictionary<int, GameObject>();
-        otherplayerClassInfoEntries = new Dictionary<string, int>();
 
         ExitGames.Client.Photon.Hashtable playerCP = PhotonNetwork.LocalPlayer.CustomProperties;
         if (!playerCP.ContainsKey("Char_Class"))
@@ -130,10 +134,16 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
         if (playerContainer.transform.childCount == 0)
         {
-            GameObject playerPrefab = Resources.Load<GameObject>("Pefabs/PlayerNetTest");
+            GameObject playerPrefab = Resources.Load<GameObject>("Pefabs/Player");
             GameObject go = Instantiate(playerPrefab);
             go.transform.SetParent(playerContainer.transform);
+            
+            Player localPlayer = PhotonNetwork.LocalPlayer;
+
+            localPlayer.CustomProperties.TryGetValue("Char_Class", out object classNum);
         }
+
+        Shop.SetActive(true);
     }
 
     public override void OnLeftLobby()
@@ -162,6 +172,9 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log($"{PhotonNetwork.LocalPlayer.NickName} 입장");
+        Shop.SetActive(false);
+
+
         if (cachedRoomList != null)
         {
             cachedRoomList.Clear();
@@ -174,43 +187,43 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
             playerInfoListEntries = new Dictionary<int, GameObject>();
         }
 
-        if (otherplayerClassInfoEntries == null)
-        {
-            otherplayerClassInfoEntries = new Dictionary<string, int>();
-        }
-
-        // 네트워크 인스턴스
-        // 추후 수정 : prefab 경로
-        GameObject playerPrefab = playerContainer.transform.GetChild(0).gameObject;
-        playerPrefab.name = "Pefabs/PlayerNetTest";
-
-        GameObject playerNet = PhotonNetwork.Instantiate(playerPrefab.name, Vector3.zero, Quaternion.identity);
-        playerNet.name = $"{PhotonNetwork.LocalPlayer.NickName}";
-        playerNet.transform.SetParent(playerContainer.transform);
-
-        PlayerInfo playerInfo = CharacterSelectPopup.GetComponent<PlayerInfo>();
-        if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out object classNum))
-        {
-            playerInfo.SetClassType((int)classNum, playerNet);
-        }
-        else
-        {
-            playerInfo.SetClassType(0, playerNet);
-        }
-
-        Destroy(playerPrefab);
-
+        instantiatedPlayer = InstantiatePlayer();
+        viewID = instantiatedPlayer.GetPhotonView().ViewID;
 
         // PartyPlayerInfo에서 받은 프리팹 정보를 각각의 프리팹에 적용.
         SetPartyPlayerInfo();
 
-        // 액터 번호
+        // 
+        PlayerInfo playerInfo = CharacterSelectPopup.GetComponent<PlayerInfo>();
+        playerInfo.player = instantiatedPlayer;
+        playerInfo.viewID = viewID;
 
+        //
+        object classNum;
+        PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out classNum);
+        instantiatedPlayer.GetComponent<PhotonView>().RPC("ApplyClassChange", RpcTarget.Others, (int)classNum, viewID);
 
         // 스타트 버튼 동기화
         StartButton.gameObject.SetActive(CheckPlayersReady());
     }
 
+    public GameObject InstantiatePlayer()
+    {
+        // 네트워크 인스턴스
+        // 추후 수정 : prefab 경로
+        GameObject playerPrefab = playerContainer.transform.GetChild(0).gameObject;
+        playerPrefab.name = "Pefabs/Player";
+
+        PlayerInfo playerInfo = CharacterSelectPopup.GetComponent<PlayerInfo>();
+        GameObject playerNet = PhotonNetwork.Instantiate(playerPrefab.name, Vector3.zero, Quaternion.identity);
+
+        object classNum;
+        PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out classNum);
+        playerInfo.SetClassType((int)classNum, playerNet);
+
+        Destroy(playerPrefab);
+        return playerNet;
+    }
 
     public override void OnLeftRoom()
     {
@@ -233,7 +246,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         }
 
         PlayerInfo playerInfo = CharacterSelectPopup.GetComponent<PlayerInfo>();
-        GameObject playerPrefab = Resources.Load<GameObject>("Pefabs/PlayerNetTest");
+        GameObject playerPrefab = Resources.Load<GameObject>("Pefabs/Player");
         GameObject go = Instantiate(playerPrefab);
         go.transform.SetParent(playerContainer.transform);
         if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out object classNum))
@@ -249,8 +262,16 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
+        Room currentRoom = PhotonNetwork.CurrentRoom;
+
         Debug.Log($"{newPlayer.NickName} 입장");
 
+        //
+        object classNum;
+        PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out classNum);
+        instantiatedPlayer.GetComponent<PhotonView>().RPC("ApplyClassChange", RpcTarget.Others, (int)classNum, viewID);
+
+        //
         SetPartyPlayerInfo();
     }
 
