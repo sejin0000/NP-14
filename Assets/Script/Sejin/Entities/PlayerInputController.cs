@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using UnityEngine.EventSystems;
 public class PlayerInputController : TopDownCharacterController
 {
     private bool IsAtking = false;
@@ -42,7 +42,7 @@ public class PlayerInputController : TopDownCharacterController
     {
         Debug.Log("OnAttack" + value.ToString());
 
-        if(!IsAtking)
+        if(!IsAtking && !EventSystem.current.IsPointerOverGameObject())
         {
             IsAtking = true;
         }

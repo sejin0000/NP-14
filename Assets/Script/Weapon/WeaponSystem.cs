@@ -7,14 +7,7 @@ public class WeaponSystem : MonoBehaviour
 {
     private TopDownCharacterController _controller;
     private PhotonView pv;
-
-    public GameObject bullet;
     public Transform muzzleOfAGun;
-
-    private Stats launchVolume;
-    private Stats bulletSpread;
-    private Stats bulletLifeTime;
-    private Stats atk;
 
 
     private void Awake()
@@ -24,18 +17,12 @@ public class WeaponSystem : MonoBehaviour
     }
     private void Start()
     {
-
-        launchVolume   = _controller.playerStatHandler.LaunchVolume;
-        bulletSpread   = _controller.playerStatHandler.BulletSpread;
-        bulletLifeTime = _controller.playerStatHandler.BulletLifeTime;
-        atk            = _controller.playerStatHandler.ATK;
-
         _controller.OnAttackEvent += Shooting;
     }
 
     public void Shooting()
     {
-        for (int i = 0; i < launchVolume.total; i++)
+        for (int i = 0; i < _controller.playerStatHandler.LaunchVolume.total; i++)
         {
             pv.RPC("BS",RpcTarget.All);
         }
@@ -46,12 +33,12 @@ public class WeaponSystem : MonoBehaviour
     {
         GameObject go;
         Quaternion rot = muzzleOfAGun.transform.rotation;
-        rot.eulerAngles += new Vector3(0, 0, Random.Range(-1 * bulletSpread.total, bulletSpread.total));// 중요함
+        rot.eulerAngles += new Vector3(0, 0, Random.Range(-1 * _controller.playerStatHandler.BulletSpread.total, _controller.playerStatHandler.BulletSpread.total));// 중요함
 
         go = PhotonNetwork.Instantiate("Pefabs/Bullet", muzzleOfAGun.transform.position, rot);
 
-        go.GetComponent<Bullet>().ATK = atk.total;
-        go.GetComponent<Bullet>().BulletLifeTime = bulletLifeTime.total;
+        go.GetComponent<Bullet>().ATK = _controller.playerStatHandler.ATK.total;
+        go.GetComponent<Bullet>().BulletLifeTime = _controller.playerStatHandler.BulletLifeTime.total;
         go.GetComponent<SpriteRenderer>().sprite = _controller.playerStatHandler.BulletSprite;
     }
 }

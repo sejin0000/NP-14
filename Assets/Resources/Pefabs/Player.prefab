@@ -687,7 +687,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f818b88dc52a5242a52087ccae987d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 4332666643219821349, guid: ffaf2c7e3b6a9714398653f89e5593ca, type: 3}
   muzzleOfAGun: {fileID: 6787653164829430967}
 --- !u!114 &3736999086756257612
 MonoBehaviour:
