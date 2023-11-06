@@ -18,7 +18,7 @@ public class A3204 : MonoBehaviour
     private void Start()
     {
         controller.OnEndRollEvent += Makeshield;
-        Prefabs = Resources.Load<GameObject>("A3204_1");
+        Prefabs = Resources.Load<GameObject>("AugmentList/A3204_1");
         nullcheck = null;
     }
 

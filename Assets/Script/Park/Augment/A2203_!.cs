@@ -17,7 +17,7 @@ public class A2203_1 : MonoBehaviour
     private void Start()
     {
         controller.OnEndRollEvent +=   MakeHeal;
-        Prefabs = Resources.Load<GameObject>("A2203");
+        Prefabs = Resources.Load<GameObject>("AugmentList/A2203");
     }
 
     // Update is called once per frame

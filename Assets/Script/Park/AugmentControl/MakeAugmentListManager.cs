@@ -103,8 +103,8 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
     //뇌피셜상 처음 스탯 증강은 punrpc로 호스트가 , 각자 뽑을 증강리스트는 개인이 만들어도 되지않을까? 하는 생각이듬
     // 이유는 리스트에서 뽑아서 적용 시키는것만 punrpc로 동기화 하면 되지않을까 싶기 때문 -- 정확하지 않음 
     void StatAugmentSetting(List<IAugment> list, string str)// 넣을 리스트 , 불러올csv파일명 csv파일을 불러와 리스트에 넣어줌
-    {//애도 지금 스탯 적용방법을 바꿔서 좀 쓸모없어짐 시간나면아래라 통합할 것
-        List<Dictionary<string, object>> data = CSVReader.Read(str);
+    {//애도 지금 스탯 적용방법을 바꿔서 좀 쓸모없어짐 시간나면아래라 통합할 것 // csv리더폴더안의 스트링불러옴
+        List<Dictionary<string, object>> data = CSVReader.Read("CSVReader/" + str);
             for (var i = 0; i < data.Count; i++)
             {
                 StatAugment a = new StatAugment();
@@ -119,7 +119,7 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
     //애는 그래서 그냥 스페셜증강만 받음
     void SpecialAugmentSetting(List<SpecialAugment> list,string str)// 넣을 리스트 , 불러올csv파일명 csv파일을 불러와 리스트에 넣어줌
     {
-        List<Dictionary<string, object>> data = CSVReader.Read(str);
+        List<Dictionary<string, object>> data = CSVReader.Read("CSVReader/" + str);
 
         for (var i = 0; i < data.Count; i++)
         {
