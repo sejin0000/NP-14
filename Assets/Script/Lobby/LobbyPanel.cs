@@ -56,6 +56,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     [Header("MainLobby")]
     public GameObject MainLobbyPanel;
 
+    public Button CharacterSelectButtonInLobby;
     public TextMeshProUGUI Gold;
     //public Player player;
 
@@ -65,6 +66,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     public GameObject PartyBox;
     public GameObject PlayerInfo;
 
+    public Button CharacterSelectButtonInRoom;
     public Button StartButton;
     public Button ReadyButton;
 
@@ -141,6 +143,28 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
             Player localPlayer = PhotonNetwork.LocalPlayer;
 
             localPlayer.CustomProperties.TryGetValue("Char_Class", out object classNum);
+
+            if (CharacterSelectPopup == null)
+            {
+                CharacterSelectPopup = Instantiate(Resources.Load<GameObject>("Prefabs/LobbyScene/CharacterSelectPopup"));
+                CharacterSelectPopup.transform.SetParent(this.transform);
+                CharacterSelectPopup.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+                var playerInfo = CharacterSelectPopup.GetComponent<PlayerInfo>();
+                PlayerClassText = playerInfo.playerClassText;
+                SkillInfoText = playerInfo.playerSkillText;
+                playerInfo.player = playerContainer;
+
+                CharacterSelectButtonInLobby.onClick.AddListener(playerInfo.OnCharacterButtonClicked);
+                CharacterSelectButtonInRoom.onClick.AddListener(playerInfo.OnCharacterButtonClicked);
+
+            }
+            else
+            {
+                var playerInfo = CharacterSelectPopup.GetComponent<PlayerInfo>();
+                playerInfo.player = playerContainer;
+            }
+
         }
 
         Shop.SetActive(true);
@@ -197,7 +221,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         PlayerInfo playerInfo = CharacterSelectPopup.GetComponent<PlayerInfo>();
         playerInfo.player = instantiatedPlayer;
         playerInfo.viewID = viewID;
-
+        DontDestroyOnLoad( instantiatedPlayer );
         //
         object classNum;
         PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out classNum);
