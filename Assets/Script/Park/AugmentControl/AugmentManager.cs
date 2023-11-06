@@ -24,21 +24,16 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
     // Start is called before the first frame update
     private void Start()
     {
-        Instance = this;
-        playerstatHandler = GameManager.Instance.Player.GetComponent<PlayerStatHandler>();
-        player = GameManager.Instance.Player.gameObject;
+        Instance = this;// 싱글톤 
+        DontDestroyOnLoad(Instance);
+        playerstatHandler = player.GetComponent<PlayerStatHandler>();
+    }
+    AugmentManager(GameObject PLAYER) 
+    {
+        player = PLAYER;
     }
 
-        //private void A999(PlayerStatHandler PlayerStat)
-    //처음의도 어차피 스탯은 걍 다 + 하는것이니 다 섞어버려야지 >> 0+0보다 코드 나눠서 한번에 하는게 좋은거아님??
-    //{
-        //StatAugment pick = MakeAugmentListManager.stat1[0] as StatAugment;
-        //PlayerStat.HP.added = pick.Health;
-        //PlayerStat.ATK.added = pick.Atk;
-        //PlayerStat.AtkSpeed.added = pick.AtkSpeed;
-        //여기서 적다가 위에 결론나서 안해둠 나중에 지울 함수 
-    //}
-private void A901()//스탯 공 티어 1
+    private void A901()//스탯 공 티어 1
     {
         playerstatHandler.ATK.added += atk;
         Debug.Log(playerstatHandler.ATK.added);

@@ -324,7 +324,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &279066887
 GameObject:
@@ -490,7 +490,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &400968515
 GameObject:
@@ -1834,6 +1834,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7295784485177987548, guid: 72ba7a688beaf29478a84ffd3e9712cb, type: 3}
+      propertyPath: sceneViewId
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2137,7 +2141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd523369104f3b64daf8d938357b2bfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 1828252537}
+  Player: {fileID: 0}
 --- !u!4 &1627416749
 Transform:
   m_ObjectHideFlags: 0
@@ -2151,7 +2155,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1665606988
 GameObject:
@@ -2440,11 +2444,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1690820864}
   m_CullTransparentMesh: 1
---- !u!1 &1828252537 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4451760300355011892, guid: 72ba7a688beaf29478a84ffd3e9712cb, type: 3}
-  m_PrefabInstance: {fileID: 1276954958}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1862932095
 GameObject:
   m_ObjectHideFlags: 0
@@ -2622,7 +2621,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1965632340
 GameObject:
@@ -2859,7 +2858,7 @@ RectTransform:
   - {fileID: 1190739074}
   - {fileID: 1575270289}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2957,7 +2956,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2076259271
 MonoBehaviour:

@@ -14,8 +14,8 @@ public class A0124 : MonoBehaviour
         this.transform.SetSiblingIndex(0);
         Instantiate(A0124Prefabs);
         DarkEnd();
-        GameManager.Instance.OnStageStart += DarkStart;
-        GameManager.Instance.OnStageEnd += DarkEnd;
+        GameManager1.Instance.OnStageStart += DarkStart;
+        GameManager1.Instance.OnStageEnd += DarkEnd;
     }
     void DarkStart() 
     {

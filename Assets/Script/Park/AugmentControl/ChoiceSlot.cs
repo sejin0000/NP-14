@@ -50,11 +50,5 @@ public class ChoiceSlot : MonoBehaviour//눌러서 골르는 증강 슬롯 열렸을때 해당증
         Ispick = true;
         ResultManager.Instance.close();
     }
-    public void pick2()//테스트용 증강 나중에 없애야함
-    {
-        string str = "A" + "0124";//뒷숫자컨
-        Invoke(str, 0);
-    }
-
    
 }
