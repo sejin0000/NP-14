@@ -77,12 +77,13 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     public TextMeshProUGUI PlayerClassText;
     public GameObject StatInfo;
     public TextMeshProUGUI SkillInfoText;
+
+    [Header("Shop")]
+    public GameObject Shop;
         
     private Dictionary<int, GameObject> playerInfoListEntries;
     private Dictionary<string, RoomInfo> cachedRoomList;
-    private Dictionary<int, GameObject> playerObjectDict;
     public GameObject playerContainer;
-    public GameObject otherPlayerContainer;
 
     private GameObject instantiatedPlayer;
     private int viewID;
@@ -93,7 +94,6 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
         cachedRoomList = new Dictionary<string, RoomInfo>();
         playerInfoListEntries = new Dictionary<int, GameObject>();
-        playerObjectDict = new Dictionary<int, GameObject>();
 
         ExitGames.Client.Photon.Hashtable playerCP = PhotonNetwork.LocalPlayer.CustomProperties;
         if (!playerCP.ContainsKey("Char_Class"))
@@ -141,12 +141,9 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
             Player localPlayer = PhotonNetwork.LocalPlayer;
 
             localPlayer.CustomProperties.TryGetValue("Char_Class", out object classNum);
-            if (classNum == null)
-            {
-                var classHashtable = new ExitGames.Client.Photon.Hashtable() { { "Char_Class", 0 } };
-                localPlayer.SetCustomProperties(classHashtable);
-            }
         }
+
+        Shop.SetActive(true);
     }
 
     public override void OnLeftLobby()
@@ -175,6 +172,9 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log($"{PhotonNetwork.LocalPlayer.NickName} ¿‘¿Â");
+        Shop.SetActive(false);
+
+
         if (cachedRoomList != null)
         {
             cachedRoomList.Clear();
