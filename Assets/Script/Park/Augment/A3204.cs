@@ -18,7 +18,7 @@ public class A3204 : MonoBehaviour
     private void Start()
     {
         controller.OnEndRollEvent += Makeshield;
-        Prefabs = Resources.Load<GameObject>("A3204_1");
+        Prefabs = Resources.Load<GameObject>("AugmentList/A3204_1");
         nullcheck = null;
     }
 
@@ -28,16 +28,13 @@ public class A3204 : MonoBehaviour
         if (nullcheck == null)
         {
             GameObject shield = Instantiate(Prefabs, transform);
-            //fire.transform.SetParent(player.transform);
             A3204_1 a3204_1 = shield.GetComponent<A3204_1>();
             a3204_1.Init(playerStat);
             nullcheck = shield;
-            Debug.Log("실드 생성");
         }
         else
         {
             Debug.Log("실드 재생");
-            nullcheck.GetComponent<A3204_1>().reloading();
         }
     }
 }

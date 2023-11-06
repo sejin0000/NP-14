@@ -43,15 +43,10 @@ MonoBehaviour:
   - SpawnPlayer
   - A1107
   - A3107
-  - weaponSortingOrder
-  - WeaponSortingOrder
-  - WSO
-  - BS
   - ApplyClassChange
+  - BS
   - RollAnimator
-  - RA
-  - Ra
-  - RPCRollAnimator
+  - WSO
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

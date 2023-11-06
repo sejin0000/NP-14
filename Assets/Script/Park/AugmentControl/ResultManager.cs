@@ -8,30 +8,80 @@ using UnityEngine.UI;
 
 public class ResultManager : MonoBehaviour//vs코드
 {
-    public GameObject[] picklist;
-    public static ChoiceSlot[] TempSlot = new ChoiceSlot[] { };
+    public ChoiceSlot[] picklist;
     public static ResultManager Instance;
-    public StatAugment[] pickStat3;
-    public IAugment[] pickSpecial3;
     List<SpecialAugment> tempList = new List<SpecialAugment>();
     bool IsStat;
+    public List<IAugment> stat1 = new List<IAugment>();
+    public List<IAugment> stat2 = new List<IAugment>();
+    public List<IAugment> stat3 = new List<IAugment>();
 
+    public List<SpecialAugment> SpecialAugment1 = new List<SpecialAugment>();
+    public List<SpecialAugment> SpecialAugment2 = new List<SpecialAugment>();
+    public List<SpecialAugment> SpecialAugment3 = new List<SpecialAugment>();
+    public List<SpecialAugment> ProtoList = new List<SpecialAugment>();
+    public GameObject Player;
+    public MakeAugmentListManager ListManager;
     void Start()
     {
         Instance = this;// 싱글톤 
+        DontDestroyOnLoad(Instance);
+
+        MakeAugmentListManager listManager = new MakeAugmentListManager(Player);
+
+
+        stat1 = ListManager.stat1;
+        stat2 = ListManager.stat2;
+        stat3 = ListManager.stat3;
+        SpecialAugment1 = ListManager.SpecialAugment1;
+        SpecialAugment2 = ListManager.SpecialAugment2;
+        SpecialAugment3 = ListManager.SpecialAugment3;
+        ProtoList = ListManager.Prototype;
+
         //PickStatList(MakeAugmentListManager.stat1);//스탯1 
-        int Count = picklist.Length;
-       
+
     }
-    public void testbtnstat() 
+    public void CallProtoResult()//프로토타입용 변수 부르는 리스트가 만들어진 초기 버전만 들어있다
     {
-        PickStatList(MakeAugmentListManager.stat1);
-        Debug.Log($"{MakeAugmentListManager.stat1.Count}");
+        PickSpecialList(SpecialAugment1);
     }
-    public void testbtnstat2()
+    public void CallStatResult() 
     {
-        PickSpecialList(MakeAugmentListManager.Instance.sniper1);
-        Debug.Log($"{MakeAugmentListManager.Instance.sniper1.Count}");
+        int tier = GameManager1.Instance.tier;
+            switch (tier) 
+            {
+                case 1:
+                    PickStatList(stat1);
+                    break;
+
+                case 2:
+                    PickStatList(stat2);
+                    break;
+
+                case 3:
+                    PickStatList(stat3);
+                    break;
+
+            }
+    }
+    public void CallSpecialResult()//
+    {
+        int tier = GameManager1.Instance.tier;
+        switch (tier)
+        {
+            case 1:
+                PickSpecialList(SpecialAugment1);
+                break;
+
+            case 2:
+                PickSpecialList(SpecialAugment2);
+                break;
+
+            case 3:
+                PickSpecialList(SpecialAugment3);
+                break;
+
+        }
     }
     public void testbtnstat3()
     {
@@ -52,9 +102,7 @@ public class ResultManager : MonoBehaviour//vs코드
         for (int i = 0; i < Count; ++i)
         {
             int a = Random.Range(0, list.Count);
-            //Debug.Log(a);
-            ChoiceSlot temp = picklist[i].GetComponent<ChoiceSlot>();
-            temp.stat = list[a];
+            picklist[i].stat = list[a];
             picklist[i].gameObject.SetActive(true);
             list.RemoveAt(a);
         }
@@ -69,8 +117,7 @@ public class ResultManager : MonoBehaviour//vs코드
         for (int i = 0; i < Count; ++i)
         {
             int a = Random.Range(0, list.Count);
-            ChoiceSlot temp = picklist[i].GetComponent<ChoiceSlot>();
-            temp.stat = list[a];
+            picklist[i].stat = list[a];
             picklist[i].gameObject.SetActive(true);
             list.RemoveAt(a);
         }
@@ -81,9 +128,9 @@ public class ResultManager : MonoBehaviour//vs코드
         int Count = picklist.Length;
         for (int i = 0; i < Count; ++i)
         {
-            if (picklist[i].GetComponent<ChoiceSlot>().Ispick && !IsStat)
+            if (picklist[i].Ispick && !IsStat)
             {
-                int target= picklist[i].GetComponent<ChoiceSlot>().stat.Code;
+                int target= picklist[i].stat.Code;
                 //리스트에서 이름 찾아서 제거
                 int index = tempList.FindIndex(x => x.Code.Equals(target));
                 tempList.Remove(tempList[index]);
