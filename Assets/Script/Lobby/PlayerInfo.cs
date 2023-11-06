@@ -46,6 +46,7 @@ public class PlayerInfo : MonoBehaviourPun
 
     private int initCharType;
     private int curCharType;
+    public int viewID;
 
     void Start()
     {
@@ -162,7 +163,6 @@ public class PlayerInfo : MonoBehaviourPun
         if (PhotonNetwork.InRoom)
         {
             var classIdentifier = player.GetComponent<ClassIdentifier>();
-            int viewID = classIdentifier.GetViewID();
             classIdentifier.ClassChangeApply(curCharType);
             player.GetComponent<PhotonView>().RPC("ApplyClassChange", RpcTarget.Others, curCharType, viewID);
         }

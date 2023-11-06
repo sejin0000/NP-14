@@ -85,6 +85,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     public GameObject otherPlayerContainer;
 
     private GameObject instantiatedPlayer;
+    private int viewID;
 
     public void Awake()
     {
@@ -187,6 +188,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         }
 
         instantiatedPlayer = InstantiatePlayer();
+        viewID = instantiatedPlayer.GetPhotonView().ViewID;
 
         // PartyPlayerInfo에서 받은 프리팹 정보를 각각의 프리팹에 적용.
         SetPartyPlayerInfo();
@@ -194,6 +196,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         // 
         PlayerInfo playerInfo = CharacterSelectPopup.GetComponent<PlayerInfo>();
         playerInfo.player = instantiatedPlayer;
+        playerInfo.viewID = viewID;
 
         // 스타트 버튼 동기화
         StartButton.gameObject.SetActive(CheckPlayersReady());

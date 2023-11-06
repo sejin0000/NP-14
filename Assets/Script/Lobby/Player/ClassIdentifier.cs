@@ -31,7 +31,7 @@ public class ClassIdentifier : MonoBehaviourPunCallbacks
 
     [PunRPC]
     public void ApplyClassChange(int classNum, int viewID)
-    {
+    {        
         PhotonView photonView = PhotonView.Find(viewID);
         playerInfo.SetClassType(classNum, photonView.gameObject);
     }
