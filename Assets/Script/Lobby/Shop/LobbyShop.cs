@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class LobbyShop : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [Header("player")]
+    public GameObject Player;
 
-    // Update is called once per frame
-    void Update()
+    [Header("ShopPanel")]
+    public GameObject ShopPanel;
+
+    private void OnCollisionEnter2D(UnityEngine.Collision2D collision)
     {
-        
+        if (collision.gameObject.CompareTag("Player"))
+        {
+
+        }
     }
 }

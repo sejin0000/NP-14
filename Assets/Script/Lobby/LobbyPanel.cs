@@ -134,7 +134,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
         if (playerContainer.transform.childCount == 0)
         {
-            GameObject playerPrefab = Resources.Load<GameObject>("Pefabs/PlayerNetTest");
+            GameObject playerPrefab = Resources.Load<GameObject>("Pefabs/Player");
             GameObject go = Instantiate(playerPrefab);
             go.transform.SetParent(playerContainer.transform);
             
@@ -212,7 +212,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         // 네트워크 인스턴스
         // 추후 수정 : prefab 경로
         GameObject playerPrefab = playerContainer.transform.GetChild(0).gameObject;
-        playerPrefab.name = "Pefabs/PlayerNetTest";
+        playerPrefab.name = "Pefabs/Player";
 
         PlayerInfo playerInfo = CharacterSelectPopup.GetComponent<PlayerInfo>();
         GameObject playerNet = PhotonNetwork.Instantiate(playerPrefab.name, Vector3.zero, Quaternion.identity);
@@ -246,7 +246,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         }
 
         PlayerInfo playerInfo = CharacterSelectPopup.GetComponent<PlayerInfo>();
-        GameObject playerPrefab = Resources.Load<GameObject>("Pefabs/PlayerNetTest");
+        GameObject playerPrefab = Resources.Load<GameObject>("Pefabs/Player");
         GameObject go = Instantiate(playerPrefab);
         go.transform.SetParent(playerContainer.transform);
         if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out object classNum))
