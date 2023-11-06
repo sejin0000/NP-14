@@ -43,9 +43,15 @@ MonoBehaviour:
   - SpawnPlayer
   - A1107
   - A3107
-  - SendNickName
-  - SendCharacterInfo
+  - weaponSortingOrder
+  - WeaponSortingOrder
+  - WSO
+  - BS
   - ApplyClassChange
+  - RollAnimator
+  - RA
+  - Ra
+  - RPCRollAnimator
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine;
 public class WeaponSystem : MonoBehaviour
 {
     private TopDownCharacterController _controller;
+    private PhotonView pv;
 
     public GameObject bullet;
     public Transform muzzleOfAGun;
@@ -15,9 +17,13 @@ public class WeaponSystem : MonoBehaviour
     private Stats atk;
 
 
+    private void Awake()
+    {
+        pv             = GetComponent<PhotonView>();
+        _controller    = GetComponent<TopDownCharacterController>();
+    }
     private void Start()
     {
-        _controller    = GetComponent<TopDownCharacterController>();
 
         launchVolume   = _controller.playerStatHandler.LaunchVolume;
         bulletSpread   = _controller.playerStatHandler.BulletSpread;
@@ -31,15 +37,21 @@ public class WeaponSystem : MonoBehaviour
     {
         for (int i = 0; i < launchVolume.total; i++)
         {
-            GameObject go;
-            Quaternion rot = muzzleOfAGun.transform.rotation;
-            rot.eulerAngles += new Vector3(0,0, Random.Range(-1 * bulletSpread.total, bulletSpread.total));// 중요함
-
-            go = Instantiate(bullet, muzzleOfAGun.transform.position, rot);
-
-            go.GetComponent<Bullet>().ATK = atk.total;
-            go.GetComponent<Bullet>().BulletLifeTime = bulletLifeTime.total;
-            go.GetComponent<SpriteRenderer>().sprite = _controller.playerStatHandler.BulletSprite;
+            pv.RPC("BS",RpcTarget.All);
         }
+    }
+
+    [PunRPC]
+    public void BS()//BulletSpawn
+    {
+        GameObject go;
+        Quaternion rot = muzzleOfAGun.transform.rotation;
+        rot.eulerAngles += new Vector3(0, 0, Random.Range(-1 * bulletSpread.total, bulletSpread.total));// 중요함
+
+        go = PhotonNetwork.Instantiate("Pefabs/Bullet", muzzleOfAGun.transform.position, rot);
+
+        go.GetComponent<Bullet>().ATK = atk.total;
+        go.GetComponent<Bullet>().BulletLifeTime = bulletLifeTime.total;
+        go.GetComponent<SpriteRenderer>().sprite = _controller.playerStatHandler.BulletSprite;
     }
 }

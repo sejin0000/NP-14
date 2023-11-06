@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ public class TopDownCharacterController : MonoBehaviour
     public TopDownMovement topDownMovement;
 
     private bool AtkKeyhold = false;
+
 
     private void Update()
     {
