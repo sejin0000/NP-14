@@ -16,7 +16,7 @@ public enum Char_Class_Kor
     저격수,
 }
 
-public class PlayerInfo : MonoBehaviour
+public class PlayerInfo : MonoBehaviourPun
 {
     [Header("PlayerInfo")]
     public GameObject PlayerInfoPrefab;
@@ -46,6 +46,7 @@ public class PlayerInfo : MonoBehaviour
 
     private int initCharType;
     private int curCharType;
+    public int viewID;
 
     void Start()
     {
@@ -88,11 +89,6 @@ public class PlayerInfo : MonoBehaviour
     // 플레이어 정보 적용
     private void UpdateCharInfo()
     {
-        // 캐릭터 샘플 애니메이션 적용
-        // Load 하는 거 안되서 일단 보류
-        //CharSampleAnim.runtimeAnimatorController = (RuntimeAnimatorController)RuntimeAnimatorController.Instantiate(
-        //    Resources.Load($"Animations\\Player_Idle_Sample_{curCharType}")
-        //    );
         CharSampleAnim.SetInteger("curNum", curCharType);
         string playerClass = Enum.GetName(typeof(Char_Class_Kor), curCharType);
 
@@ -166,25 +162,18 @@ public class PlayerInfo : MonoBehaviour
         }
         if (PhotonNetwork.InRoom)
         {
-            GameObject targetPlayer;
-            for (int i = 0; i < player.transform.childCount; i++)
-            {
-                if (player.transform.GetChild(i).gameObject.GetComponent<PhotonView>().IsMine)
-                {
-                    targetPlayer = player.transform.GetChild(i).gameObject;
-                    SetClassType(curCharType, targetPlayer);
-                }
-            }
-
-            SetClassType(curCharType);
+            var classIdentifier = player.GetComponent<ClassIdentifier>();
+            classIdentifier.ClassChangeApply(curCharType);
+            player.GetComponent<PhotonView>().RPC("ApplyClassChange", RpcTarget.Others, curCharType, viewID);
         }
+
         // 팝업 닫기
         gameObject.SetActive(false);
     }
 
     public void OnBackButtonClicked()
     {
-        // 커스텀 프로퍼티 저장
+        // 커스텀 프로퍼티 저장 (원래 것으로)
         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "Char_Class", initCharType } });
 
         // 팝업 닫기

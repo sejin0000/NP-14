@@ -30,4 +30,5 @@ public enum EnemyType
     Melee,                                       // 근거리
     Ranged,                                      // 원거리
     Coward,                                      // 겁쟁이 : 일정 체력 이하면, 일정 시간 달아남
+                                                 //TODO 힐러
 }
