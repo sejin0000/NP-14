@@ -186,7 +186,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
             SpawnMonster();
         }
 
-        // 외부 시작 : 민혁 요청 
+        // 외부 시작 : 민혁 요청 게임 스테이지 의 시작 
         CallStartEvent();
 
         GameState = GameStates.Playing;        

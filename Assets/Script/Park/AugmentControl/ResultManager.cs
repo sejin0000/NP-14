@@ -45,6 +45,14 @@ public class ResultManager : MonoBehaviour//vs코드
         ListManager = new MakeAugmentListManager(Player);
 
 
+        
+
+        //PickStatList(MakeAugmentListManager.stat1);//스탯1 
+        //MainGameManager.Instance.OnGameEndedEvent += Result;
+
+    }
+    public void startset()
+    {
         stat1 = ListManager.stat1;
         Debug.Log($"스탯1 갯수{stat1.Count}");
         stat2 = ListManager.stat2;
@@ -59,14 +67,10 @@ public class ResultManager : MonoBehaviour//vs코드
         Debug.Log($"증강3 갯수{SpecialAugment3.Count}");
         ProtoList = ListManager.Prototype;
         Debug.Log($"프로토타입증강 갯수{ProtoList.Count}");
-
-        //PickStatList(MakeAugmentListManager.stat1);//스탯1 
-        GameManager1.Instance.OnStageEnd += Result;//@@@@@@@@@@@@@@@@@@@@@@@@@여기넣기
-
     }
     public void Result()
     {
-        if (GameManager1.Instance.IsNormalStage)
+        if (MainGameManager.Instance.stageData.isFarmingRoom)
         {
             CallStatResult();
         }
@@ -82,8 +86,8 @@ public class ResultManager : MonoBehaviour//vs코드
     }
     public void CallStatResult() 
     {
-        int tier = GameManager1.Instance.tier;
-            switch (tier) 
+        int tier = MainGameManager.Instance.tier;
+        switch (tier) 
             {
                 case 1:
                     PickStatList(stat1);
@@ -99,9 +103,32 @@ public class ResultManager : MonoBehaviour//vs코드
 
             }
     }
+    public void testCallProtoResult()//프로토타입용 변수 부르는 리스트가 만들어진 초기 버전만 들어있다
+    {
+        PickSpecialList(SpecialAugment1);
+    }
+    public void testCallStatResult()
+    {
+        int tier = MainGameManager.Instance.tier;
+        switch (tier)
+        {
+            case 1:
+                PickStatList(stat1);
+                break;
+
+            case 2:
+                PickStatList(stat2);
+                break;
+
+            case 3:
+                PickStatList(stat3);
+                break;
+
+        }
+    }
     public void CallSpecialResult()//
     {
-        int tier = GameManager1.Instance.tier;
+        int tier = MainGameManager.Instance.tier;
         switch (tier)
         {
             case 1:

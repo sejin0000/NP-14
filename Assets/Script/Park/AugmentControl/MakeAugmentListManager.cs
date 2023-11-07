@@ -33,8 +33,9 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
         Debug.Log("증강리스트생성");
     }
 
-    private void Awake()
+    private void Start()
     {
+        Debug.Log("들어오냐@@@@@@@@@@@@@@@@@@@");
          stat1 = new List<IAugment>();
          stat2 = new List<IAugment>();
          stat3 = new List<IAugment>();
@@ -59,6 +60,7 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
         SpecialAugmentSetting(test2, "Test222"); //@만든증강적용테스트용 
         SpecialAugmentSetting(Prototype, "Test222");
         SpecialAugmentSetting(Prototype, "Test111");
+        ResultManager.Instance.startset();
 
     }
     public void makeLisk() 
