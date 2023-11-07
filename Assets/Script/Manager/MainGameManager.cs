@@ -3,6 +3,7 @@ using Photon.Realtime;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro.EditorUtilities;
 using UnityEngine;
 
 public class MainGameManager : MonoBehaviourPunCallbacks
@@ -10,6 +11,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     public static MainGameManager Instance;
     public enum GameStates
     {
+        Init,
         UIPlaying,
         Start,
         Playing,
@@ -85,15 +87,15 @@ public class MainGameManager : MonoBehaviourPunCallbacks
 
 
 
-    private void Start()
+    private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
         }
-        
+
         //
-        GameState = GameStates.UIPlaying;
+        GameState = GameStates.Init;
         IsStateEnded = false;
 
         stageData = new StageData
@@ -122,6 +124,12 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         OnStartStateChanged += OnStartStateChangedHandler;
         OnEndStateChanged += OnEndStateChangedHandler;
         OnAugmentListingStateChanged += OnAugmentListingStateChangedHandler;
+    }
+
+    private void Start()
+    {
+        GameState = GameStates.UIPlaying;
+        //UIManager.Instance.StartIntro();
     }
 
     private void Update()
