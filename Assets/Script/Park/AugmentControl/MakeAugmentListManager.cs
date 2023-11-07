@@ -55,7 +55,7 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
         PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out object classNum);
         playerType = (int)classNum;
         string Ptype = "a" ;
-        switch (playerType) //이부분 사실 모름 ㅋㅋ
+        switch (playerType)
         {
             case 0:
                 Ptype = "Soldier";

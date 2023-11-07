@@ -12,9 +12,9 @@ public class ResultManager : MonoBehaviour//vsÄÚµå
     public static ResultManager Instance;
     List<SpecialAugment> tempList = new List<SpecialAugment>();
     bool IsStat;
-    public List<IAugment> stat1 = new List<IAugment>();
-    public List<IAugment> stat2 = new List<IAugment>();
-    public List<IAugment> stat3 = new List<IAugment>();
+    public List<IAugment> stat1;
+    public List<IAugment> stat2;
+    public List<IAugment> stat3;
 
     public List<SpecialAugment> SpecialAugment1 = new List<SpecialAugment>();
     public List<SpecialAugment> SpecialAugment2 = new List<SpecialAugment>();

@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러오는곳 AugmentManager.Instance.Invoke(code,0); 을통해 해당 증강불러옴
 {
@@ -21,6 +22,8 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
     int cooltime = -1;
     int critical = 1;
     int AmmoMax = 1;
+    public PlayerInput playerInput;
+    
 
     // Start is called before the first frame update
     private void Start()
@@ -36,6 +39,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
             Destroy(this.gameObject);
         }
         playerstatHandler = player.GetComponent<PlayerStatHandler>();
+        playerInput = player.GetComponent<PlayerInput>();
     }
     public AugmentManager(GameObject PlayerObj) 
     {
@@ -147,14 +151,14 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
         playerstatHandler.AmmoMax.added += AmmoMax * 2;
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@공용1티어
-    private void A101()
+    private void A101()//아이언스킨
     {
-        Debug.Log("미완성");
+        playerstatHandler.defense *= 0.9f; 
     }
     private void A102()//사거리 계수 -0.3 공 계수 +0.3
     {
-        playerstatHandler.BulletLifeTime.coefficient -= 0.3f;
-        playerstatHandler.ATK.coefficient += 0.3f;
+        playerstatHandler.BulletLifeTime.coefficient *= 0.7f;
+        playerstatHandler.ATK.coefficient *= 1.3f;
     }
     private void A103()
     {
@@ -187,16 +191,16 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
         float x = (player.transform.localScale.x * 0.75f);//절반
         float y = (player.transform.localScale.y * 0.75f);//절반
         player.transform.localScale = new Vector2(x, y);
-        playerstatHandler.HP.coefficient -= 0.1f;
-        playerstatHandler.Speed.coefficient += 0.2f;
+        playerstatHandler.HP.coefficient *= 1.1f;
+        playerstatHandler.Speed.coefficient *= 0.9f;
     }
     private void A110()//대형화 // 테스트안해봄
     {
         float x = (player.transform.localScale.x * 1.25f);
         float y = (player.transform.localScale.y * 1.25f);
         player.transform.localScale = new Vector2(x, y);
-        playerstatHandler.HP.coefficient += 0.5f;
-        playerstatHandler.Speed.coefficient += 0.2f;
+        playerstatHandler.HP.coefficient *= 1.5f;
+        playerstatHandler.Speed.coefficient *= 1.2f;
     }
     private void A111()
     {
@@ -240,9 +244,18 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
             Mk3.PercentUp(10);
         }
     }
-    private void A119()
+    private void A119()// 반전 공격방향 , 이동방향이 반대가되고 공체 대폭 증가 == 현재 이동방향 반대만 구현
     {
-        Debug.Log("미완성");
+        if ("Player" == playerInput.currentActionMap.name)
+        {
+            playerInput.SwitchCurrentActionMap("Player1");
+        }
+        else 
+        {
+            playerInput.SwitchCurrentActionMap("Player");
+        }
+        playerstatHandler.HP.coefficient *= 1.5f;
+        playerstatHandler.ATK.coefficient *=1.5f;
     }
     private void A120()
     {
@@ -308,25 +321,26 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
     {
         Debug.Log("미완성");
     }
-    private void A207()
+    private void A207()//하이리스크 로우리턴
     {
-        Debug.Log("미완성");
+        playerstatHandler.defense = playerstatHandler.defense * 0.5f;
+        playerstatHandler.ATK.coefficient *= 2f;
     }
     private void A208()
     {
         Debug.Log("미완성");
     }
-    private void A209()
+    private void A209()//재정비 구르기시 재장전 수행
     {
-        Debug.Log("미완성");
+        player.AddComponent<A0209>();
     }
     private void A210()
     {
         Debug.Log("미완성");
     }
-    private void A211()
+    private void A211()//피해복구 일정확률로 일정 체력 회복
     {
-        Debug.Log("미완성");
+        player.AddComponent<A0211>();
     }
     private void A212()
     {
@@ -525,9 +539,18 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
     {
         Debug.Log("미완성");
     }
-    private void A2105()
+    private void A2105()// 반전 공격방향 , 이동방향이 반대가되고 공체 대폭 증가 == 현재 이동방향 반대만 구현
     {
-        Debug.Log("미완성");
+        if ("Player" == playerInput.currentActionMap.name)
+        {
+            playerInput.SwitchCurrentActionMap("Player1");
+        }
+        else
+        {
+            playerInput.SwitchCurrentActionMap("Player");
+        }
+        playerstatHandler.HP.coefficient *= 1.5f;
+        playerstatHandler.ATK.coefficient *= 1.5f;
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@솔져 2티어
     private void A2201()// 빈틈 만들기 //기본 공격 시 구르기 쿨타임이 감소합니다.

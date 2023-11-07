@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class A0125 : MonoBehaviour//참기 피격시 일정확률 데미지 무시
+public class A0211 : MonoBehaviour
 {
     private TopDownCharacterController controller;
     private PlayerStatHandler playerStat;
@@ -26,9 +25,9 @@ public class A0125 : MonoBehaviour//참기 피격시 일정확률 데미지 무시
     void Endure(float damege)
     {
         int Per = Random.Range(persent, maxpersent);
-        if (persent >= Per) 
+        if (persent >= Per)
         {
-            playerStat.CurHP += damege;
+            playerStat.CurHP += damege*0.2f;
         }
     }
 }

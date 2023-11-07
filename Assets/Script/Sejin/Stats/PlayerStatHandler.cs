@@ -7,6 +7,7 @@ using UnityEngine.U2D.Animation;
 
 public class PlayerStatHandler : MonoBehaviour
 {
+    public Action<float> HitEvent2;
     public Action HitEvent;
 
     [SerializeField] private PlayerSO playerStats;
@@ -96,5 +97,6 @@ public class PlayerStatHandler : MonoBehaviour
         damage = damage * defense;
         CurHP -= damage;
         HitEvent?.Invoke();
+        HitEvent2?.Invoke(damage);//이게 값이 필요한경우와 필요 없는경우가 있는데 한개로 할수가 있는지 모르겠음 일단 이렇게함
     }
 }
