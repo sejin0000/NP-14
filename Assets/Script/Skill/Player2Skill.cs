@@ -23,8 +23,7 @@ public class Player2Skill : Skill
     public override void SkillStart()
     {
         int viewID = MainGameManager.Instance.InstantiatedPlayer.GetPhotonView().ViewID;
-        PhotonView photonView = PhotonView.Find(viewID);
-        photonView.RPC("CreateAshield",RpcTarget.AllBuffered, viewID);
+        pv.RPC("CreateAshield",RpcTarget.AllBuffered, viewID);
         Invoke("SkillEnd", 3);
         base.SkillStart();
     }
@@ -39,9 +38,10 @@ public class Player2Skill : Skill
     private void CreateAshield(int viewID)
     {
         Debug.Log("스킬 사용 완료");
+        PhotonView photonView = PhotonView.Find(viewID);
 
         shieldOBJ = Instantiate(shieldPrefab);
-        shieldOBJ.transform.SetParent(MainGameManager.Instance.InstantiatedPlayer.transform);
-        shieldOBJ.transform.position = MainGameManager.Instance.InstantiatedPlayer.transform.position;
+        shieldOBJ.transform.SetParent(photonView.gameObject.transform);
+        shieldOBJ.transform.position = photonView.gameObject.transform.position;
     }
 }

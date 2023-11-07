@@ -1,8 +1,9 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Skill : MonoBehaviour
+public class Skill : MonoBehaviourPun
 {
     //버추얼 함수는 오버라이딩 후 꼭 베이스를 호출 해야함
 
