@@ -33,8 +33,8 @@ public class Bullet1 : MonoBehaviour
     }
     private void Start()
     {
-        playerStatHandler = GameManager.Instance.Player.GetComponent<PlayerStatHandler>();
-        player = GameManager.Instance.Player;
+        playerStatHandler = GameManager1.Instance.Player.GetComponent<PlayerStatHandler>();
+        player = GameManager1.Instance.Player;
 
         //아래부터테스트용 지울것
         //DirectionSetting(Vector2.one, 250, 3, 50);
