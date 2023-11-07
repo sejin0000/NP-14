@@ -513,7 +513,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4516278988950754883}
-  - component: {fileID: 4471128796076811764}
+  - component: {fileID: 2036457883273513298}
   m_Layer: 5
   m_Name: PlayerHUD
   m_TagString: Untagged
@@ -543,7 +543,7 @@ RectTransform:
   m_AnchoredPosition: {x: -715.625, y: 30.625}
   m_SizeDelta: {x: 551.25, y: 1081.25}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &4471128796076811764
+--- !u!114 &2036457883273513298
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -552,7 +552,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8190342139294672258}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ab5e61d1fbb24f498368c4e086d67cb, type: 3}
+  m_Script: {fileID: 11500000, guid: 1b2934c7a0062d24d9b2cd0510a239d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8301795275827406732
