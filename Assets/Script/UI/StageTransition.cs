@@ -34,6 +34,7 @@ public class UIStageTransition : UIBase
 
     public void StartAnimation()
     {
+        UIManager.Instance.StartIntro();
         StartCoroutine(MoveTower());
     }
 
