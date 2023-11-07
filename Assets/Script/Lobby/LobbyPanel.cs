@@ -56,6 +56,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     [Header("MainLobby")]
     public GameObject MainLobbyPanel;
 
+    public Button CharacterSelectButtonInLobby;
     public TextMeshProUGUI Gold;
     //public Player player;
 
@@ -65,6 +66,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     public GameObject PartyBox;
     public GameObject PlayerInfo;
 
+    public Button CharacterSelectButtonInRoom;
     public Button StartButton;
     public Button ReadyButton;
 
@@ -83,6 +85,8 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         
     private Dictionary<int, GameObject> playerInfoListEntries;
     private Dictionary<string, RoomInfo> cachedRoomList;
+    [Header("ETC")]
+    public GameObject playerDataSetting;
     public GameObject playerContainer;
 
     private GameObject instantiatedPlayer;
@@ -103,6 +107,8 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
             { {"Char_Class", CharClass.Soldier} }
             );
         }
+
+        playerDataSetting = Instantiate(Resources.Load<GameObject>("Prefabs/CharacterData/PlayerCharacterSetting"));
     }
 
     public void Start()
@@ -141,6 +147,24 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
             Player localPlayer = PhotonNetwork.LocalPlayer;
 
             localPlayer.CustomProperties.TryGetValue("Char_Class", out object classNum);
+
+            if (CharacterSelectPopup == null)
+            {
+                CharacterSelectPopup = Instantiate(Resources.Load<GameObject>("Prefabs/LobbyScene/CharacterSelectPopup"));
+                CharacterSelectPopup.transform.SetParent(this.transform);
+                CharacterSelectPopup.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+                var playerInfo = CharacterSelectPopup.GetComponent<PlayerInfo>();
+                PlayerClassText = playerInfo.playerClassText;
+                SkillInfoText = playerInfo.playerSkillText;
+                playerInfo.playerDataSetting = playerDataSetting.GetComponent<PlayerDataSetting>();
+
+                CharacterSelectButtonInLobby.onClick.AddListener(playerInfo.OnCharacterButtonClicked);
+                CharacterSelectButtonInRoom.onClick.AddListener(playerInfo.OnCharacterButtonClicked);
+            }
+
+            var PlayerData = playerDataSetting.GetComponent<PlayerDataSetting>();  
+            PlayerData.playerContainer = playerContainer;
         }
 
         Shop.SetActive(true);
@@ -189,15 +213,19 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
         instantiatedPlayer = InstantiatePlayer();
         viewID = instantiatedPlayer.GetPhotonView().ViewID;
+        instantiatedPlayer.GetComponent<ClassIdentifier>().playerData = playerDataSetting.GetComponent<PlayerDataSetting>();
 
         // PartyPlayerInfo에서 받은 프리팹 정보를 각각의 프리팹에 적용.
         SetPartyPlayerInfo();
 
         // 
-        PlayerInfo playerInfo = CharacterSelectPopup.GetComponent<PlayerInfo>();
-        playerInfo.player = instantiatedPlayer;
-        playerInfo.viewID = viewID;
+        PlayerDataSetting playerData = playerDataSetting.GetComponent<PlayerDataSetting>();
+        playerData.ownerPlayer = instantiatedPlayer;
+        playerData.viewID = viewID;
 
+        var playerInfo = CharacterSelectPopup.GetComponent<PlayerInfo>();
+        playerInfo.Initialize();
+        
         //
         object classNum;
         PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out classNum);
@@ -214,12 +242,11 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         GameObject playerPrefab = playerContainer.transform.GetChild(0).gameObject;
         playerPrefab.name = "Pefabs/Player";
 
-        PlayerInfo playerInfo = CharacterSelectPopup.GetComponent<PlayerInfo>();
+        PlayerDataSetting playerData = playerDataSetting.GetComponent<PlayerDataSetting>();
         GameObject playerNet = PhotonNetwork.Instantiate(playerPrefab.name, Vector3.zero, Quaternion.identity);
 
-        object classNum;
-        PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out classNum);
-        playerInfo.SetClassType((int)classNum, playerNet);
+        PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out object classNum);
+        playerData.SetClassType((int)classNum, playerNet);
 
         Destroy(playerPrefab);
         return playerNet;
@@ -245,17 +272,17 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
             }
         }
 
-        PlayerInfo playerInfo = CharacterSelectPopup.GetComponent<PlayerInfo>();
+        PlayerDataSetting playerData = playerDataSetting.GetComponent<PlayerDataSetting>();
         GameObject playerPrefab = Resources.Load<GameObject>("Pefabs/Player");
         GameObject go = Instantiate(playerPrefab);
         go.transform.SetParent(playerContainer.transform);
         if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out object classNum))
         {
-            playerInfo.SetClassType((int)classNum, go);
+            playerData.SetClassType((int)classNum, go);
         }
         else
         {
-            playerInfo.SetClassType(0, go);
+            playerData.SetClassType(0, go);
         }
 
     }

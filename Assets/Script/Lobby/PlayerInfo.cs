@@ -36,17 +36,17 @@ public class PlayerInfo : MonoBehaviourPun
     public GameObject StatInfoPrefab;
     public TextMeshProUGUI playerSkillText;
 
-    [Header("PlayerSO")]    
-    public PlayerSO soldierSO;
-    public PlayerSO shotGunSO;
-    public PlayerSO sniperSO;
+    [Header("CharacterNetData")]
+    public PlayerDataSetting playerDataSetting;
 
-    [Header("Player")]
-    public GameObject player;
-
-    private int initCharType;
     private int curCharType;
+    private int initCharType;
+
+    public GameObject player;
     public int viewID;
+    //private PlayerSO soldierSO;
+    //public PlayerSO shotGunSO;
+    //public PlayerSO sniperSO;
 
     void Start()
     {
@@ -60,6 +60,16 @@ public class PlayerInfo : MonoBehaviourPun
         size.y = 1000f;
         playerStatScrollRect.content.sizeDelta = size;
 
+
+    }
+
+    public void Initialize()
+    {
+        player = playerDataSetting.ownerPlayer;
+        viewID = playerDataSetting.viewID;
+        //soldierSO = playerDataSetting.soldierSO;
+        //shotGunSO = playerDataSetting.shotGunSO;
+        //sniperSO = playerDataSetting.sniperSO;
     }
         
     void Update()
@@ -154,11 +164,11 @@ public class PlayerInfo : MonoBehaviourPun
     {
         // 커스텀 프로퍼티 저장
         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "Char_Class", curCharType } });
-        
+        var playerData = playerDataSetting.GetComponent<PlayerDataSetting>();
         // 적용
         if (PhotonNetwork.InLobby)
         {
-            SetClassType(curCharType);
+            playerData.SetClassType(curCharType);
         }
         if (PhotonNetwork.InRoom)
         {
@@ -194,34 +204,6 @@ public class PlayerInfo : MonoBehaviourPun
     {
         yield return null; // 1프레임 대기
         LayoutRebuilder.ForceRebuildLayoutImmediate(statRect); // 레이아웃 강제 재구성
-    }
-
-    public void SetClassType(int charType, GameObject playerGo = null)
-    {
-        PlayerStatHandler statSO;
-        if (playerGo != null) 
-        {
-            Debug.Log($"적용 오브젝트 : {playerGo.name}");
-            statSO = playerGo.GetComponent<PlayerStatHandler>();
-        }
-        else
-        {
-            Debug.Log($"적용 오브젝트 : PlayerContainer");
-            statSO = player.GetComponentInChildren<PlayerStatHandler>();
-        }
-
-        switch (charType) 
-        {
-            case (int)LobbyPanel.CharClass.Soldier:
-                statSO.CharacterChange(soldierSO);
-                break;
-            case (int)LobbyPanel.CharClass.Shotgun:
-                statSO.CharacterChange(shotGunSO);
-                break;
-            case (int)LobbyPanel.CharClass.Sniper:
-                statSO.CharacterChange(sniperSO);
-                break;
-        }
     }
     #endregion
 }
