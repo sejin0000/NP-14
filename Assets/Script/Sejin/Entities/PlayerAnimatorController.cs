@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using UnityEngine;
 using UnityEngine.U2D.Animation;
@@ -18,9 +19,11 @@ public class PlayerAnimatorController : MonoBehaviour
     private SpriteLibrary PlayerSpritelibrary;
     private SpriteLibrary WeaponSpritelibrary;
 
+    private PhotonView pv;
+
     private void Awake()
     {
-        characterController = GetComponent<TopDownCharacterController>();
+        pv = GetComponent<PhotonView>();
         _animation = PlayerSprite.GetComponent<Animator>();
         PlayerSpritelibrary = PlayerSprite.GetComponent<SpriteLibrary>();
         WeaponSpritelibrary = weaponSprite.GetComponent<SpriteLibrary>();
@@ -28,10 +31,11 @@ public class PlayerAnimatorController : MonoBehaviour
     }
     private void Start()
     {
+        characterController = GetComponent<TopDownCharacterController>();
         PlayerSpritelibrary.spriteLibraryAsset = playerStatHandler.PlayerSprite;
         WeaponSpritelibrary.spriteLibraryAsset = playerStatHandler.WeaponSprite;
         characterController.OnMoveEvent += MoveAnimator;
-        characterController.OnRollEvent += RollAnimator;
+        characterController.OnRollEvent += RPCRollAnimator;
         characterController.OnLookEvent += LookBack;
     }
 
@@ -42,12 +46,12 @@ public class PlayerAnimatorController : MonoBehaviour
         if (Mathf.Abs(rotY) > 90f)
         {
             _animation.SetFloat ("IsLookBack", 0);
-            weaponRenderer.sortingOrder = 6;
+            pv.RPC("WSO", RpcTarget.AllBuffered, rotY);
         }
         else
         {
             _animation.SetFloat("IsLookBack", 1);
-            weaponRenderer.sortingOrder = 4;
+            pv.RPC("WSO", RpcTarget.AllBuffered, rotY);
 
         }
     }
@@ -63,6 +67,14 @@ public class PlayerAnimatorController : MonoBehaviour
             _animation.SetBool("IsRun", false);
         }
     }
+
+
+    private void RPCRollAnimator()
+    {
+        pv.RPC("RollAnimator", RpcTarget.AllBuffered);
+    }
+    [PunRPC]
+
     private void RollAnimator()
     {
         _animation.SetTrigger("IsRoll");
@@ -72,5 +84,18 @@ public class PlayerAnimatorController : MonoBehaviour
     private void EndRollAnimator()
     {
         weaponRenderer.color = new Vector4(255, 255, 255, 255);
+    }
+
+    [PunRPC]
+    void WSO(float rotY)//WeaponSortingOrder
+    {
+        if (Mathf.Abs(rotY) > 90f)
+        {
+            weaponRenderer.sortingOrder = 6;
+        }
+        else
+        {
+            weaponRenderer.sortingOrder = 4;
+        }
     }
 }

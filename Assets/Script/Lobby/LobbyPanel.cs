@@ -56,6 +56,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     [Header("MainLobby")]
     public GameObject MainLobbyPanel;
 
+    public Button CharacterSelectButtonInLobby;
     public TextMeshProUGUI Gold;
     //public Player player;
 
@@ -65,6 +66,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     public GameObject PartyBox;
     public GameObject PlayerInfo;
 
+    public Button CharacterSelectButtonInRoom;
     public Button StartButton;
     public Button ReadyButton;
 
@@ -77,11 +79,18 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     public TextMeshProUGUI PlayerClassText;
     public GameObject StatInfo;
     public TextMeshProUGUI SkillInfoText;
+
+    [Header("Shop")]
+    public GameObject Shop;
         
     private Dictionary<int, GameObject> playerInfoListEntries;
     private Dictionary<string, RoomInfo> cachedRoomList;
+    [Header("ETC")]
+    public GameObject playerDataSetting;
     public GameObject playerContainer;
-    private Dictionary<string, int> otherplayerClassInfoEntries;
+
+    private GameObject instantiatedPlayer;
+    private int viewID;
 
     public void Awake()
     {
@@ -89,7 +98,6 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
         cachedRoomList = new Dictionary<string, RoomInfo>();
         playerInfoListEntries = new Dictionary<int, GameObject>();
-        otherplayerClassInfoEntries = new Dictionary<string, int>();
 
         ExitGames.Client.Photon.Hashtable playerCP = PhotonNetwork.LocalPlayer.CustomProperties;
         if (!playerCP.ContainsKey("Char_Class"))
@@ -99,6 +107,8 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
             { {"Char_Class", CharClass.Soldier} }
             );
         }
+
+        playerDataSetting = Instantiate(Resources.Load<GameObject>("Prefabs/CharacterData/PlayerCharacterSetting"));
     }
 
     public void Start()
@@ -130,10 +140,34 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
         if (playerContainer.transform.childCount == 0)
         {
-            GameObject playerPrefab = Resources.Load<GameObject>("Pefabs/PlayerNetTest");
+            GameObject playerPrefab = Resources.Load<GameObject>("Pefabs/Player");
             GameObject go = Instantiate(playerPrefab);
             go.transform.SetParent(playerContainer.transform);
+            
+            Player localPlayer = PhotonNetwork.LocalPlayer;
+
+            localPlayer.CustomProperties.TryGetValue("Char_Class", out object classNum);
+
+            if (CharacterSelectPopup == null)
+            {
+                CharacterSelectPopup = Instantiate(Resources.Load<GameObject>("Prefabs/LobbyScene/CharacterSelectPopup"));
+                CharacterSelectPopup.transform.SetParent(this.transform);
+                CharacterSelectPopup.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+                var playerInfo = CharacterSelectPopup.GetComponent<PlayerInfo>();
+                PlayerClassText = playerInfo.playerClassText;
+                SkillInfoText = playerInfo.playerSkillText;
+                playerInfo.playerDataSetting = playerDataSetting.GetComponent<PlayerDataSetting>();
+
+                CharacterSelectButtonInLobby.onClick.AddListener(playerInfo.OnCharacterButtonClicked);
+                CharacterSelectButtonInRoom.onClick.AddListener(playerInfo.OnCharacterButtonClicked);
+            }
+
+            var PlayerData = playerDataSetting.GetComponent<PlayerDataSetting>();  
+            PlayerData.playerContainer = playerContainer;
         }
+
+        Shop.SetActive(true);
     }
 
     public override void OnLeftLobby()
@@ -162,6 +196,9 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log($"{PhotonNetwork.LocalPlayer.NickName} 입장");
+        Shop.SetActive(false);
+
+
         if (cachedRoomList != null)
         {
             cachedRoomList.Clear();
@@ -174,43 +211,46 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
             playerInfoListEntries = new Dictionary<int, GameObject>();
         }
 
-        if (otherplayerClassInfoEntries == null)
-        {
-            otherplayerClassInfoEntries = new Dictionary<string, int>();
-        }
-
-        // 네트워크 인스턴스
-        // 추후 수정 : prefab 경로
-        GameObject playerPrefab = playerContainer.transform.GetChild(0).gameObject;
-        playerPrefab.name = "Pefabs/PlayerNetTest";
-
-        GameObject playerNet = PhotonNetwork.Instantiate(playerPrefab.name, Vector3.zero, Quaternion.identity);
-        playerNet.name = $"{PhotonNetwork.LocalPlayer.NickName}";
-        playerNet.transform.SetParent(playerContainer.transform);
-
-        PlayerInfo playerInfo = CharacterSelectPopup.GetComponent<PlayerInfo>();
-        if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out object classNum))
-        {
-            playerInfo.SetClassType((int)classNum, playerNet);
-        }
-        else
-        {
-            playerInfo.SetClassType(0, playerNet);
-        }
-
-        Destroy(playerPrefab);
-
+        instantiatedPlayer = InstantiatePlayer();
+        viewID = instantiatedPlayer.GetPhotonView().ViewID;
+        instantiatedPlayer.GetComponent<ClassIdentifier>().playerData = playerDataSetting.GetComponent<PlayerDataSetting>();
 
         // PartyPlayerInfo에서 받은 프리팹 정보를 각각의 프리팹에 적용.
         SetPartyPlayerInfo();
 
-        // 액터 번호
+        // 
+        PlayerDataSetting playerData = playerDataSetting.GetComponent<PlayerDataSetting>();
+        playerData.ownerPlayer = instantiatedPlayer;
+        playerData.viewID = viewID;
 
+        var playerInfo = CharacterSelectPopup.GetComponent<PlayerInfo>();
+        playerInfo.Initialize();
+        
+        //
+        object classNum;
+        PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out classNum);
+        instantiatedPlayer.GetComponent<PhotonView>().RPC("ApplyClassChange", RpcTarget.Others, (int)classNum, viewID);
 
         // 스타트 버튼 동기화
         StartButton.gameObject.SetActive(CheckPlayersReady());
     }
 
+    public GameObject InstantiatePlayer()
+    {
+        // 네트워크 인스턴스
+        // 추후 수정 : prefab 경로
+        GameObject playerPrefab = playerContainer.transform.GetChild(0).gameObject;
+        playerPrefab.name = "Pefabs/Player";
+
+        PlayerDataSetting playerData = playerDataSetting.GetComponent<PlayerDataSetting>();
+        GameObject playerNet = PhotonNetwork.Instantiate(playerPrefab.name, Vector3.zero, Quaternion.identity);
+
+        PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out object classNum);
+        playerData.SetClassType((int)classNum, playerNet);
+
+        Destroy(playerPrefab);
+        return playerNet;
+    }
 
     public override void OnLeftRoom()
     {
@@ -232,25 +272,33 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
             }
         }
 
-        PlayerInfo playerInfo = CharacterSelectPopup.GetComponent<PlayerInfo>();
-        GameObject playerPrefab = Resources.Load<GameObject>("Pefabs/PlayerNetTest");
+        PlayerDataSetting playerData = playerDataSetting.GetComponent<PlayerDataSetting>();
+        GameObject playerPrefab = Resources.Load<GameObject>("Pefabs/Player");
         GameObject go = Instantiate(playerPrefab);
         go.transform.SetParent(playerContainer.transform);
         if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out object classNum))
         {
-            playerInfo.SetClassType((int)classNum, go);
+            playerData.SetClassType((int)classNum, go);
         }
         else
         {
-            playerInfo.SetClassType(0, go);
+            playerData.SetClassType(0, go);
         }
 
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
+        Room currentRoom = PhotonNetwork.CurrentRoom;
+
         Debug.Log($"{newPlayer.NickName} 입장");
 
+        //
+        object classNum;
+        PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out classNum);
+        instantiatedPlayer.GetComponent<PhotonView>().RPC("ApplyClassChange", RpcTarget.Others, (int)classNum, viewID);
+
+        //
         SetPartyPlayerInfo();
     }
 

@@ -5,7 +5,10 @@ using UnityEngine;
 
 public class TopDownAimRototion : MonoBehaviour
 {
-    [SerializeField] private Transform armPivot;
+    
+    [SerializeField] private GameObject playerSprite;
+    [SerializeField] private GameObject weaponPivot;
+
 
     private TopDownCharacterController _controller;
     private PlayerAnimatorController _animator;
@@ -14,7 +17,6 @@ public class TopDownAimRototion : MonoBehaviour
     {
         _controller = GetComponent<TopDownCharacterController>();
     }
-
     private void Start()
     {
         _controller.OnLookEvent += OnAim;
@@ -31,21 +33,24 @@ public class TopDownAimRototion : MonoBehaviour
 
         if (Mathf.Abs(rotZ) > 90f)
         {
-            if (transform.localScale.x > 0)
+            if (playerSprite.transform.localScale.x > 0)
             {
-                transform.localScale = new Vector3((-1 * transform.localScale.x), transform.localScale.y, transform.localScale.z);
-                armPivot.localScale = new Vector3((-1 * armPivot.localScale.x), (-1 * armPivot.localScale.y), armPivot.localScale.z);
+                playerSprite.transform.localScale = new Vector2((playerSprite.transform.localScale.x * -1), playerSprite.transform.localScale.y);
+                weaponPivot.transform.localPosition = new Vector2(weaponPivot.transform.localPosition.x * -1, weaponPivot.transform.localPosition.y);
+                weaponPivot.transform.localScale = new Vector2(weaponPivot.transform.localScale.x, weaponPivot.transform.localScale.y * -1);
             }
         }
         else
         {
-            if (transform.localScale.x < 0)
+            if (playerSprite.transform.localScale.x < 0)
             {
-                transform.localScale = new Vector3((-1 * transform.localScale.x), transform.localScale.y, transform.localScale.z);
-                armPivot.localScale = new Vector3((-1 * armPivot.localScale.x), (-1 * armPivot.localScale.y), armPivot.localScale.z);
+                playerSprite.transform.localScale = new Vector2((playerSprite.transform.localScale.x * -1), playerSprite.transform.localScale.y);
+                weaponPivot.transform.localPosition = new Vector2(weaponPivot.transform.localPosition.x * -1, weaponPivot.transform.localPosition.y);
+                weaponPivot.transform.localScale = new Vector2(weaponPivot.transform.localScale.x, weaponPivot.transform.localScale.y * -1);
+
             }
         }
 
-        armPivot.rotation = Quaternion.Euler(0, 0, rotZ);
+        weaponPivot.transform.rotation = Quaternion.Euler(0, 0, rotZ);
     }
 }

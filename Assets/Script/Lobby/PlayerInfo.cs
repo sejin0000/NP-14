@@ -16,7 +16,7 @@ public enum Char_Class_Kor
     저격수,
 }
 
-public class PlayerInfo : MonoBehaviour
+public class PlayerInfo : MonoBehaviourPun
 {
     [Header("PlayerInfo")]
     public GameObject PlayerInfoPrefab;
@@ -36,16 +36,17 @@ public class PlayerInfo : MonoBehaviour
     public GameObject StatInfoPrefab;
     public TextMeshProUGUI playerSkillText;
 
-    [Header("PlayerSO")]    
-    public PlayerSO soldierSO;
-    public PlayerSO shotGunSO;
-    public PlayerSO sniperSO;
+    [Header("CharacterNetData")]
+    public PlayerDataSetting playerDataSetting;
 
-    [Header("Player")]
-    public GameObject player;
-
-    private int initCharType;
     private int curCharType;
+    private int initCharType;
+
+    public GameObject player;
+    public int viewID;
+    //private PlayerSO soldierSO;
+    //public PlayerSO shotGunSO;
+    //public PlayerSO sniperSO;
 
     void Start()
     {
@@ -59,6 +60,16 @@ public class PlayerInfo : MonoBehaviour
         size.y = 1000f;
         playerStatScrollRect.content.sizeDelta = size;
 
+
+    }
+
+    public void Initialize()
+    {
+        player = playerDataSetting.ownerPlayer;
+        viewID = playerDataSetting.viewID;
+        //soldierSO = playerDataSetting.soldierSO;
+        //shotGunSO = playerDataSetting.shotGunSO;
+        //sniperSO = playerDataSetting.sniperSO;
     }
         
     void Update()
@@ -88,11 +99,6 @@ public class PlayerInfo : MonoBehaviour
     // 플레이어 정보 적용
     private void UpdateCharInfo()
     {
-        // 캐릭터 샘플 애니메이션 적용
-        // Load 하는 거 안되서 일단 보류
-        //CharSampleAnim.runtimeAnimatorController = (RuntimeAnimatorController)RuntimeAnimatorController.Instantiate(
-        //    Resources.Load($"Animations\\Player_Idle_Sample_{curCharType}")
-        //    );
         CharSampleAnim.SetInteger("curNum", curCharType);
         string playerClass = Enum.GetName(typeof(Char_Class_Kor), curCharType);
 
@@ -158,33 +164,26 @@ public class PlayerInfo : MonoBehaviour
     {
         // 커스텀 프로퍼티 저장
         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "Char_Class", curCharType } });
-        
+        var playerData = playerDataSetting.GetComponent<PlayerDataSetting>();
         // 적용
         if (PhotonNetwork.InLobby)
         {
-            SetClassType(curCharType);
+            playerData.SetClassType(curCharType);
         }
         if (PhotonNetwork.InRoom)
         {
-            GameObject targetPlayer;
-            for (int i = 0; i < player.transform.childCount; i++)
-            {
-                if (player.transform.GetChild(i).gameObject.GetComponent<PhotonView>().IsMine)
-                {
-                    targetPlayer = player.transform.GetChild(i).gameObject;
-                    SetClassType(curCharType, targetPlayer);
-                }
-            }
-
-            SetClassType(curCharType);
+            var classIdentifier = player.GetComponent<ClassIdentifier>();
+            classIdentifier.ClassChangeApply(curCharType);
+            player.GetComponent<PhotonView>().RPC("ApplyClassChange", RpcTarget.Others, curCharType, viewID);
         }
+
         // 팝업 닫기
         gameObject.SetActive(false);
     }
 
     public void OnBackButtonClicked()
     {
-        // 커스텀 프로퍼티 저장
+        // 커스텀 프로퍼티 저장 (원래 것으로)
         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "Char_Class", initCharType } });
 
         // 팝업 닫기
@@ -205,34 +204,6 @@ public class PlayerInfo : MonoBehaviour
     {
         yield return null; // 1프레임 대기
         LayoutRebuilder.ForceRebuildLayoutImmediate(statRect); // 레이아웃 강제 재구성
-    }
-
-    public void SetClassType(int charType, GameObject playerGo = null)
-    {
-        PlayerStatHandler statSO;
-        if (playerGo != null) 
-        {
-            Debug.Log($"적용 오브젝트 : {playerGo.name}");
-            statSO = playerGo.GetComponent<PlayerStatHandler>();
-        }
-        else
-        {
-            Debug.Log($"적용 오브젝트 : PlayerContainer");
-            statSO = player.GetComponentInChildren<PlayerStatHandler>();
-        }
-
-        switch (charType) 
-        {
-            case (int)LobbyPanel.CharClass.Soldier:
-                statSO.CharacterChange(soldierSO);
-                break;
-            case (int)LobbyPanel.CharClass.Shotgun:
-                statSO.CharacterChange(shotGunSO);
-                break;
-            case (int)LobbyPanel.CharClass.Sniper:
-                statSO.CharacterChange(sniperSO);
-                break;
-        }
     }
     #endregion
 }

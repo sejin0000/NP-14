@@ -1,8 +1,9 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using UnityEngine.EventSystems;
 public class PlayerInputController : TopDownCharacterController
 {
     private bool IsAtking = false;
@@ -12,6 +13,12 @@ public class PlayerInputController : TopDownCharacterController
     private void Awake()
     {
         _camera = Camera.main;
+
+
+        if(!GetComponent<PhotonView>().IsMine)
+        {
+            Destroy(GetComponent<PlayerInputController>());
+        }
     }
 
     public void OnMove(InputValue value)
@@ -35,7 +42,7 @@ public class PlayerInputController : TopDownCharacterController
     {
         Debug.Log("OnAttack" + value.ToString());
 
-        if(!IsAtking)
+        if(!IsAtking && !EventSystem.current.IsPointerOverGameObject())
         {
             IsAtking = true;
         }

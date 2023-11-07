@@ -30,7 +30,6 @@ public class PartyPlayerInfo : MonoBehaviourPun
     {      
         if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out object curClassType))
         {
-            Debug.Log((int)curClassType);
             if (!(curClassType is int))
             {
                 Hashtable charInitialProps = new Hashtable() { { "Char_Class", 0 } };

@@ -275,9 +275,10 @@ GameObject:
   - component: {fileID: 734425243735503072}
   - component: {fileID: 3248445001908174623}
   - component: {fileID: -5821051605897363943}
+  - component: {fileID: 2626796925234099486}
   m_Layer: 0
   m_Name: PlayerNetTest
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -406,7 +407,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!70 &5310507388964559557
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -543,6 +544,19 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &2626796925234099486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4451760300355011892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a58edb9f4324b5428b844da6554119c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInfo: {fileID: 8098123073854687256, guid: 2eb62e0eb4b23d545825f5ecd308edf7, type: 3}
 --- !u!1 &6207264857355054772
 GameObject:
   m_ObjectHideFlags: 0
