@@ -67,6 +67,7 @@ public class UIStageTransition : UIBase
 
     private void ChangeMainGameState()
     {
+        StopCoroutine(MoveTower());
         MainGameManager.Instance.GameState = MainGameManager.GameStates.Playing;
         Close();
     }
