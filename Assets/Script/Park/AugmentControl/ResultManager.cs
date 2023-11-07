@@ -83,7 +83,7 @@ public class ResultManager : MonoBehaviour//vs코드
     }
     public void CallProtoResult()//프로토타입용 변수 부르는 리스트가 만들어진 초기 버전만 들어있다
     {
-        PickSpecialList(SpecialAugment1);
+        PickSpecialList(ProtoList);
     }
     public void CallStatResult() 
     {
