@@ -49,6 +49,10 @@ public class EnemyAI : MonoBehaviour
         CreateTreeATState();
         currentHP = enemySO.hp;
         isLive = true;
+
+
+        Collider2D firstTarget = Physics2D.OverlapCircle(transform.position, viewDistance * 10, targetMask);
+        target = firstTarget.gameObject;
     }
     void Update()
     {
@@ -134,7 +138,7 @@ public class EnemyAI : MonoBehaviour
 
         //시야 거리(viewDistance) 내의 targetMask 감지
         Collider2D _target = Physics2D.OverlapCircle(transform.position, viewDistance, targetMask);
-
+        target = _target.gameObject;
 
         if (_target == null)
             return;

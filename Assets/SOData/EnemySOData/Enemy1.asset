@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f76e7dab80292843a8ceb8dbf8daab0, type: 3}
   m_Name: Enemy1
   m_EditorClassIdentifier: 
-  enemyName: "\uC784\uC2DC \uADFC\uAC70\uB9AC \uBAAC\uC2A4\uD130"
+  enemyName: "\uBAAC\uC2A4\uD1301"
   type: 0
   atk: 22
-  hp: 22
-  atkSpeed: 3
+  hp: 33
+  atkSpeed: 1
   patrolSpeed: 5
   chaseSpeed: 2
   runSpeed: 2
   detectionRange: 22
-  attackRange: 2
+  attackRange: 5
   patrolRange: 22
   dropGold: 22
   unitScale: 2
