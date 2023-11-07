@@ -60,8 +60,9 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
         
         SpecialAugmentSetting(test, "Test111"); //@만든증강적용테스트용 
         SpecialAugmentSetting(test2, "Test222"); //@만든증강적용테스트용 
-        SpecialAugmentSetting(Prototype, "Test222");
-        SpecialAugmentSetting(Prototype, "Test111");
+        //SpecialAugmentSetting(Prototype, "Test222");
+        //SpecialAugmentSetting(Prototype, "Test111");
+        SpecialAugmentSetting(Prototype, "test_Proto");
 
     }
     private void Start()
