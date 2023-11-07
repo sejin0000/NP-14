@@ -17,12 +17,12 @@ public class UIBulletIndicator : UIBase
 
     private void Start()
     {
-        PlayerDataManager.Instance.OnJoinedPlayer += Initialize;
+        //PlayerDataManager.Instance.OnJoinedPlayer += Initialize;
     }
 
     private void Initialize()
     {
-        player = PlayerDataManager.Instance.Player.GetComponent<PlayerInputController>();
+        //player = PlayerDataManager.Instance.Player.GetComponent<PlayerInputController>();
         playerStat = player.playerStatHandler;
 
         player.OnAttackEvent += ChangeValue;
