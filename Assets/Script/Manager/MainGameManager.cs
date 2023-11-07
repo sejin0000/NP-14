@@ -137,7 +137,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         {
             IsStateEnded = false;
 
-            if (currentMonsterCount == 0)
+            if (currentMonsterCount < 0)
             {
                 IsStateEnded = true;
                 GameState = GameStates.End;
@@ -182,7 +182,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     }
 
     private void OnStartStateChangedHandler()
-    {;
+    {
 
 
         if (stageData.isFarmingRoom)
