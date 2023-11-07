@@ -15,12 +15,12 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
     public PhotonView PV;
 
     int atk = 5;
-    int hp = 10;
+    int hp = 8;
     float speed = 1;
-    float atkspeed = 1f;
+    float atkspeed = -1f;
     float bulletSpread = -1f;
     int cooltime = -1;
-    int critical = 1;
+    int critical = 5;
     int AmmoMax = 1;
     public PlayerInput playerInput;
     
