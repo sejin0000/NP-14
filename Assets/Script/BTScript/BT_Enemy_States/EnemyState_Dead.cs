@@ -20,7 +20,7 @@ public class EnemyState_Dead : BTAction
 
     public override void Initialize()
     {
-        //MainGameManager.Instance.cu
+        MainGameManager.Instance.currentMonsterCount -= 1;
         //사망 시 파티클이나 기타 효과 여기에
     }
 
