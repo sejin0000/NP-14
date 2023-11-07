@@ -44,10 +44,15 @@ public class EnemyState_Hurt : BTAction
 
 
         if (enemySO.type == EnemyType.Melee || enemySO.type == EnemyType.Ranged)
-            PassNord();
+        {
+            enemyAI.isChase = true;
+            PassNord();           
+        }           
 
         else if (enemySO.type == EnemyType.Coward)
-            ;
+        {
+            //도주 반응
+        }         
 
     }
 

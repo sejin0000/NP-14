@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using myBehaviourTree;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class EnemyState_Patrol : BTAction
 {
@@ -9,7 +10,7 @@ public class EnemyState_Patrol : BTAction
     private EnemyAI enemyAI;
     private EnemySO enemySO;
     private Vector2 destination;   // 목적지
-    private int patrolSpeed;
+    private int patrolSpeed;       // 순찰 속도
 
 
     private float ActionTime;      // 걷기 시간
@@ -18,6 +19,9 @@ public class EnemyState_Patrol : BTAction
 
     float destinationX = 0f;
     float destinationY = 0f;
+
+    float beforDestinationX = 0f;
+    float beforDestinationY = 0f;
     //임시
     public GameObject tempTarget;
 
@@ -39,25 +43,32 @@ public class EnemyState_Patrol : BTAction
         enemyAI.target = tempTarget;
     }
 
-    
+
     //노드 Start()
     public override void Initialize()
     {
-
+        SetStateColor();
     }
 
 
     //노드 종료 순간 호출
     public override void Terminate()
     {
-        
+
     }
 
     //노드 Update()
     public override Status Update()
-    {
+    {       
         Patrol();
+        //PatrolView();
         ElapseTime();
+
+
+        //만약 탐지 범위에 플레이어가 들어왔다면 => 성공 반환으로 액션 끝내자
+        if (enemyAI.isChase)
+            return Status.BT_Success;
+
         return Status.BT_Running;
     }
 
@@ -75,17 +86,21 @@ public class EnemyState_Patrol : BTAction
         //애니메이션 초기화
         //anim.SetBool("isRun", false); //anim.SetBool("Running", isRunning);
 
-        float beforDestionX = destinationX;
-        float beforDestionY = destinationY;
+        beforDestinationX = destinationX;
+        beforDestinationY = destinationY;
+
+
 
         destinationX = Random.Range(-6f, 6f);
         destinationY = Random.Range(-5f, 5f);
-      
-
-        destination.Set(destinationX, destinationY); // 랜덤 목적지 지정
 
 
-        if (destinationX < beforDestionX)
+        destination.Set(destinationX, destinationY); // 목적지 지정
+
+
+        //스프라이트 조정(anim = 최대 4방향[대각] + 4방향[정방향] 지정 가능)
+
+        if (destinationX < beforDestinationX)
         {
             enemyAI.spriteRenderer.flipX = true;
         }
@@ -94,24 +109,17 @@ public class EnemyState_Patrol : BTAction
             enemyAI.spriteRenderer.flipX = false;
         }
 
-        //오버플로우 : 코드가 잘못됨  경로 계산 참거짓(시작/끝/네비매쉬 영역/결과 경로)
-        /*
-        while (!NavMesh.CalculatePath(transform.position, destination, NavMesh.AllAreas, path))
-        {
-            destination.Set(Random.Range(-0.3f, 0.3f), Random.Range(-0.3f, 0.3f), 0); // 랜덤 목적지 지정
-        }
-        */
-
         Debug.Log("걷기");
     }
 
 
-    //실제 이동
+    //실제 이동★
     private void Patrol()
     {
+        if(enemyAI.nav.enabled)
         enemyAI.nav.SetDestination(destination);
         //rigid.MovePosition(transform.position + (transform.forward * applySpeed * Time.deltaTime));
-        //리지드바디 이동(현재 위치에서 전방으로, 1초당 walkSpeed 수치만큼 이동     
+        //리지드바디 이동(현재 위치에서 전방으로, 1초당 walkSpeed 수치만큼 이동;
     }
 
     //패턴 시간 계산용
@@ -122,7 +130,12 @@ public class EnemyState_Patrol : BTAction
         if (currentTime <= 0)
         {
             Reset();
-        }           
+        }
+    }
+
+    private void SetStateColor()
+    {
+        enemyAI.spriteRenderer.color = Color.green;
     }
 
     /*
@@ -196,4 +209,52 @@ public class EnemyState_Patrol : BTAction
     }
 
     */
+
+
+    //네비가 찍어주는 방향으로 시야각 생성 TODO
+    /*
+    private void PatrolView()
+    {
+        Vector2 directionToDestination = (destination - (Vector2)enemyAI.transform.position).normalized;
+
+
+        Vector2 rightBoundary = Quaternion.Euler(0, 0, -enemyAI.viewAngle * 0.5f) * directionToDestination;
+        Vector2 leftBoundary = Quaternion.Euler(0, 0, enemyAI.viewAngle * 0.5f) * directionToDestination;
+
+        Debug.DrawRay(enemyAI.transform.position, rightBoundary * enemyAI.viewDistance, Color.black);
+        Debug.DrawRay(enemyAI.transform.position, leftBoundary * enemyAI.viewDistance, Color.black);
+
+
+        //시야 거리(viewDistance) 내의 targetMask 감지
+        Collider2D _target = Physics2D.OverlapCircle(enemyAI.transform.position, enemyAI.viewDistance, enemyAI.targetMask);
+
+        if (_target == null)
+            return;
+
+
+
+
+        if (_target.tag == "Player")
+        {
+
+            //시야각 방향의 직선 Direction
+            Vector2 middleDirection = (rightBoundary + leftBoundary).normalized;
+
+            Debug.DrawRay(enemyAI.transform.position, middleDirection * enemyAI.viewDistance, Color.blue);
+
+            //Enemy와 Player 사이의 방향
+            Vector2 directionToPlayer = (_target.transform.position - enemyAI.transform.position).normalized;
+
+
+            //플레이어 시야 중앙~타겟위치 사이의 각도
+            float angle = Vector3.Angle(directionToPlayer, middleDirection);
+
+            if (angle < enemyAI.viewAngle * 0.5f)
+            {
+                Debug.Log("이동 중 시야 내에 들어옴");
+                _target = null;
+            }
+        }
+    }
+     */
 }

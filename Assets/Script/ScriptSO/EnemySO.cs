@@ -13,7 +13,7 @@ public class EnemySO : ScriptableObject
     public float atkSpeed;     // 공격 속도
 
     public int patrolSpeed;    // 일반[순찰] 이동속도(느림)
-    public int pursitSpeed;    // 추적 시 이동속도(빠름)
+    public int chaseSpeed;    // 추적 시 이동속도(빠름)
     public int runSpeed;       // 도주 시 속도(매우 빠름)
     public int detectionRange; // 탐지 범위
     public int attackRange;    // 공격 범위
