@@ -1019,7 +1019,7 @@ MonoBehaviour:
     isBossRoom: 0
   EndingStage: 0
   IsStateEnded: 0
-  stageInfo: {fileID: 0}
+  stageInfo: {fileID: 11400000, guid: 684b4b4a5b6f20a4cb5cef66b6c5921c, type: 2}
   StageInfoUI: {fileID: 0}
   tier: 0
 --- !u!4 &1798919057
