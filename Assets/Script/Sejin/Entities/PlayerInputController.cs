@@ -9,9 +9,13 @@ public class PlayerInputController : TopDownCharacterController
     private bool IsAtking = false;
 
     private Camera _camera;
+    public PlayerInput playerInput;
+    
 
     private void Awake()
     {
+        playerInput = GetComponent<PlayerInput>();
+
         _camera = Camera.main;
 
 

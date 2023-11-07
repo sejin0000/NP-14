@@ -38,6 +38,7 @@ public class AudioManager : Singleton<AudioManager>
         InitializeObject();
     }
 
+    // Dictinonary에 오디오 클립 추가
     public void InitializeData()
     {
         clipDict = new Dictionary<string, AudioClip>();
@@ -51,9 +52,10 @@ public class AudioManager : Singleton<AudioManager>
             clipDict.Add(clip.name, clip);
     }
 
+    // AudioManager의 자식으로 AudioSource 컴포넌트 오브젝트 추가, Mixer 설정
     public void InitializeObject()
     {
-        // Craete and Init(Set pararents) Object
+        
         GameObject bgmPlayer = new GameObject("BGMPlayer");
         GameObject sePlayer = new GameObject("SEPlayer");
 
@@ -63,7 +65,6 @@ public class AudioManager : Singleton<AudioManager>
         //Add Component to Objects
         BGMPlayer = bgmPlayer.AddComponent<AudioSource>();
         SEPlayer = new AudioSource[SEPlayerSize];
-
 
         BGMPlayer.outputAudioMixerGroup = mixer.FindMatchingGroups("Master/BGM")[0];
 
@@ -81,7 +82,7 @@ public class AudioManager : Singleton<AudioManager>
     /// </summary>
     /// <param name="clipName"></param>
     /// <param name="loop"></param>
-    static public void PlayBGM(string clipName, bool loop=true)
+    static public void PlayBGM(string clipName, float volume=1f, bool loop=true)
     {
         var clipDict = Instance.clipDict;
         var player = Instance.BGMPlayer;
@@ -90,6 +91,7 @@ public class AudioManager : Singleton<AudioManager>
             return;
 
         player.clip = clipDict[clipName];
+        player.volume = volume;
         player.loop = loop;
         player.Play();
     }
@@ -99,7 +101,7 @@ public class AudioManager : Singleton<AudioManager>
     /// <para>캐싱 경로는 Resources/Audio/SE/... 입니다.</para>
     /// </summary>
     /// <param name="clipName"></param>
-    static public void PlaySE(string clipName)
+    static public void PlaySE(string clipName, float volume=1f)
     {
         var clipDict = Instance.clipDict;
 
@@ -111,6 +113,7 @@ public class AudioManager : Singleton<AudioManager>
             if (!player.isPlaying)
             {
                 player.clip = clipDict[clipName];
+                player.volume = volume;
                 player.loop = false;
                 player.Play();
                 return;

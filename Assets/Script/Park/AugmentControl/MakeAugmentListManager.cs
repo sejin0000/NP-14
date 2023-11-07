@@ -1,3 +1,4 @@
+using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,17 +29,34 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
     public MakeAugmentListManager(GameObject player) 
     {
         playerObj = player;
+        
+        Debug.Log("증강리스트생성");
+    }
+    public void startset(GameObject gameobj) 
+    {
+        playerObj = gameobj;
+        makeLisk();
     }
 
     private void Awake()
     {
-        //Instance=this;
-        //DontDestroyOnLoad(this);
+         stat1 = new List<IAugment>();
+         stat2 = new List<IAugment>();
+         stat3 = new List<IAugment>();
+
+         SpecialAugment1 = new List<SpecialAugment>();
+         SpecialAugment2 = new List<SpecialAugment>();
+         SpecialAugment3 = new List<SpecialAugment>();
+
+        test = new List<SpecialAugment>();
+        test2 = new List<SpecialAugment>();
+        Prototype = new List<SpecialAugment>();
+        Instance=this;
+        DontDestroyOnLoad(this);
         StatAugmentSetting(stat1, "stat1");
         StatAugmentSetting(stat2, "stat2");
         StatAugmentSetting(stat3, "stat3");
         //playerType = playerStatHandler.CharacterType;
-        makeLisk();
         
         SpecialAugmentSetting(test, "Test111"); //@만든증강적용테스트용 
         SpecialAugmentSetting(test2, "Test222"); //@만든증강적용테스트용 
@@ -46,29 +64,38 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
         SpecialAugmentSetting(Prototype, "Test111");
 
     }
+    private void Start()
+    {
+        ResultManager.Instance.startset();
+    }
     public void makeLisk() 
     {
         //int type = Player.
+        PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out object classNum);
+        //구별값으로 이게맞나?
+        playerType = (int)classNum;
+        Debug.Log("이부분 코드 수정해야함");
+        playerType = 1;
         string Ptype = "a" ;
-        switch (playerType) //이부분 사실 모름 ㅋㅋ
+        switch (playerType)
         {
-            case 1:
-                Ptype = "Sniper";
+            case 0:
+                Ptype = "Soldier";
                 break;
 
-            case 2:
+            case 1:
                 Ptype = "Shotgun";
                 break;
 
-            case 3:
-                Ptype = "Soldier";
+            case 2:
+                Ptype = "Sniper";
                 break;
         }
         SpecialAugmentSetting(SpecialAugment1, Ptype + "1");
         SpecialAugmentSetting(SpecialAugment2, Ptype + "2");
         SpecialAugmentSetting(SpecialAugment3, Ptype + "3");
     }
-    void StatAugmentSetting(List<IAugment> list, string str)
+    public static void StatAugmentSetting(List<IAugment> list, string str)
     {
         List<Dictionary<string, object>> data = CSVReader.Read("CSVReader/" + str);
             for (var i = 0; i < data.Count; i++)
@@ -83,7 +110,7 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
 
     }
     //애는 그래서 그냥 스페셜증강만 받음
-    void SpecialAugmentSetting(List<SpecialAugment> list,string str)// 넣을 리스트 , 불러올csv파일명 csv파일을 불러와 리스트에 넣어줌
+    public static void SpecialAugmentSetting(List<SpecialAugment> list,string str)// 넣을 리스트 , 불러올csv파일명 csv파일을 불러와 리스트에 넣어줌
     {
         List<Dictionary<string, object>> data = CSVReader.Read("CSVReader/" + str);
 

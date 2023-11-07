@@ -8,7 +8,7 @@ public class AudioManagerTest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        AudioManager.PlayBGM("TestBGM", true);
+        AudioManager.PlayBGM("TestBGM");
         Fire2();
     }
 

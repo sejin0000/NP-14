@@ -10,6 +10,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     public static MainGameManager Instance;
     public enum GameStates
     {
+        Init,
         UIPlaying,
         Start,
         Playing,
@@ -85,15 +86,15 @@ public class MainGameManager : MonoBehaviourPunCallbacks
 
 
 
-    private void Start()
+    private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
         }
-        
+
         //
-        GameState = GameStates.UIPlaying;
+        GameState = GameStates.Init;
         IsStateEnded = false;
 
         stageData = new StageData
@@ -108,6 +109,9 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         {
             isPlayerInstantiated = true;
             SpawnPlayer();
+            //이아래 2줄 박민혁이넣음 게임시작시 증강뽑는거에 플레이어값 전달임
+            PlayerResultController MakeSetting = InstantiatedPlayer.GetComponent<PlayerResultController>();
+            MakeSetting.MakeManager();
             SyncPlayer();
         }
         else
@@ -124,13 +128,19 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         OnAugmentListingStateChanged += OnAugmentListingStateChangedHandler;
     }
 
+    private void Start()
+    {
+        UIManager.Instance.StartIntro();
+        GameState = GameStates.UIPlaying;
+    }
+
     private void Update()
     {
         if (GameState == GameStates.Playing)
         {
             IsStateEnded = false;
 
-            if (currentMonsterCount == 0)
+            if (currentMonsterCount < 0)
             {
                 IsStateEnded = true;
                 GameState = GameStates.End;
@@ -175,7 +185,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     }
 
     private void OnStartStateChangedHandler()
-    {;
+    {
 
 
         if (stageData.isFarmingRoom)
@@ -186,7 +196,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
             SpawnMonster();
         }
 
-        // 외부 시작 : 민혁 요청 
+        // 외부 시작 : 민혁 요청 게임 스테이지 의 시작 
         CallStartEvent();
 
         GameState = GameStates.Playing;        
