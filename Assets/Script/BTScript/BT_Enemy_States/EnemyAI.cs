@@ -51,10 +51,6 @@ public class EnemyAI : MonoBehaviour
         CreateTreeATState();
         currentHP = enemySO.hp;
         isLive = true;
-
-
-        Collider2D firstTarget = Physics2D.OverlapCircle(transform.position, viewDistance * 10, targetMask);
-        target = firstTarget.gameObject;
     }
     void Update()
     {
