@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class PlayerResultController : MonoBehaviour
 {
-    public AugmentManager augmentManager;
-    public ResultManager resultManager;
-    public MakeAugmentListManager makeAugmentListManager;
 
     public void MakeManager() 
     {
