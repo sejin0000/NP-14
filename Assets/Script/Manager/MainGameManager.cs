@@ -190,7 +190,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
 
     private void OnStartStateChangedHandler()
     {
-
+        Debug.Log("Start state 진입");
 
         if (stageData.isFarmingRoom)
         {
@@ -275,6 +275,8 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     {
         foreach (StageSO singleStageInfo in stageInfo.stageDict)
         {
+            Debug.Log("매니저의 스테이지 이름: "+GetStageName());
+            Debug.Log("SO의 스테이지 이름: "+singleStageInfo.StageName);
             if (singleStageInfo.StageName == GetStageName())
             {
                 var monsterDatas = singleStageInfo.MonsterDatas;
@@ -283,14 +285,16 @@ public class MainGameManager : MonoBehaviourPunCallbacks
                 {
                     var targetMonster = monsterStruct.monsterType;
                     var monsterCount = monsterStruct.monsterCount;
-
+                    Debug.Log(targetMonster);
+                    Debug.Log(monsterCount);
                     monsterDataList.Add(new MonsterData { monsterNum = monsterCount, monsterType = targetMonster });
                     currentMonsterCount += monsterCount;
 
                     // 해당 타입의 몬스터를 monsterCount 만큼 반복해서 spawn할 것, 
                 }
                 for (int i = 0; i < currentMonsterCount; i++) 
-                { 
+                {
+                    Debug.Log(currentMonsterCount);
                     EnemySpawn enemySpawn = new EnemySpawn();
                     enemySpawn.Spawn("몬스터1");
                 }
