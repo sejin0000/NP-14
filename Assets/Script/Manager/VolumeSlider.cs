@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public enum VolumeType
 {
@@ -33,9 +34,16 @@ public class VolumeSlider : MonoBehaviour
 
     private void Start()
     {
+        var mixer = AudioManager.Instance.Mixer;
+        string type = VolumeType.ToString() + "Vol";
+        float volume;
+
         slider.onValueChanged.AddListener(ChangeValue);
         slider.minValue = 0.0001f;
         slider.maxValue = 1.0f;
+
+        mixer.GetFloat(type, out volume);
+        slider.value = Mathf.Pow(10, (volume / 20));
     }
 
     private void ChangeValue(float value)

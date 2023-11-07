@@ -22,7 +22,6 @@ public class UIManager : LocalSingleton<UIManager>
     void Start()
     {
         Initialize();
-        MainGameManager.Instance.OnUIPlayingStateChanged += ActiveIntroUI;
     }
 
     private void Initialize()
@@ -30,16 +29,15 @@ public class UIManager : LocalSingleton<UIManager>
         GameObject obj = GameObject.Find("UI_Root");
         foreach (var layer in layer)
         {
+            layer.Initialize();
             layer.Close();
         }
     }
 
-    private void ActiveIntroUI()
+    public void StartIntro()
     {
+        Debug.Log("[UIManager] Start Intro");
         layer.First().Open();
-        layer.First().gameObject.GetComponent<UIStageTransition>().StartAnimation();
+        MainGameManager.Instance.GameState = MainGameManager.GameStates.UIPlaying;
     }
-
-
-
 }

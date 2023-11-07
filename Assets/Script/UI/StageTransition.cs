@@ -23,6 +23,12 @@ public class UIStageTransition : UIBase
     // Start is called before the first frame update
     void Start()
     {
+        
+    }
+
+    public override void Initialize()
+    {
+        Debug.Log("[UIStageTransition] initialized");
         MainGameManager.Instance.OnUIPlayingStateChanged += StartAnimation;
     }
 
@@ -33,7 +39,7 @@ public class UIStageTransition : UIBase
 
     IEnumerator MoveTower()
     {
-        yield return new WaitForSecondsRealtime(6f);
+        yield return new WaitForSecondsRealtime(5f);
 
         animator.SetBool("isRun", true);
         RectTransform towerPos = tower.transform as RectTransform; 
@@ -62,6 +68,7 @@ public class UIStageTransition : UIBase
     private void ChangeMainGameState()
     {
         MainGameManager.Instance.GameState = MainGameManager.GameStates.Playing;
+        Close();
     }
 
     public void SetFloor(int floor)
