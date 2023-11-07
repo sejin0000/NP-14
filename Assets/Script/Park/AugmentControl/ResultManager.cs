@@ -23,13 +23,12 @@ public class ResultManager : MonoBehaviour//vs코드
     public List<SpecialAugment> SpecialAugment3 = new List<SpecialAugment>();
     public List<SpecialAugment> ProtoList = new List<SpecialAugment>();
     public GameObject Player;
-    public MakeAugmentListManager ListManager;
 
-    public ResultManager(GameObject playerObj)
+    public void startset(GameObject playerObj)
     {
         Player = playerObj;
     }
-    void Start()
+    void Awake()
     {
         if (null == Instance)
         {
@@ -41,31 +40,26 @@ public class ResultManager : MonoBehaviour//vs코드
         {
             Destroy(this);
         }
-
-        ListManager = new MakeAugmentListManager(Player);
-
-
-        
-
         //PickStatList(MakeAugmentListManager.stat1);//스탯1 
         //MainGameManager.Instance.OnGameEndedEvent += Result;
 
     }
     public void startset()
     {
-        stat1 = ListManager.stat1;
+        Debug.Log("시작@@@@@@@@@@@@@@@@@@@@@@@");
+        stat1 = MakeAugmentListManager.Instance.stat1;
         Debug.Log($"스탯1 갯수{stat1.Count}");
-        stat2 = ListManager.stat2;
+        stat2 = MakeAugmentListManager.Instance.stat2;
         Debug.Log($"스탯2 갯수{stat2.Count}");
-        stat3 = ListManager.stat3;
+        stat3 = MakeAugmentListManager.Instance.stat3;
         Debug.Log($"스탯3 갯수{stat3.Count}");
-        SpecialAugment1 = ListManager.SpecialAugment1;
+        SpecialAugment1 = MakeAugmentListManager.Instance.SpecialAugment1;
         Debug.Log($"증강1 갯수{SpecialAugment1.Count}");
-        SpecialAugment2 = ListManager.SpecialAugment2;
+        SpecialAugment2 = MakeAugmentListManager.Instance.SpecialAugment2;
         Debug.Log($"증강2 갯수{SpecialAugment2.Count}");
-        SpecialAugment3 = ListManager.SpecialAugment3;
+        SpecialAugment3 = MakeAugmentListManager.Instance.SpecialAugment3;
         Debug.Log($"증강3 갯수{SpecialAugment3.Count}");
-        ProtoList = ListManager.Prototype;
+        ProtoList = MakeAugmentListManager.Instance.Prototype;
         Debug.Log($"프로토타입증강 갯수{ProtoList.Count}");
     }
     public void Result()
@@ -105,11 +99,15 @@ public class ResultManager : MonoBehaviour//vs코드
     }
     public void testCallProtoResult()//프로토타입용 변수 부르는 리스트가 만들어진 초기 버전만 들어있다
     {
+        
         PickSpecialList(SpecialAugment1);
     }
     public void testCallStatResult()
     {
         int tier = MainGameManager.Instance.tier;
+        //int tier = 1;
+        Debug.Log("여기수정해여기수정해여기수정해여기수정해여기수정해");
+        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Debug.Log("여기수정해여기수정해여기수정해여기수정해여기수정해");
         switch (tier)
         {
             case 1:

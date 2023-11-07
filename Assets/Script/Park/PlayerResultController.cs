@@ -6,25 +6,14 @@ using UnityEngine;
 public class PlayerResultController : MonoBehaviour
 {
     public AugmentManager augmentManager;
-    public ResultManager resultManager1;
-    public MakeAugmentListManager makeAugmentListManager1;
-    private void Start()
-    {
-        MakeManager();
-        Invoke("testcall", 3f);
-    }
+    public ResultManager resultManager;
+    public MakeAugmentListManager makeAugmentListManager;
 
     public void MakeManager() 
     {
-        resultManager1 = new ResultManager(this.gameObject);
-        ResultManager Prefab = Resources.Load<ResultManager>("Prefabs/ResultManager");
-        resultManager1 = Instantiate(Prefab);
-        augmentManager = new AugmentManager(this.gameObject);
+        AugmentManager.Instance.startset(this.gameObject);
+        ResultManager.Instance.startset(this.gameObject);
+        MakeAugmentListManager.Instance.startset(this.gameObject);
 
-    }
-    void testcall() 
-    {
-        resultManager1.testCallProtoResult();
-        resultManager1.testCallStatResult();
     }
 }

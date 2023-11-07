@@ -26,7 +26,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
     
 
     // Start is called before the first frame update
-    private void Start()
+    private void Awake()
     {
         if (null == Instance)
         {
@@ -38,12 +38,13 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
         {
             Destroy(this.gameObject);
         }
-        playerstatHandler = player.GetComponent<PlayerStatHandler>();
-        playerInput = player.GetComponent<PlayerInput>();
+        
     }
-    public AugmentManager(GameObject PlayerObj) 
+    public void startset(GameObject PlayerObj) 
     {
         player = PlayerObj;
+        playerstatHandler = player.GetComponent<PlayerStatHandler>();
+        playerInput = player.GetComponent<PlayerInput>();
     }
 
     private void A901()//스탯 공 티어 1

@@ -108,6 +108,9 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         {
             isPlayerInstantiated = true;
             SpawnPlayer();
+            //이아래 2줄 박민혁이넣음 게임시작시 증강뽑는거에 플레이어값 전달임
+            PlayerResultController MakeSetting = InstantiatedPlayer.GetComponent<PlayerResultController>();
+            MakeSetting.MakeManager();
             SyncPlayer();
         }
         else

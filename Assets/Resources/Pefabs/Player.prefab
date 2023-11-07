@@ -620,6 +620,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerStatHandler: {fileID: 3012830528697824806}
   topDownMovement: {fileID: 8906668803129869717}
+  playerInput: {fileID: 0}
 --- !u!114 &8906668803129869717
 MonoBehaviour:
   m_ObjectHideFlags: 0
