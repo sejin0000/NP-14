@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class UIPlayerHP : UIBase
 {
     private Slider hpGauge;
-    private PlayerInputController player;
     private PlayerStatHandler playerStats;
 
     private void Awake()
@@ -17,13 +16,12 @@ public class UIPlayerHP : UIBase
 
     private void Start()
     {
-        //PlayerDataManager.Instance.OnJoinedPlayer += Initialize;
+        playerStats = MainGameManager.Instance.InstantiatedPlayer.GetComponent<PlayerStatHandler>();
+        Initialize();
     }
 
     private void Initialize()
     {
-        //player = PlayerDataManager.Instance.Player.GetComponent<PlayerInputController>();
-        playerStats = player.playerStatHandler;
         SetValue();
     }
 
@@ -31,6 +29,6 @@ public class UIPlayerHP : UIBase
     {
         hpGauge.minValue = 0;
         hpGauge.maxValue = playerStats.HP.total;
-        hpGauge.value = 80f; //playerStats.CurHP;
+        hpGauge.value = playerStats.CurHP;
     }
 }
