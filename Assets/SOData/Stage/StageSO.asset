@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06c570c3099a5684f8d4b8b5f3922512, type: 3}
   m_Name: StageSO
   m_EditorClassIdentifier: 
-  AreaNum: 0
-  StageNum: 0
+  stageName: Stage_1_1
+  areaNum: 1
+  stageNum: 1
   MonsterDatas:
-    monsters: []
+    monsters:
+    - monsterType: "\uBAAC\uC2A4\uD1301"
+      monsterCount: 13
+    - monsterType: "\uBAAC\uC2A4\uD1302"
+      monsterCount: 11

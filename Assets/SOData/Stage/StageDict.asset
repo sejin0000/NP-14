@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85f28ab6b8f467545bba23a2e2bf2670, type: 3}
   m_Name: StageDict
   m_EditorClassIdentifier: 
-  stageDict: []
+  stageDict:
+  - {fileID: 11400000, guid: 6998111c176b7df4084c5e036ada12e1, type: 2}
+  - {fileID: 11400000, guid: 376af4f98443f5847bdddecdf0da4447, type: 2}
+  - {fileID: 11400000, guid: 91f22c5c5fe82e4409f392996fa10c10, type: 2}
