@@ -62,6 +62,8 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         public int currentArea;
         public int currentStage;
         public bool isFarmingRoom;
+        public bool isEventRoom;
+        public bool isBossRoom;
     }
 
     [Header("UI")]
@@ -77,6 +79,9 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     public event Action OnPlayingStateChanged;
     public event Action OnEndStateChanged;
     public event Action OnAugmentListingStateChanged;
+
+    [HideInInspector]
+    public int tier;
 
 
 
@@ -214,6 +219,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
 
     private void OnAugmentListingStateChangedHandler()
     {
+        tier = UnityEngine.Random.Range(1, 4);
         CallEndEvent();
         GameState = GameStates.UIPlaying;
     }
@@ -264,7 +270,8 @@ public class MainGameManager : MonoBehaviourPunCallbacks
                     monsterDataList.Add(new MonsterData { monsterNum = monsterCount, monsterType = targetMonster });
                     currentMonsterCount += monsterCount;
 
-                    // 해당 타입의 몬스터를 monsterCount 만큼 반복해서 spawn할 것,
+                    // 해당 타입의 몬스터를 monsterCount 만큼 반복해서 spawn할 것, 
+                    
                 }
             }
         }
