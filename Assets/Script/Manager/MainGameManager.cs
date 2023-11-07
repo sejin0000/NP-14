@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class MainGameManager : MonoBehaviourPunCallbacks
 {
@@ -71,7 +72,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     public GameObject StageInfoUI;
 
     [Header("Enemy")]
-    public GameObject Nav;
+    public NavMeshAgent Nav;
 
     [HideInInspector]
     public event Action OnGameStartedEvent;
