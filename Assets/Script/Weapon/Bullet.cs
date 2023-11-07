@@ -6,6 +6,8 @@ public class Bullet : MonoBehaviour
 {
     public float ATK;
     public float BulletLifeTime;
+    public float BulletSpeed = 20;
+
 
     void Start()
     {
@@ -16,7 +18,7 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector2.right * 20 * Time.deltaTime);
+        transform.Translate(Vector2.right * BulletSpeed * Time.deltaTime);
     }
 
     void Destroy()

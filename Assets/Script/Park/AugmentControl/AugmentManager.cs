@@ -2,7 +2,9 @@ using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러오는곳 AugmentManager.Instance.Invoke(code,0); 을통해 해당 증강불러옴
 {
@@ -13,24 +15,36 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
     public PhotonView PV;
 
     int atk = 5;
-    int hp = 10;
+    int hp = 8;
     float speed = 1;
-    float atkspeed = 1f;
+    float atkspeed = -1f;
     float bulletSpread = -1f;
     int cooltime = -1;
-    int critical = 1;
+    int critical = 5;
     int AmmoMax = 1;
+    public PlayerInput playerInput;
+    
 
     // Start is called before the first frame update
-    private void Start()
+    private void Awake()
     {
-        Instance = this;// 싱글톤 
-        DontDestroyOnLoad(Instance);
-        playerstatHandler = player.GetComponent<PlayerStatHandler>();
+        if (null == Instance)
+        {
+            Instance = this;
+
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+        
     }
-    AugmentManager(GameObject PLAYER) 
+    public void startset(GameObject PlayerObj) 
     {
-        player = PLAYER;
+        player = PlayerObj;
+        playerstatHandler = player.GetComponent<PlayerStatHandler>();
+        playerInput = player.GetComponent<PlayerInput>();
     }
 
     private void A901()//스탯 공 티어 1
@@ -138,13 +152,14 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
         playerstatHandler.AmmoMax.added += AmmoMax * 2;
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@공용1티어
-    private void A101()
+    private void A101()//아이언스킨
     {
-        Debug.Log("미완성");
+        playerstatHandler.defense *= 0.9f; 
     }
-    private void A102()
+    private void A102()//사거리 계수 -0.3 공 계수 +0.3
     {
-        Debug.Log("미완성");
+        playerstatHandler.BulletLifeTime.coefficient *= 0.7f;
+        playerstatHandler.ATK.coefficient *= 1.3f;
     }
     private void A103()
     {
@@ -177,16 +192,16 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
         float x = (player.transform.localScale.x * 0.75f);//절반
         float y = (player.transform.localScale.y * 0.75f);//절반
         player.transform.localScale = new Vector2(x, y);
-        playerstatHandler.HP.coefficient -= 0.1f;
-        playerstatHandler.Speed.coefficient += 0.2f;
+        playerstatHandler.HP.coefficient *= 1.1f;
+        playerstatHandler.Speed.coefficient *= 0.9f;
     }
     private void A110()//대형화 // 테스트안해봄
     {
         float x = (player.transform.localScale.x * 1.25f);
         float y = (player.transform.localScale.y * 1.25f);
         player.transform.localScale = new Vector2(x, y);
-        playerstatHandler.HP.coefficient += 0.5f;
-        playerstatHandler.Speed.coefficient += 0.2f;
+        playerstatHandler.HP.coefficient *= 1.5f;
+        playerstatHandler.Speed.coefficient *= 1.2f;
     }
     private void A111()
     {
@@ -216,13 +231,32 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
     {
         Debug.Log("미완성");
     }
-    private void A118()
+    private void A118()        //고장내기 mk3 1,2,3 공용 증강 이기에 좀 남다른 코드임  현재 10 /30 /60 총합 100확률을 가지고 있습죠
     {
-        Debug.Log("미완성");
+        if (player.GetComponent<BreakDownMk>()) //만약 BreakDownMk를 가지고 있다면
+        {
+            BreakDownMk Mk3 = player.GetComponent<BreakDownMk>();
+            Mk3.PercentUp(10);
+        }
+        else
+        {
+            player.AddComponent<BreakDownMk>();
+            BreakDownMk Mk3 = player.GetComponent<BreakDownMk>();
+            Mk3.PercentUp(10);
+        }
     }
-    private void A119()
+    private void A119()// 반전 공격방향 , 이동방향이 반대가되고 공체 대폭 증가 == 현재 이동방향 반대만 구현
     {
-        Debug.Log("미완성");
+        if ("Player" == playerInput.currentActionMap.name)
+        {
+            playerInput.SwitchCurrentActionMap("Player1");
+        }
+        else 
+        {
+            playerInput.SwitchCurrentActionMap("Player");
+        }
+        playerstatHandler.HP.coefficient *= 1.5f;
+        playerstatHandler.ATK.coefficient *=1.5f;
     }
     private void A120()
     {
@@ -249,7 +283,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
     }
     private void A125()
     {
-        Debug.Log("미완성");
+        player.AddComponent<A0125>();
     }
     private void A126()
     {
@@ -288,25 +322,26 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
     {
         Debug.Log("미완성");
     }
-    private void A207()
+    private void A207()//하이리스크 로우리턴
     {
-        Debug.Log("미완성");
+        playerstatHandler.defense = playerstatHandler.defense * 0.5f;
+        playerstatHandler.ATK.coefficient *= 2f;
     }
     private void A208()
     {
         Debug.Log("미완성");
     }
-    private void A209()
+    private void A209()//재정비 구르기시 재장전 수행
     {
-        Debug.Log("미완성");
+        player.AddComponent<A0209>();
     }
     private void A210()
     {
         Debug.Log("미완성");
     }
-    private void A211()
+    private void A211()//피해복구 일정확률로 일정 체력 회복
     {
-        Debug.Log("미완성");
+        player.AddComponent<A0211>();
     }
     private void A212()
     {
@@ -336,9 +371,20 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
     {
         Debug.Log("미완성");
     }
-    private void A219()
+    private void A219() //고장내기mk2 1,2,3 공용 증강 이기에 좀 남다른 코드임 30
     {
-        Debug.Log("미완성");
+        //고장내기 mk3 1,2,3 공용 증강 이기에 좀 남다른 코드임 
+        if (player.GetComponent<BreakDownMk>()) //만약 BreakDownMk를 가지고 있다면
+        {
+            BreakDownMk Mk3 = player.GetComponent<BreakDownMk>();
+            Mk3.PercentUp(30);
+        }
+        else
+        {
+            player.AddComponent<BreakDownMk>();
+            BreakDownMk Mk3 = player.GetComponent<BreakDownMk>();
+            Mk3.PercentUp(30);
+        }
     }
     private void A220()
     {
@@ -348,22 +394,34 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
     {
         Debug.Log("미완성");
     }
-    private void A222()
+    [PunRPC]
+    private void A222()//재정비 구르기후 회복
     {
-        Debug.Log("미완성");
+        //if()
+        player.AddComponent<A0222>();
     }
     private void A223()
     {
         Debug.Log("미완성");
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@공용 3티어
-    private void A301()
+    private void A301()//고장내기 mk3 1,2,3 공용 증강 이기에 좀 남다른 코드임 
     {
-        Debug.Log("미완성");
+        if (player.GetComponent<BreakDownMk>()) //만약 BreakDownMk를 가지고 있다면
+        {
+            BreakDownMk Mk3 = player.GetComponent<BreakDownMk>();
+            Mk3.PercentUp(60);
+        }
+        else
+        {
+            player.AddComponent<BreakDownMk>();
+            BreakDownMk Mk3 = player.GetComponent<BreakDownMk>();
+            Mk3.PercentUp(60);
+        }
     }
-    private void A302()
+    private void A302()//인피니티불렛 탄창 9999 획득시점의 총알 값 계산하여 9999로 맞춰줌 많든 적든 같음
     {
-        Debug.Log("미완성");
+        playerstatHandler.AmmoMax.added += 9999 - playerstatHandler.AmmoMax.total;
     }
     private void A303()
     {
@@ -373,9 +431,9 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
     {
         Debug.Log("미완성");
     }
-    private void A305()
+    private void A305()//멀티샷 샷2배
     {
-        Debug.Log("미완성");
+        playerstatHandler.LaunchVolume.coefficient *= 2;
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@스나이퍼 1티어
     private void A1101()
@@ -482,9 +540,18 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
     {
         Debug.Log("미완성");
     }
-    private void A2105()
+    private void A2105()// 반전 공격방향 , 이동방향이 반대가되고 공체 대폭 증가 == 현재 이동방향 반대만 구현
     {
-        Debug.Log("미완성");
+        if ("Player" == playerInput.currentActionMap.name)
+        {
+            playerInput.SwitchCurrentActionMap("Player1");
+        }
+        else
+        {
+            playerInput.SwitchCurrentActionMap("Player");
+        }
+        playerstatHandler.HP.coefficient *= 1.5f;
+        playerstatHandler.ATK.coefficient *= 1.5f;
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@솔져 2티어
     private void A2201()// 빈틈 만들기 //기본 공격 시 구르기 쿨타임이 감소합니다.

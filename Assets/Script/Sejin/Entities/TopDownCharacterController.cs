@@ -33,7 +33,7 @@ public class TopDownCharacterController : MonoBehaviour
             }
             else
             {
-                //Debug.Log(playerStatHandler.CurAmmo);
+                Debug.Log(playerStatHandler.CurAmmo);
                 //Debug.Log("공격 할 수 없습니다");
             }
         }
@@ -56,7 +56,14 @@ public class TopDownCharacterController : MonoBehaviour
 
     public void CallSkillEvent()
     {
-        OnSkillEvent?.Invoke();
+        if(playerStatHandler.CanSkill)
+        {
+            OnSkillEvent?.Invoke();
+        }
+    }
+    public void CallEndSkillEvent()
+    {
+        OnEndSkillEvent?.Invoke();
     }
 
     public void CallRollEvent()

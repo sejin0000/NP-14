@@ -147,6 +147,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ATK: 0
   BulletLifeTime: 0
+  BulletSpeed: 20
 --- !u!114 &7087018188176629489
 MonoBehaviour:
   m_ObjectHideFlags: 0

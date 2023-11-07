@@ -15,14 +15,14 @@ MonoBehaviour:
   atk: 10
   hp: 100
   unitSpeed: 3
-  atkSpeed: 0.3
+  atkSpeed: 3
   unitScale: 1
   launchVolume: 1
   bulletSpread: 20
   bulletLifeTime: 2
   BulletSprite: {fileID: -1196469647, guid: 32dde5c63421a4043acc0dcb87475936, type: 3}
   reloadCoolTime: 2
-  skillCoolTime: 0
+  skillCoolTime: 4
   rollCoolTime: 5
   ammoMax: 30
   characterClass: 0

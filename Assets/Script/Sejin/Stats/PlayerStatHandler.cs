@@ -7,6 +7,7 @@ using UnityEngine.U2D.Animation;
 
 public class PlayerStatHandler : MonoBehaviour
 {
+    public Action<float> HitEvent2;
     public Action HitEvent;
 
     [SerializeField] private PlayerSO playerStats;
@@ -23,6 +24,8 @@ public class PlayerStatHandler : MonoBehaviour
     public Stats LaunchVolume;        // 한번의 발사의 발사량
     public Stats Critical;            // 크리티컬
     public Stats AmmoMax;             // 장탄수
+    public float defense;
+
 
     [HideInInspector] public SpriteLibraryAsset PlayerSprite; // 스프라이트
     [HideInInspector] public SpriteLibraryAsset WeaponSprite; // 스프라이트
@@ -37,7 +40,7 @@ public class PlayerStatHandler : MonoBehaviour
 
 
     private float curHP;
-    [HideInInspector] public float CurHP   { get { return curHP;  } set { if (value > HP.total) { curHP = HP.total; } HitEvent?.Invoke(); } }               //현재   체력
+    [HideInInspector] public float CurHP   { get { return curHP;  } set { if (value > HP.total) { curHP = HP.total; } } }               //현재   체력
 
     private float curAmmo;
     [HideInInspector] public float CurAmmo { get { return curAmmo;  } set { if (value > AmmoMax.total) curAmmo = AmmoMax.total; curAmmo = value; } } //현재   잔탄
@@ -80,11 +83,20 @@ public class PlayerStatHandler : MonoBehaviour
 
         PlayerSpriteCase.spriteLibraryAsset = PlayerSprite;
         WeaponSpriteCase.spriteLibraryAsset = WeaponSprite;
+        defense = 1;
     }
 
     public void CharacterChange(PlayerSO playerData)
     {
         playerStats = playerData;
         Awake();
+    }
+
+    public void Damage(float damage)
+    {
+        damage = damage * defense;
+        CurHP -= damage;
+        HitEvent?.Invoke();
+        HitEvent2?.Invoke(damage);//이게 값이 필요한경우와 필요 없는경우가 있는데 한개로 할수가 있는지 모르겠음 일단 이렇게함
     }
 }

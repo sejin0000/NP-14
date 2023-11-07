@@ -24,7 +24,7 @@ public class Bullet1 : MonoBehaviour
     public PlayerStatHandler playerStatHandler;
     public GameObject player;
 
-    public event Action BulletSetting;//총알 세팅할때 이벤트를 넣어서 추가효과 부여 하는방식으로 가는건 어떨까싶어서 만들어만둠
+    //public event Action BulletSetting;//총알 세팅할때 이벤트를 넣어서 추가효과 부여 하는방식으로 가는건 어떨까싶어서 만들어만둠
     private void Awake()
     {
         canAngle = false;//문제생기면플레이어총에 스탯추가해서받기
