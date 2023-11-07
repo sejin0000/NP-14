@@ -24,13 +24,18 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
     // Start is called before the first frame update
     private void Start()
     {
-        Instance = this;// 싱글톤 
-        DontDestroyOnLoad(Instance);
+        player = this.gameObject;
+        if (null == Instance)
+        {
+            Instance = this;
+
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
         playerstatHandler = player.GetComponent<PlayerStatHandler>();
-    }
-    AugmentManager(GameObject PLAYER) 
-    {
-        player = PLAYER;
     }
 
     private void A901()//스탯 공 티어 1

@@ -1,3 +1,4 @@
+using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,6 +29,8 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
     public MakeAugmentListManager(GameObject player) 
     {
         playerObj = player;
+        
+        Debug.Log("증강리스트생성");
     }
 
     private void Awake()
@@ -49,19 +52,21 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
     public void makeLisk() 
     {
         //int type = Player.
+        PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out object classNum);
+        playerType = (int)classNum;
         string Ptype = "a" ;
         switch (playerType) //이부분 사실 모름 ㅋㅋ
         {
-            case 1:
-                Ptype = "Sniper";
+            case 0:
+                Ptype = "Soldier";
                 break;
 
-            case 2:
+            case 1:
                 Ptype = "Shotgun";
                 break;
 
-            case 3:
-                Ptype = "Soldier";
+            case 2:
+                Ptype = "Sniper";
                 break;
         }
         SpecialAugmentSetting(SpecialAugment1, Ptype + "1");

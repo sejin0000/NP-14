@@ -22,10 +22,23 @@ public class ResultManager : MonoBehaviour//vs코드
     public List<SpecialAugment> ProtoList = new List<SpecialAugment>();
     public GameObject Player;
     public MakeAugmentListManager ListManager;
+
+    public ResultManager(GameObject playerObj)
+    {
+        Player = playerObj;
+    }
     void Start()
     {
-        Instance = this;// 싱글톤 
-        DontDestroyOnLoad(Instance);
+        if (null == Instance)
+        {
+            Instance = this;
+
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
 
         MakeAugmentListManager listManager = new MakeAugmentListManager(Player);
 
@@ -39,7 +52,20 @@ public class ResultManager : MonoBehaviour//vs코드
         ProtoList = ListManager.Prototype;
 
         //PickStatList(MakeAugmentListManager.stat1);//스탯1 
+        GameManager1.Instance.OnStageEnd += Result;//@@@@@@@@@@@@@@@@@@@@@@@@@여기넣기
 
+    }
+    public void Result()
+    {
+        if (GameManager1.Instance.IsNormalStage)
+        {
+            CallStatResult();
+        }
+        else 
+        {
+            //CallSpecialResult();이거 쓰는게 정상 아래가 프로토타입
+            CallProtoResult();
+        }
     }
     public void CallProtoResult()//프로토타입용 변수 부르는 리스트가 만들어진 초기 버전만 들어있다
     {
