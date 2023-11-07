@@ -70,6 +70,9 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     [Header("UI")]
     public GameObject StageInfoUI;
 
+    [Header("Enemy")]
+    public GameObject Nav;
+
     [HideInInspector]
     public event Action OnGameStartedEvent;
     public event Action OnGameEndedEvent;
