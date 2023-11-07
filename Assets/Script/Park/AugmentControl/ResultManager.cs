@@ -1,3 +1,4 @@
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,34 +13,71 @@ public class ResultManager : MonoBehaviour//vs코드
     public static ResultManager Instance;
     List<SpecialAugment> tempList = new List<SpecialAugment>();
     bool IsStat;
-    public List<IAugment> stat1 = new List<IAugment>();
-    public List<IAugment> stat2 = new List<IAugment>();
-    public List<IAugment> stat3 = new List<IAugment>();
+    public List<IAugment> stat1;
+    public List<IAugment> stat2;
+    public List<IAugment> stat3;
+
 
     public List<SpecialAugment> SpecialAugment1 = new List<SpecialAugment>();
     public List<SpecialAugment> SpecialAugment2 = new List<SpecialAugment>();
     public List<SpecialAugment> SpecialAugment3 = new List<SpecialAugment>();
     public List<SpecialAugment> ProtoList = new List<SpecialAugment>();
     public GameObject Player;
-    public MakeAugmentListManager ListManager;
-    void Start()
+
+    public void startset(GameObject playerObj)
     {
-        Instance = this;// 싱글톤 
-        DontDestroyOnLoad(Instance);
+        Player = playerObj;
+        MainGameManager.Instance.OnGameEndedEvent += Result;
+    }
+    void Awake()
+    {
+        if (null == Instance)
+        {
+            Instance = this;
 
-        MakeAugmentListManager listManager = new MakeAugmentListManager(Player);
-
-
-        stat1 = ListManager.stat1;
-        stat2 = ListManager.stat2;
-        stat3 = ListManager.stat3;
-        SpecialAugment1 = ListManager.SpecialAugment1;
-        SpecialAugment2 = ListManager.SpecialAugment2;
-        SpecialAugment3 = ListManager.SpecialAugment3;
-        ProtoList = ListManager.Prototype;
-
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            Destroy(this);
+        }
         //PickStatList(MakeAugmentListManager.stat1);//스탯1 
 
+
+    }
+    private void Start()
+    {
+
+    }
+    public void startset()
+    {
+        Debug.Log("시작@@@@@@@@@@@@@@@@@@@@@@@");
+        stat1 = MakeAugmentListManager.Instance.stat1;
+        Debug.Log($"스탯1 갯수{stat1.Count}");
+        stat2 = MakeAugmentListManager.Instance.stat2;
+        Debug.Log($"스탯2 갯수{stat2.Count}");
+        stat3 = MakeAugmentListManager.Instance.stat3;
+        Debug.Log($"스탯3 갯수{stat3.Count}");
+        SpecialAugment1 = MakeAugmentListManager.Instance.SpecialAugment1;
+        Debug.Log($"증강1 갯수{SpecialAugment1.Count}");
+        SpecialAugment2 = MakeAugmentListManager.Instance.SpecialAugment2;
+        Debug.Log($"증강2 갯수{SpecialAugment2.Count}");
+        SpecialAugment3 = MakeAugmentListManager.Instance.SpecialAugment3;
+        Debug.Log($"증강3 갯수{SpecialAugment3.Count}");
+        ProtoList = MakeAugmentListManager.Instance.Prototype;
+        Debug.Log($"프로토타입증강 갯수{ProtoList.Count}");
+    }
+    public void Result()
+    {
+        if (MainGameManager.Instance.stageData.isFarmingRoom)
+        {
+            CallStatResult();
+        }
+        else 
+        {
+            //CallSpecialResult();이거 쓰는게 정상 아래가 프로토타입
+            CallProtoResult();
+        }
     }
     public void CallProtoResult()//프로토타입용 변수 부르는 리스트가 만들어진 초기 버전만 들어있다
     {
@@ -47,8 +85,8 @@ public class ResultManager : MonoBehaviour//vs코드
     }
     public void CallStatResult() 
     {
-        int tier = GameManager1.Instance.tier;
-            switch (tier) 
+        int tier = MainGameManager.Instance.tier;
+        switch (tier) 
             {
                 case 1:
                     PickStatList(stat1);
@@ -64,9 +102,36 @@ public class ResultManager : MonoBehaviour//vs코드
 
             }
     }
+    public void testCallProtoResult()//프로토타입용 변수 부르는 리스트가 만들어진 초기 버전만 들어있다
+    {
+        
+        PickSpecialList(SpecialAugment1);
+    }
+    public void testCallStatResult()
+    {
+        int tier = MainGameManager.Instance.tier;
+        //int tier = 1;
+        Debug.Log("여기수정해여기수정해여기수정해여기수정해여기수정해");
+        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Debug.Log("여기수정해여기수정해여기수정해여기수정해여기수정해");
+        switch (tier)
+        {
+            case 1:
+                PickStatList(stat1);
+                break;
+
+            case 2:
+                PickStatList(stat2);
+                break;
+
+            case 3:
+                PickStatList(stat3);
+                break;
+
+        }
+    }
     public void CallSpecialResult()//
     {
-        int tier = GameManager1.Instance.tier;
+        int tier = MainGameManager.Instance.tier;
         switch (tier)
         {
             case 1:
