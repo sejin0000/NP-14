@@ -24,6 +24,7 @@ public class PlayerStatHandler : MonoBehaviour
     public Stats Critical;            // 크리티컬
     public Stats AmmoMax;             // 장탄수
 
+
     [HideInInspector] public SpriteLibraryAsset PlayerSprite; // 스프라이트
     [HideInInspector] public SpriteLibraryAsset WeaponSprite; // 스프라이트
     [HideInInspector] public Sprite BulletSprite; // 스프라이트

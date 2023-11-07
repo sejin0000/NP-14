@@ -1,23 +1,63 @@
 using Photon.Pun;
 using Photon.Realtime;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum GameState
+{
+    Start,
+    Playing,
+    End,
+}
 public class MainGameManager : MonoBehaviourPunCallbacks
 {
+    public static MainGameManager Instance;
+
     [Header("ClientPlayer")]
     public GameObject InstantiatedPlayer;
 
     [Header("PlayerData")]
     public PlayerDataSetting characterSetting;
 
+    [Header("GameData")]
+    public MonsterData monsterData;
+    [Space(10f)]
+    public StageData stageData;
+    [Space(10f)]
+    public GameState gameState;
+
+    [Serializable]
+    public struct MonsterData
+    {
+        public int monsterNum;
+        public string monsterType;
+    }
+
+    [Serializable]
+    public struct StageData
+    {
+        public int currentStage;
+        public bool isFarmingRoom;
+    }
+
+
+    [HideInInspector]
+    public event Action OnGameStartedEvent;
+    public event Action OnGameEndedEvent;
+
+
+
     private void Start()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
         SpawnPlayer();
         SyncPlayer();
-        PlayerResultController MakeSetting = InstantiatedPlayer.GetComponent<PlayerResultController>();//@@@@@@@@@추가
-        MakeSetting.MakeManager();//@@@@@@@@@@@@@@@@@추가
+        CallStartEvent();
     }
     private void SpawnPlayer()
     {
@@ -45,4 +85,16 @@ public class MainGameManager : MonoBehaviourPunCallbacks
             InstantiatedPlayer.GetComponent<PhotonView>().RPC("ApplyClassChange", RpcTarget.Others, (int)classNum, viewID);
         }
     }
+
+    #region Events
+    public void CallStartEvent()
+    {
+        OnGameStartedEvent?.Invoke();
+    }
+
+    public void CallEndEvent()
+    {
+        OnGameEndedEvent?.Invoke();
+    }
+    #endregion
 }
