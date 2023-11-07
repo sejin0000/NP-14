@@ -104,6 +104,17 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         };
 
         isPlayerInstantiated = false;
+        if (!isPlayerInstantiated)
+        {
+            isPlayerInstantiated = true;
+            SpawnPlayer();
+            SyncPlayer();
+        }
+        else
+        {
+            InstantiatedPlayer.SetActive(true);
+        }
+
 
         // 임시로 EndingStage 는 3까지
         EndingStage = 3;
@@ -165,16 +176,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
 
     private void OnStartStateChangedHandler()
     {;
-        if (!isPlayerInstantiated)
-        {
-            isPlayerInstantiated = true;
-            SpawnPlayer();
-            SyncPlayer();
-        }
-        else
-        {
-            InstantiatedPlayer.SetActive(true);
-        }
+
 
         if (stageData.isFarmingRoom)
         {
@@ -192,7 +194,8 @@ public class MainGameManager : MonoBehaviourPunCallbacks
 
     private void OnEndStateChangedHandler()
     {
-
+        //
+        InstantiatedPlayer.SetActive(false);
         // 스테이지 끝났을 때 결과 패널 같은 거 보여주고,,
 
         // 게임 엔딩 여부 파악
