@@ -97,7 +97,7 @@ public class CoolTimeController : MonoBehaviour
 
     private void AttackCoolTime()
     {
-        float coolTime = controller.playerStatHandler.AtkSpeed.total;
+        float coolTime = 1 / controller.playerStatHandler.AtkSpeed.total;
         controller.playerStatHandler.CanFire = false;
         curAttackCool = coolTime;
     }
@@ -111,9 +111,12 @@ public class CoolTimeController : MonoBehaviour
         float coolTime = controller.playerStatHandler.SkillCoolTime.total;
         controller.playerStatHandler.CanSkill = false;
         curSkillCool = coolTime;
+        Debug.Log("스킬 쿨 타임 시작");
+
     }
     private void EndSkillCoolTime()
     {
         controller.playerStatHandler.CanSkill = true;
+        Debug.Log("스킬 쿨 타임 종료");
     }
 }
