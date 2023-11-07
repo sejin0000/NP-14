@@ -16,6 +16,8 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     {
         SpawnPlayer();
         SyncPlayer();
+        PlayerResultController MakeSetting = InstantiatedPlayer.GetComponent<PlayerResultController>();//@@@@@@@@@추가
+        MakeSetting.MakeManager();//@@@@@@@@@@@@@@@@@추가
     }
     private void SpawnPlayer()
     {

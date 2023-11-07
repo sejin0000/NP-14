@@ -2,6 +2,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러오는곳 AugmentManager.Instance.Invoke(code,0); 을통해 해당 증강불러옴
@@ -24,7 +25,6 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
     // Start is called before the first frame update
     private void Start()
     {
-        player = this.gameObject;
         if (null == Instance)
         {
             Instance = this;
@@ -36,6 +36,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
             Destroy(this.gameObject);
         }
         playerstatHandler = player.GetComponent<PlayerStatHandler>();
+    }
+    public AugmentManager(GameObject PlayerObj) 
+    {
+        player = PlayerObj;
     }
 
     private void A901()//스탯 공 티어 1
@@ -147,9 +151,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
     {
         Debug.Log("미완성");
     }
-    private void A102()
+    private void A102()//사거리 계수 -0.3 공 계수 +0.3
     {
-        Debug.Log("미완성");
+        playerstatHandler.BulletLifeTime.coefficient -= 0.3f;
+        playerstatHandler.ATK.coefficient += 0.3f;
     }
     private void A103()
     {
@@ -221,9 +226,19 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
     {
         Debug.Log("미완성");
     }
-    private void A118()
+    private void A118()        //고장내기 mk3 1,2,3 공용 증강 이기에 좀 남다른 코드임  현재 10 /30 /60 총합 100확률을 가지고 있습죠
     {
-        Debug.Log("미완성");
+        if (player.GetComponent<BreakDownMk>()) //만약 BreakDownMk를 가지고 있다면
+        {
+            BreakDownMk Mk3 = player.GetComponent<BreakDownMk>();
+            Mk3.PercentUp(10);
+        }
+        else
+        {
+            player.AddComponent<BreakDownMk>();
+            BreakDownMk Mk3 = player.GetComponent<BreakDownMk>();
+            Mk3.PercentUp(10);
+        }
     }
     private void A119()
     {
@@ -254,7 +269,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
     }
     private void A125()
     {
-        Debug.Log("미완성");
+        player.AddComponent<A0125>();
     }
     private void A126()
     {
@@ -341,9 +356,20 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
     {
         Debug.Log("미완성");
     }
-    private void A219()
+    private void A219() //고장내기mk2 1,2,3 공용 증강 이기에 좀 남다른 코드임 30
     {
-        Debug.Log("미완성");
+        //고장내기 mk3 1,2,3 공용 증강 이기에 좀 남다른 코드임 
+        if (player.GetComponent<BreakDownMk>()) //만약 BreakDownMk를 가지고 있다면
+        {
+            BreakDownMk Mk3 = player.GetComponent<BreakDownMk>();
+            Mk3.PercentUp(30);
+        }
+        else
+        {
+            player.AddComponent<BreakDownMk>();
+            BreakDownMk Mk3 = player.GetComponent<BreakDownMk>();
+            Mk3.PercentUp(30);
+        }
     }
     private void A220()
     {
@@ -353,22 +379,34 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
     {
         Debug.Log("미완성");
     }
-    private void A222()
+    [PunRPC]
+    private void A222()//재정비 구르기후 회복
     {
-        Debug.Log("미완성");
+        //if()
+        player.AddComponent<A0222>();
     }
     private void A223()
     {
         Debug.Log("미완성");
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@공용 3티어
-    private void A301()
+    private void A301()//고장내기 mk3 1,2,3 공용 증강 이기에 좀 남다른 코드임 
     {
-        Debug.Log("미완성");
+        if (player.GetComponent<BreakDownMk>()) //만약 BreakDownMk를 가지고 있다면
+        {
+            BreakDownMk Mk3 = player.GetComponent<BreakDownMk>();
+            Mk3.PercentUp(60);
+        }
+        else
+        {
+            player.AddComponent<BreakDownMk>();
+            BreakDownMk Mk3 = player.GetComponent<BreakDownMk>();
+            Mk3.PercentUp(60);
+        }
     }
-    private void A302()
+    private void A302()//인피니티불렛 탄창 9999 획득시점의 총알 값 계산하여 9999로 맞춰줌 많든 적든 같음
     {
-        Debug.Log("미완성");
+        playerstatHandler.AmmoMax.added += 9999 - playerstatHandler.AmmoMax.total;
     }
     private void A303()
     {
@@ -378,9 +416,9 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
     {
         Debug.Log("미완성");
     }
-    private void A305()
+    private void A305()//멀티샷 샷2배
     {
-        Debug.Log("미완성");
+        playerstatHandler.LaunchVolume.coefficient *= 2;
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@스나이퍼 1티어
     private void A1101()
