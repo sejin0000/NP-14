@@ -22,7 +22,7 @@ public class Player2Skill : Skill
     }
     public override void SkillStart()
     {
-        pv.RPC("CreateAshield",RpcTarget.AllBuffered);
+        pv.RPC("CreateAshield",RpcTarget.AllBuffered,MainGameManager.Instance.InstantiatedPlayer.GetPhotonView().ViewID);
         Invoke("SkillEnd", 3);
         base.SkillStart();
     }
@@ -34,7 +34,7 @@ public class Player2Skill : Skill
     }
 
     [PunRPC]
-    private void CreateAshield()
+    private void CreateAshield(int viewID)
     {
         Debug.Log("스킬 사용 완료");
 
