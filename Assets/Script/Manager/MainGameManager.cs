@@ -10,6 +10,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     public static MainGameManager Instance;
     public enum GameStates
     {
+        Init,
         UIPlaying,
         Start,
         Playing,
@@ -85,15 +86,15 @@ public class MainGameManager : MonoBehaviourPunCallbacks
 
 
 
-    private void Start()
+    private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
         }
-        
+
         //
-        GameState = GameStates.UIPlaying;
+        GameState = GameStates.Init;
         IsStateEnded = false;
 
         stageData = new StageData
@@ -127,13 +128,19 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         OnAugmentListingStateChanged += OnAugmentListingStateChangedHandler;
     }
 
+    private void Start()
+    {
+        UIManager.Instance.StartIntro();
+        GameState = GameStates.UIPlaying;
+    }
+
     private void Update()
     {
         if (GameState == GameStates.Playing)
         {
             IsStateEnded = false;
 
-            if (currentMonsterCount == 0)
+            if (currentMonsterCount < 0)
             {
                 IsStateEnded = true;
                 GameState = GameStates.End;
@@ -178,7 +185,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     }
 
     private void OnStartStateChangedHandler()
-    {;
+    {
 
 
         if (stageData.isFarmingRoom)

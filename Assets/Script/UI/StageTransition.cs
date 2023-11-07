@@ -34,6 +34,7 @@ public class UIStageTransition : UIBase
 
     public void StartAnimation()
     {
+        UIManager.Instance.StartIntro();
         StartCoroutine(MoveTower());
     }
 
@@ -67,6 +68,7 @@ public class UIStageTransition : UIBase
 
     private void ChangeMainGameState()
     {
+        StopCoroutine(MoveTower());
         MainGameManager.Instance.GameState = MainGameManager.GameStates.Playing;
         Close();
     }
