@@ -41,14 +41,28 @@ public class PlayerInputController : TopDownCharacterController
     public void OnAttack(InputValue value)
     {
         Debug.Log("OnAttack" + value.ToString());
-
-        if(!IsAtking && !EventSystem.current.IsPointerOverGameObject())
+        if (EventSystem.current != null)
         {
-            IsAtking = true;
+
+            if (!IsAtking && !EventSystem.current.IsPointerOverGameObject())
+            {
+                IsAtking = true;
+            }
+            else
+            {
+                IsAtking = false;
+            }
         }
         else
         {
-            IsAtking = false;
+            if (!IsAtking)
+            {
+                IsAtking = true;
+            }
+            else
+            {
+                IsAtking = false;
+            }
         }
 
         CallAttackEvent(IsAtking);

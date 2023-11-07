@@ -4,31 +4,35 @@ using UnityEngine;
 
 public class Skill : MonoBehaviour
 {
-    public int curSkillCool;
+    //버추얼 함수는 오버라이딩 후 꼭 베이스를 호출 해야함
 
+    private TopDownCharacterController controller;
+    private PlayerStatHandler playerStats;
 
-    private void Update()
+    private void Awake()
     {
-        
+        controller = GetComponent<TopDownCharacterController>();
+        playerStats = GetComponent<PlayerStatHandler>();
+    }
+
+    private void Start()
+    {
+        controller.OnSkillEvent += SkillStart;
+        controller.OnEndSkillEvent += SkillEnd;
     }
 
 
-    private void SkillStart()
+    public virtual void SkillStart()
     {
-        
+        controller.playerStatHandler.CanSkill = false;
+        Debug.Log("스킬 발동");
+        Invoke("SkillEnd",3);
     }
 
 
 
-    private void SkillEnd()
+    public virtual void SkillEnd()
     {
-
+        Debug.Log("스킬 종료");
     }
-
-
-
-
-
-
-
 }
