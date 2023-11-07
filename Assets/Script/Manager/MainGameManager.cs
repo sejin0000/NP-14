@@ -284,7 +284,11 @@ public class MainGameManager : MonoBehaviourPunCallbacks
                     currentMonsterCount += monsterCount;
 
                     // 해당 타입의 몬스터를 monsterCount 만큼 반복해서 spawn할 것, 
-                    
+                }
+                for (int i = 0; i < currentMonsterCount; i++) 
+                { 
+                    EnemySpawn enemySpawn = new EnemySpawn();
+                    enemySpawn.Spawn("몬스터1");
                 }
             }
         }
