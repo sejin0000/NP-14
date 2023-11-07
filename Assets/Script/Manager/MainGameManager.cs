@@ -140,7 +140,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         {
             IsStateEnded = false;
 
-            if (currentMonsterCount < 0)
+            if (currentMonsterCount == 0)
             {
                 IsStateEnded = true;
                 GameState = GameStates.End;
