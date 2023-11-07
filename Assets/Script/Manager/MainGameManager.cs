@@ -292,10 +292,14 @@ public class MainGameManager : MonoBehaviourPunCallbacks
 
                     // 해당 타입의 몬스터를 monsterCount 만큼 반복해서 spawn할 것, 
                 }
+                // SpawnPoint 인스턴스화
+                GameObject go = Instantiate(Resources.Load<GameObject>("Prefabs/Enemy/SpawnPoint"));
+                go.transform.position = new Vector3(5, 5, 0);
+
                 for (int i = 0; i < currentMonsterCount; i++) 
                 {
                     Debug.Log(currentMonsterCount);
-                    EnemySpawn enemySpawn = new EnemySpawn();
+                    EnemySpawn enemySpawn = go.GetComponent<EnemySpawn>();
                     enemySpawn.Spawn("몬스터1");
                 }
             }

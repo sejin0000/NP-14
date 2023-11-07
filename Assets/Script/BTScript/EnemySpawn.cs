@@ -14,6 +14,6 @@ public class EnemySpawn : MonoBehaviour
             {
                 Instantiate(enemys[i]);
             }
-        }   
+        }
     }
 }
