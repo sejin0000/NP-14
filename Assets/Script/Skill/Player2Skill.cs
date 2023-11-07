@@ -22,7 +22,8 @@ public class Player2Skill : Skill
     }
     public override void SkillStart()
     {
-        pv.RPC("CreateAshield",RpcTarget.AllBuffered,MainGameManager.Instance.InstantiatedPlayer.GetPhotonView().ViewID);
+        int viewID = MainGameManager.Instance.InstantiatedPlayer.GetPhotonView().ViewID;
+        pv.RPC("CreateAshield",RpcTarget.AllBuffered, viewID);
         Invoke("SkillEnd", 3);
         base.SkillStart();
     }
