@@ -33,7 +33,7 @@ public class TopDownCharacterController : MonoBehaviour
             }
             else
             {
-                //Debug.Log(playerStatHandler.CurAmmo);
+                Debug.Log(playerStatHandler.CurAmmo);
                 //Debug.Log("공격 할 수 없습니다");
             }
         }
