@@ -1,3 +1,4 @@
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ public class ResultManager : MonoBehaviour//vsÄÚµå
     public List<IAugment> stat1;
     public List<IAugment> stat2;
     public List<IAugment> stat3;
+
 
     public List<SpecialAugment> SpecialAugment1 = new List<SpecialAugment>();
     public List<SpecialAugment> SpecialAugment2 = new List<SpecialAugment>();
@@ -37,19 +39,26 @@ public class ResultManager : MonoBehaviour//vsÄÚµå
         }
         else
         {
-            Destroy(this.gameObject);
+            Destroy(this);
         }
 
-        MakeAugmentListManager listManager = new MakeAugmentListManager(Player);
+        ListManager = new MakeAugmentListManager(Player);
 
 
         stat1 = ListManager.stat1;
+        Debug.Log($"½ºÅÈ1 °¹¼ö{stat1.Count}");
         stat2 = ListManager.stat2;
+        Debug.Log($"½ºÅÈ2 °¹¼ö{stat2.Count}");
         stat3 = ListManager.stat3;
+        Debug.Log($"½ºÅÈ3 °¹¼ö{stat3.Count}");
         SpecialAugment1 = ListManager.SpecialAugment1;
+        Debug.Log($"Áõ°­1 °¹¼ö{SpecialAugment1.Count}");
         SpecialAugment2 = ListManager.SpecialAugment2;
+        Debug.Log($"Áõ°­2 °¹¼ö{SpecialAugment2.Count}");
         SpecialAugment3 = ListManager.SpecialAugment3;
+        Debug.Log($"Áõ°­3 °¹¼ö{SpecialAugment3.Count}");
         ProtoList = ListManager.Prototype;
+        Debug.Log($"ÇÁ·ÎÅäÅ¸ÀÔÁõ°­ °¹¼ö{ProtoList.Count}");
 
         //PickStatList(MakeAugmentListManager.stat1);//½ºÅÈ1 
         GameManager1.Instance.OnStageEnd += Result;//@@@@@@@@@@@@@@@@@@@@@@@@@¿©±â³Ö±â

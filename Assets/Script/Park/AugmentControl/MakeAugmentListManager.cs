@@ -35,9 +35,21 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
 
     private void Awake()
     {
-        //Instance=this;
-        //DontDestroyOnLoad(this);
+         stat1 = new List<IAugment>();
+         stat2 = new List<IAugment>();
+         stat3 = new List<IAugment>();
+
+         SpecialAugment1 = new List<SpecialAugment>();
+         SpecialAugment2 = new List<SpecialAugment>();
+         SpecialAugment3 = new List<SpecialAugment>();
+
+        test = new List<SpecialAugment>();
+        test2 = new List<SpecialAugment>();
+        Prototype = new List<SpecialAugment>();
+        Instance=this;
+        DontDestroyOnLoad(this);
         StatAugmentSetting(stat1, "stat1");
+        Debug.Log($"메이크리스트의갯수{stat1.Count}");
         StatAugmentSetting(stat2, "stat2");
         StatAugmentSetting(stat3, "stat3");
         //playerType = playerStatHandler.CharacterType;
@@ -53,6 +65,7 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
     {
         //int type = Player.
         PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out object classNum);
+        //구별값으로 이게맞나?
         playerType = (int)classNum;
         string Ptype = "a" ;
         switch (playerType)

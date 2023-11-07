@@ -565,6 +565,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerStats: {fileID: 11400000, guid: f71119c9b3c3aa14ca2eaeb140545241, type: 2}
+  defense: 0
   PlayerSprite: {fileID: 0}
   WeaponSprite: {fileID: 0}
   BulletSprite: {fileID: 0}
@@ -617,6 +618,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerStatHandler: {fileID: 3012830528697824806}
   topDownMovement: {fileID: 8906668803129869717}
+  playerInput: {fileID: 0}
 --- !u!114 &8906668803129869717
 MonoBehaviour:
   m_ObjectHideFlags: 0
