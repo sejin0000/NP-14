@@ -478,6 +478,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InstantiatedPlayer: {fileID: 0}
   characterSetting: {fileID: 0}
+  monsterData:
+    monsterNum: 0
+    monsterType: 
+  stageData:
+    currentStage: 0
+    isFarmingRoom: 0
+  gameState: 2
 --- !u!4 &1798919057
 Transform:
   m_ObjectHideFlags: 0
