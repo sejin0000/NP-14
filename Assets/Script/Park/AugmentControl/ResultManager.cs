@@ -27,6 +27,7 @@ public class ResultManager : MonoBehaviour//vs코드
     public void startset(GameObject playerObj)
     {
         Player = playerObj;
+        MainGameManager.Instance.OnGameEndedEvent += Result;
     }
     void Awake()
     {
@@ -41,7 +42,11 @@ public class ResultManager : MonoBehaviour//vs코드
             Destroy(this);
         }
         //PickStatList(MakeAugmentListManager.stat1);//스탯1 
-        //MainGameManager.Instance.OnGameEndedEvent += Result;
+
+
+    }
+    private void Start()
+    {
 
     }
     public void startset()
