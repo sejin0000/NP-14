@@ -71,7 +71,9 @@ public class ResultManager : MonoBehaviour//vs코드
     {
         if (MainGameManager.Instance.stageData.isFarmingRoom)
         {
-            CallStatResult();
+            //CallStatResult();애가 정상임 아래는 테스트용으로 그뭐냐 스페셜증강뽑을려고넣어둠 수정필
+            Debug.Log("이부분 수정");//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+            CallProtoResult();
         }
         else 
         {
