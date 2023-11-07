@@ -16,13 +16,13 @@ MonoBehaviour:
   type: 0
   atk: 22
   hp: 22
-  atkSpeed: 22
-  wanderSpeed: 2
-  pursitSpeed: 22
+  atkSpeed: 3
+  patrolSpeed: 5
+  chaseSpeed: 2
+  runSpeed: 2
   detectionRange: 22
-  attackRange: 22
+  attackRange: 2
   patrolRange: 22
-  actionSpeed: 22
   dropGold: 22
   unitScale: 2
-  actionTime: 3
+  actionTime: 5

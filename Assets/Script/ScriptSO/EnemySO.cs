@@ -8,17 +8,17 @@ public class EnemySO : ScriptableObject
     [Header("EnemySO")]
     public string enemyName;   // 이름
     public EnemyType type;     // 적 유형(BT기반 행동 제어를 할거라 필요없으면 지우기)
-    public int atk;            // 공격력
-    public int hp;             // 체력
+    public float atk;            // 공격력
+    public float hp;             // 체력
     public float atkSpeed;     // 공격 속도
 
-    public int wanderSpeed;    // 일반[순찰] 이동속도(느림)
-    public int pursitSpeed;    // 추적 시 이동속도(빠름)
+    public int patrolSpeed;    // 일반[순찰] 이동속도(느림)
+    public int chaseSpeed;    // 추적 시 이동속도(빠름)
+    public int runSpeed;       // 도주 시 속도(매우 빠름)
     public int detectionRange; // 탐지 범위
     public int attackRange;    // 공격 범위
     public int patrolRange;    // 순찰 범위
 
-    public int actionSpeed;    // 행동 속도(패턴 텀)
     public int dropGold;       // 주는 재화의 양
 
     public int unitScale;      // 유닛 크기
