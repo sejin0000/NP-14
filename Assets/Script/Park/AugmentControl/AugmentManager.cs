@@ -462,22 +462,23 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A1107_1()//영역전개
+    private void A1107_1(GameObject go, int viewID)//영역전개
     {
-        if (PV.IsMine)
-        {
-            GameObject Prefabs = Resources.Load<GameObject>("AugmentList/A1107");
-
-            GameObject fire = PhotonNetwork.Instantiate("AugmentList/A1107", player.transform.position, Quaternion.identity);
-            A1107 a1107 = fire.GetComponent<A1107>();
-            PV.RPC("a1107.Init", RpcTarget.All, playerstatHandler, player);
-        }
-
+        PhotonView photonView = PhotonView.Find(viewID);
+        go.transform.SetParent(photonView.transform);
+        
     }
-        private void A1107() 
-        {
-            PV.RPC("A1107_1", RpcTarget.All);
-        }
+    private void A1107() 
+    {
+        GameObject Prefabs = Resources.Load<GameObject>("AugmentList/A1107");
+
+        GameObject fire = Instantiate(Prefabs);        
+        fire.transform.SetParent(player.transform);
+        fire.transform.position = Vector3.zero;
+        Debug.Log($"시전 플레이어 ID : {player.GetPhotonView().ViewID}");
+        int viewID = player.GetPhotonView().ViewID;
+        PV.RPC("A1107_1", RpcTarget.Others, fire, viewID);
+    }
 
 //    [PunRPC]
 //    private void A1107_1(GameObject fire, int ViewID)
