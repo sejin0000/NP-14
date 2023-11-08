@@ -38,6 +38,11 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         Sniper,
     }
 
+    public enum RoomType
+    {
+        MainGameRoom,
+        TestRoom,
+    }
     [System.Serializable]
     public class LobbyUI
     {
@@ -88,6 +93,10 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     [Header("ETC")]
     public GameObject playerDataSetting;
     public GameObject playerContainer;
+
+    [Header("TestRoom")]
+    public GameObject TestPanel;
+    public Button CharacterSelectButtonInTestPanel;
 
     private GameObject instantiatedPlayer;
     private int viewID;
@@ -161,6 +170,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
                 CharacterSelectButtonInLobby.onClick.AddListener(playerInfo.OnCharacterButtonClicked);
                 CharacterSelectButtonInRoom.onClick.AddListener(playerInfo.OnCharacterButtonClicked);
+                CharacterSelectButtonInTestPanel.onClick.AddListener(playerInfo.OnCharacterButtonClicked);
             }
 
             var PlayerData = playerDataSetting.GetComponent<PlayerDataSetting>();  
@@ -191,6 +201,11 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         string roomName = $"RandRoom{Random.Range(1,200)}";
         RoomOptions options = new RoomOptions { MaxPlayers = 3 };
         PhotonNetwork.CreateRoom(roomName, options, null);
+    }
+
+    public override void OnCreatedRoom()
+    {
+            
     }
 
     public override void OnJoinedRoom()
