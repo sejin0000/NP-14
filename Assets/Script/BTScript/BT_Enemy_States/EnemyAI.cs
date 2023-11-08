@@ -14,7 +14,7 @@ using Photon.Pun;
 
 
 //Enemy에 필요한 컴포넌트들 + 기타 요소들 여기에 다 추가
-public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
+public class EnemyAI : MonoBehaviourPunCallbacks
 {
     private BTRoot TreeAIState;
 
@@ -58,30 +58,12 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         CreateTreeATState();
         currentHP = enemySO.hp;
         isLive = true;
-
-        if (PV.IsMine)
-        {
-            nav.enabled = true;
-        }
-        else
-        {
-            nav.enabled = false;
-        }
     }
     void Update()
     {
-        if (PV.IsMine)
-        {
             //AI트리의 노드 상태를 매 프레임 마다 얻어옴
             TreeAIState.Tick();
             View();
-        }
-        else
-        {
-            // 네트워크를 통해 수신한 위치 및 회전값으로 Enemy의 위치 및 회전을 업데이트합니다.
-            transform.position = Vector3.MoveTowards(transform.position, networkedPosition, Time.deltaTime * 8);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, networkedRotation, Time.deltaTime * 100);
-        }
     }
 
 
@@ -256,21 +238,5 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     private void SetStateColor()
     {
         spriteRenderer.color = Color.red;
-    }
-
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-            // 데이터를 전송
-            stream.SendNext(transform.position);
-            stream.SendNext(transform.rotation);
-        }
-        else if (stream.IsReading)
-        {
-            // 데이터를 수신
-            networkedPosition = (Vector3)stream.ReceiveNext();
-            networkedRotation = (Quaternion)stream.ReceiveNext();
-        }
     }
 }
