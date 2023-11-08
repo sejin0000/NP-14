@@ -43,8 +43,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
 
     public PhotonView PV;
-    private Vector3 networkedPosition;
-    private Quaternion networkedRotation;
 
     void Awake()
     {
@@ -256,8 +254,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         else if (stream.IsReading)
         {
             // 데이터를 수신
-            networkedPosition = (Vector2)stream.ReceiveNext();
-            networkedRotation = (Quaternion)stream.ReceiveNext();
+            transform.position = (Vector2)stream.ReceiveNext();
+            transform.rotation = (Quaternion)stream.ReceiveNext();
         }
     }
 }
