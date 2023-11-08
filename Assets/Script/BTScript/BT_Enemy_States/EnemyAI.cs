@@ -85,6 +85,7 @@ public class EnemyAI : MonoBehaviour
     public void DecreaseHP(float damage)
     {
         //
+        SetStateColor();
         currentHP -= damage;    
 
 
@@ -217,5 +218,11 @@ public class EnemyAI : MonoBehaviour
 
         //작업이 끝난 Selector를 루트 노드에 붙이기
         TreeAIState.AddChild(BTMainSelector);
+    }
+
+
+    private void SetStateColor()
+    {
+        spriteRenderer.color = Color.red;
     }
 }

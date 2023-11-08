@@ -95,6 +95,6 @@ public class EnemyState_Chase : BTAction
 
     private void SetStateColor()
     {
-        enemyAI.spriteRenderer.color = Color.red;
+        enemyAI.spriteRenderer.color = Color.yellow;
     }
 }

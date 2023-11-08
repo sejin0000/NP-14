@@ -21,6 +21,7 @@ public class EnemyState_Dead : BTAction
     public override void Initialize()
     {
         MainGameManager.Instance.currentMonsterCount -= 1;
+        //골드 여기에
         //사망 시 파티클이나 기타 효과 여기에
     }
 
