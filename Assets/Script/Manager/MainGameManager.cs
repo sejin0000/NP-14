@@ -123,6 +123,9 @@ public class MainGameManager : MonoBehaviourPunCallbacks
             InstantiatedPlayer.SetActive(true);
         }
 
+        //네브 생성 임시-우민규
+        Nav = Instantiate(Resources.Load<GameObject>("Prefabs/Enemy/NavMesh2D").GetComponent<NavMeshAgent>());
+
 
         // 임시로 EndingStage 는 3까지
         EndingStage = 3;

@@ -40,7 +40,7 @@ public class EnemyAI : MonoBehaviour
     public bool isAttaking;          
     void Awake()
     {
-        MainGameManager.Instance.Nav = nav;
+        nav = MainGameManager.Instance.Nav;
 
         nav = GetComponent<NavMeshAgent>();
         anim = GetComponentInChildren<Animator>();
