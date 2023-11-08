@@ -26,7 +26,7 @@ public class BreakDownMk : MonoBehaviour
         int random = Random.Range(0, 100);
         if (percent > random) 
         {
-            weaponSystem.BS();
+            weaponSystem.Shooting();
         }
     }
 
