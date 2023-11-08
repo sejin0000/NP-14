@@ -23,7 +23,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     int critical = 5;
     int AmmoMax = 1;
     public PlayerInput playerInput;
-    
+
 
     // Start is called before the first frame update
     private void Awake()
@@ -38,9 +38,9 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         {
             Destroy(this.gameObject);
         }
-        
+
     }
-    public void startset(GameObject PlayerObj) 
+    public void startset(GameObject PlayerObj)
     {
         player = PlayerObj;
         playerstatHandler = player.GetComponent<PlayerStatHandler>();
@@ -154,7 +154,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@공용1티어
     private void A101()//아이언스킨
     {
-        playerstatHandler.defense *= 0.9f; 
+        playerstatHandler.defense *= 0.9f;
     }
     private void A102()//사거리 계수 -0.3 공 계수 +0.3
     {
@@ -251,12 +251,12 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         {
             playerInput.SwitchCurrentActionMap("Player1");
         }
-        else 
+        else
         {
             playerInput.SwitchCurrentActionMap("Player");
         }
         playerstatHandler.HP.coefficient *= 1.5f;
-        playerstatHandler.ATK.coefficient *=1.5f;
+        playerstatHandler.ATK.coefficient *= 1.5f;
     }
     private void A120()
     {
@@ -452,7 +452,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     {
         Debug.Log("미완성");
     }
-    private void A1105() 
+    private void A1105()
     {
         Debug.Log("미완성");
 
@@ -476,9 +476,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         A1107 a1107 = fire.GetComponent<A1107>();
         a1107.Init(playerstatHandler);
     }
-//    private void A1107() 
-//    {
-//        PV.RPC("A1107_1", RpcTarget.All);
+        private void A1107() 
+        {
+            PV.RPC("A1107_1", RpcTarget.All);
+        }
 
 //    [PunRPC]
 //    private void A1107_1(GameObject fire, int ViewID)
