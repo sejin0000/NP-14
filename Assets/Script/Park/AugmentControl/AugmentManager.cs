@@ -461,6 +461,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
     {
         Debug.Log("미완성");
     }
+
     [PunRPC]
     private void A1107_1()//영역전개
     {
@@ -479,7 +480,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
     }
     private void A1107() 
     {
-        PV.RPC("A1107",RpcTarget.All);
+        PV.RPC("A1107_1",RpcTarget.All);
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@스나이퍼 2티어
     private void A1201()
