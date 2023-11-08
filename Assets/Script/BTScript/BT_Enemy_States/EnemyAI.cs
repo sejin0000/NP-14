@@ -157,7 +157,6 @@ public class EnemyAI : MonoBehaviour
             {
                 isChase = true;
 
-                Debug.Log("시야 내에 들어옴");
                 Debug.DrawRay(transform.position, directionToPlayer * viewDistance, Color.red);              
             }
         }

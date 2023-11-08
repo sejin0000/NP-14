@@ -48,8 +48,6 @@ public class EnemyState_Chase : BTAction
 
         currentTime -= Time.deltaTime;
 
-        Debug.Log(currentTime);
-
         if (currentTime <= 0.3f)
         {
             enemyAI.isChase = false;
