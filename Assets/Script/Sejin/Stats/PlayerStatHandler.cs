@@ -40,7 +40,24 @@ public class PlayerStatHandler : MonoBehaviour
 
 
     private float curHP;
-    [HideInInspector] public float CurHP   { get { return curHP;  } set { if (value > HP.total) { curHP = HP.total; } } }               //현재   체력
+    [HideInInspector] public float CurHP   
+    {
+        get 
+        {
+            return curHP;  
+        } 
+        set 
+        { 
+            if (value > HP.total) 
+            {
+                curHP = HP.total; 
+            }
+            else
+            {
+                curHP = value;
+            }
+        }
+    }               //현재   체력
 
     private float curAmmo;
     [HideInInspector] public float CurAmmo { get { return curAmmo;  } set { if (value > AmmoMax.total) curAmmo = AmmoMax.total; curAmmo = value; } } //현재   잔탄
