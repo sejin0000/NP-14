@@ -22,19 +22,21 @@ public class EnemyState_Attack : BTAction
 
         enemyAI = owner.GetComponent<EnemyAI>();
         enemySO = enemyAI.enemySO;
-        target = enemyAI.target;
         atkSpeed = enemySO.atkSpeed;       
     }
 
     public override void Initialize()
     {
         currentTime = atkSpeed;
-        SetStateColor();        
+        SetStateColor();
+
+        target = enemyAI.target;
     }
 
     public override Status Update()
     {
         SetAim();
+
         currentTime -= Time.deltaTime;
 
         if (currentTime <= 0)
