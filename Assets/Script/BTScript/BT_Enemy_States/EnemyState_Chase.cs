@@ -25,7 +25,6 @@ public class EnemyState_Chase : BTAction
         enemyAI = owner.GetComponent<EnemyAI>();
         nav = owner.GetComponent<NavMeshAgent>();
         enemySO = enemyAI.enemySO;
-        target = enemyAI.target;
 
         chaseTime = enemySO.actionTime;
         chaseSpeed = enemySO.chaseSpeed;
@@ -45,7 +44,7 @@ public class EnemyState_Chase : BTAction
 
     public override Status Update()
     {
-        OnChase();
+        target = enemyAI.target;
 
         currentTime -= Time.deltaTime;
 
@@ -54,6 +53,7 @@ public class EnemyState_Chase : BTAction
         if (currentTime <= 0.3f)
         {
             enemyAI.isChase = false;
+            enemyAI.target = null;
             return Status.BT_Failure;
         }
 
@@ -62,6 +62,7 @@ public class EnemyState_Chase : BTAction
             return Status.BT_Success;
 
 
+        OnChase();
 
         return Status.BT_Running;
     }
