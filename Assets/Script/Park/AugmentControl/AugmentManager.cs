@@ -529,10 +529,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A2101_1()//노련함 = 스킬사용후 공속 증가 테스트 ㄴ
     {
-        //player.AddComponent<A2101>();
-        int viewID = player.GetPhotonView().ViewID;
-        PhotonView photonView = PhotonView.Find(viewID);
-        photonView.gameObject.AddComponent<A2101>();
+        player.AddComponent<A2101>();
+        //int viewID = player.GetPhotonView().ViewID;
+        //PhotonView photonView = PhotonView.Find(viewID);
+        //photonView.gameObject.AddComponent<A2101>();
 
     }
     private void A2101() 
