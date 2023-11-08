@@ -470,7 +470,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
 
             GameObject fire = PhotonNetwork.Instantiate("AugmentList/A1107", player.transform.position, Quaternion.identity);
             A1107 a1107 = fire.GetComponent<A1107>();
-            a1107.Init(playerstatHandler,player);
+            PV.RPC("a1107.Init", RpcTarget.All, playerstatHandler, player);
         }
 
     }

@@ -1,19 +1,30 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
-public class A1107 : MonoBehaviour//ÁÖº¯Èú
+public class A1107 : MonoBehaviourPun//ÁÖº¯Èú
 {
     float time = 0;
     List<PlayerStatHandler> target= new List<PlayerStatHandler>();
     int healP=2;
     public GameObject Player;
-
+    PhotonView pv;
+    private void Start()
+    {
+        pv = GetComponent<PhotonView>();
+    }
+    [PunRPC]
     public void Init(PlayerStatHandler playerstatHandler, GameObject player)
     {
-        target.Add(playerstatHandler);
-        transform.SetParent(player.transform);
+        if (pv.IsMine) 
+        {
+            target.Add(playerstatHandler);
+            transform.SetParent(player.transform);
+        }
+
     }
     
 
