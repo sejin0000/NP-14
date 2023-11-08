@@ -14,7 +14,7 @@ using Photon.Pun;
 
 
 //Enemy에 필요한 컴포넌트들 + 기타 요소들 여기에 다 추가
-public class EnemyAI : MonoBehaviourPunCallbacks
+public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 {
     private BTRoot TreeAIState;
 
@@ -58,12 +58,21 @@ public class EnemyAI : MonoBehaviourPunCallbacks
         CreateTreeATState();
         currentHP = enemySO.hp;
         isLive = true;
+
+        if (photonView.AmOwner)
+        {
+            nav.enabled = true;
+        }
+        else
+        {
+            nav.enabled = false;
+        }
     }
     void Update()
     {
-            //AI트리의 노드 상태를 매 프레임 마다 얻어옴
-            TreeAIState.Tick();
-            View();
+        //AI트리의 노드 상태를 매 프레임 마다 얻어옴
+        TreeAIState.Tick();
+        View();
     }
 
 
@@ -73,14 +82,10 @@ public class EnemyAI : MonoBehaviourPunCallbacks
         if (collision.gameObject.tag == "Bullet")
         {
             isChase = true;
-
-            //로컬 변경
             DecreaseHP(collision.transform.GetComponent<Bullet>().ATK);
 
             Debug.Log("현재 체력 :" + currentHP);
-
-            //실제 동기화
-            photonView.RPC("DecreaseHP", RpcTarget.All, collision.transform.GetComponent<Bullet>().ATK);
+            //TODO게이지 이미지에 hp수치 적용
         }
     }
 
@@ -91,7 +96,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks
 
         if (currentHP > enemySO.hp)
             currentHP = enemySO.hp;
-        //게이지 이미지에 수치 적용
     }
 
     [PunRPC]
@@ -104,7 +108,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks
 
         if (currentHP <= 0)
             isLive = false;
-        //게이지 이미지에 수치 적용
     }
 
     public void DestroyEnemy()
@@ -238,5 +241,23 @@ public class EnemyAI : MonoBehaviourPunCallbacks
     private void SetStateColor()
     {
         spriteRenderer.color = Color.red;
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            // 데이터를 전송
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+
+            Debug.Log("위치 데이터 전송");
+        }
+        else if (stream.IsReading)
+        {
+            // 데이터를 수신
+            networkedPosition = (Vector2)stream.ReceiveNext();
+            networkedRotation = (Quaternion)stream.ReceiveNext();
+        }
     }
 }
