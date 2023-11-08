@@ -22,7 +22,7 @@ public class EnemyState_Chase_ChaseCondition: BTCondition
     //오너의 상태를 받아오고, 그에따른 Status 업데이트를 실행
     public override Status Update()
     {
-        if(enemyAI.isChase || enemyAI.target != null)
+        if(enemyAI.isChase && enemyAI.target != null)
             return Status.BT_Success;
         else
             return Status.BT_Failure;
