@@ -306,7 +306,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
                     {
                         Debug.Log(currentMonsterCount);
                         EnemySpawn enemySpawn = go.GetComponent<EnemySpawn>();
-                        enemySpawn.Spawn("∏ÛΩ∫≈Õ1");
+                        enemySpawn.Spawn();
                     }
                 }
             }
