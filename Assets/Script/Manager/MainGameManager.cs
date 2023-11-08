@@ -72,7 +72,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     public GameObject StageInfoUI;
 
     [Header("Enemy")]
-    public NavMeshAgent Nav;
+    public GameObject Nav;
 
     [HideInInspector]
     public event Action OnGameStartedEvent;
@@ -122,6 +122,9 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         {
             InstantiatedPlayer.SetActive(true);
         }
+
+        //네브 생성 임시-우민규
+        Nav = Instantiate(Resources.Load<GameObject>("Prefabs/Enemy/NavMesh2D"));
 
 
         // 임시로 EndingStage 는 3까지

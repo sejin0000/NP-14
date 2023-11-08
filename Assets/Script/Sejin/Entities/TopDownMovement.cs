@@ -10,7 +10,6 @@ public class TopDownMovement : MonoBehaviour
 
     private Vector2 _movemewtDirection = Vector2.zero;
     private Rigidbody2D _rigidbody2D;
-    private Stats moveSpeed;
     private Vector2 mousePos;
 
     [HideInInspector]public bool isRoll = false;
@@ -26,7 +25,6 @@ public class TopDownMovement : MonoBehaviour
         _controller.OnMoveEvent += Move;
         _controller.OnRollEvent += Roll;
         _controller.OnLookEvent += MousePos;
-        moveSpeed = _controller.playerStatHandler.Speed;
     }
 
     private void FixedUpdate()
@@ -48,12 +46,12 @@ public class TopDownMovement : MonoBehaviour
 
     private void ApplyMovment(Vector2 direction)
     {
-        direction = direction * moveSpeed.total;
+        direction = direction * _controller.playerStatHandler.Speed.total;
         _rigidbody2D.velocity = direction;
     }
     private void ApplyRolling(Vector2 direction)
     {
-        direction = direction * moveSpeed.total * 2f;
+        direction = direction * _controller.playerStatHandler.Speed.total * 2f;
         _rigidbody2D.velocity = direction;
     }
 

@@ -30,10 +30,10 @@ public class TopDownCharacterController : MonoBehaviour
             {
                 OnAttackEvent?.Invoke();
                 playerStatHandler.CurAmmo--;
+                Debug.Log(playerStatHandler.CurAmmo);
             }
             else
             {
-                Debug.Log(playerStatHandler.CurAmmo);
                 //Debug.Log("공격 할 수 없습니다");
             }
         }
