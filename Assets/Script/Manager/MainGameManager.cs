@@ -194,6 +194,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     private void OnStartStateChangedHandler()
     {
         Debug.Log("Start state ÁøÀÔ");
+        InstantiatedPlayer.SetActive(true);
 
         if (stageData.isFarmingRoom)
         {
