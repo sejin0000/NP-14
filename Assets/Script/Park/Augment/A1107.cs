@@ -11,7 +11,7 @@ public class A1107 : MonoBehaviour//ÁÖº¯Èú
     public GameObject Player;
     private void Start()
     {
-        Player = MainGameManager.Instance.InstantiatedPlayer;
+        Player = ResultManager.Instance.Player;
         transform.SetParent(Player.transform);
     }
     public void Init(PlayerStatHandler playerstatHandler)

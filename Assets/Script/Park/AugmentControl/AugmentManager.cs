@@ -466,15 +466,13 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     {
         if (PV.IsMine)
         {
+            GameObject Prefabs = Resources.Load<GameObject>("AugmentList/A1107");
+
+            GameObject fire = PhotonNetwork.Instantiate("AugmentList/A1107", player.transform.position, Quaternion.identity);
+            A1107 a1107 = fire.GetComponent<A1107>();
+            a1107.Init(playerstatHandler);
         }
-        GameObject Prefabs = Resources.Load<GameObject>("AugmentList/A1107");
 
-        GameObject fire = PhotonNetwork.Instantiate("AugmentList/A1107", player.transform.position, Quaternion.identity);
-        int viewID = player.GetPhotonView().ViewID;
-        photonView.RPC("A1107_1", RpcTarget.All, fire, viewID);
-
-        A1107 a1107 = fire.GetComponent<A1107>();
-        a1107.Init(playerstatHandler);
     }
         private void A1107() 
         {
