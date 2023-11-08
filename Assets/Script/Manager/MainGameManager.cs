@@ -42,9 +42,9 @@ public class MainGameManager : MonoBehaviourPunCallbacks
             if (gameState != value)
             {
                 gameState = value;
-                OnStateChanged(value); 
+                OnStateChanged(value);
             }
-        ;}
+        ; }
     }
     public bool IsStateEnded;
     [Space(10f)]
@@ -87,6 +87,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
 
     [HideInInspector]
     public int tier;
+    public int Ready;
 
 
 
@@ -177,16 +178,16 @@ public class MainGameManager : MonoBehaviourPunCallbacks
                 OnUIPlayingStateChanged?.Invoke();
                 break;
             case GameStates.Start:
-                OnStartStateChanged?.Invoke();                
+                OnStartStateChanged?.Invoke();
                 break;
-            case GameStates.Playing:                
-                OnPlayingStateChanged?.Invoke();                
+            case GameStates.Playing:
+                OnPlayingStateChanged?.Invoke();
                 break;
             case GameStates.End:
-                OnEndStateChanged?.Invoke();                
+                OnEndStateChanged?.Invoke();
                 break;
-            case GameStates.AugmentListing:                
-                OnAugmentListingStateChanged?.Invoke();                
+            case GameStates.AugmentListing:
+                OnAugmentListingStateChanged?.Invoke();
                 break;
         }
     }
@@ -207,7 +208,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         // 외부 시작 : 민혁 요청 게임 스테이지 의 시작 
         CallStartEvent();
 
-        GameState = GameStates.Playing;        
+        GameState = GameStates.Playing;
     }
 
     private void OnEndStateChangedHandler()
@@ -226,7 +227,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
 
             // 다음 상태 진입
             GameState = GameStates.AugmentListing;
-            
+
         }
         else
         {
@@ -241,8 +242,16 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     private void OnAugmentListingStateChangedHandler()
     {
         tier = UnityEngine.Random.Range(1, 4);
+        Ready = 0;
         CallEndEvent();
         //GameState = GameStates.UIPlaying;
+    }
+    public void AllReady() 
+    {
+        if (Ready == PhotonNetwork.CurrentRoom.MaxPlayers) 
+        {
+            GameState = GameStates.UIPlaying;
+        }
     }
 
     #endregion
@@ -309,6 +318,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
             }
         }
     }
+
 
     private string GetStageName()
     {
