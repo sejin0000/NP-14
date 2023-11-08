@@ -462,19 +462,24 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A1107()
+    private void A1107()//영역전개
     {
         if (PV.IsMine)
         {
             GameObject Prefabs = Resources.Load<GameObject>("AugmentList/A1107");
-            //없으면 로드하는걸로 리소스 로드 = 불러오기가 엄청무거움 =시작때 처음할것, 혹은 최소한만 플레이하게 장치를 해둘것
-            //프리팹은 한번만 로드한다 스타트 혹은 어웨이크에서 로드해서 관리할것
+
+
             GameObject fire = Instantiate(Prefabs, player.transform);
-            //fire.transform.SetParent(player.transform);
+
+            fire.transform.SetParent(player.transform);
+
             A1107 a1107 = fire.GetComponent<A1107>();
             a1107.Init(playerstatHandler);
-            // 난 지금까지 가서 값을 받아왔는데 생성할때 값을 줘서 관리를 할것 -
         }
+    }
+    private void A1107_1() 
+    {
+        PV.RPC("A1107",RpcTarget.All);
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@스나이퍼 2티어
     private void A1201()
