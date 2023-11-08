@@ -1,19 +1,13 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySpawn : MonoBehaviour
+public class EnemySpawn : MonoBehaviourPun
 {
-    [SerializeField] private GameObject[] enemys;
-
-    public void Spawn(string name)
+    public void Spawn()
     {
-        for (int i = 0; i < enemys.Length; i++)
-        {
-            if (enemys[i].GetComponent<EnemyAI>().enemySO.enemyName == name)
-            {
-                Instantiate(enemys[i]);
-            }
-        }
+        string testEnemy = "Pefabs/Enemy/Test_Enemy";
+        PhotonNetwork.Instantiate(testEnemy, transform.position, Quaternion.identity);
     }
 }
