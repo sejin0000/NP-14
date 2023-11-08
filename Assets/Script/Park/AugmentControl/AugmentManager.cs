@@ -45,6 +45,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         player = PlayerObj;
         playerstatHandler = player.GetComponent<PlayerStatHandler>();
         playerInput = player.GetComponent<PlayerInput>();
+        PV = GetComponent<PhotonView>();
     }
 
     private void A901()//스탯 공 티어 1
