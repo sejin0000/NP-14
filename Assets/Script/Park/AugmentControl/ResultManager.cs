@@ -1,3 +1,4 @@
+using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,10 +26,13 @@ public class ResultManager : MonoBehaviour//vs코드
     public List<SpecialAugment> ProtoList = new List<SpecialAugment>();
     public GameObject Player;
 
+    public PhotonView pv;
+
     public void startset(GameObject playerObj)
     {
         Player = playerObj;
         MainGameManager.Instance.OnGameEndedEvent += Result;
+        pv = GetComponent<PhotonView>();
     }
     void Awake()
     {
@@ -204,11 +208,20 @@ public class ResultManager : MonoBehaviour//vs코드
                 tempList.Remove(tempList[index]);
             }
             picklist[i].gameObject.SetActive(false);
-
+            
         }
-        MainGameManager.Instance.GameState = GameStates.UIPlaying;
+        pv.RPC("ready",RpcTarget.All);
         //여기에 메인 게임매니저 콜 
     }
 
-
+    [PunRPC]
+    public void ready() 
+    {
+        if (pv.IsMine) 
+        {
+            MainGameManager.Instance.Ready++;
+            Debug.Log($"현재 레디 수 {MainGameManager.Instance.Ready}");
+            MainGameManager.Instance.AllReady();
+        }
+    }
 }
