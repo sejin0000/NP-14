@@ -198,6 +198,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         if (stageData.isFarmingRoom)
         {
             // 대충 맵 가져다 놓는 메서드
+
             // 대충 소환하는 메서드
             SpawnMonster();
         }
