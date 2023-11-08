@@ -466,6 +466,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     {
         PhotonView photonView = PhotonView.Find(viewID);
         go.transform.SetParent(photonView.transform);
+        go.transform.localPosition = Vector3.zero;
         
     }
     private void A1107() 
@@ -474,10 +475,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
 
         GameObject fire = Instantiate(Prefabs);        
         fire.transform.SetParent(player.transform);
-        fire.transform.position = Vector3.zero;
+        fire.transform.localPosition = Vector3.zero;
         Debug.Log($"시전 플레이어 ID : {player.GetPhotonView().ViewID}");
         int viewID = player.GetPhotonView().ViewID;
-        PV.RPC("A1107_1", RpcTarget.Others, fire, viewID);
+        photonView.RPC("A1107_1", RpcTarget.Others, fire, viewID);
     }
 
 //    [PunRPC]
