@@ -7,7 +7,7 @@ public class EnemySpawn : MonoBehaviourPun
 {
     public void Spawn()
     {
-        string testEnemy = "Pefabs/Enemy/Test_Enemy";
+        string testEnemy = "Prefabs/Enemy/Test_Enemy";
         PhotonNetwork.Instantiate(testEnemy, transform.position, Quaternion.identity);
     }
 }
