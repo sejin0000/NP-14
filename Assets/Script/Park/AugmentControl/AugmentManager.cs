@@ -462,7 +462,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A1107()//영역전개
+    private void A1107_1()//영역전개
     {
         if (PV.IsMine)
         {
@@ -477,7 +477,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
             a1107.Init(playerstatHandler);
         }
     }
-    private void A1107_1() 
+    private void A1107() 
     {
         PV.RPC("A1107",RpcTarget.All);
     }
