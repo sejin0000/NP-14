@@ -525,6 +525,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@솔져 1티어
+    [PunRPC]
     private void A2101_1()//노련함 = 스킬사용후 공속 증가 테스트 ㄴ
     {
         if (PV.IsMine) 
