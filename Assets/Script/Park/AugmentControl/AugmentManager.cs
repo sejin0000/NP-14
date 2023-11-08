@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class AugmentManager : MonoBehaviourPunCallbacks //½ÇÁúÀûÀ¸·Î Áõ°­À» ºÒ·¯¿À´Â°÷ AugmentManager.Instance.Invoke(code,0); À»ÅëÇØ ÇØ´ç Áõ°­ºÒ·¯¿È
+public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•ì„ ë¶ˆëŸ¬ì˜¤ëŠ”ê³³ AugmentManager.Instance.Invoke(code,0); ì„í†µí•´ í•´ë‹¹ ì¦ê°•ë¶ˆëŸ¬ì˜´
 {
     public static AugmentManager Instance;
     public PlayerStatHandler playerstatHandler;
@@ -47,129 +47,129 @@ public class AugmentManager : MonoBehaviourPunCallbacks //½ÇÁúÀûÀ¸·Î Áõ°­À» ºÒ·¯
         playerInput = player.GetComponent<PlayerInput>();
     }
 
-    private void A901()//½ºÅÈ °ø Æ¼¾î 1
+    private void A901()//ìŠ¤íƒ¯ ê³µ í‹°ì–´ 1
     {
         playerstatHandler.ATK.added += atk;
         Debug.Log(playerstatHandler.ATK.added);
     }
-    private void A902()//½ºÅÈ Ã¼ Æ¼¾î 1
+    private void A902()//ìŠ¤íƒ¯ ì²´ í‹°ì–´ 1
     {
         playerstatHandler.HP.added += hp;
         Debug.Log(playerstatHandler.HP.added);
     }
-    private void A903()//½ºÅÈ ÀÌ¼Ó Æ¼¾î 1
+    private void A903()//ìŠ¤íƒ¯ ì´ì† í‹°ì–´ 1
     {
         playerstatHandler.Speed.added += speed;
         Debug.Log(playerstatHandler.Speed.added);
 
     }
-    private void A904()//½ºÅÈ °ø¼Ó Æ¼¾î 1
+    private void A904()//ìŠ¤íƒ¯ ê³µì† í‹°ì–´ 1
     {
         playerstatHandler.AtkSpeed.added += atkspeed;
         Debug.Log(playerstatHandler.AtkSpeed.added);
     }
-    private void A905()//½ºÅÈ Á¤¹Ğµµ Æ¼¾î 1 ÅºÆÛÁüÀÌ ÀÌ»óÇØ¼­ Á¤¹Ğµµ·Î ¹Ù²å´Âµ¥ ±¦Âú°ÚÁö? ¾îÂ÷ÇÇ¹Ù²ãµµµÊ
+    private void A905()//ìŠ¤íƒ¯ ì •ë°€ë„ í‹°ì–´ 1 íƒ„í¼ì§ì´ ì´ìƒí•´ì„œ ì •ë°€ë„ë¡œ ë°”ê¿¨ëŠ”ë° ê´œì°®ê² ì§€? ì–´ì°¨í”¼ë°”ê¿”ë„ë¨
     {
         playerstatHandler.BulletSpread.added += bulletSpread;
         Debug.Log(playerstatHandler.BulletSpread.added);
     }
-    private void A906()//½ºÅÈ ½ºÅ³ÄğÅ¸ÀÓ Æ¼¾î1
+    private void A906()//ìŠ¤íƒ¯ ìŠ¤í‚¬ì¿¨íƒ€ì„ í‹°ì–´1
     {
         playerstatHandler.SkillCoolTime.added += cooltime;
         Debug.Log(playerstatHandler.SkillCoolTime.added);
     }
-    private void A907()//½ºÅÈ Ä¡¸íÅ¸ Æ¼¾î1
+    private void A907()//ìŠ¤íƒ¯ ì¹˜ëª…íƒ€ í‹°ì–´1
     {
         playerstatHandler.Critical.added += critical;
         Debug.Log(playerstatHandler.Critical.added);
     }
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ½ºÅÈ2Æ¼¾î
-    private void A911()//½ºÅÈ °ø Æ¼¾î 2 @@@@@@@@@@@@@@@@@ÀÌ¾Æ·¡ ¼öÁ¤¾ÈÇÔ ÇØ¾ßÇÔ
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ìŠ¤íƒ¯2í‹°ì–´
+    private void A911()//ìŠ¤íƒ¯ ê³µ í‹°ì–´ 2 @@@@@@@@@@@@@@@@@ì´ì•„ë˜ ìˆ˜ì •ì•ˆí•¨ í•´ì•¼í•¨
     {
         playerstatHandler.ATK.added += atk * 2;
     }
-    private void A912()//½ºÅÈ Ã¼ Æ¼¾î 2
+    private void A912()//ìŠ¤íƒ¯ ì²´ í‹°ì–´ 2
     {
         playerstatHandler.HP.added += hp * 2;
     }
-    private void A913()//½ºÅÈ ÀÌ¼Ó Æ¼¾î 2
+    private void A913()//ìŠ¤íƒ¯ ì´ì† í‹°ì–´ 2
     {
         playerstatHandler.Speed.added += speed * 2;
 
     }
-    private void A914()//½ºÅÈ °ø¼Ó Æ¼¾î 2
+    private void A914()//ìŠ¤íƒ¯ ê³µì† í‹°ì–´ 2
     {
         playerstatHandler.AtkSpeed.added += atkspeed * 2;
     }
-    private void A915()//½ºÅÈ Á¤¹Ğµµ Æ¼¾î 2
+    private void A915()//ìŠ¤íƒ¯ ì •ë°€ë„ í‹°ì–´ 2
     {
         playerstatHandler.BulletSpread.added += bulletSpread * 2;
     }
-    private void A916()//½ºÅÈ ½ºÅ³ÄğÅ¸ÀÓ Æ¼¾î2
+    private void A916()//ìŠ¤íƒ¯ ìŠ¤í‚¬ì¿¨íƒ€ì„ í‹°ì–´2
     {
         playerstatHandler.SkillCoolTime.added += cooltime * 2;
     }
-    private void A917()//½ºÅÈ Ä¡¸íÅ¸ Æ¼¾î2
+    private void A917()//ìŠ¤íƒ¯ ì¹˜ëª…íƒ€ í‹°ì–´2
     {
         playerstatHandler.Critical.added += critical * 2;
     }
-    private void A918()//½ºÅÈ Ä¡¸íÅ¸ Æ¼¾î2
+    private void A918()//ìŠ¤íƒ¯ ì¹˜ëª…íƒ€ í‹°ì–´2
     {
         playerstatHandler.AmmoMax.added += AmmoMax;
     }
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@½ºÅÈ3Æ¼¾î
-    private void A921()//½ºÅÈ °ø Æ¼¾î 3
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ìŠ¤íƒ¯3í‹°ì–´
+    private void A921()//ìŠ¤íƒ¯ ê³µ í‹°ì–´ 3
     {
         playerstatHandler.ATK.added += atk * 3;
     }
-    private void A922()//½ºÅÈ Ã¼ Æ¼¾î 3
+    private void A922()//ìŠ¤íƒ¯ ì²´ í‹°ì–´ 3
     {
         playerstatHandler.HP.added += hp * 3;
     }
-    private void A923()//½ºÅÈ ÀÌ¼Ó Æ¼¾î 3
+    private void A923()//ìŠ¤íƒ¯ ì´ì† í‹°ì–´ 3
     {
         playerstatHandler.Speed.added += speed * 3;
 
     }
-    private void A924()//½ºÅÈ °ø¼Ó Æ¼¾î 3
+    private void A924()//ìŠ¤íƒ¯ ê³µì† í‹°ì–´ 3
     {
         playerstatHandler.AtkSpeed.added += atkspeed * 3;
     }
-    private void A925()//½ºÅÈ Á¤¹Ğµµ Æ¼¾î 3
+    private void A925()//ìŠ¤íƒ¯ ì •ë°€ë„ í‹°ì–´ 3
     {
         playerstatHandler.BulletSpread.added += bulletSpread * 3;
     }
-    private void A926()//½ºÅÈ ½ºÅ³ÄğÅ¸ÀÓ Æ¼¾î3
+    private void A926()//ìŠ¤íƒ¯ ìŠ¤í‚¬ì¿¨íƒ€ì„ í‹°ì–´3
     {
         playerstatHandler.SkillCoolTime.added += cooltime * 3;
     }
-    private void A927()//½ºÅÈ Ä¡¸íÅ¸ Æ¼¾î3
+    private void A927()//ìŠ¤íƒ¯ ì¹˜ëª…íƒ€ í‹°ì–´3
     {
         playerstatHandler.Critical.added += critical * 3;
     }
-    private void A928()//½ºÅÈ Ä¡¸íÅ¸ Æ¼¾î3
+    private void A928()//ìŠ¤íƒ¯ ì¹˜ëª…íƒ€ í‹°ì–´3
     {
         playerstatHandler.AmmoMax.added += AmmoMax * 2;
     }
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@°ø¿ë1Æ¼¾î
-    private void A101()//¾ÆÀÌ¾ğ½ºÅ²
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ê³µìš©1í‹°ì–´
+    private void A101()//ì•„ì´ì–¸ìŠ¤í‚¨
     {
         playerstatHandler.defense *= 0.9f; 
     }
-    private void A102()//»ç°Å¸® °è¼ö -0.3 °ø °è¼ö +0.3
+    private void A102()//ì‚¬ê±°ë¦¬ ê³„ìˆ˜ -0.3 ê³µ ê³„ìˆ˜ +0.3
     {
         playerstatHandler.BulletLifeTime.coefficient *= 0.7f;
         playerstatHandler.ATK.coefficient *= 1.3f;
     }
     private void A103()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A104()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
-    private void A105()// À¯¸®´ëÆ÷ //ÇöÀç ÃÖ´ë Ã¼·ÂÀ» 1·Î ¸¸µé°í ±× °ª ÀÇ Àı¹İ ¸¸Å­ °ø¾÷
+    private void A105()// ìœ ë¦¬ëŒ€í¬ //í˜„ì¬ ìµœëŒ€ ì²´ë ¥ì„ 1ë¡œ ë§Œë“¤ê³  ê·¸ ê°’ ì˜ ì ˆë°˜ ë§Œí¼ ê³µì—…
     {
         float up = ((int)playerstatHandler.HP.total - 1);
         playerstatHandler.HP.added -= up;
@@ -177,25 +177,25 @@ public class AugmentManager : MonoBehaviourPunCallbacks //½ÇÁúÀûÀ¸·Î Áõ°­À» ºÒ·¯
     }
     private void A106()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A107()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A108()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
-    private void A109()// ¼ÒÇüÈ­ //Å×½ºÆ®¾ÈÇØº½
+    private void A109()// ì†Œí˜•í™” //í…ŒìŠ¤íŠ¸ì•ˆí•´ë´„
     {
-        float x = (player.transform.localScale.x * 0.75f);//Àı¹İ
-        float y = (player.transform.localScale.y * 0.75f);//Àı¹İ
+        float x = (player.transform.localScale.x * 0.75f);//ì ˆë°˜
+        float y = (player.transform.localScale.y * 0.75f);//ì ˆë°˜
         player.transform.localScale = new Vector2(x, y);
         playerstatHandler.HP.coefficient *= 1.1f;
         playerstatHandler.Speed.coefficient *= 0.9f;
     }
-    private void A110()//´ëÇüÈ­ // Å×½ºÆ®¾ÈÇØº½
+    private void A110()//ëŒ€í˜•í™” // í…ŒìŠ¤íŠ¸ì•ˆí•´ë´„
     {
         float x = (player.transform.localScale.x * 1.25f);
         float y = (player.transform.localScale.y * 1.25f);
@@ -205,35 +205,35 @@ public class AugmentManager : MonoBehaviourPunCallbacks //½ÇÁúÀûÀ¸·Î Áõ°­À» ºÒ·¯
     }
     private void A111()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
-    private void A112()//ºü¸¥ÀåÀü
+    private void A112()//ë¹ ë¥¸ì¥ì „
     {
         playerstatHandler.ReloadCoolTime.added -= 0.3f;
     }
     private void A113()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A114()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A115()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A116()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A117()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
-    private void A118()        //°íÀå³»±â mk3 1,2,3 °ø¿ë Áõ°­ ÀÌ±â¿¡ Á» ³²´Ù¸¥ ÄÚµåÀÓ  ÇöÀç 10 /30 /60 ÃÑÇÕ 100È®·üÀ» °¡Áö°í ÀÖ½ÀÁÒ
+    private void A118()        //ê³ ì¥ë‚´ê¸° mk3 1,2,3 ê³µìš© ì¦ê°• ì´ê¸°ì— ì¢€ ë‚¨ë‹¤ë¥¸ ì½”ë“œì„  í˜„ì¬ 10 /30 /60 ì´í•© 100í™•ë¥ ì„ ê°€ì§€ê³  ìˆìŠµì£ 
     {
-        if (player.GetComponent<BreakDownMk>()) //¸¸¾à BreakDownMk¸¦ °¡Áö°í ÀÖ´Ù¸é
+        if (player.GetComponent<BreakDownMk>()) //ë§Œì•½ BreakDownMkë¥¼ ê°€ì§€ê³  ìˆë‹¤ë©´
         {
             BreakDownMk Mk3 = player.GetComponent<BreakDownMk>();
             Mk3.PercentUp(10);
@@ -245,7 +245,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //½ÇÁúÀûÀ¸·Î Áõ°­À» ºÒ·¯
             Mk3.PercentUp(10);
         }
     }
-    private void A119()// ¹İÀü °ø°İ¹æÇâ , ÀÌµ¿¹æÇâÀÌ ¹İ´ë°¡µÇ°í °øÃ¼ ´ëÆø Áõ°¡ == ÇöÀç ÀÌµ¿¹æÇâ ¹İ´ë¸¸ ±¸Çö
+    private void A119()// ë°˜ì „ ê³µê²©ë°©í–¥ , ì´ë™ë°©í–¥ì´ ë°˜ëŒ€ê°€ë˜ê³  ê³µì²´ ëŒ€í­ ì¦ê°€ == í˜„ì¬ ì´ë™ë°©í–¥ ë°˜ëŒ€ë§Œ êµ¬í˜„
     {
         if ("Player" == playerInput.currentActionMap.name)
         {
@@ -260,24 +260,24 @@ public class AugmentManager : MonoBehaviourPunCallbacks //½ÇÁúÀûÀ¸·Î Áõ°­À» ºÒ·¯
     }
     private void A120()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A121()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A122()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A123()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
-    //Å×½ºÆ® ¿Ï·á ±×·¯³ª ÀÌº¥Æ®·Î ÀÛµ¿ÇÏ¿© Ãß°¡ Å×½ºÆ®°¡ ÇÊ¿ä
-    private void A124()//´«¸ÕÃÑÀâÀÌ : ½Ã¾ß°¡ ´ëÆø °¨¼Ò ÇÏ¸ç °ø°İ ¼Óµµ, ÀçÀåÀü ¼Óµµ°¡ Áõ°¡ÇÕ´Ï´Ù.
+    //í…ŒìŠ¤íŠ¸ ì™„ë£Œ ê·¸ëŸ¬ë‚˜ ì´ë²¤íŠ¸ë¡œ ì‘ë™í•˜ì—¬ ì¶”ê°€ í…ŒìŠ¤íŠ¸ê°€ í•„ìš”
+    private void A124()//ëˆˆë¨¼ì´ì¡ì´ : ì‹œì•¼ê°€ ëŒ€í­ ê°ì†Œ í•˜ë©° ê³µê²© ì†ë„, ì¬ì¥ì „ ì†ë„ê°€ ì¦ê°€í•©ë‹ˆë‹¤.
     {
-        player.AddComponent<A0124>();//A0124¿¡¼­ È­¸é¾îµÓ°Ô ÇÏ´Â ÇÁ¸®ÆÕ ¸¸µé°í ½ºÅ×ÀÌÁö½ÃÀÛ¿¡ ON ³¡¿¡ OFF
+        player.AddComponent<A0124>();//A0124ì—ì„œ í™”ë©´ì–´ë‘¡ê²Œ í•˜ëŠ” í”„ë¦¬íŒ¹ ë§Œë“¤ê³  ìŠ¤í…Œì´ì§€ì‹œì‘ì— ON ëì— OFF
         playerstatHandler.AtkSpeed.added += 15;
         playerstatHandler.ReloadCoolTime.added += 15;
     }
@@ -287,94 +287,94 @@ public class AugmentManager : MonoBehaviourPunCallbacks //½ÇÁúÀûÀ¸·Î Áõ°­À» ºÒ·¯
     }
     private void A126()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A127()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A128()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ °ø¿ë2Æ¼¾î
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ê³µìš©2í‹°ì–´
     private void A201()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A202()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A203()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A204()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A205()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A206()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
-    private void A207()//ÇÏÀÌ¸®½ºÅ© ·Î¿ì¸®ÅÏ
+    private void A207()//í•˜ì´ë¦¬ìŠ¤í¬ ë¡œìš°ë¦¬í„´
     {
         playerstatHandler.defense = playerstatHandler.defense * 0.5f;
         playerstatHandler.ATK.coefficient *= 2f;
     }
     private void A208()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
-    private void A209()//ÀçÁ¤ºñ ±¸¸£±â½Ã ÀçÀåÀü ¼öÇà
+    private void A209()//ì¬ì •ë¹„ êµ¬ë¥´ê¸°ì‹œ ì¬ì¥ì „ ìˆ˜í–‰
     {
         player.AddComponent<A0209>();
     }
     private void A210()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
-    private void A211()//ÇÇÇØº¹±¸ ÀÏÁ¤È®·ü·Î ÀÏÁ¤ Ã¼·Â È¸º¹
+    private void A211()//í”¼í•´ë³µêµ¬ ì¼ì •í™•ë¥ ë¡œ ì¼ì • ì²´ë ¥ íšŒë³µ
     {
         player.AddComponent<A0211>();
     }
     private void A212()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A213()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A214()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A215()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A216()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A217()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A218()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
-    private void A219() //°íÀå³»±âmk2 1,2,3 °ø¿ë Áõ°­ ÀÌ±â¿¡ Á» ³²´Ù¸¥ ÄÚµåÀÓ 30
+    private void A219() //ê³ ì¥ë‚´ê¸°mk2 1,2,3 ê³µìš© ì¦ê°• ì´ê¸°ì— ì¢€ ë‚¨ë‹¤ë¥¸ ì½”ë“œì„ 30
     {
-        //°íÀå³»±â mk3 1,2,3 °ø¿ë Áõ°­ ÀÌ±â¿¡ Á» ³²´Ù¸¥ ÄÚµåÀÓ 
-        if (player.GetComponent<BreakDownMk>()) //¸¸¾à BreakDownMk¸¦ °¡Áö°í ÀÖ´Ù¸é
+        //ê³ ì¥ë‚´ê¸° mk3 1,2,3 ê³µìš© ì¦ê°• ì´ê¸°ì— ì¢€ ë‚¨ë‹¤ë¥¸ ì½”ë“œì„ 
+        if (player.GetComponent<BreakDownMk>()) //ë§Œì•½ BreakDownMkë¥¼ ê°€ì§€ê³  ìˆë‹¤ë©´
         {
             BreakDownMk Mk3 = player.GetComponent<BreakDownMk>();
             Mk3.PercentUp(30);
@@ -388,26 +388,26 @@ public class AugmentManager : MonoBehaviourPunCallbacks //½ÇÁúÀûÀ¸·Î Áõ°­À» ºÒ·¯
     }
     private void A220()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A221()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     [PunRPC]
-    private void A222()//ÀçÁ¤ºñ ±¸¸£±âÈÄ È¸º¹
+    private void A222()//ì¬ì •ë¹„ êµ¬ë¥´ê¸°í›„ íšŒë³µ
     {
         //if()
         player.AddComponent<A0222>();
     }
     private void A223()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@°ø¿ë 3Æ¼¾î
-    private void A301()//°íÀå³»±â mk3 1,2,3 °ø¿ë Áõ°­ ÀÌ±â¿¡ Á» ³²´Ù¸¥ ÄÚµåÀÓ 
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ê³µìš© 3í‹°ì–´
+    private void A301()//ê³ ì¥ë‚´ê¸° mk3 1,2,3 ê³µìš© ì¦ê°• ì´ê¸°ì— ì¢€ ë‚¨ë‹¤ë¥¸ ì½”ë“œì„ 
     {
-        if (player.GetComponent<BreakDownMk>()) //¸¸¾à BreakDownMk¸¦ °¡Áö°í ÀÖ´Ù¸é
+        if (player.GetComponent<BreakDownMk>()) //ë§Œì•½ BreakDownMkë¥¼ ê°€ì§€ê³  ìˆë‹¤ë©´
         {
             BreakDownMk Mk3 = player.GetComponent<BreakDownMk>();
             Mk3.PercentUp(60);
@@ -419,51 +419,50 @@ public class AugmentManager : MonoBehaviourPunCallbacks //½ÇÁúÀûÀ¸·Î Áõ°­À» ºÒ·¯
             Mk3.PercentUp(60);
         }
     }
-    private void A302()//ÀÎÇÇ´ÏÆ¼ºÒ·¿ ÅºÃ¢ 9999 È¹µæ½ÃÁ¡ÀÇ ÃÑ¾Ë °ª °è»êÇÏ¿© 9999·Î ¸ÂÃçÁÜ ¸¹µç Àûµç °°À½
+    private void A302()//ì¸í”¼ë‹ˆí‹°ë¶ˆë › íƒ„ì°½ 9999 íšë“ì‹œì ì˜ ì´ì•Œ ê°’ ê³„ì‚°í•˜ì—¬ 9999ë¡œ ë§ì¶°ì¤Œ ë§ë“  ì ë“  ê°™ìŒ
     {
         playerstatHandler.AmmoMax.added += 9999 - playerstatHandler.AmmoMax.total;
     }
     private void A303()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A304()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
-    private void A305()//¸ÖÆ¼¼¦ ¼¦2¹è
+    private void A305()//ë©€í‹°ìƒ· ìƒ·2ë°°
     {
         playerstatHandler.LaunchVolume.coefficient *= 2;
     }
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@½º³ªÀÌÆÛ 1Æ¼¾î
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@ìŠ¤ë‚˜ì´í¼ 1í‹°ì–´
     private void A1101()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A1102()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A1103()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A1104()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A1105() 
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
 
     }
     private void A1106()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
-
-
-    private void A1107()//¿µ¿ªÀü°³
+    [PunRPC]
+    private void A1107_1()//ì˜ì—­ì „ê°œ
     {
         if (PV.IsMine)
         {
@@ -477,78 +476,82 @@ public class AugmentManager : MonoBehaviourPunCallbacks //½ÇÁúÀûÀ¸·Î Áõ°­À» ºÒ·¯
         A1107 a1107 = fire.GetComponent<A1107>();
         a1107.Init(playerstatHandler);
     }
-
-    [PunRPC]
-    private void A1107_1(GameObject fire, int ViewID)
+    private void A1107() 
     {
-        PhotonView pv = PhotonView.Find(ViewID);
-        fire.transform.SetParent(pv.transform);        
-    }
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@½º³ªÀÌÆÛ 2Æ¼¾î
+        PV.RPC("A1107_1", RpcTarget.All);
+
+//    [PunRPC]
+//    private void A1107_1(GameObject fire, int ViewID)
+//    {
+//        PhotonView pv = PhotonView.Find(ViewID);
+//        fire.transform.SetParent(pv.transform);        
+//
+    //}
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@ìŠ¤ë‚˜ì´í¼ 2í‹°ì–´
     private void A1201()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A1202()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A1203()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A1204()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A1205()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A1206()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A1207()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@½º³ªÀÌÆÛ 3Æ¼¾î
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@ìŠ¤ë‚˜ì´í¼ 3í‹°ì–´
     private void A1301()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A1302()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A1303()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A1304()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@¼ÖÁ® 1Æ¼¾î
-    private void A2101()//³ë·ÃÇÔ = ½ºÅ³»ç¿ëÈÄ °ø¼Ó Áõ°¡ Å×½ºÆ® ¤¤
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@ì†”ì ¸ 1í‹°ì–´
+    private void A2101()//ë…¸ë ¨í•¨ = ìŠ¤í‚¬ì‚¬ìš©í›„ ê³µì† ì¦ê°€ í…ŒìŠ¤íŠ¸ ã„´
     {
         player.AddComponent<A2101>();
     }
-    private void A2102() ///¿Í´Ù´Ù´Ù¤¿´Ù´Ù Å×½ºÆ®¾ÈÇÔ ±Ùµ¥ ½ºÅÈÀÌ¶ó »ó°ü¾øÀ»µíÇÔ
+    private void A2102() ///ì™€ë‹¤ë‹¤ë‹¤ã…ë‹¤ë‹¤ í…ŒìŠ¤íŠ¸ì•ˆí•¨ ê·¼ë° ìŠ¤íƒ¯ì´ë¼ ìƒê´€ì—†ì„ë“¯í•¨
     {
         playerstatHandler.AtkSpeed.coefficient *= 2;
         playerstatHandler.ATK.coefficient *= 0.5f;
     }
     private void A2103()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A2104()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
-    private void A2105()// ¹İÀü °ø°İ¹æÇâ , ÀÌµ¿¹æÇâÀÌ ¹İ´ë°¡µÇ°í °øÃ¼ ´ëÆø Áõ°¡ == ÇöÀç ÀÌµ¿¹æÇâ ¹İ´ë¸¸ ±¸Çö
+    private void A2105()// ë°˜ì „ ê³µê²©ë°©í–¥ , ì´ë™ë°©í–¥ì´ ë°˜ëŒ€ê°€ë˜ê³  ê³µì²´ ëŒ€í­ ì¦ê°€ == í˜„ì¬ ì´ë™ë°©í–¥ ë°˜ëŒ€ë§Œ êµ¬í˜„
     {
         if ("Player" == playerInput.currentActionMap.name)
         {
@@ -561,48 +564,48 @@ public class AugmentManager : MonoBehaviourPunCallbacks //½ÇÁúÀûÀ¸·Î Áõ°­À» ºÒ·¯
         playerstatHandler.HP.coefficient *= 1.5f;
         playerstatHandler.ATK.coefficient *= 1.5f;
     }
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@¼ÖÁ® 2Æ¼¾î
-    private void A2201()// ºóÆ´ ¸¸µé±â //±âº» °ø°İ ½Ã ±¸¸£±â ÄğÅ¸ÀÓÀÌ °¨¼ÒÇÕ´Ï´Ù.
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@ì†”ì ¸ 2í‹°ì–´
+    private void A2201()// ë¹ˆí‹ˆ ë§Œë“¤ê¸° //ê¸°ë³¸ ê³µê²© ì‹œ êµ¬ë¥´ê¸° ì¿¨íƒ€ì„ì´ ê°ì†Œí•©ë‹ˆë‹¤.
     {
         player.AddComponent<A2201>();
     }
-    private void A2202()//Æ¼Å¸ÀÓ ±¸¸¥ÈÄ ½ºÅ³ Àç»ç¿ë ´ë±â½Ã°£ °¨¼Ò
+    private void A2202()//í‹°íƒ€ì„ êµ¬ë¥¸í›„ ìŠ¤í‚¬ ì¬ì‚¬ìš© ëŒ€ê¸°ì‹œê°„ ê°ì†Œ
     {
         player.AddComponent<A2202>();
     }
-    private void A2203()//±¸¸¥ÀÚ¸®¿¡Èú»ı¼º Å×½ºÆ® ¤¤
+    private void A2203()//êµ¬ë¥¸ìë¦¬ì—íìƒì„± í…ŒìŠ¤íŠ¸ ã„´
     {
         player.AddComponent<A2203_1>();
     }
     private void A2204()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A2205()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@¼ÖÁ® 3Æ¼¾î
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@ì†”ì ¸ 3í‹°ì–´
     private void A2301()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A2302()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A2303()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A2304()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@¼¦°Ç 1Æ¼¾î
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@ìƒ·ê±´ 1í‹°ì–´
     private void A3101()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A3102()
     {
@@ -610,22 +613,22 @@ public class AugmentManager : MonoBehaviourPunCallbacks //½ÇÁúÀûÀ¸·Î Áõ°­À» ºÒ·¯
     }
     private void A3103()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A3104()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A3105()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A3106()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     [PunRPC]
-    private void A3107() // ÆÄÀÌ¾î Åä³×ÀÌµµ Å×½ºÆ®¾ÈÇÔ
+    private void A3107() // íŒŒì´ì–´ í† ë„¤ì´ë„ í…ŒìŠ¤íŠ¸ì•ˆí•¨
     {
         if (PV.IsMine)
         {
@@ -635,20 +638,20 @@ public class AugmentManager : MonoBehaviourPunCallbacks //½ÇÁúÀûÀ¸·Î Áõ°­À» ºÒ·¯
         }
 
     }
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@¼¦°Ç 2Æ¼¾î
-    private void A3201() //±¼·¯¼­ ÀåÀü << ±¸¸£±â 2ÃÊÁõ°¡ ÀåÅº¼ö +3À¸·Î ÀçÀåÀü
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@ìƒ·ê±´ 2í‹°ì–´
+    private void A3201() //êµ´ëŸ¬ì„œ ì¥ì „ << êµ¬ë¥´ê¸° 2ì´ˆì¦ê°€ ì¥íƒ„ìˆ˜ +3ìœ¼ë¡œ ì¬ì¥ì „
     {
         playerstatHandler.RollCoolTime.added += 2f;
         player.AddComponent<A3201>();
     }
     private void A3202()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
-    private void A3203()//»çÀÌÁî¾÷ ¸ö2¹èÃ¼·Â3¹è
+    private void A3203()//ì‚¬ì´ì¦ˆì—… ëª¸2ë°°ì²´ë ¥3ë°°
     {
-        float x = (player.transform.localScale.x * 2f);//Àı¹İ
-        float y = (player.transform.localScale.y * 2f);//Àı¹İ
+        float x = (player.transform.localScale.x * 2f);//ì ˆë°˜
+        float y = (player.transform.localScale.y * 2f);//ì ˆë°˜
         player.transform.localScale = new Vector2(x, y);
         playerstatHandler.HP.coefficient *= 3;
     }
@@ -658,27 +661,27 @@ public class AugmentManager : MonoBehaviourPunCallbacks //½ÇÁúÀûÀ¸·Î Áõ°­À» ºÒ·¯
     }
     private void A3205()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A3206()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A3207()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@¼¦°Ç 3Æ¼¾î
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@ìƒ·ê±´ 3í‹°ì–´
     private void A3301()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A3302()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
     private void A3303()
     {
-        Debug.Log("¹Ì¿Ï¼º");
+        Debug.Log("ë¯¸ì™„ì„±");
     }
 }
