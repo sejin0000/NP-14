@@ -246,14 +246,19 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         CallEndEvent();
         //GameState = GameStates.UIPlaying;
     }
+    
     public void AllReady() 
     {
         if (Ready == PhotonNetwork.CurrentRoom.MaxPlayers) 
         {
-            GameState = GameStates.UIPlaying;
+            photonView.RPC("uiscene", RpcTarget.All);
         }
     }
-
+    [PunRPC]
+    public void uiscene() 
+    {
+        GameState = GameStates.UIPlaying;
+    }
     #endregion
 
 
