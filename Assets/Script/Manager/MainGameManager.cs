@@ -214,7 +214,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     private void OnEndStateChangedHandler()
     {
         //
-        InstantiatedPlayer.SetActive(false);
+        //InstantiatedPlayer.SetActive(false);
         // 스테이지 끝났을 때 결과 패널 같은 거 보여주고,,
 
         // 게임 엔딩 여부 파악
@@ -257,6 +257,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void uiscene() 
     {
+        InstantiatedPlayer.SetActive(false);
         GameState = GameStates.UIPlaying;
     }
     #endregion
