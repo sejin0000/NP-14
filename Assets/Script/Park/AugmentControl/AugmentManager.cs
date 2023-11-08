@@ -469,6 +469,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         PhotonView photonView = PhotonView.Find(viewID);
         go.transform.SetParent(photonView.transform);
         go.transform.localPosition = Vector3.zero;
+        go.GetComponent<A1107>().Init();
         
     }
     private void A1107() 

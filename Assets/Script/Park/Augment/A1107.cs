@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -13,9 +14,10 @@ public class A1107 : MonoBehaviourPun//ÁÖº¯Èú
     public GameObject Player;
 
  
-    public void Init(PlayerStatHandler playerstatHandler)
+    public void Init()
     {
-            target.Add(playerstatHandler);
+        PlayerStatHandler a = transform.parent.gameObject.GetComponent<PlayerStatHandler>();
+        target.Add(a);
     }
     
 
