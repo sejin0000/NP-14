@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2124111403581803442}
   - component: {fileID: 1358485164649518670}
   - component: {fileID: 7372253118637177478}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: MainSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -194,7 +194,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4749478942147640618}
   - component: {fileID: 2023649502874127936}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: WeaponPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -242,7 +242,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6787653164829430967}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FirePivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -278,7 +278,7 @@ GameObject:
   - component: {fileID: 3114375798070682855}
   - component: {fileID: 5311848526290913172}
   - component: {fileID: 8845955158854411541}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: WeaponSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -432,7 +432,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5077212861712897321}
   - component: {fileID: 250803392459895461}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -533,7 +533,7 @@ GameObject:
   - component: {fileID: 216501136413859800}
   - component: {fileID: -8035367074399242217}
   - component: {fileID: 6315678254743216955}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}

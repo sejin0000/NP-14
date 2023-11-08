@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 4628971214778128897}
   - component: {fileID: 6684379902291071459}
   - component: {fileID: 6738569083834952163}
+  - component: {fileID: -3312873443788948719}
+  - component: {fileID: 6107391106129228653}
   m_Layer: 0
   m_Name: Shield
   m_TagString: Untagged
@@ -133,3 +135,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55ddbe73048019c4490a3fa8c304b259, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shieldSurvivalTime: 3
+  shieldHP: 0
+--- !u!114 &-3312873443788948719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2931656046358658356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 6107391106129228653}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &6107391106129228653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2931656046358658356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 0
+  m_SynchronizeScale: 1
+  m_UseLocal: 0
