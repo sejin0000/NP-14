@@ -476,9 +476,9 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         A1107 a1107 = fire.GetComponent<A1107>();
         a1107.Init(playerstatHandler);
     }
-    private void A1107() 
-    {
-        PV.RPC("A1107_1", RpcTarget.All);
+//    private void A1107() 
+//    {
+//        PV.RPC("A1107_1", RpcTarget.All);
 
 //    [PunRPC]
 //    private void A1107_1(GameObject fire, int ViewID)
