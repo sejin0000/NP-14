@@ -5,6 +5,7 @@ using UnityEngine.AI;
 using myBehaviourTree;
 using static UnityEditor.PlayerSettings;
 using UnityEditor.Rendering.LookDev;
+using Photon.Pun;
 
 //[Root 노드] => 왜 액션과 다르게 상속 안받음?
 //==>특정 AI 동작과 상태에 맞게 유연하게 조정하기 위해서
@@ -13,7 +14,7 @@ using UnityEditor.Rendering.LookDev;
 
 
 //Enemy에 필요한 컴포넌트들 + 기타 요소들 여기에 다 추가
-public class EnemyAI : MonoBehaviour
+public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 {
     private BTRoot TreeAIState;
 
@@ -38,24 +39,49 @@ public class EnemyAI : MonoBehaviour
 
     public bool isLive;
     public bool isChase;
-    public bool isAttaking;          
+    public bool isAttaking;
+
+
+    public PhotonView PV;
+    private Vector3 networkedPosition;
+    private Quaternion networkedRotation;
+
     void Awake()
     {
         nav = GetComponent<NavMeshAgent>();
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         collider2D = GetComponentInChildren<CircleCollider2D>();
+        PV = GetComponent<PhotonView>();
 
         //게임 오브젝트 활성화 시, 행동 트리 생성
         CreateTreeATState();
         currentHP = enemySO.hp;
         isLive = true;
+
+        if (PV.IsMine)
+        {
+            nav.enabled = true;
+        }
+        else
+        {
+            nav.enabled = false;
+        }
     }
     void Update()
     {
-        //AI트리의 노드 상태를 매 프레임 마다 얻어옴
-        TreeAIState.Tick();
-        View();
+        if (PV.IsMine)
+        {
+            //AI트리의 노드 상태를 매 프레임 마다 얻어옴
+            TreeAIState.Tick();
+            View();
+        }
+        else
+        {
+            // 네트워크를 통해 수신한 위치 및 회전값으로 Enemy의 위치 및 회전을 업데이트합니다.
+            transform.position = Vector3.MoveTowards(transform.position, networkedPosition, Time.deltaTime * 8);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, networkedRotation, Time.deltaTime * 100);
+        }
     }
 
 
@@ -65,10 +91,14 @@ public class EnemyAI : MonoBehaviour
         if (collision.gameObject.tag == "Bullet")
         {
             isChase = true;
+
+            //로컬 변경
             DecreaseHP(collision.transform.GetComponent<Bullet>().ATK);
 
             Debug.Log("현재 체력 :" + currentHP);
-            //TODO게이지 이미지에 hp수치 적용
+
+            //실제 동기화
+            photonView.RPC("DecreaseHP", RpcTarget.All, collision.transform.GetComponent<Bullet>().ATK);
         }
     }
 
@@ -79,9 +109,10 @@ public class EnemyAI : MonoBehaviour
 
         if (currentHP > enemySO.hp)
             currentHP = enemySO.hp;
+        //게이지 이미지에 수치 적용
     }
 
-    //★
+    [PunRPC]
     public void DecreaseHP(float damage)
     {
         //
@@ -91,6 +122,7 @@ public class EnemyAI : MonoBehaviour
 
         if (currentHP <= 0)
             isLive = false;
+        //게이지 이미지에 수치 적용
     }
 
     public void DestroyEnemy()
@@ -224,5 +256,21 @@ public class EnemyAI : MonoBehaviour
     private void SetStateColor()
     {
         spriteRenderer.color = Color.red;
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            // 데이터를 전송
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+        }
+        else if (stream.IsReading)
+        {
+            // 데이터를 수신
+            networkedPosition = (Vector3)stream.ReceiveNext();
+            networkedRotation = (Quaternion)stream.ReceiveNext();
+        }
     }
 }
