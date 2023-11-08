@@ -17,18 +17,17 @@ public class UIPlayerHP : UIBase
     private void Start()
     {
         playerStats = MainGameManager.Instance.InstantiatedPlayer.GetComponent<PlayerStatHandler>();
-        Initialize();
-    }
-
-    private void Initialize()
-    {
+        playerStats.HitEvent += SetValue;
         SetValue();
+        Debug.Log("[PlayerStatHandler]" + "Start Done");
     }
 
     private void SetValue()
     {
+        Debug.Log("[PlayerStatHandler]" + playerStats.ToString());
         hpGauge.minValue = 0;
         hpGauge.maxValue = playerStats.HP.total;
         hpGauge.value = playerStats.CurHP;
+        Debug.Log("[PlayerStatHandler]" + "SetValue Done");
     }
 }
