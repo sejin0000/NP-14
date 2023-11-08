@@ -136,7 +136,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        UpdateCachedRoomList(roomList);
+        UpdateCachedRoomList(roomList);        
     }
 
     public override void OnJoinedLobby()
@@ -411,6 +411,11 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel("MainGameScene");
     }
 
+    public void OnTestRoomButtonClicked()
+    {
+        MainLobbyPanel.SetActive(false);
+        TestPanel.SetActive(true);
+    }
     #endregion
 
 
