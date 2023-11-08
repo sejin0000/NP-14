@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Stats
 {
     public float total       { get { return (basic + added) * coefficient; } }   //  ÃÑ ½ºÅÈ °ª
