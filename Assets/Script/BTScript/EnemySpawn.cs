@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class EnemySpawn : MonoBehaviourPun
 {
-    public void Spawn(string name)
+    public void Spawn()
     {
         string testEnemy = "Pefabs/Enemy/Test_Enemy";
         PhotonNetwork.Instantiate(testEnemy, transform.position, Quaternion.identity);
