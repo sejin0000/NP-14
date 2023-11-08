@@ -526,6 +526,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@솔져 1티어
+    [PunRPC]
     private void A2101_1(int viewID)
     {
         //player.AddComponent<A2101>();
