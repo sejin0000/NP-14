@@ -80,9 +80,10 @@ public class EnemyState_Patrol : BTAction
         currentTime = ActionTime;
         enemyAI.nav.speed = patrolSpeed;
 
-        //목적지 리셋
-        enemyAI.nav.ResetPath();
-
+        if (enemyAI.nav != null)
+        {
+            Reset();
+        }
         //애니메이션 초기화
         //anim.SetBool("isRun", false); //anim.SetBool("Running", isRunning);
 
