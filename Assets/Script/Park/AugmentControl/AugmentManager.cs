@@ -525,9 +525,16 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@솔져 1티어
-    private void A2101()//노련함 = 스킬사용후 공속 증가 테스트 ㄴ
+    private void A2101_1()//노련함 = 스킬사용후 공속 증가 테스트 ㄴ
     {
-        player.AddComponent<A2101>();
+        if (PV.IsMine) 
+        {
+            player.AddComponent<A2101>();
+        }
+    }
+    private void A2101() 
+    {
+        PV.RPC("A2101_1", RpcTarget.All);
     }
     private void A2102() ///와다다다ㅏ다다 테스트안함 근데 스탯이라 상관없을듯함
     {
