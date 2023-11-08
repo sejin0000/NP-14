@@ -51,8 +51,8 @@ MonoBehaviour:
   - CreateAshield
   - A1107_1
   - Init
-  - ready
   - A2101_1
+  - ready
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

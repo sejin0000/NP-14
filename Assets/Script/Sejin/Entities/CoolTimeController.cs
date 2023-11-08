@@ -23,7 +23,7 @@ public class CoolTimeController : MonoBehaviour
     }
     private void Start()
     {
-        controller.OnRollEvent += RollCoolTime;
+        controller.OnEndRollEvent += RollCoolTime;
         controller.OnReloadEvent += ReloadCoolTime;
         controller.OnAttackEvent += AttackCoolTime;
         controller.OnEndSkillEvent += SkillCoolTime;
@@ -36,7 +36,7 @@ public class CoolTimeController : MonoBehaviour
         {
             curRollCool -= Time.deltaTime;
         }
-        if (controller.playerStatHandler.CanRoll == false && curRollCool < 0)
+        if (controller.playerStatHandler.CanRoll == false && curRollCool <= 0)
         {
             EndRollCoolTime();
         }
@@ -45,7 +45,7 @@ public class CoolTimeController : MonoBehaviour
         {
             curReloadCool -= Time.deltaTime;
         }
-        if (controller.playerStatHandler.CanReload == false && curReloadCool < 0)
+        if (controller.playerStatHandler.CanReload == false && curReloadCool <= 0)
         {
             EndReloadCoolTime();
         }
@@ -54,7 +54,7 @@ public class CoolTimeController : MonoBehaviour
         {
             curAttackCool -= Time.deltaTime;
         }
-        if (controller.playerStatHandler.CanFire == false && curAttackCool < 0)
+        if (controller.playerStatHandler.CanFire == false && curAttackCool <= 0)
         {
             EndAttackCoolTime();
         }
@@ -63,7 +63,7 @@ public class CoolTimeController : MonoBehaviour
         {
             curSkillCool -= Time.deltaTime;
         }
-        if (controller.playerStatHandler.CanSkill == false && curSkillCool < 0)
+        if (controller.playerStatHandler.CanSkill == false && curSkillCool <= 0)
         {
             EndSkillCoolTime();
         }
@@ -74,11 +74,14 @@ public class CoolTimeController : MonoBehaviour
     {
         float coolTime = controller.playerStatHandler.RollCoolTime.total;
         controller.playerStatHandler.CanRoll = false;
+        controller.playerStatHandler.Invincibility = true;
         curRollCool = coolTime;
     }
     private void EndRollCoolTime()
     {
+        Debug.Log("구르기 쿨타임 종료 이벤트");
         controller.playerStatHandler.CanRoll = true;
+        controller.playerStatHandler.Invincibility = false;
     }
 
 

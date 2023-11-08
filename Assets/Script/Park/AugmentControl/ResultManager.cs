@@ -217,11 +217,8 @@ public class ResultManager : MonoBehaviour//vs코드
     [PunRPC]
     public void ready() 
     {
-        if (pv.IsMine) 
-        {
             MainGameManager.Instance.Ready++;
             Debug.Log($"현재 레디 수 {MainGameManager.Instance.Ready}");
             MainGameManager.Instance.AllReady();
-        }
     }
 }
