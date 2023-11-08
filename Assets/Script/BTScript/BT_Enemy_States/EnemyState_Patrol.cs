@@ -22,8 +22,6 @@
 
         float beforDestinationX = 0f;
         float beforDestinationY = 0f;
-        //임시
-        public GameObject tempTarget;
 
         public EnemyState_Patrol(GameObject _owner)
         {
@@ -38,9 +36,6 @@
 
             enemyAI.nav.updateRotation = false;
             enemyAI.nav.updateUpAxis = false;
-
-            //임시 타겟지정
-            enemyAI.target = tempTarget;
         }
 
 
