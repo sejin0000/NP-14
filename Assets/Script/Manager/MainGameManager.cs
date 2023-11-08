@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public class MainGameManager : MonoBehaviourPunCallbacks
 {
@@ -312,13 +313,19 @@ public class MainGameManager : MonoBehaviourPunCallbacks
                     // 해당 타입의 몬스터를 monsterCount 만큼 반복해서 spawn할 것, 
                 }
                 // SpawnPoint 인스턴스화
-                GameObject go = Instantiate(Resources.Load<GameObject>("Prefabs/Enemy/SpawnPoint"));
-                go.transform.position = new Vector3(5, 5, 0);
+
+                
+
+                GameObject go = Instantiate(Resources.Load<GameObject>("Prefabs/Enemy/SpawnPoint"));        
 
                 if (PhotonNetwork.IsMasterClient)
                 {
                     for (int i = 0; i < currentMonsterCount; i++) 
                     {
+                        float destinationX = Random.Range(-5f, 5f);
+                        float destinationY = Random.Range(-5f, 5f);
+                        go.transform.position = new Vector3(destinationX, destinationY, 0);
+
                         Debug.Log(currentMonsterCount);
                         EnemySpawn enemySpawn = go.GetComponent<EnemySpawn>();
                         enemySpawn.Spawn();
