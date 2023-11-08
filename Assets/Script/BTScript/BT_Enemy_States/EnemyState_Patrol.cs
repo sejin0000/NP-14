@@ -48,6 +48,11 @@ public class EnemyState_Patrol : BTAction
     public override void Initialize()
     {
         SetStateColor();
+
+        if (enemyAI.nav != null)
+        {
+            Reset();
+        }
     }
 
 
@@ -80,10 +85,9 @@ public class EnemyState_Patrol : BTAction
         currentTime = ActionTime;
         enemyAI.nav.speed = patrolSpeed;
 
-        if (enemyAI.nav != null)
-        {
-            Reset();
-        }
+        //목적지 리셋
+        enemyAI.nav.ResetPath();
+
         //애니메이션 초기화
         //anim.SetBool("isRun", false); //anim.SetBool("Running", isRunning);
 
