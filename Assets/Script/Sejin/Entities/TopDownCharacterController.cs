@@ -71,16 +71,19 @@ public class TopDownCharacterController : MonoBehaviour
         if (playerStatHandler.CanRoll)
         {
             OnRollEvent?.Invoke();
-            Invoke("EndRollEvent", 0.6f);
-
+            playerStatHandler.CanRoll = false;
+            playerStatHandler.Invincibility = true;
+            Invoke("CallEndRollEvent", 0.6f);
         }
         else
         {
             Debug.Log("구르기 쿨타임 입니다");
         }
     }
-    public void EndRollEvent()
+    public void CallEndRollEvent()
     {
+        Debug.Log("구르기 끝 이벤트");
+
         OnEndRollEvent?.Invoke();
     }
 
