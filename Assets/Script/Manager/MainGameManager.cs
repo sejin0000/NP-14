@@ -316,7 +316,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
 
                 
 
-                GameObject go = Instantiate(Resources.Load<GameObject>("Prefabs/Enemy/SpawnPoint"));        
+                GameObject go = PhotonNetwork.Instantiate("Prefabs/Enemy/SpawnPoint", transform.position, Quaternion.identity);        
 
                 if (PhotonNetwork.IsMasterClient)
                 {
