@@ -9,14 +9,11 @@ public class A1107 : MonoBehaviour//ÁÖº¯Èú
     List<PlayerStatHandler> target= new List<PlayerStatHandler>();
     int healP=2;
     public GameObject Player;
-    private void Start()
-    {
-        Player = ResultManager.Instance.Player;
-        transform.SetParent(Player.transform);
-    }
-    public void Init(PlayerStatHandler playerstatHandler)
+
+    public void Init(PlayerStatHandler playerstatHandler, GameObject player)
     {
         target.Add(playerstatHandler);
+        transform.SetParent(player.transform);
     }
     
 
