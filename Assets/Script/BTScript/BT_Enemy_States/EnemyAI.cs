@@ -60,15 +60,14 @@ public class EnemyAI : MonoBehaviour
 
 
     //★
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Bullet")
         {
-            Debug.Log("총알 맞았음");
-
             isChase = true;
-            DecreaseHP(collision.transform.GetComponent<Bullet>().ATK);  
-            
+            DecreaseHP(collision.transform.GetComponent<Bullet>().ATK);
+
+            Debug.Log("현재 체력 :" + currentHP);
             //TODO게이지 이미지에 hp수치 적용
         }
     }
@@ -158,7 +157,6 @@ public class EnemyAI : MonoBehaviour
             {
                 isChase = true;
 
-                Debug.Log("시야 내에 들어옴");
                 Debug.DrawRay(transform.position, directionToPlayer * viewDistance, Color.red);              
             }
         }

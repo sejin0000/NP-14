@@ -162,6 +162,7 @@ GameObject:
   - component: {fileID: 8761483753153070843}
   - component: {fileID: 5757660685505581427}
   - component: {fileID: 7302048549800893148}
+  - component: {fileID: -227535106836372777}
   m_Layer: 0
   m_Name: Test_Enemy
   m_TagString: Untagged
@@ -198,12 +199,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fb0c8934edf51d4a8c3ad30b8a916ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHP: 22
+  currentHP: 0
   enemySO: {fileID: 11400000, guid: 3462c6ca5a0aec84eb2a06161ff250a7, type: 2}
   spriteRenderer: {fileID: 61385077797086651}
   collider2D: {fileID: 8143056649410404635}
   anim: {fileID: 0}
   target: {fileID: 0}
+  targetColl: {fileID: 0}
   nav: {fileID: 7302048549800893148}
   enemyAim: {fileID: 4931010869674023689}
   enemyBullet: {fileID: 8703405332802933773, guid: 49ee3851dc2245b4db4a735ada91bd98, type: 3}
@@ -237,3 +239,30 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!50 &-227535106836372777
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8136548992316328934}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4

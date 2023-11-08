@@ -473,7 +473,8 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     }
     private void A1107() 
     {
-        PV.RPC("A1107_1", RpcTarget.All);
+        int viewID = player.GetPhotonView().ViewID;
+        photonView.RPC("A1107_1", RpcTarget.All, viewID);
     }
 
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@스나이퍼 2티어

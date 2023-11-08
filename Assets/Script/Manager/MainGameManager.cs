@@ -194,13 +194,14 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     private void OnStartStateChangedHandler()
     {
         Debug.Log("Start state 진입");
+        InstantiatedPlayer.SetActive(true);
 
         if (stageData.isFarmingRoom)
         {
             // 대충 맵 가져다 놓는 메서드
 
             // 대충 소환하는 메서드
-            //SpawnMonster();
+            SpawnMonster();
         }
 
         // 외부 시작 : 민혁 요청 게임 스테이지 의 시작 
