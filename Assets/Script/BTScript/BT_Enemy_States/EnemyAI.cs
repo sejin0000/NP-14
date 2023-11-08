@@ -26,6 +26,7 @@ public class EnemyAI : MonoBehaviour
     public CircleCollider2D collider2D;
     public Animator anim;  
     public GameObject target;                //추적 타겟[Palyer]
+    public Collider2D targetColl;
     public NavMeshAgent nav;
 
     public GameObject enemyAim;
@@ -130,18 +131,16 @@ public class EnemyAI : MonoBehaviour
         Debug.DrawRay(transform.position, rightBoundary * viewDistance, Color.yellow);
         Debug.DrawRay(transform.position, leftBoundary * viewDistance, Color.green);
 
+        
+        targetColl = Physics2D.OverlapCircle(transform.position, viewDistance, targetMask);
 
 
-        //시야 거리(viewDistance) 내의 targetMask 감지
-        Collider2D _target = Physics2D.OverlapCircle(transform.position, viewDistance, targetMask);
-        target = _target.gameObject;
-
-        if (_target == null)
+        if (targetColl == null)
             return;
 
+        target = targetColl.gameObject;
 
-
-        if (_target.tag == "Player")
+        if (targetColl.tag == "Player")
         {
 
             //시야각 방향의 직선 Direction
@@ -150,7 +149,7 @@ public class EnemyAI : MonoBehaviour
             //Debug.DrawRay(transform.position, middleDirection * viewDistance, Color.green);
 
             //Enemy와 Player 사이의 방향
-            Vector2 directionToPlayer = (_target.transform.position - transform.position).normalized;
+            Vector2 directionToPlayer = (targetColl.transform.position - transform.position).normalized;
 
             //플레이어 시야 중앙~타겟위치 사이의 각도
             float angle = Vector3.Angle(directionToPlayer, middleDirection);
@@ -160,8 +159,7 @@ public class EnemyAI : MonoBehaviour
                 isChase = true;
 
                 Debug.Log("시야 내에 들어옴");
-                Debug.DrawRay(transform.position, directionToPlayer * viewDistance, Color.red);
-                _target = null;
+                Debug.DrawRay(transform.position, directionToPlayer * viewDistance, Color.red);              
             }
         }
     }
