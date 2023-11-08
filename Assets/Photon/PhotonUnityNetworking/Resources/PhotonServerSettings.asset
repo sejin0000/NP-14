@@ -53,6 +53,8 @@ MonoBehaviour:
   - Init
   - A2101_1
   - ready
+  - uiscene
+  - DecreaseHP
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
