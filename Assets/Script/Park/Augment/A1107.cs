@@ -8,12 +8,15 @@ public class A1107 : MonoBehaviour//ÁÖº¯Èú
     float time = 0;
     List<PlayerStatHandler> target= new List<PlayerStatHandler>();
     int healP=2;
+    public GameObject Player;
+    private void Start()
+    {
+        Player = MainGameManager.Instance.InstantiatedPlayer;
+        transform.SetParent(Player.transform);
+    }
     public void Init(PlayerStatHandler playerstatHandler)
     {
-
-        //PlayerStatHandler a= transform.parent.GetComponent<PlayerStatHandler>();
         target.Add(playerstatHandler);
-        //Debug.Log((target.Count));
     }
     
 
