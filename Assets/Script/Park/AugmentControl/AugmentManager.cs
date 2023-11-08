@@ -526,18 +526,16 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@솔져 1티어
-    [PunRPC]
-    private void A2101_1(int viewID)//노련함 = 스킬사용후 공속 증가 테스트 ㄴ
+    private void A2101_1(int viewID)
     {
-        //player.AddComponent<A2101>();
-        PhotonView photonView = PhotonView.Find(viewID);
-        photonView.gameObject.AddComponent<A2101>();
-
+        int viewID1 = player.GetPhotonView().ViewID;
+        photonView.RPC("A2101_1", RpcTarget.All, viewID1);
     }
-    private void A2101() 
-    {
-        int viewID = player.GetPhotonView().ViewID;
-        photonView.RPC("A2101_1", RpcTarget.All, viewID);
+    private void A2101() //노련함 = 스킬사용후 공속 증가 테스트 ㄴ //테스트 결과 addcomponent는 다른사람에게 보여줄필요없음 
+    {                                                              //함수에서 해줘야할듯
+        player.AddComponent<A2101>();
+        //PhotonView photonView = PhotonView.Find(viewID);
+        //photonView.gameObject.AddComponent<A2101>();
     }
     private void A2102() ///와다다다ㅏ다다 테스트안함 근데 스탯이라 상관없을듯함
     {
