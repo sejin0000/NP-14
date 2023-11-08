@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -11,20 +12,12 @@ public class A1107 : MonoBehaviourPun//ÁÖº¯Èú
     List<PlayerStatHandler> target= new List<PlayerStatHandler>();
     int healP=2;
     public GameObject Player;
-    PhotonView pv;
-    private void Start()
-    {
-        pv = GetComponent<PhotonView>();
-    }
-    [PunRPC]
-    public void Init(PlayerStatHandler playerstatHandler, GameObject player)
-    {
-        if (pv.IsMine) 
-        {
-            target.Add(playerstatHandler);
-            transform.SetParent(player.transform);
-        }
 
+ 
+    public void Init()
+    {
+        PlayerStatHandler a = transform.parent.gameObject.GetComponent<PlayerStatHandler>();
+        target.Add(a);
     }
     
 

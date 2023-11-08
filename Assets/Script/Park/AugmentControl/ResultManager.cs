@@ -6,6 +6,7 @@ using System.Net.NetworkInformation;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static MainGameManager;
 
 public class ResultManager : MonoBehaviour//vs코드
 {
@@ -205,6 +206,8 @@ public class ResultManager : MonoBehaviour//vs코드
             picklist[i].gameObject.SetActive(false);
 
         }
+        MainGameManager.Instance.GameState = GameStates.UIPlaying;
+        //여기에 메인 게임매니저 콜 
     }
 
 

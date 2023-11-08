@@ -242,7 +242,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     {
         tier = UnityEngine.Random.Range(1, 4);
         CallEndEvent();
-        GameState = GameStates.UIPlaying;
+        //GameState = GameStates.UIPlaying;
     }
 
     #endregion
