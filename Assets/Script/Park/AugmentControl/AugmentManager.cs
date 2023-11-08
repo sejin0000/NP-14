@@ -471,15 +471,19 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러
         GameObject Prefabs = Resources.Load<GameObject>("AugmentList/A1107");
 
         GameObject fire = PhotonNetwork.Instantiate("AugmentList/A1107", player.transform.position, Quaternion.identity);
-        fire.transform.SetParent(player.transform);
+        int viewID = player.GetPhotonView().ViewID;
+        photonView.RPC("A1107_1", RpcTarget.All, fire, viewID);
 
         A1107 a1107 = fire.GetComponent<A1107>();
         a1107.Init(playerstatHandler);
     }
-    //private void A1107() 
-    //{
-    //    PV.RPC("A1107_1",RpcTarget.All);
-    //}
+
+    [PunRPC]
+    private void A1107_1(GameObject fire, int ViewID)
+    {
+        PhotonView pv = PhotonView.Find(ViewID);
+        fire.transform.SetParent(pv.transform);        
+    }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@스나이퍼 2티어
     private void A1201()
     {
