@@ -1,18 +1,21 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
-public class A1107 : MonoBehaviour//ÁÖº¯Èú
+public class A1107 : MonoBehaviourPun//ÁÖº¯Èú
 {
     float time = 0;
     List<PlayerStatHandler> target= new List<PlayerStatHandler>();
     int healP=2;
     public GameObject Player;
+
  
     public void Init(PlayerStatHandler playerstatHandler)
     {
-        target.Add(playerstatHandler);
+            target.Add(playerstatHandler);
     }
     
 
