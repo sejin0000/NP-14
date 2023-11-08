@@ -192,8 +192,8 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         float x = (player.transform.localScale.x * 0.75f);//절반
         float y = (player.transform.localScale.y * 0.75f);//절반
         player.transform.localScale = new Vector2(x, y);
-        playerstatHandler.HP.coefficient *= 1.1f;
-        playerstatHandler.Speed.coefficient *= 0.9f;
+        playerstatHandler.HP.coefficient *= 0.8f;
+        playerstatHandler.Speed.coefficient *= 1.2f;
     }
     private void A110()//대형화 // 테스트안해봄
     {
@@ -201,7 +201,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         float y = (player.transform.localScale.y * 1.25f);
         player.transform.localScale = new Vector2(x, y);
         playerstatHandler.HP.coefficient *= 1.5f;
-        playerstatHandler.Speed.coefficient *= 1.2f;
+        playerstatHandler.Speed.coefficient *= 0.8f;
     }
     private void A111()
     {
@@ -469,26 +469,15 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         PhotonView photonView = PhotonView.Find(viewID);
         go.transform.SetParent(photonView.transform);
         go.transform.localPosition = Vector3.zero;
+        go.GetComponent<A1107>().Init();
         
     }
     private void A1107() 
     {
-        //GameObject Prefabs = Resources.Load<GameObject>("AugmentList/A1107");
-        //GameObject fire = Instantiate(Prefabs);        
-        //fire.transform.SetParent(player.transform);
-        //fire.transform.localPosition = Vector3.zero;
-        Debug.Log($"시전 플레이어 ID : {player.GetPhotonView().ViewID}");
         int viewID = player.GetPhotonView().ViewID;
         photonView.RPC("A1107_1", RpcTarget.All, viewID);
     }
 
-//    [PunRPC]
-//    private void A1107_1(GameObject fire, int ViewID)
-//    {
-//        PhotonView pv = PhotonView.Find(ViewID);
-//        fire.transform.SetParent(pv.transform);        
-//
-    //}
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@스나이퍼 2티어
     private void A1201()
     {

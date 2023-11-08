@@ -242,7 +242,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     {
         tier = UnityEngine.Random.Range(1, 4);
         CallEndEvent();
-        GameState = GameStates.UIPlaying;
+        //GameState = GameStates.UIPlaying;
     }
 
     #endregion
@@ -300,11 +300,14 @@ public class MainGameManager : MonoBehaviourPunCallbacks
                 GameObject go = Instantiate(Resources.Load<GameObject>("Prefabs/Enemy/SpawnPoint"));
                 go.transform.position = new Vector3(5, 5, 0);
 
-                for (int i = 0; i < currentMonsterCount; i++) 
+                if (PhotonNetwork.IsMasterClient)
                 {
-                    Debug.Log(currentMonsterCount);
-                    EnemySpawn enemySpawn = go.GetComponent<EnemySpawn>();
-                    enemySpawn.Spawn("몬스터1");
+                    for (int i = 0; i < currentMonsterCount; i++) 
+                    {
+                        Debug.Log(currentMonsterCount);
+                        EnemySpawn enemySpawn = go.GetComponent<EnemySpawn>();
+                        enemySpawn.Spawn("몬스터1");
+                    }
                 }
             }
         }
