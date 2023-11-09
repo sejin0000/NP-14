@@ -128,8 +128,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         images_Gauge.fillAmount = (float)currentHP / enemySO.hp; //체력
     }
 
-        //★
-        public void IncreaseHP(float damage)
+    [PunRPC]
+    public void IncreaseHP(float damage)
     {
         currentHP += damage;
 
@@ -338,15 +338,12 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             // 데이터를 전송
             stream.SendNext(nowEnemyPosition);
             stream.SendNext(nowEnemyRotation);
-
-            Debug.Log("위치 데이터 전송");
         }
         else if (stream.IsReading)
         {
             // 데이터를 수신
             nowEnemyPosition = (Vector2)stream.ReceiveNext();
             nowEnemyRotation = (Quaternion)stream.ReceiveNext();
-            Debug.Log("데이터 전송 받음");
         }
     }
 }
