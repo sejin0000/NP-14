@@ -56,21 +56,13 @@ public class ResultManager : MonoBehaviour//vs코드
     }
     public void startset()
     {
-        Debug.Log("시작@@@@@@@@@@@@@@@@@@@@@@@");
         stat1 = MakeAugmentListManager.Instance.stat1;
-        Debug.Log($"스탯1 갯수{stat1.Count}");
         stat2 = MakeAugmentListManager.Instance.stat2;
-        Debug.Log($"스탯2 갯수{stat2.Count}");
         stat3 = MakeAugmentListManager.Instance.stat3;
-        Debug.Log($"스탯3 갯수{stat3.Count}");
         SpecialAugment1 = MakeAugmentListManager.Instance.SpecialAugment1;
-        Debug.Log($"증강1 갯수{SpecialAugment1.Count}");
         SpecialAugment2 = MakeAugmentListManager.Instance.SpecialAugment2;
-        Debug.Log($"증강2 갯수{SpecialAugment2.Count}");
         SpecialAugment3 = MakeAugmentListManager.Instance.SpecialAugment3;
-        Debug.Log($"증강3 갯수{SpecialAugment3.Count}");
         ProtoList = MakeAugmentListManager.Instance.Prototype;
-        Debug.Log($"프로토타입증강 갯수{ProtoList.Count}");
     }
     public void Result()
     {
@@ -78,13 +70,19 @@ public class ResultManager : MonoBehaviour//vs코드
         {
             //CallStatResult();애가 정상임 아래는 테스트용으로 그뭐냐 스페셜증강뽑을려고넣어둠 수정필
             Debug.Log("이부분 수정");//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-            CallProtoResult();
+            //CallProtoResult();애가 테스트 스페셜 증강
+            callStatTest();
         }
         else 
         {
             //CallSpecialResult();이거 쓰는게 정상 아래가 프로토타입
-            CallProtoResult();
+            //CallProtoResult();애가 테스트 스페셜 증강
+            callStatTest();
         }
+    }
+    public void callStatTest() 
+    {
+        PickStatList(stat1);
     }
     public void CallProtoResult()//프로토타입용 변수 부르는 리스트가 만들어진 초기 버전만 들어있다
     {
