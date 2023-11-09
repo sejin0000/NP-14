@@ -29,8 +29,8 @@ public class EnemyState_Chase : BTAction
         chaseTime = enemySO.actionTime;
         chaseSpeed = enemySO.chaseSpeed;
 
-        enemyAI.nav.updateRotation = false;
-        enemyAI.nav.updateUpAxis = false;
+        //enemyAI.nav.updateRotation = false;
+        //enemyAI.nav.updateUpAxis = false;
     }
 
     public override void Initialize()
@@ -39,7 +39,8 @@ public class EnemyState_Chase : BTAction
         
         currentTime = chaseTime;
         enemyAI.isAttaking = false;
-        enemyAI.nav.enabled = true;
+        //수정됨
+        //enemyAI.nav.enabled = true;
     }
 
     public override Status Update()
@@ -70,13 +71,14 @@ public class EnemyState_Chase : BTAction
     //현재 목표점 수정, 플립, ....
     private void OnChase()
     {
-        enemyAI.nav.SetDestination(target.transform.position);
+        enemyAI.DestinationSet(target.transform.position);
         float distanceToTarget = Vector3.Distance(owner.transform.position, target.transform.position);
 
         if(distanceToTarget < enemySO.attackRange)
         {
             enemyAI.isAttaking = true;
-            enemyAI.nav.enabled = false;
+            //수정됨
+            //enemyAI.nav.enabled = false;
         }
 
         //스프라이트 조정(anim = 최대 4방향[대각] + 4방향[정방향] 지정 가능)
