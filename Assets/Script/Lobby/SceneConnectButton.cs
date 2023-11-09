@@ -23,7 +23,7 @@ public class SceneConnectButton : MonoBehaviour
         }
         if (panel != null)
         {
-            //sceneConnectButton.onClick.AddListener(() => panel.OnSceneConnectButtonClicked(this));
+            sceneConnectButton.onClick.AddListener(() => panel.OnSceneConnectButtonClicked(this));
         }
     }
 

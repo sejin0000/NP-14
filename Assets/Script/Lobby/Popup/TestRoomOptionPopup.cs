@@ -54,7 +54,7 @@ public class TestRoomOptionPopup : MonoBehaviour
         }
         if (sceneEntryPath == null) 
         {
-            sceneEntryPath = "Prefabs/Lobby/SceneConnectButton";
+            sceneEntryPath = "Prefabs/LobbyScene/SceneConnectButton";
         }
 
         if (sceneConnectButtons  == null)

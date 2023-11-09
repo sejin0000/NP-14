@@ -21,12 +21,13 @@ public class TestPanel : MonoBehaviourPunCallbacks
 
 
     [Header("CurrentRoomBoard")]
-    [SerializeField] public GameObject RoomScrollViewContent;
+    [SerializeField] public GameObject RoomScrollViewContent;    
 
     [Header("CreateRoomBoard")]
     [SerializeField] public TMP_InputField RoomNameSetup;
     [SerializeField] public TMP_InputField RoomMemberSetup;
     [SerializeField] public GameObject SceneScrollViewContent;
+    [SerializeField] public GameObject SceneScrollView;
 
     [Header("TestRoomInfo")]
     private string selectedRoomName;
@@ -42,6 +43,7 @@ public class TestPanel : MonoBehaviourPunCallbacks
             }
         }
     }
+    private string selectedSceneName;
 
     [Header("RoomPanel")]    
     public GameObject TestRoomPanel;
@@ -71,12 +73,13 @@ public class TestPanel : MonoBehaviourPunCallbacks
         }
         if (sceneEntryPath == null)
         {
-            sceneEntryPath = "Prefabs/Lobby/SceneConnectButton";
+            sceneEntryPath = "Prefabs/LobbyScene/SceneConnectButton";
         }
         GetSceneArray(SceneScrollViewContent.transform);
+        SceneScrollView.SetActive(false);
     }
 
-    public void GetSceneArray(Transform parentTransform)
+    public void GetSceneArray(Transform parentTransform)    
     {
         string[] sceneFiles = Directory.GetFiles(folderPath, "*.unity").Select(Path.GetFileNameWithoutExtension).ToArray();
         GameObject SceneEntry;
@@ -84,6 +87,7 @@ public class TestPanel : MonoBehaviourPunCallbacks
         {
             SceneEntry = Instantiate(Resources.Load<GameObject>(sceneEntryPath));
             SceneEntry.transform.SetParent(parentTransform, false);
+            SceneScrollViewContent.GetComponent<RectTransform>().sizeDelta += new Vector2(0, 75);
             var sceneConnectButton = SceneEntry.GetComponent<SceneConnectButton>();
             sceneConnectButton.Initialize(sceneName, false);
             sceneConnectButtons.Add(sceneConnectButton);
@@ -101,17 +105,21 @@ public class TestPanel : MonoBehaviourPunCallbacks
     }
     private void OnSceneSelectButtonClicked()
     {
+        SceneSelectStartButton.gameObject.SetActive(true);
         SceneSelectButton.gameObject.SetActive(false);
-        SceneScrollViewContent.SetActive(true);
+        SceneScrollView.SetActive(false);
     }
     private void OnSceneSelectStartButtonClicked()
-    {
+    {      
+        SceneSelectStartButton.gameObject.SetActive(false);
         SceneSelectButton.gameObject.SetActive(true);
-        SceneScrollViewContent.SetActive(false);
+        SceneScrollView.SetActive(true);
     }
 
     public void OnSceneConnectButtonClicked(SceneConnectButton clickedButton)
     {
+        selectedSceneName = clickedButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text;
+        SceneSelectStartButton.GetComponentInChildren<TextMeshProUGUI>().text = selectedSceneName;
         foreach (SceneConnectButton button in sceneConnectButtons)
         {
             if (button != clickedButton)
@@ -146,7 +154,11 @@ public class TestPanel : MonoBehaviourPunCallbacks
         maxPlayers = (byte)Mathf.Clamp(maxPlayers, 2, 8);
 
         RoomOptions options = new RoomOptions { MaxPlayers = maxPlayers, PlayerTtl = 10000 };
-        options.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "IsTest", true } };
+        if (selectedRoomName == null)
+        {
+            selectedRoomName = sceneConnectButtons[0].sceneNameText.text;
+        }
+        options.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "IsTest", true }, { "Scene", selectedRoomName } };
 
         PhotonNetwork.CreateRoom(roomName, options, null);
         this.gameObject.SetActive(false);
