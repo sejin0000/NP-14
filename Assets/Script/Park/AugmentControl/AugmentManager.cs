@@ -48,26 +48,26 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         string callName = "A" + code.ToString();
         photonView.RPC(callName, RpcTarget.All, PlayerPvNumber);
     }
-    private void ChangePlayerAndPlayerStatHandler(int PlayerNumber)
-    {
-        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
-        targetPlayer = photonView.gameObject;
-        playerstatHandler = targetPlayer.GetComponent<PlayerStatHandler>();
-    }
-    private void ChangePlayerStatHandler(int PlayerNumber)
-    {
-        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
-        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
-    }
-    [PunRPC]
-    private void A901(int PlayerNumber)//스탯 공 티어 1
-    {
-        ChangePlayerStatHandler(PlayerNumber);
-        //PhotonView photonView = PhotonView.Find(PlayerNumber);
-        //playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
-        playerstatHandler.ATK.added += atk;
-        Debug.Log($"{photonView.gameObject.GetPhotonView().ViewID}의 공격력증가");
-    }
+private void ChangePlayerAndPlayerStatHandler(int PlayerNumber)
+{
+    PhotonView photonView = PhotonView.Find(PlayerPvNumber);
+    targetPlayer = photonView.gameObject;
+    playerstatHandler = targetPlayer.GetComponent<PlayerStatHandler>();
+}
+private void ChangePlayerStatHandler(int PlayerNumber)
+{
+    PhotonView photonView = PhotonView.Find(PlayerPvNumber);
+    playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+}
+[PunRPC]
+private void A901(int PlayerNumber)//스탯 공 티어 1
+{
+    ChangePlayerStatHandler(PlayerNumber);
+    //PhotonView photonView = PhotonView.Find(PlayerNumber);
+    //playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+    playerstatHandler.ATK.added += atk;
+    Debug.Log($"{photonView.gameObject.GetPhotonView().ViewID}의 공격력증가");
+}
     [PunRPC]
     private void A902(int PlayerNumber)//스탯 체 티어 1
     {
@@ -92,6 +92,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         ChangePlayerStatHandler(PlayerNumber);
         //PhotonView photonView = PhotonView.Find(PlayerNumber);
         //playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+        //photonView.RPC("A904_1", RpcTarget.All, PlayerPv);
         playerstatHandler.AtkSpeed.added += atkspeed;
         Debug.Log($"{photonView.gameObject.GetPhotonView().ViewID}의 공속증가");
     }

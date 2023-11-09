@@ -54,16 +54,9 @@ public class EnemyState_Attack : BTAction
             return Status.BT_Failure; // 노드 종료
         }
 
+        //★★★수정함
+        enemyAI.isFilp(owner.transform.position.x, target.transform.position.x);
 
-
-        if (target.transform.position.x < owner.transform.position.x)
-        {
-            enemyAI.spriteRenderer.flipX = true;
-        }
-        else
-        {
-            enemyAI.spriteRenderer.flipX = false;
-        }
 
         return Status.BT_Running;
     }
