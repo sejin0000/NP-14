@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public class MainGameManager : MonoBehaviourPunCallbacks
 {
@@ -202,7 +203,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
             // 대충 맵 가져다 놓는 메서드
 
             // 대충 소환하는 메서드
-            SpawnMonster();
+            //SpawnMonster();
         }
 
         // 외부 시작 : 민혁 요청 게임 스테이지 의 시작 
@@ -214,7 +215,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     private void OnEndStateChangedHandler()
     {
         //
-        InstantiatedPlayer.SetActive(false);
+        //InstantiatedPlayer.SetActive(false);
         // 스테이지 끝났을 때 결과 패널 같은 거 보여주고,,
 
         // 게임 엔딩 여부 파악
@@ -257,6 +258,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void uiscene() 
     {
+        InstantiatedPlayer.SetActive(false);
         GameState = GameStates.UIPlaying;
     }
     #endregion
@@ -311,13 +313,19 @@ public class MainGameManager : MonoBehaviourPunCallbacks
                     // 해당 타입의 몬스터를 monsterCount 만큼 반복해서 spawn할 것, 
                 }
                 // SpawnPoint 인스턴스화
-                GameObject go = Instantiate(Resources.Load<GameObject>("Prefabs/Enemy/SpawnPoint"));
-                go.transform.position = new Vector3(5, 5, 0);
+
+                
+
+                GameObject go = PhotonNetwork.Instantiate("Prefabs/Enemy/SpawnPoint", transform.position, Quaternion.identity);        
 
                 if (PhotonNetwork.IsMasterClient)
                 {
                     for (int i = 0; i < currentMonsterCount; i++) 
                     {
+                        float destinationX = Random.Range(-5f, 5f);
+                        float destinationY = Random.Range(-5f, 5f);
+                        go.transform.position = new Vector3(destinationX, destinationY, 0);
+
                         Debug.Log(currentMonsterCount);
                         EnemySpawn enemySpawn = go.GetComponent<EnemySpawn>();
                         enemySpawn.Spawn();

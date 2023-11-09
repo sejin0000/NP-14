@@ -1,8 +1,9 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class A3204 : MonoBehaviour
+public class A3204 : MonoBehaviourPun
 {
     private TopDownCharacterController controller;
     private PlayerStatHandler playerStat;
@@ -17,12 +18,16 @@ public class A3204 : MonoBehaviour
     }
     private void Start()
     {
-        controller.OnEndRollEvent += Makeshield;
+        controller.OnEndRollEvent += make;
         Prefabs = Resources.Load<GameObject>("AugmentList/A3204_1");
         nullcheck = null;
     }
-
+    void make()
+        {
+        photonView.RPC("Makeshield", RpcTarget.All);
+        }
     // Update is called once per frame
+    [PunRPC]
     void Makeshield()
     {
         if (nullcheck == null)

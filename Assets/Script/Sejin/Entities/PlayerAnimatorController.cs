@@ -16,6 +16,7 @@ public class PlayerAnimatorController : MonoBehaviour
     public SpriteRenderer weaponRenderer;
     [HideInInspector]public int isBack;
     private Animator _animation;
+    private Animator weaponAnimator;
     private SpriteLibrary PlayerSpritelibrary;
     private SpriteLibrary WeaponSpritelibrary;
 
@@ -25,6 +26,7 @@ public class PlayerAnimatorController : MonoBehaviour
     {
         pv = GetComponent<PhotonView>();
         _animation = PlayerSprite.GetComponent<Animator>();
+        weaponAnimator = weaponSprite.GetComponent<Animator>();
         PlayerSpritelibrary = PlayerSprite.GetComponent<SpriteLibrary>();
         WeaponSpritelibrary = weaponSprite.GetComponent<SpriteLibrary>();
         playerStatHandler = GetComponent<PlayerStatHandler>();
@@ -37,7 +39,14 @@ public class PlayerAnimatorController : MonoBehaviour
         characterController.OnMoveEvent += MoveAnimator;
         characterController.OnRollEvent += RPCRollAnimator;
         characterController.OnLookEvent += LookBack;
+        characterController.OnAttackEvent += Fire;
     }
+
+    private void Fire()
+    {
+        weaponAnimator.SetTrigger("IsFire");
+    }
+
 
     private void LookBack(Vector2 direction)
     {

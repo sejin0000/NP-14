@@ -44,9 +44,10 @@ public class ChoiceSlot : MonoBehaviour//눌러서 골르는 증강 슬롯 열렸을때 해당증
     }
     public void pick()
     {
-        string str = "A" + stat.Code.ToString();
-        Debug.Log($"{str}");
-        AugmentManager.Instance.Invoke(str, 0);
+        int code = stat.Code;
+        Debug.Log($"{code}");
+        AugmentManager.Instance.AugmentCall(code);
+        //AugmentManager.Instance.Invoke(str, 0);
         Ispick = true;
         ResultManager.Instance.close();
     }

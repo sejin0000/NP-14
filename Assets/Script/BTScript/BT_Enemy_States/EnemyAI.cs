@@ -43,8 +43,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
 
     public PhotonView PV;
-    private Vector3 networkedPosition;
-    private Quaternion networkedRotation;
 
     void Awake()
     {
@@ -59,7 +57,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         currentHP = enemySO.hp;
         isLive = true;
 
-        if (PV.IsMine)
+        if (photonView.AmOwner)
         {
             nav.enabled = true;
         }
@@ -70,18 +68,9 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     }
     void Update()
     {
-        if (PV.IsMine)
-        {
-            //AI트리의 노드 상태를 매 프레임 마다 얻어옴
-            TreeAIState.Tick();
-            View();
-        }
-        else
-        {
-            // 네트워크를 통해 수신한 위치 및 회전값으로 Enemy의 위치 및 회전을 업데이트합니다.
-            transform.position = Vector3.MoveTowards(transform.position, networkedPosition, Time.deltaTime * 8);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, networkedRotation, Time.deltaTime * 100);
-        }
+        //AI트리의 노드 상태를 매 프레임 마다 얻어옴
+        TreeAIState.Tick();
+        View();
     }
 
 
@@ -91,14 +80,10 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         if (collision.gameObject.tag == "Bullet")
         {
             isChase = true;
-
-            //로컬 변경
             DecreaseHP(collision.transform.GetComponent<Bullet>().ATK);
 
             Debug.Log("현재 체력 :" + currentHP);
-
-            //실제 동기화
-            photonView.RPC("DecreaseHP", RpcTarget.All, collision.transform.GetComponent<Bullet>().ATK);
+            //TODO게이지 이미지에 hp수치 적용
         }
     }
 
@@ -109,7 +94,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
         if (currentHP > enemySO.hp)
             currentHP = enemySO.hp;
-        //게이지 이미지에 수치 적용
     }
 
     [PunRPC]
@@ -122,7 +106,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
         if (currentHP <= 0)
             isLive = false;
-        //게이지 이미지에 수치 적용
     }
 
     public void DestroyEnemy()
@@ -258,6 +241,22 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         spriteRenderer.color = Color.red;
     }
 
+    public void isFilp(float myX, float otherX)
+    {
+        if (otherX < myX)
+        {
+            spriteRenderer.flipX = true;
+        }
+        else
+        {
+            spriteRenderer.flipX = false;
+        }
+    }
+
+
+
+
+
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
@@ -265,12 +264,14 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             // 데이터를 전송
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
+
+            Debug.Log("위치 데이터 전송");
         }
         else if (stream.IsReading)
         {
             // 데이터를 수신
-            networkedPosition = (Vector3)stream.ReceiveNext();
-            networkedRotation = (Quaternion)stream.ReceiveNext();
+            transform.position = (Vector2)stream.ReceiveNext();
+            transform.rotation = (Quaternion)stream.ReceiveNext();
         }
     }
 }

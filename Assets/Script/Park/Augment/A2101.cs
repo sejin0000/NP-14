@@ -1,18 +1,23 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class A2101 : MonoBehaviour
+public class A2101 : MonoBehaviourPun
 {
     private TopDownCharacterController controller;
     private PlayerStatHandler playerStat;
     private void Awake()
     {
-        controller = GetComponent<TopDownCharacterController>();
-        playerStat = GetComponent<PlayerStatHandler>();
+        if (photonView.IsMine) 
+        {
+            controller = GetComponent<TopDownCharacterController>();
+            playerStat = GetComponent<PlayerStatHandler>();
+        }
     }
     private void Start()
     {
+        if(photonView.IsMine)
         controller.OnSkillEvent += AtkSpeedUp;
     }
 

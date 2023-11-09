@@ -40,43 +40,61 @@ public class PlayerStatHandler : MonoBehaviour
 
 
     private float curHP;
-    [HideInInspector] public float CurHP   { get { return curHP;  } set { if (value > HP.total) { curHP = HP.total; } } }               //현재   체력
+    [HideInInspector]
+    public float CurHP
+    {
+        get
+        {
+            return curHP;
+        }
+        set
+        {
+            if (value > HP.total)
+            {
+                curHP = HP.total;
+            }
+            else
+            {
+                curHP = value;
+            }
+        }
+    }               //현재   체력
 
     private float curAmmo;
-    [HideInInspector] public float CurAmmo { get { return curAmmo;  } set { if (value > AmmoMax.total) curAmmo = AmmoMax.total; curAmmo = value; } } //현재   잔탄
-    [HideInInspector] public bool  CanFire;                                //발사   가능한지
-    [HideInInspector] public bool  CanReload;                              //장전   가능한지
-    [HideInInspector] public bool  CanSkill;                               //스킬   가능한지
-    [HideInInspector] public bool  CanRoll;                                //구르기 가능한지
-    [HideInInspector] public bool  Invincibility;                          //무적
+    [HideInInspector] public float CurAmmo { get { return curAmmo; } set { if (value > AmmoMax.total) curAmmo = AmmoMax.total; curAmmo = value; } } //현재   잔탄
+    [HideInInspector] public bool CanFire;                                //발사   가능한지
+    [HideInInspector] public bool CanReload;                              //장전   가능한지
+    [HideInInspector] public bool CanSkill;                               //스킬   가능한지
+    [HideInInspector] public bool CanRoll;                                //구르기 가능한지
+    [HideInInspector] public bool Invincibility;                          //무적
 
     private void Awake()
     {
 
-        ATK            =  new Stats(playerStats.atk);
-        HP             =  new Stats(playerStats.hp);
-        Speed          =  new Stats(playerStats.unitSpeed);
-        AtkSpeed       =  new Stats(playerStats.atkSpeed);
-        ReloadCoolTime =  new Stats(playerStats.reloadCoolTime);
-        SkillCoolTime  =  new Stats(playerStats.skillCoolTime);
-        RollCoolTime   =  new Stats(playerStats.rollCoolTime);
-        BulletSpread   =  new Stats(playerStats.bulletSpread);
-        BulletLifeTime =  new Stats(playerStats.bulletLifeTime);
-        LaunchVolume   =  new Stats(playerStats.launchVolume);
-        Critical       =  new Stats(playerStats.critical);
-        AmmoMax        =  new Stats(playerStats.ammoMax);
+        ATK = new Stats(playerStats.atk);
+        HP = new Stats(playerStats.hp);
+        Speed = new Stats(playerStats.unitSpeed);
+        AtkSpeed = new Stats(playerStats.atkSpeed);
+        ReloadCoolTime = new Stats(playerStats.reloadCoolTime);
+        SkillCoolTime = new Stats(playerStats.skillCoolTime);
+        RollCoolTime = new Stats(playerStats.rollCoolTime);
+        BulletSpread = new Stats(playerStats.bulletSpread);
+        BulletLifeTime = new Stats(playerStats.bulletLifeTime);
+        LaunchVolume = new Stats(playerStats.launchVolume);
+        Critical = new Stats(playerStats.critical);
+        AmmoMax = new Stats(playerStats.ammoMax);
 
-        PlayerSprite   =  playerStats.playerSprite;
-        WeaponSprite   =  playerStats.weaponSprite;
-        BulletSprite   =  playerStats.BulletSprite;
-        CurHP          =  HP.total;
-        CurAmmo        =  AmmoMax.total;
+        PlayerSprite = playerStats.playerSprite;
+        WeaponSprite = playerStats.weaponSprite;
+        BulletSprite = playerStats.BulletSprite;
+        CurHP = HP.total;
+        CurAmmo = AmmoMax.total;
 
-        CanFire        =  true;
-        CanReload      =  true;
-        CanSkill       =  true;
-        CanRoll        =  true;
-        Invincibility  =  false;
+        CanFire = true;
+        CanReload = true;
+        CanSkill = true;
+        CanRoll = true;
+        Invincibility = false;
 
         PlayerSpriteCase = _PlayerSprite.GetComponent<SpriteLibrary>();
         WeaponSpriteCase = _WeaponSprite.GetComponent<SpriteLibrary>();
@@ -86,10 +104,17 @@ public class PlayerStatHandler : MonoBehaviour
         defense = 1;
     }
 
+    public override string ToString()
+    {
+        return curHP.ToString() + "/" + HP.total.ToString();
+    }
+
     public void CharacterChange(PlayerSO playerData)
     {
         playerStats = playerData;
         Awake();
+        Debug.Log("[PlayerStatHandler]" + this.ToString());
+        Debug.Log("[PlayerStatHandler] " + "CharacterChange Done");
     }
 
     public void Damage(float damage)
@@ -98,5 +123,6 @@ public class PlayerStatHandler : MonoBehaviour
         CurHP -= damage;
         HitEvent?.Invoke();
         HitEvent2?.Invoke(damage);//이게 값이 필요한경우와 필요 없는경우가 있는데 한개로 할수가 있는지 모르겠음 일단 이렇게함
+        Debug.Log("[PlayerStatHandler] " + "Damage Done");
     }
 }
