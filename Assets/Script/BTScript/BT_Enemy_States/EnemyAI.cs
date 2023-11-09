@@ -85,16 +85,13 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         GaugeUpdate();
 
 
-        if (photonView.AmOwner)
-        {
-            IsNavAbled();
 
+        IsNavAbled();
 
-            if (isAttaking || isChase)
-                ChaseView();
-            else
-                NomalView();
-        }        
+        if (isAttaking || isChase)
+            ChaseView();
+        else
+            NomalView();
     }
 
 
@@ -136,7 +133,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void DecreaseHP(float damage)
     {
-        //
         SetStateColor();
         currentHP -= damage;    
 
