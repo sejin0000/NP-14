@@ -42,7 +42,9 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     public bool isChase;
     public bool isAttaking;
 
-    
+
+    Vector2 nowEnemyPosition;
+    Quaternion nowEnemyRotation;
     [SerializeField]
     private Image images_Gauge;              //몬스터 UI : Status
 
@@ -67,7 +69,11 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         nav.updateUpAxis = false;
 
         //★싱글 테스트 시 if else 주석처리 할것
-        
+        //쫓는 플레이어도 호스트가 판별?
+
+        nowEnemyPosition = this.gameObject.transform.position;
+
+        /*
         if (photonView.AmOwner)
         {
             nav.enabled = true;
@@ -76,7 +82,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         {
             nav.enabled = false;
         }
-        
+        */
+
     }
     void Update()
     {
@@ -183,7 +190,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
         FindPlayer(rightBoundary, leftBoundary);
     }
-
 
     //추적, 공격시 플레이어를 바라보는 시야각으로 전환
     private void ChaseView()
@@ -325,20 +331,21 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
+    {       
+
         if (stream.IsWriting)
         {
             // 데이터를 전송
-            stream.SendNext(transform.position);
-            stream.SendNext(transform.rotation);
+            stream.SendNext(nowEnemyPosition);
+            stream.SendNext(nowEnemyRotation);
 
             Debug.Log("위치 데이터 전송");
         }
         else if (stream.IsReading)
         {
             // 데이터를 수신
-            transform.position = (Vector2)stream.ReceiveNext();
-            transform.rotation = (Quaternion)stream.ReceiveNext();
+            nowEnemyPosition = (Vector2)stream.ReceiveNext();
+            nowEnemyRotation = (Quaternion)stream.ReceiveNext();
             Debug.Log("데이터 전송 받음");
         }
     }
