@@ -12,7 +12,6 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     public PlayerStatHandler playerstatHandler;
     public GameObject player;
 
-    public PhotonView PV;
 
     int atk = 5;
     int hp = 8;
@@ -23,6 +22,9 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     int critical = 5;
     int AmmoMax = 1;
     public PlayerInput playerInput;
+    public PhotonView PlayerPv;
+    public int PlayerPvNumber;
+
 
 
     // Start is called before the first frame update
@@ -42,80 +44,216 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     }
     public void startset(GameObject PlayerObj)
     {
-        player = PlayerObj;
-        playerstatHandler = player.GetComponent<PlayerStatHandler>();
-        playerInput = player.GetComponent<PlayerInput>();
-        PV = GetComponent<PhotonView>();
-    }
 
+        player = PlayerObj;//플레이어 받아옴 
+        PlayerPvNumber = player.GetPhotonView().ViewID;//
+        PlayerPv = PhotonView.Find(PlayerPvNumber);//플레이어pv 확보
+                                                   //player = PlayerPv.gameObject; 생각해보니 이걸 다시바꾸는 의미가 없음
+                                                   //playerstatHandler = player.GetComponent<PlayerStatHandler>();그건 애도 마찬가지
+                                                   //playerInput = player.GetComponent<PlayerInput>();
+
+    }
+    public void AugmentCall(int code)
+    {
+        string callName = "A" + code.ToString();
+        photonView.RPC(callName, RpcTarget.All, PlayerPv);
+    }
+    [PunRPC]
     private void A901()//스탯 공 티어 1
     {
+        //photonView.RPC("A901_1", RpcTarget.All, PlayerPv);
+        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
+        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
         playerstatHandler.ATK.added += atk;
-        Debug.Log(playerstatHandler.ATK.added);
+        Debug.Log($"{photonView.gameObject.GetPhotonView().ViewID}의 공격력증가");
+
     }
+    //[PunRPC]
+    //private void A901_1(int PlayerPvNumber)//스탯 공 티어 1
+    //{
+    //    PhotonView photonView = PhotonView.Find(PlayerPvNumber);
+    //    playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+    //    playerstatHandler.ATK.added += atk;
+    //}
     private void A902()//스탯 체 티어 1
     {
+        //photonView.RPC("A902_1", RpcTarget.All, PlayerPv);
+        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
+        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
         playerstatHandler.HP.added += hp;
-        Debug.Log(playerstatHandler.HP.added);
+        Debug.Log($"{photonView.gameObject.GetPhotonView().ViewID}의 방어력증가");
     }
+    //private void A902_1(int PlayerPvNumber)//스탯 체 티어 1
+    //{
+    //    PhotonView photonView = PhotonView.Find(PlayerPvNumber);
+    //    playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+    //    playerstatHandler.HP.added += hp;
+    //}
+    [PunRPC]
     private void A903()//스탯 이속 티어 1
     {
+        //photonView.RPC("A903_1", RpcTarget.All, PlayerPv);
+        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
+        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
         playerstatHandler.Speed.added += speed;
-        Debug.Log(playerstatHandler.Speed.added);
-
+        Debug.Log($"{photonView.gameObject.GetPhotonView().ViewID}의 이속증가");
     }
+    //[PunRPC]
+    //private void A903_1()//스탯 이속 티어 1
+    //{
+    //    PhotonView photonView = PhotonView.Find(PlayerPvNumber);
+    //    playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+    //    playerstatHandler.Speed.added += speed;
+    //}
+    [PunRPC]
     private void A904()//스탯 공속 티어 1
     {
+        //photonView.RPC("A904_1", RpcTarget.All, PlayerPv);
+        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
+        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
         playerstatHandler.AtkSpeed.added += atkspeed;
-        Debug.Log(playerstatHandler.AtkSpeed.added);
+        Debug.Log($"{photonView.gameObject.GetPhotonView().ViewID}의 공속증가");
     }
+    //[PunRPC]
+    //private void A904_1()//스탯 공속 티어 1
+    //{
+    //    PhotonView photonView = PhotonView.Find(PlayerPvNumber);
+    //    playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+    //    playerstatHandler.AtkSpeed.added += atkspeed;
+    //}
+    [PunRPC]
     private void A905()//스탯 정밀도 티어 1 탄퍼짐이 이상해서 정밀도로 바꿨는데 괜찮겠지? 어차피바꿔도됨
     {
+        //photonView.RPC("A905_1", RpcTarget.All, PlayerPv);
+        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
+        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
         playerstatHandler.BulletSpread.added += bulletSpread;
-        Debug.Log(playerstatHandler.BulletSpread.added);
+        Debug.Log($"{photonView.gameObject.GetPhotonView().ViewID}의 정밀도증가");
     }
+    //[PunRPC]
+    //private void A905_1()//스탯 정밀도 티어 1
+    //{
+    //    PhotonView photonView = PhotonView.Find(PlayerPvNumber);
+    //    playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+    //    playerstatHandler.BulletSpread.added += bulletSpread;
+    //}
+    [PunRPC]
     private void A906()//스탯 스킬쿨타임 티어1
     {
-        playerstatHandler.SkillCoolTime.added += cooltime;
-        Debug.Log(playerstatHandler.SkillCoolTime.added);
+        //photonView.RPC("A906_1", RpcTarget.All, PlayerPv);
+        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
+        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+        playerstatHandler.SkillCoolTime.added += bulletSpread;
+        Debug.Log($"{photonView.gameObject.GetPhotonView().ViewID}의 쿨타임증가");
     }
+    //[PunRPC]
+    //private void A906_1()//스탯 스킬쿨타임 티어 1
+    //{
+    //    PhotonView photonView = PhotonView.Find(PlayerPvNumber);
+    //    playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+    //    playerstatHandler.SkillCoolTime.added += bulletSpread;
+    //}
+    [PunRPC]
     private void A907()//스탯 치명타 티어1
     {
+        //photonView.RPC("A906_1", RpcTarget.All, PlayerPv);
+        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
+        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
         playerstatHandler.Critical.added += critical;
-        Debug.Log(playerstatHandler.Critical.added);
     }
+    [PunRPC]
+    //private void A907_1()//스탯 치명타 티어 1
+    //{
+    //    PhotonView photonView = PhotonView.Find(PlayerPvNumber);
+    //    playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+    //    playerstatHandler.Critical.added += critical;
+    //}
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 스탯2티어
-    private void A911()//스탯 공 티어 2 @@@@@@@@@@@@@@@@@이아래 수정안함 해야함
+    private void A911()//스탯 공 티어 1
     {
-        playerstatHandler.ATK.added += atk * 2;
+        photonView.RPC("A911_1", RpcTarget.All, PlayerPv);
     }
-    private void A912()//스탯 체 티어 2
+    [PunRPC]
+    private void A911_1(int PlayerPvNumber)//스탯 공 티어 1
     {
-        playerstatHandler.HP.added += hp * 2;
+        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
+        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+        playerstatHandler.ATK.added += atk;
     }
-    private void A913()//스탯 이속 티어 2
+    private void A912()//스탯 체 티어 1
     {
-        playerstatHandler.Speed.added += speed * 2;
-
+        photonView.RPC("A912_1", RpcTarget.All, PlayerPv);
     }
-    private void A914()//스탯 공속 티어 2
+    [PunRPC]
+    private void A912_1(int PlayerPvNumber)//스탯 체 티어 1
     {
-        playerstatHandler.AtkSpeed.added += atkspeed * 2;
+        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
+        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+        playerstatHandler.HP.added += hp;
     }
-    private void A915()//스탯 정밀도 티어 2
+    private void A913()//스탯 이속 티어 1
     {
-        playerstatHandler.BulletSpread.added += bulletSpread * 2;
+        photonView.RPC("A903_1", RpcTarget.All, PlayerPv);
+    }
+    [PunRPC]
+    private void A913_1()//스탯 이속 티어 1
+    {
+        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
+        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+        playerstatHandler.Speed.added += speed;
+    }
+    private void A914()//스탯 공속 티어 1
+    {
+        photonView.RPC("A904_1", RpcTarget.All, PlayerPv);
+    }
+    [PunRPC]
+    private void A914_1()//스탯 공속 티어 1
+    {
+        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
+        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+        playerstatHandler.AtkSpeed.added += atkspeed;
+    }
+    private void A915()//스탯 정밀도 티어 1 탄퍼짐이 이상해서 정밀도로 바꿨는데 괜찮겠지? 어차피바꿔도됨
+    {
+        photonView.RPC("A905_1", RpcTarget.All, PlayerPv);
+    }
+    [PunRPC]
+    private void A915_1()//스탯 정밀도 티어 1
+    {
+        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
+        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+        playerstatHandler.BulletSpread.added += bulletSpread;
     }
     private void A916()//스탯 스킬쿨타임 티어2
     {
-        playerstatHandler.SkillCoolTime.added += cooltime * 2;
+        photonView.RPC("A916_1", RpcTarget.All, PlayerPv);
+    }
+    [PunRPC]
+    private void A916_1()//스탯 스킬쿨타임 티어 2
+    {
+        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
+        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+        playerstatHandler.SkillCoolTime.added += bulletSpread;
     }
     private void A917()//스탯 치명타 티어2
     {
+        photonView.RPC("A917_1", RpcTarget.All, PlayerPv);
+    }
+    [PunRPC]
+    private void A917_1()//스탯 치명타 티어 2
+    {
+        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
+        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
         playerstatHandler.Critical.added += critical * 2;
     }
-    private void A918()//스탯 치명타 티어2
+    private void A918()//스탯 장탄수 티어2
     {
+        photonView.RPC("A918_1", RpcTarget.All, PlayerPv);
+    }
+    private void A918_1()//스탯 장탄수 티어 2
+    {
+        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
+        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
         playerstatHandler.AmmoMax.added += AmmoMax;
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@스탯3티어
@@ -471,12 +609,11 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         go.transform.SetParent(photonView.transform);
         go.transform.localPosition = Vector3.zero;
         go.GetComponent<A1107>().Init();
-        
+
     }
-    private void A1107() 
+    private void A1107()
     {
-        int viewID = player.GetPhotonView().ViewID;
-        photonView.RPC("A1107_1", RpcTarget.All, viewID);
+        photonView.RPC("A1107_1", RpcTarget.All, PlayerPv);
     }
 
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@스나이퍼 2티어
