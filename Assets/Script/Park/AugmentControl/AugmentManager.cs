@@ -416,7 +416,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     private void A124(int PlayerNumber)//눈먼총잡이 : 시야가 대폭 감소 하며 공격 속도, 재장전 속도가 증가합니다.
     {
         //PhotonView photonView = PhotonView.Find(PlayerPvNumber);
-        ChangePlayer(PlayerNumber);
+        //ChangePlayer(PlayerNumber);
         player.AddComponent<A0124>();//A0124에서 화면어둡게 하는 프리팹 만들고 스테이지시작에 ON 끝에 OFF
         playerstatHandler.AtkSpeed.added += 15;
         playerstatHandler.ReloadCoolTime.added += 15;
