@@ -126,7 +126,7 @@ public class PlayerAnimatorController : MonoBehaviour
     private void Die()
     {
         Debug.Log("Á×À½¿ä");
-        _animation.SetTrigger("IsRoll");
+        _animation.SetTrigger("IsDie");
     }
 
     private void Regen()
