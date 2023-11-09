@@ -241,6 +241,22 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         spriteRenderer.color = Color.red;
     }
 
+    public void isFilp(float myX, float otherX)
+    {
+        if (otherX < myX)
+        {
+            spriteRenderer.flipX = true;
+        }
+        else
+        {
+            spriteRenderer.flipX = false;
+        }
+    }
+
+
+
+
+
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
