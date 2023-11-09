@@ -645,14 +645,16 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
             //PhotonView photonView = PhotonView.Find(PlayerNumber);
             //go.transform.SetParent(photonView.transform);
             GameObject Prefabs = PhotonNetwork.Instantiate("AugmentList/A1107", Vector3.zero, Quaternion.identity);
-            photonView.RPC("setParent",RpcTarget.All, Prefabs);
+            int num = Prefabs.GetPhotonView().ViewID;
+            photonView.RPC("setParent",RpcTarget.All, num);
             Prefabs.GetComponent<A1107>().Init();
             Debug.Log("영역전개의 코드를 바꿨는데 치명적일수도 있을듯함 이로그를 보면 알려주길 바람");
         }
     }
     [PunRPC]
-    private void setParent(GameObject a) 
+    private void setParent(int num) 
     {
+        PhotonView a =PhotonView.Find(PlayerPvNumber);
         a.transform.SetParent(targetPlayer.transform);
         //Prefabs.transform.SetParent(targetPlayer.transform);
     } 
