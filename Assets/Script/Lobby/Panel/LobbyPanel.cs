@@ -230,6 +230,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         Debug.Log("join Failed");
         string roomName = $"RandRoom{Random.Range(1,200)}";
         RoomOptions options = new RoomOptions { MaxPlayers = 3 };
+        options.CustomRoomPropertiesForLobby = new string[] { "IsTest" };
         options.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "IsTest", false } };
         PhotonNetwork.CreateRoom(roomName, options, null);
     }
@@ -449,6 +450,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
             string roomName = $"Room {Random.Range(0, 200)}";
 
             RoomOptions options = new RoomOptions { MaxPlayers = 3, PlayerTtl = 10000 };
+            options.CustomRoomPropertiesForLobby = new string[] { "IsTest" };
             options.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "IsTest", false } };
             
             PhotonNetwork.CreateRoom(roomName, options);
@@ -489,6 +491,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         {
             selectedSceneInTestLobbyPanel = testPanel.sceneConnectButtons[0].sceneNameText.text;
         }
+        options.CustomRoomPropertiesForLobby = new string[] { "IsTest", "Scene" };
         options.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "IsTest", true }, { "Scene", selectedSceneInTestLobbyPanel } };
         
 
@@ -523,11 +526,11 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     public void UpdateCachedRoomList(List<RoomInfo> roomList)
     {
         foreach (RoomInfo info in roomList)
-        {            
+        {
             info.CustomProperties.TryGetValue("IsTest", out object testBool);
             if (testBool == null)
             {
-                continue;
+                cachedRoomList.Remove(info.Name);
             }
             if (!info.IsOpen || info.RemovedFromList || !info.IsVisible || info.PlayerCount == 0 || (bool)testBool)
             {
