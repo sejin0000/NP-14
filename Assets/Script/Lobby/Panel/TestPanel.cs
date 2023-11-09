@@ -119,7 +119,7 @@ public class TestPanel : MonoBehaviourPunCallbacks
     public void OnSceneConnectButtonClicked(SceneConnectButton clickedButton)
     {
         selectedSceneName = clickedButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text;
-        SceneSelectStartButton.GetComponentInChildren<TextMeshProUGUI>().text = selectedSceneName;
+        SceneSelectStartButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = selectedSceneName;
         foreach (SceneConnectButton button in sceneConnectButtons)
         {
             if (button != clickedButton)
