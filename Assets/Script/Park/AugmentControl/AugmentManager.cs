@@ -56,7 +56,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     public void AugmentCall(int code)
     {
         string callName = "A" + code.ToString();
-        photonView.RPC(callName, RpcTarget.All, PlayerPv);
+        photonView.RPC(callName, RpcTarget.All);
     }
     [PunRPC]
     private void A901()//스탯 공 티어 1
