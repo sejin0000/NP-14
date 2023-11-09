@@ -14,7 +14,7 @@ public class CollisionController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.layer == LayerMask.NameToLayer("EnemyBullet") && !playerStat.Invincibility)
+        if(collision.gameObject.layer == LayerMask.NameToLayer("EnemyBullet") && !playerStat.Invincibility && !playerStat.isDie)
         {
             float damage = collision.gameObject.GetComponent<Bullet>().ATK;
             playerStat.Damage(damage);
