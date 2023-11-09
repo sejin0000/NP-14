@@ -538,7 +538,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         foreach (RoomInfo info in cachedTestRoomList.Values)
         {
             GameObject entry = Instantiate(Resources.Load<GameObject>("Prefabs/LobbyScene/TestRoomEntry"));
-            entry.transform.SetParent(testPanel.ScrollViewContent.transform, false);
+            entry.transform.SetParent(testPanel.RoomScrollViewContent.transform, false);
             entry.transform.localScale = Vector3.one;
             entry.GetComponent<RoomListEntry>().Initialize(info.Name, (byte)info.PlayerCount, (byte)info.MaxPlayers);
             testPanel.OnEntryClicked += entry.GetComponent<RoomListEntry>().OnSelectRoomButtonClicked;

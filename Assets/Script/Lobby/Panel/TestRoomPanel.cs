@@ -14,7 +14,7 @@ public class TestRoomPanel : MonoBehaviour
 
     [Header("SceneStatus")]
     public TextMeshProUGUI ConnectedSceneText;
-    [SerializeField] private string connectedScene;
+    [SerializeField] public string connectedScene;
     public string ConnectedScene
     {
         get { return connectedScene; }
@@ -29,19 +29,40 @@ public class TestRoomPanel : MonoBehaviour
     }
 
     [Header("RoomOptionPopup")]
-    public GameObject TestRoomOptionPopup;
+    public GameObject testRoomOptionPopupObject;
+    public TestRoomOptionPopup testRoomOptionPopup;
 
     [Header("LobbyPanel")]
     public GameObject MainCanvas;
     public LobbyPanel lobbyPanel;
 
+    [Header("RoomInfo")]
+    public string currentTestScene;
+    public string currentRoomNameText;
+    public string currentRoomMemberText;
+
     private void Start()
     {
-        Initialize();   
+        Initialize();
     }
     public void Initialize()
     {
+        // 룸 현재 옵션 적용
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("Scene", out object roomScene))
+        {
+            currentTestScene = roomScene.ToString();
+        }
+        currentRoomNameText = PhotonNetwork.CurrentRoom.Name;
+        currentRoomMemberText = PhotonNetwork.CurrentRoom.MaxPlayers.ToString();
+
+        // 옵션 팝업 Init
+        testRoomOptionPopup = testRoomOptionPopupObject.GetComponent<TestRoomOptionPopup>();
+        testRoomOptionPopup.Initialize();
+
+        // 로비 패널 연결
         lobbyPanel = MainCanvas.GetComponent<LobbyPanel>();
+
+        // 버튼 연결
         TestStartButton.onClick.AddListener(OnTestStartButtonClickedInTest);
         BackButton.onClick.AddListener(OnTestBackButtonClickedInTest);
         OpenOptionButton.onClick.AddListener(OnOpenOptionButtonClicked);
@@ -53,7 +74,7 @@ public class TestRoomPanel : MonoBehaviour
 
     public void OnOpenOptionButtonClicked()
     {
-        TestRoomOptionPopup.SetActive(true);
+        testRoomOptionPopupObject.SetActive(true);
     }
 
     public void OnTestBackButtonClickedInTest()
