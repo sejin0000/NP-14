@@ -57,6 +57,9 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         currentHP = enemySO.hp;
         isLive = true;
 
+        nav.updateRotation = false;
+        nav.updateUpAxis = false;
+
         if (photonView.AmOwner)
         {
             nav.enabled = true;
@@ -71,6 +74,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         //AI트리의 노드 상태를 매 프레임 마다 얻어옴
         TreeAIState.Tick();
         View();
+        IsNavAbled();
     }
 
 
@@ -253,7 +257,18 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
+    public void DestinationSet(Vector2 targetPoint)
+    {
+        nav.SetDestination(targetPoint);
+    }
 
+    public void IsNavAbled()
+    {
+        if(isAttaking)
+            nav.isStopped = true;
+        else
+            nav.isStopped = false;
+    }
 
 
 

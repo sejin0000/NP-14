@@ -34,8 +34,8 @@
             patrolSpeed = enemySO.patrolSpeed;
 
 
-            enemyAI.nav.updateRotation = false;
-            enemyAI.nav.updateUpAxis = false;
+            //enemyAI.nav.updateRotation = false;
+            //enemyAI.nav.updateUpAxis = false;
         }
 
 
@@ -80,7 +80,7 @@
         currentTime = ActionTime;
         enemyAI.nav.speed = patrolSpeed;
 
-        if (enemyAI.nav != null && enemyAI.nav.isOnNavMesh) // NavMesh 에이전트가 유효한 상태인지 확인
+        if (enemyAI.nav != null && enemyAI.nav.isOnNavMesh) // NavMesh 가 유효한 상태인지 확인
         {
             enemyAI.nav.ResetPath(); // 유효한 상태에서만 ResetPath 호출 [현재 목적지 지움 목적지셋 전까지 작동x]
         }
@@ -113,8 +113,10 @@
 
     private void Patrol()
     {
-        if (enemyAI.nav.enabled)
-            enemyAI.nav.SetDestination(destination);
+        //수정됨
+        if (enemyAI.isAttaking)
+            enemyAI.DestinationSet(destination);
+
         //rigid.MovePosition(transform.position + (transform.forward * applySpeed * Time.deltaTime));
         //리지드바디 이동(현재 위치에서 전방으로, 1초당 walkSpeed 수치만큼 이동;
     }
