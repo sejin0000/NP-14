@@ -768,12 +768,12 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A3107() // 파이어 토네이도 테스트안함
     {
-        if (PV.IsMine)
-        {
-            GameObject Prefabs = Resources.Load<GameObject>("AugmentList/A3107");
-            GameObject fire = Instantiate(Prefabs);
-            fire.transform.SetParent(player.transform);
-        }
+        //if (PV.IsMine)
+        //{
+        //    GameObject Prefabs = Resources.Load<GameObject>("AugmentList/A3107");
+        //    GameObject fire = Instantiate(Prefabs);
+        //    fire.transform.SetParent(player.transform);
+        //}
 
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@샷건 2티어
