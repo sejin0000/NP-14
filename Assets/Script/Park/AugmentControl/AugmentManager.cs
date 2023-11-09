@@ -46,7 +46,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     public void AugmentCall(int code)//slot에서 pick으로 호출해서 punppc로 모든컴퓨터에 뿌려줌
     {
         string callName = "A" + code.ToString();
-        photonView.RPC(callName, RpcTarget.All);
+        photonView.RPC(callName, RpcTarget.All, PlayerPvNumber);
     }
     private void ChangePlayerAndPlayerStatHandler(int PlayerNumber)
     {
@@ -60,116 +60,65 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
     }
     [PunRPC]
-    private void A901()//스탯 공 티어 1
+    private void A901(int PlayerNumber)//스탯 공 티어 1
     {
-<<<<<<< Updated upstream
-        //photonView.RPC("A901_1", RpcTarget.All, PlayerPv);
-        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
-        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
-=======
         ChangePlayerStatHandler(PlayerNumber);
         //PhotonView photonView = PhotonView.Find(PlayerNumber);
         //playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
->>>>>>> Stashed changes
         playerstatHandler.ATK.added += atk;
         Debug.Log($"{photonView.gameObject.GetPhotonView().ViewID}의 공격력증가");
     }
-<<<<<<< Updated upstream
-    //[PunRPC]
-    //private void A901_1(int PlayerPvNumber)//스탯 공 티어 1
-    //{
-    //    PhotonView photonView = PhotonView.Find(PlayerPvNumber);
-    //    playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
-    //    playerstatHandler.ATK.added += atk;
-    //}
-    private void A902()//스탯 체 티어 1
-    {
-        //photonView.RPC("A902_1", RpcTarget.All, PlayerPv);
-        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
-        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
-=======
     [PunRPC]
     private void A902(int PlayerNumber)//스탯 체 티어 1
     {
         ChangePlayerStatHandler(PlayerNumber);
         //PhotonView photonView = PhotonView.Find(PlayerNumber);
         //playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
->>>>>>> Stashed changes
         playerstatHandler.HP.added += hp;
         Debug.Log($"{photonView.gameObject.GetPhotonView().ViewID}의 방어력증가");
     }
     [PunRPC]
-    private void A903()//스탯 이속 티어 1
+    private void A903(int PlayerNumber)//스탯 이속 티어 1
     {
-<<<<<<< Updated upstream
-        //photonView.RPC("A903_1", RpcTarget.All, PlayerPv);
-        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
-        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
-=======
         ChangePlayerStatHandler(PlayerNumber);
         //PhotonView photonView = PhotonView.Find(PlayerNumber);
         //playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
->>>>>>> Stashed changes
         playerstatHandler.Speed.added += speed;
         Debug.Log($"{photonView.gameObject.GetPhotonView().ViewID}의 이속증가");
     }
     [PunRPC]
-    private void A904()//스탯 공속 티어 1
+    private void A904(int PlayerNumber)//스탯 공속 티어 1
     {
-<<<<<<< Updated upstream
-        //photonView.RPC("A904_1", RpcTarget.All, PlayerPv);
-        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
-        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
-=======
         ChangePlayerStatHandler(PlayerNumber);
         //PhotonView photonView = PhotonView.Find(PlayerNumber);
         //playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
->>>>>>> Stashed changes
         playerstatHandler.AtkSpeed.added += atkspeed;
         Debug.Log($"{photonView.gameObject.GetPhotonView().ViewID}의 공속증가");
     }
     [PunRPC]
-    private void A905()//스탯 정밀도 티어 1 탄퍼짐이 이상해서 정밀도로 바꿨는데 괜찮겠지? 어차피바꿔도됨
+    private void A905(int PlayerNumber)//스탯 정밀도 티어 1 탄퍼짐이 이상해서 정밀도로 바꿨는데 괜찮겠지? 어차피바꿔도됨
     {
-<<<<<<< Updated upstream
-        //photonView.RPC("A905_1", RpcTarget.All, PlayerPv);
-        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
-        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
-=======
         ChangePlayerStatHandler(PlayerNumber);
         //PhotonView photonView = PhotonView.Find(PlayerNumber);
         //playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
->>>>>>> Stashed changes
         playerstatHandler.BulletSpread.added += bulletSpread;
         Debug.Log($"{photonView.gameObject.GetPhotonView().ViewID}의 정밀도증가");
     }
     [PunRPC]
-    private void A906()//스탯 스킬쿨타임 티어1
+    private void A906(int PlayerNumber)//스탯 스킬쿨타임 티어1
     {
-<<<<<<< Updated upstream
-        //photonView.RPC("A906_1", RpcTarget.All, PlayerPv);
-        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
-        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
-=======
         ChangePlayerStatHandler(PlayerNumber);
         //PhotonView photonView = PhotonView.Find(PlayerNumber);
         //playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
->>>>>>> Stashed changes
         playerstatHandler.SkillCoolTime.added += bulletSpread;
         Debug.Log($"{photonView.gameObject.GetPhotonView().ViewID}의 쿨타임증가");
     }
     [PunRPC]
-    private void A907()//스탯 치명타 티어1
+    private void A907(int PlayerNumber)//스탯 치명타 티어1
     {
-<<<<<<< Updated upstream
-        //photonView.RPC("A906_1", RpcTarget.All, PlayerPv);
-        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
-        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
-=======
         ChangePlayerStatHandler(PlayerNumber);
         //PhotonView photonView = PhotonView.Find(PlayerNumber);
         //playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
->>>>>>> Stashed changes
         playerstatHandler.Critical.added += critical;
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@스탯티어2
@@ -873,12 +822,12 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A3107() // 파이어 토네이도 테스트안함
     {
-        if (PV.IsMine)
-        {
-            GameObject Prefabs = Resources.Load<GameObject>("AugmentList/A3107");
-            GameObject fire = Instantiate(Prefabs);
-            fire.transform.SetParent(player.transform);
-        }
+        //if (PV.IsMine)
+        //{
+        //    GameObject Prefabs = Resources.Load<GameObject>("AugmentList/A3107");
+        //    GameObject fire = Instantiate(Prefabs);
+        //    fire.transform.SetParent(player.transform);
+        //}
 
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@샷건 2티어
