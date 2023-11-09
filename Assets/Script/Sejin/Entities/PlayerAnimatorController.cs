@@ -1,19 +1,21 @@
 using Photon.Pun;
 using System;
+using System.Drawing;
 using UnityEngine;
 using UnityEngine.U2D.Animation;
 using UnityEngine.UIElements;
 
 public class PlayerAnimatorController : MonoBehaviour
 {
-    [SerializeField] private GameObject PlayerSprite;
+    [SerializeField] private GameObject playerSprite;
     [SerializeField] private GameObject weaponSprite;
 
 
     private TopDownCharacterController characterController;
     private PlayerStatHandler playerStatHandler;
 
-    public SpriteRenderer weaponRenderer;
+    private SpriteRenderer playerRenderer;
+    private SpriteRenderer weaponRenderer;
     [HideInInspector]public int isBack;
     private Animator _animation;
     private Animator weaponAnimator;
@@ -25,11 +27,14 @@ public class PlayerAnimatorController : MonoBehaviour
     private void Awake()
     {
         pv = GetComponent<PhotonView>();
-        _animation = PlayerSprite.GetComponent<Animator>();
+        _animation = playerSprite.GetComponent<Animator>();
         weaponAnimator = weaponSprite.GetComponent<Animator>();
-        PlayerSpritelibrary = PlayerSprite.GetComponent<SpriteLibrary>();
+        PlayerSpritelibrary = playerSprite.GetComponent<SpriteLibrary>();
         WeaponSpritelibrary = weaponSprite.GetComponent<SpriteLibrary>();
         playerStatHandler = GetComponent<PlayerStatHandler>();
+
+        playerRenderer = playerSprite.GetComponentInChildren<SpriteRenderer>();
+        weaponRenderer = weaponSprite.GetComponentInChildren<SpriteRenderer>();
     }
     private void Start()
     {
@@ -40,7 +45,11 @@ public class PlayerAnimatorController : MonoBehaviour
         characterController.OnRollEvent += RPCRollAnimator;
         characterController.OnLookEvent += LookBack;
         characterController.OnAttackEvent += Fire;
+        playerStatHandler.OnDieEvent += Die;
+        playerStatHandler.OnRegenEvent += Regen;
+        playerStatHandler.HitEvent += ColorTeen;
     }
+
 
     private void Fire()
     {
@@ -90,9 +99,14 @@ public class PlayerAnimatorController : MonoBehaviour
         weaponRenderer.color = new Vector4(255,255,255,0);
         Invoke("EndRollAnimator", 0.7f);
     }
+
     private void EndRollAnimator()
     {
         weaponRenderer.color = new Vector4(255, 255, 255, 255);
+    }
+    private void ColorTeen()
+    {
+        
     }
 
     [PunRPC]
@@ -107,4 +121,17 @@ public class PlayerAnimatorController : MonoBehaviour
             weaponRenderer.sortingOrder = 4;
         }
     }
+
+
+    private void Die()
+    {
+        _animation.SetBool("IsDie", true);
+    }
+
+    private void Regen()
+    {
+        _animation.SetBool("IsDie", false);
+    }
+
+
 }
