@@ -14235,6 +14235,7 @@ GameObject:
   - component: {fileID: 1755200002}
   - component: {fileID: 1755200004}
   - component: {fileID: 1755200003}
+  - component: {fileID: 1755200005}
   m_Layer: 5
   m_Name: TestRoomOption
   m_TagString: Untagged
@@ -14308,6 +14309,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1755200001}
   m_CullTransparentMesh: 1
+--- !u!114 &1755200005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1755200001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ece8986185828fd409d6c7fb85cc7173, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TestRoomNameInputField: {fileID: 0}
+  TestRoomMemberInputField: {fileID: 0}
+  TestScrollViewContent: {fileID: 0}
+  OptionConfirmButton: {fileID: 0}
+  OptionCloseButton: {fileID: 0}
 --- !u!1 &1798967822
 GameObject:
   m_ObjectHideFlags: 0
