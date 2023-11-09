@@ -73,46 +73,41 @@
         }
 
 
-        //목적지 리셋, 애니메이션, 액션타임, 스피드, 플립 등등 모두 초기화 관리
-        private void Reset()
-        {
-            //anim.SetBool("isRun", true);
-            currentTime = ActionTime;
-            enemyAI.nav.speed = patrolSpeed;
+    //목적지 리셋, 애니메이션, 액션타임, 스피드, 플립 등등 모두 초기화 관
+    private void Reset()
+    {
+        //anim.SetBool("isRun", true);
+        currentTime = ActionTime;
+        enemyAI.nav.speed = patrolSpeed;
 
         if (enemyAI.nav != null && enemyAI.nav.isOnNavMesh) // NavMesh 에이전트가 유효한 상태인지 확인
         {
-            enemyAI.nav.ResetPath(); // 유효한 상태에서만 ResetPath 호출
+            enemyAI.nav.ResetPath(); // 유효한 상태에서만 ResetPath 호출 [현재 목적지 지움 목적지셋 전까지 작동x]
         }
 
         //애니메이션 초기화
         //anim.SetBool("isRun", false); //anim.SetBool("Running", isRunning);
 
         beforDestinationX = destinationX;
-            beforDestinationY = destinationY;
+        beforDestinationY = destinationY;
 
 
 
-            destinationX = Random.Range(-6f, 6f);
-            destinationY = Random.Range(-5f, 5f);
+        destinationX = Random.Range(-6f, 6f);
+        destinationY = Random.Range(-5f, 5f);
 
 
-            destination.Set(destinationX, destinationY); // 목적지 지정
+        destination.Set(destinationX, destinationY); // 목적지 지정
 
 
-            //스프라이트 조정(anim = 최대 4방향[대각] + 4방향[정방향] 지정 가능)
+        //스프라이트 조정(anim = 최대 4방향[대각] + 4방향[정방향] 지정 가능)
 
-            if (destinationX < beforDestinationX)
-            {
-                enemyAI.spriteRenderer.flipX = true;
-            }
-            else
-            {
-                enemyAI.spriteRenderer.flipX = false;
-            }
 
-            Debug.Log("걷기");
-        }
+        //★★★수정함
+        enemyAI.isFilp(beforDestinationX, destinationX);
+
+        Debug.Log("걷기");
+    }
 
 
 

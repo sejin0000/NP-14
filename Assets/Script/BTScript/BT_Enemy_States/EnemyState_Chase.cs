@@ -66,6 +66,8 @@ public class EnemyState_Chase : BTAction
     }
 
     //실제 추적★
+    //네브(노드에서 >>>>>>>>> 기능 두번이상 = 메서드 == 루트에서 두번이상 사용하는 기능들을 메서드 화 -> 요청만 하고, 메서드 호출)
+    //현재 목표점 수정, 플립, ....
     private void OnChase()
     {
         enemyAI.nav.SetDestination(target.transform.position);
@@ -79,6 +81,15 @@ public class EnemyState_Chase : BTAction
 
         //스프라이트 조정(anim = 최대 4방향[대각] + 4방향[정방향] 지정 가능)
 
+        //목적지 지정 & 내 위치~타겟위치 & 
+
+        //isflip(값만 받기 타겟 트랜스폼 x, 내 트랜스폼 x)
+
+
+        //★★★수정함
+        enemyAI.isFilp(owner.transform.position.x, target.transform.position.x);
+
+        /*
         if (target.transform.position.x < owner.transform.position.x)
         {
             enemyAI.spriteRenderer.flipX = true;
@@ -87,6 +98,7 @@ public class EnemyState_Chase : BTAction
         {
             enemyAI.spriteRenderer.flipX = false;
         }
+        */
     }
 
 
