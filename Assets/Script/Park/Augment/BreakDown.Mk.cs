@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BreakDownMk : MonoBehaviour
 {
-    int percent = 0;
+    public int percent = 0;
     private TopDownCharacterController controller;
 
     private CoolTimeController coolTimeController;
