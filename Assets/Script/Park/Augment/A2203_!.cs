@@ -26,10 +26,10 @@ public class A2203_1 : MonoBehaviourPun
     // Update is called once per frame
     void MakeHeal()
     {
-        GameObject fire = Instantiate(Prefabs);
+        GameObject fire = PhotonNetwork.Instantiate("AugmentList/A2203",transform.localPosition,Quaternion.identity);
         //fire.transform.SetParent(player.transform);
         A2203 a2203 = fire.GetComponent<A2203>();
-        fire.transform.localPosition= playerStat.gameObject.transform.localPosition;
+        //fire.transform.localPosition= playerStat.gameObject.transform.localPosition;
         a2203.Init(playerStat);
     }
 }
