@@ -343,6 +343,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             // 데이터를 수신
             transform.position = (Vector2)stream.ReceiveNext();
             transform.rotation = (Quaternion)stream.ReceiveNext();
+            Debug.Log("데이터 전송 받음");
         }
     }
 }
