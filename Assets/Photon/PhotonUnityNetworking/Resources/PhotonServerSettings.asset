@@ -56,6 +56,21 @@ MonoBehaviour:
   - uiscene
   - DecreaseHP
   - Makeshield
+  - A901
+  - A903
+  - A904
+  - A905
+  - A906
+  - A907
+  - A911
+  - A911_1
+  - A912_1
+  - A913_1
+  - A914_1
+  - A915_1
+  - A916_1
+  - A917_1
+  - A902
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
