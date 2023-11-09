@@ -178,6 +178,7 @@ MonoBehaviour:
   - A3302
   - A3303
   - A911
+  - DestroyEnemy
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
