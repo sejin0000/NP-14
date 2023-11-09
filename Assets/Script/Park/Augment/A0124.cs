@@ -1,21 +1,26 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 
-public class A0124 : MonoBehaviour
+public class A0124 : MonoBehaviourPun
 {
     private GameObject A0124Prefabs;
     // Start is called before the first frame update
     private void Start()
     {
-        A0124Prefabs = Resources.Load<GameObject>("AugmentList/A1024");
-        this.transform.SetSiblingIndex(0);
-        Instantiate(A0124Prefabs);
-        DarkEnd();
-        GameManager1.Instance.OnStageStart += DarkStart;
-        GameManager1.Instance.OnStageEnd += DarkEnd;
+        if (photonView.IsMine) 
+        {
+            A0124Prefabs = Resources.Load<GameObject>("AugmentList/A1024");
+            this.transform.SetSiblingIndex(0);
+            Instantiate(A0124Prefabs);
+            DarkEnd();
+            GameManager1.Instance.OnStageStart += DarkStart;
+            GameManager1.Instance.OnStageEnd += DarkEnd;
+        }
+
     }
     void DarkStart() 
     {

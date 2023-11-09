@@ -1,25 +1,25 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BreakDownMk : MonoBehaviour
+public class BreakDownMk : MonoBehaviourPun
 {
-    public int percent = 0;
+    public int percent;
     private TopDownCharacterController controller;
-
-    private CoolTimeController coolTimeController;
     private WeaponSystem weaponSystem;
     private void Awake()
     {
         percent = 0;
-        weaponSystem=GetComponent<WeaponSystem>();
-    }
-    private void Start()
-    {
-        controller.OnAttackEvent += MoreAtk;
-        
-    }
+        if (photonView.IsMine) 
+        {
 
+            weaponSystem = GetComponent<WeaponSystem>();
+            controller=GetComponent<TopDownCharacterController>();
+            controller.OnAttackEvent += MoreAtk;
+        }
+
+    }
     // Update is called once per frame
     void MoreAtk()
     {

@@ -1,8 +1,9 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class A0211 : MonoBehaviour
+public class A0211 : MonoBehaviourPun
 {
     private TopDownCharacterController controller;
     private PlayerStatHandler playerStat;
@@ -12,15 +13,13 @@ public class A0211 : MonoBehaviour
     int maxpersent = 10;
     private void Awake()
     {
-        controller = GetComponent<TopDownCharacterController>();
-        playerStat = GetComponent<PlayerStatHandler>();
-
+        if (photonView.IsMine) 
+        {
+            controller = GetComponent<TopDownCharacterController>();
+            playerStat = GetComponent<PlayerStatHandler>();
+            playerStat.HitEvent2 += Endure;
+        }
     }
-    private void Start()
-    {
-        playerStat.HitEvent2 += Endure;
-    }
-
     // Update is called once per frame
     void Endure(float damege)
     {
