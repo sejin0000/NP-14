@@ -229,6 +229,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     }
     #endregion
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@공용1티어
+    #region ALL1
     [PunRPC]
     private void A101(int PlayerNumber)//아이언스킨
     {
@@ -419,6 +420,8 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     {
         Debug.Log("미완성");
     }
+    #endregion
+    #region All2
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 공용2티어
     [PunRPC]
     private void A201(int PlayerNumber)
@@ -553,6 +556,8 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     {
         Debug.Log("미완성");
     }
+    #endregion
+    #region All3
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@공용 3티어
     [PunRPC]
     private void A301(int PlayerNumber)//고장내기 mk3 1,2,3 공용 증강 이기에 좀 남다른 코드임 
@@ -594,6 +599,8 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.LaunchVolume.coefficient *= 2;
     }
+    #endregion
+    #region Sniper1
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@스나이퍼 1티어
     [PunRPC]
     private void A1101(int PlayerNumber)
@@ -630,16 +637,22 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A1107(int PlayerNumber)//영역전개 최초의 대상에게 영구적으로 올려주는 타입 아직 세세한 오류가 있을것으로 예상된다 
     {
-        ChangeOnlyPlayer(PlayerNumber);//
-        GameObject Prefabs = Resources.Load<GameObject>("AugmentList/A1107");
-        GameObject go = Instantiate(Prefabs,targetPlayer.transform);
-        //PhotonView photonView = PhotonView.Find(PlayerNumber);
-        //go.transform.SetParent(photonView.transform);
-        go.transform.localPosition = Vector3.zero;
-        go.GetComponent<A1107>().Init();
-        Debug.Log("영역전개의 코드를 바꿨는데 치명적일수도 있을듯함 이로그를 보면 알려주길 바람");
-    }
+        ChangeOnlyPlayer(PlayerNumber);
+        if (targetPlayer.GetPhotonView().IsMine)
+        {
+            //GameObject Prefabs = Resources.Load<GameObject>("AugmentList/A1107");
+            //GameObject go = Instantiate(Prefabs,targetPlayer.transform);
+            GameObject Prefabs = PhotonNetwork.Instantiate("AugmentList/A1107", Vector3.zero, Quaternion.identity);
+            //PhotonView photonView = PhotonView.Find(PlayerNumber);
+            //go.transform.SetParent(photonView.transform);
+            Prefabs.transform.SetParent(targetPlayer.transform);
+            Prefabs.GetComponent<A1107>().Init();
+            Debug.Log("영역전개의 코드를 바꿨는데 치명적일수도 있을듯함 이로그를 보면 알려주길 바람");
 
+        }
+    }
+    #endregion
+    #region Sniper2
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@스나이퍼 2티어
     [PunRPC]
     private void A1201(int PlayerNumber)
@@ -676,6 +689,8 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     {
         Debug.Log("미완성");
     }
+    #endregion
+    #region Sniper3
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@스나이퍼 3티어
     [PunRPC]
     private void A1301(int PlayerNumber)
@@ -697,6 +712,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     {
         Debug.Log("미완성");
     }
+    #endregion
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@솔져 1티어
     [PunRPC]
     private void A2101(int PlayerNumber) //노련함 = 스킬사용후 공속 증가 테스트 ㄴ
