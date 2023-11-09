@@ -165,6 +165,9 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 1
     Name: IsRun
+  - Type: 4
+    SynchronizeType: 1
+    Name: IsDie
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
@@ -561,7 +564,7 @@ Transform:
   - {fileID: 326545430631188435}
   - {fileID: 4749478942147640618}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3012830528697824806
 MonoBehaviour:
