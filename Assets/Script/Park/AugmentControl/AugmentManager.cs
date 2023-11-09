@@ -292,8 +292,8 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     private void A110(int PlayerNumber)//대형화 // 테스트안해봄
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
-        float x = (player.transform.localScale.x * 1.25f);
-        float y = (player.transform.localScale.y * 1.25f);
+        float x = (targetPlayer.transform.localScale.x * 1.25f);
+        float y = (targetPlayer.transform.localScale.y * 1.25f);
         targetPlayer.transform.localScale = new Vector2(x, y);
         playerstatHandler.HP.coefficient *= 1.5f;
         playerstatHandler.Speed.coefficient *= 0.8f;
@@ -340,7 +340,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         ChangeOnlyPlayer(PlayerNumber);
         if (targetPlayer.GetComponent<BreakDownMk>()) //만약 BreakDownMk를 가지고 있다면
         {
-            BreakDownMk Mk3 = player.GetComponent<BreakDownMk>();
+            BreakDownMk Mk3 = targetPlayer.GetComponent<BreakDownMk>();
             Mk3.PercentUp(10);
             Debug.Log($"{Mk3.percent}");
         }
@@ -355,7 +355,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A119(int PlayerNumber)// 반전 공격방향 , 이동방향이 반대가되고 공체 대폭 증가 == 현재 이동방향 반대만 구현 A119 A2105는 동일 함수 합치는거 고려
     {
-        ChangePlayerStatHandler(PlayerNumber);
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
         playerInput = targetPlayer.GetComponent<PlayerInput>();
         if ("Player" == playerInput.currentActionMap.name)
         {
@@ -517,10 +517,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A219(int PlayerNumber) //고장내기mk2 1,2,3 공용 증강 이기에 좀 남다른 코드임 30
     {
-        ChangeOnlyPlayer(PlayerNumber);
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
         if (targetPlayer.GetComponent<BreakDownMk>()) //만약 BreakDownMk를 가지고 있다면
         {
-            BreakDownMk Mk3 = player.GetComponent<BreakDownMk>();
+            BreakDownMk Mk3 = targetPlayer.GetComponent<BreakDownMk>();
             Mk3.PercentUp(30);
             Debug.Log($"{Mk3.percent}");
         }
@@ -557,10 +557,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A301(int PlayerNumber)//고장내기 mk3 1,2,3 공용 증강 이기에 좀 남다른 코드임 
     {
-        ChangeOnlyPlayer(PlayerNumber);
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
         if (targetPlayer.GetComponent<BreakDownMk>()) //만약 BreakDownMk를 가지고 있다면
         {
-            BreakDownMk Mk3 = player.GetComponent<BreakDownMk>();
+            BreakDownMk Mk3 = targetPlayer.GetComponent<BreakDownMk>();
             Mk3.PercentUp(60);
             Debug.Log($"{Mk3.percent}");
         }
@@ -724,7 +724,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A2105(int PlayerNumber)// 반전 공격방향 , 이동방향이 반대가되고 공체 대폭 증가 == 현재 이동방향 반대만 구현 A119 A2105는 동일 함수 합치는거 고려
     {
-        ChangePlayerStatHandler(PlayerNumber);
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
         playerInput = targetPlayer.GetComponent<PlayerInput>();
         if ("Player" == playerInput.currentActionMap.name)
         {
@@ -834,6 +834,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A3201(int PlayerNumber) //굴러서 장전 << 구르기 2초증가 장탄수 +3으로 재장전
     {
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
         playerstatHandler.RollCoolTime.added += 2f;
         targetPlayer.AddComponent<A3201>();
     }
@@ -845,14 +846,16 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A3203(int PlayerNumber)//사이즈업 몸2배체력3배
     {
-        float x = (player.transform.localScale.x * 2f);//절반
-        float y = (player.transform.localScale.y * 2f);//절반
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        float x = (targetPlayer.transform.localScale.x * 2f);//절반
+        float y = (targetPlayer.transform.localScale.y * 2f);//절반
         targetPlayer.transform.localScale = new Vector2(x, y);
         playerstatHandler.HP.coefficient *= 3;
     }
     [PunRPC]
     private void A3204(int PlayerNumber)
     {
+        ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A3204>();
     }
     [PunRPC]
