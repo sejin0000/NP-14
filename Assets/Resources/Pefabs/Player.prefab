@@ -79,7 +79,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: 438759597, guid: 52fa014d607b981418d079725bdcac70, type: 3}
+  m_Sprite: {fileID: -761671203, guid: 52fa014d607b981418d079725bdcac70, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -137,10 +137,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed8b1ae4e4e52b34ea557c1c11e076fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CategoryHash: 5.449709e-22
+  m_CategoryHash: 3.3377335e-38
   m_labelHash: 1.2985474e-36
   m_SpriteKey: 0
-  m_SpriteHash: 563752557
+  m_SpriteHash: 262076791
 --- !u!114 &1358485164649518670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -561,7 +561,7 @@ Transform:
   - {fileID: 326545430631188435}
   - {fileID: 4749478942147640618}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3012830528697824806
 MonoBehaviour:
@@ -656,9 +656,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0990a6178262b44bb868f269c10bd92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerSprite: {fileID: 554290144144741705}
+  playerSprite: {fileID: 554290144144741705}
   weaponSprite: {fileID: 7639390929974933696}
-  weaponRenderer: {fileID: 5311848526290913172}
   isBack: 0
 --- !u!114 &174773302517558128
 MonoBehaviour:

@@ -14,6 +14,7 @@ public class TopDownCharacterController : MonoBehaviour
     public event Action OnRollEvent;
     public event Action OnEndRollEvent;
     public event Action OnReloadEvent;
+    public event Action OnStartSkillEvent;
 
 
     public PlayerStatHandler playerStatHandler;
