@@ -10,7 +10,7 @@ public class EnemySO : ScriptableObject
     public EnemyType type;     // 적 유형(BT기반 행동 제어를 할거라 필요없으면 지우기)
     public float atk;            // 공격력
     public float hp;             // 체력
-    public float atkSpeed;     // 공격 속도
+    public float atkdelay;     // 공격 속도
 
     public int patrolSpeed;    // 일반[순찰] 이동속도(느림)
     public int chaseSpeed;    // 추적 시 이동속도(빠름)

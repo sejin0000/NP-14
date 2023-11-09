@@ -6,6 +6,7 @@ using myBehaviourTree;
 using static UnityEditor.PlayerSettings;
 using UnityEditor.Rendering.LookDev;
 using Photon.Pun;
+using UnityEngine.UI;
 
 //[Root 노드] => 왜 액션과 다르게 상속 안받음?
 //==>특정 AI 동작과 상태에 맞게 유연하게 조정하기 위해서
@@ -42,7 +43,14 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     public bool isAttaking;
 
 
-    public PhotonView PV;
+    Vector2 nowEnemyPosition;
+    Quaternion nowEnemyRotation;
+    [SerializeField]
+    private Image images_Gauge;              //몬스터 UI : Status
+
+    
+    public PhotonView PV;                    //동기화
+
 
     void Awake()
     {
@@ -57,6 +65,15 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         currentHP = enemySO.hp;
         isLive = true;
 
+        nav.updateRotation = false;
+        nav.updateUpAxis = false;
+
+        //★싱글 테스트 시 if else 주석처리 할것
+        //쫓는 플레이어도 호스트가 판별?
+
+        nowEnemyPosition = this.gameObject.transform.position;
+
+        /*
         if (photonView.AmOwner)
         {
             nav.enabled = true;
@@ -65,29 +82,53 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         {
             nav.enabled = false;
         }
+        */
+
     }
     void Update()
     {
         //AI트리의 노드 상태를 매 프레임 마다 얻어옴
-        TreeAIState.Tick();
-        View();
+        TreeAIState.Tick();       
+        GaugeUpdate();
+
+
+
+        IsNavAbled();
+
+        if (isAttaking || isChase)
+            ChaseView();
+        else
+            NomalView();
     }
 
 
     //★
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //호스트에서만 충돌 처리됨
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
         if (collision.gameObject.tag == "Bullet")
         {
             isChase = true;
-            DecreaseHP(collision.transform.GetComponent<Bullet>().ATK);
+
+            //모든 플레이어에게 현재 적의 체력 동기화
+            PV.RPC("DecreaseHP", RpcTarget.AllBuffered, collision.transform.GetComponent<Bullet>().ATK);
 
             Debug.Log("현재 체력 :" + currentHP);
             //TODO게이지 이미지에 hp수치 적용
         }
     }
 
-    //★
+
+
+    private void GaugeUpdate()
+    {
+        images_Gauge.fillAmount = (float)currentHP / enemySO.hp; //체력
+    }
+
+    [PunRPC]
     public void IncreaseHP(float damage)
     {
         currentHP += damage;
@@ -99,7 +140,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void DecreaseHP(float damage)
     {
-        //
         SetStateColor();
         currentHP -= damage;    
 
@@ -108,6 +148,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             isLive = false;
     }
 
+    [PunRPC]
     public void DestroyEnemy()
     {
         Destroy(gameObject, 1f);
@@ -130,8 +171,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     }
 
 
-    //플레이어 탐지★
-    private void View()
+    //플레이어 탐지★ 여기서 추적시&공격시 시야각도 지정하자
+    private void NomalView()
     {
         Vector2 rightBoundary = BoundaryAngle(-viewAngle * 0.5f);
         Vector2 leftBoundary = BoundaryAngle(viewAngle * 0.5f);
@@ -144,9 +185,29 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         }
 
         Debug.DrawRay(transform.position, rightBoundary * viewDistance, Color.yellow);
-        Debug.DrawRay(transform.position, leftBoundary * viewDistance, Color.green);
+        Debug.DrawRay(transform.position, leftBoundary * viewDistance, Color.yellow);
 
-        
+
+        FindPlayer(rightBoundary, leftBoundary);
+    }
+
+    //추적, 공격시 플레이어를 바라보는 시야각으로 전환
+    private void ChaseView()
+    {
+        Vector2 directionToTarget = (target.transform.position - transform.position).normalized;
+
+
+        Vector2 rightBoundary = Quaternion.Euler(0, 0,-viewAngle * 0.5f) * directionToTarget;
+        Vector2 leftBoundary = Quaternion.Euler(0, 0, viewAngle * 0.5f) * directionToTarget;
+
+        Debug.DrawRay(transform.position, rightBoundary * viewDistance, Color.black);
+        Debug.DrawRay(transform.position, leftBoundary * viewDistance, Color.black);
+
+        FindPlayer(rightBoundary, leftBoundary);
+    }
+
+    private void FindPlayer(Vector2 _rightBoundary, Vector2 _leftBoundary)
+    {
         targetColl = Physics2D.OverlapCircle(transform.position, viewDistance, targetMask);
 
 
@@ -159,7 +220,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         {
 
             //시야각 방향의 직선 Direction
-            Vector2 middleDirection = (rightBoundary + leftBoundary).normalized;
+            Vector2 middleDirection = (_rightBoundary + _leftBoundary).normalized;
 
             //Debug.DrawRay(transform.position, middleDirection * viewDistance, Color.green);
 
@@ -173,9 +234,43 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             {
                 isChase = true;
 
-                Debug.DrawRay(transform.position, directionToPlayer * viewDistance, Color.red);              
+                Debug.DrawRay(transform.position, directionToPlayer * viewDistance, Color.red);
             }
         }
+    }
+
+
+    private void SetStateColor()
+    {
+        spriteRenderer.color = Color.red;
+    }
+
+    public void isFilp(float myX, float otherX)
+    {
+        if (otherX < myX)
+        {
+            spriteRenderer.flipX = true;
+        }
+        else
+        {
+            spriteRenderer.flipX = false;
+        }
+    }
+
+    public void DestinationSet(Vector3 targetPoint)
+    {
+        if (!isAttaking || isLive)
+        {
+            nav.SetDestination(targetPoint);
+        }
+    }
+
+    public void IsNavAbled()
+    {
+        if (isAttaking || !isLive)
+            nav.isStopped = true;
+        else
+            nav.isStopped = false; // 활성화
     }
 
 
@@ -235,43 +330,20 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         TreeAIState.AddChild(BTMainSelector);
     }
 
-
-    private void SetStateColor()
-    {
-        spriteRenderer.color = Color.red;
-    }
-
-    public void isFilp(float myX, float otherX)
-    {
-        if (otherX < myX)
-        {
-            spriteRenderer.flipX = true;
-        }
-        else
-        {
-            spriteRenderer.flipX = false;
-        }
-    }
-
-
-
-
-
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
+    {       
+
         if (stream.IsWriting)
         {
             // 데이터를 전송
-            stream.SendNext(transform.position);
-            stream.SendNext(transform.rotation);
-
-            Debug.Log("위치 데이터 전송");
+            stream.SendNext(nowEnemyPosition);
+            stream.SendNext(nowEnemyRotation);
         }
         else if (stream.IsReading)
         {
             // 데이터를 수신
-            transform.position = (Vector2)stream.ReceiveNext();
-            transform.rotation = (Quaternion)stream.ReceiveNext();
+            nowEnemyPosition = (Vector2)stream.ReceiveNext();
+            nowEnemyRotation = (Quaternion)stream.ReceiveNext();
         }
     }
 }

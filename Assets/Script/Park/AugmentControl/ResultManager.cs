@@ -70,14 +70,14 @@ public class ResultManager : MonoBehaviour//vs코드
         {
             //CallStatResult();애가 정상임 아래는 테스트용으로 그뭐냐 스페셜증강뽑을려고넣어둠 수정필
             Debug.Log("이부분 수정");//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-            //CallProtoResult();애가 테스트 스페셜 증강
-            callStatTest();
+            CallProtoResult();//애가 테스트 스페셜 증강
+            //callStatTest();
         }
         else 
         {
             //CallSpecialResult();이거 쓰는게 정상 아래가 프로토타입
-            //CallProtoResult();애가 테스트 스페셜 증강
-            callStatTest();
+            CallProtoResult();//애가 테스트 스페셜 증강
+            //callStatTest();
         }
     }
     public void callStatTest() 

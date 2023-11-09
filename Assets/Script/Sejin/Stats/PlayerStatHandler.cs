@@ -7,8 +7,11 @@ using UnityEngine.U2D.Animation;
 
 public class PlayerStatHandler : MonoBehaviour
 {
-    public Action<float> HitEvent2;
-    public Action HitEvent;
+    public event Action<float> HitEvent2;
+    public event Action HitEvent;
+    public event Action OnDieEvent;
+    public event Action OnRegenEvent;
+
 
     [SerializeField] private PlayerSO playerStats;
 
@@ -38,6 +41,7 @@ public class PlayerStatHandler : MonoBehaviour
     public GameObject _PlayerSprite;
     public GameObject _WeaponSprite;
 
+    public bool isDie;
 
     private float curHP;
     [HideInInspector]
@@ -119,10 +123,22 @@ public class PlayerStatHandler : MonoBehaviour
 
     public void Damage(float damage)
     {
+        if(CurHP - damage <= 0)
+        {
+            isDie = true;
+            OnDieEvent?.Invoke();
+        }
         damage = damage * defense;
         CurHP -= damage;
         HitEvent?.Invoke();
         HitEvent2?.Invoke(damage);//이게 값이 필요한경우와 필요 없는경우가 있는데 한개로 할수가 있는지 모르겠음 일단 이렇게함
         Debug.Log("[PlayerStatHandler] " + "Damage Done");
+    }
+
+    public void Regen(float HP)
+    {
+        OnRegenEvent?.Invoke();
+        CurHP = HP;
+        isDie = false;
     }
 }
