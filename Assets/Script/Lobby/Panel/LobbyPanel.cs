@@ -100,6 +100,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
     [Header("TestRoomPanel")]
     public GameObject TestRoomPanel;
+    public Button CharacterSelectButtonInTestRoomPanel;
 
     [Header("ETC")]
     public GameObject playerDataSetting;
@@ -196,6 +197,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
                 CharacterSelectButtonInLobby.onClick.AddListener(playerInfo.OnCharacterButtonClicked);
                 CharacterSelectButtonInRoom.onClick.AddListener(playerInfo.OnCharacterButtonClicked);
                 CharacterSelectButtonInTestPanel.onClick.AddListener(playerInfo.OnCharacterButtonClicked);
+                CharacterSelectButtonInTestRoomPanel.onClick.AddListener(playerInfo.OnCharacterButtonClicked);
             }
 
             var PlayerData = playerDataSetting.GetComponent<PlayerDataSetting>();  
