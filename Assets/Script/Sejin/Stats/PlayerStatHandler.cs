@@ -41,7 +41,7 @@ public class PlayerStatHandler : MonoBehaviour
     public GameObject _PlayerSprite;
     public GameObject _WeaponSprite;
 
-    private bool isDie;
+    public bool isDie;
 
     private float curHP;
     [HideInInspector]
