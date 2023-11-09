@@ -81,14 +81,20 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     void Update()
     {
         //AI트리의 노드 상태를 매 프레임 마다 얻어옴
-        TreeAIState.Tick();
-        IsNavAbled();
+        TreeAIState.Tick();       
         GaugeUpdate();
 
-        if (isAttaking || isChase)
-            ChaseView();
-        else
-            NomalView();
+
+        if (photonView.AmOwner)
+        {
+            IsNavAbled();
+
+
+            if (isAttaking || isChase)
+                ChaseView();
+            else
+                NomalView();
+        }        
     }
 
 
