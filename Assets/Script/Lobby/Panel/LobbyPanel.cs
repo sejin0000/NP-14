@@ -478,12 +478,12 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         maxPlayers = (byte)Mathf.Clamp(maxPlayers, 2, 8);
 
         RoomOptions options = new RoomOptions { MaxPlayers = maxPlayers, PlayerTtl = 10000 };
-        if (testPanel.SelectedRoomName == null)
+        if (selectedSceneInTestLobbyPanel == null)
         {
-            testPanel.SelectedRoomName = testPanel.sceneConnectButtons[0].sceneNameText.text;
+            selectedSceneInTestLobbyPanel = testPanel.sceneConnectButtons[0].sceneNameText.text;
         }
-        options.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "IsTest", true }, { "Scene", testPanel.SelectedRoomName } };
-        selectedSceneInTestLobbyPanel = testPanel.SelectedRoomName;
+        options.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "IsTest", true }, { "Scene", selectedSceneInTestLobbyPanel } };
+        
 
         //SetPanel(TestRoomPanel.name);
         PhotonNetwork.CreateRoom(roomName, options );

@@ -13,7 +13,7 @@ public class TestRoomOptionPopup : MonoBehaviour
     [Header("RoomInfo")]
     public TMP_InputField TestRoomNameInputField;
     public TMP_InputField TestRoomMemberInputField;
-    public GameObject TestScrollViewContent;
+    public GameObject SceneScrollViewContent;    
 
     [Header("Buttons")]
     public Button OptionConfirmButton;
@@ -92,7 +92,7 @@ public class TestRoomOptionPopup : MonoBehaviour
 
     public void GetCurrentInfo()
     {
-        var contentTransform = TestScrollViewContent.transform;
+        var contentTransform = SceneScrollViewContent.transform;
         int childCount = contentTransform.childCount;
         for (int i = 0; i < childCount; i++)
         {
@@ -102,6 +102,7 @@ public class TestRoomOptionPopup : MonoBehaviour
             {
                 selectedTestScene = selectConnect.sceneNameText.text;
                 testRoomPanel.ConnectedSceneText.text = $"Selected Scene : {selectedTestScene}";
+                testRoomPanel.currentTestScene = selectedTestScene;
             }
         }
         if (TestRoomMemberInputField != null) 
@@ -121,10 +122,11 @@ public class TestRoomOptionPopup : MonoBehaviour
         GameObject SceneEntry;
         foreach (string sceneName in sceneFiles)
         {
+            SceneScrollViewContent.GetComponent<RectTransform>().sizeDelta += new Vector2(0, 90);
             SceneEntry = Instantiate(Resources.Load<GameObject>(sceneEntryPath));  
-            SceneEntry.transform.SetParent(TestScrollViewContent.transform, false);
+            SceneEntry.transform.SetParent(SceneScrollViewContent.transform, false);
             var sceneConnectButton = SceneEntry.GetComponent<SceneConnectButton>();
-            sceneConnectButton.Initialize(sceneName, false, this);
+            sceneConnectButton.Initialize(sceneName, false, this, null);
             sceneConnectButtons.Add(sceneConnectButton);
         }
         foreach (var sceneButtons in sceneConnectButtons)

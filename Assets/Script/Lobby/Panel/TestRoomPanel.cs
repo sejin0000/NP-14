@@ -54,7 +54,12 @@ public class TestRoomPanel : MonoBehaviourPun
         }
         currentRoomNameText = PhotonNetwork.CurrentRoom.Name;
         currentRoomMemberText = PhotonNetwork.CurrentRoom.MaxPlayers.ToString();
-        ConnectedSceneText.text = $"Selected Scene : {lobbyPanel.selectedSceneInTestLobbyPanel}";
+        lobbyPanel = MainCanvas.GetComponent<LobbyPanel>();
+        if (lobbyPanel.selectedSceneInTestLobbyPanel != null)
+        {
+            currentTestScene = lobbyPanel.selectedSceneInTestLobbyPanel;
+            ConnectedSceneText.text = $"Selected Scene : {lobbyPanel.selectedSceneInTestLobbyPanel}";
+        }
         connectedScene = currentTestScene;
 
         // ¿É¼Ç ÆË¾÷ Init
@@ -94,7 +99,7 @@ public class TestRoomPanel : MonoBehaviourPun
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.CurrentRoom.IsVisible = false;
 
-        Debug.Log(testRoomOptionPopup.currentTestScene);
-        PhotonNetwork.LoadLevel(testRoomOptionPopup.currentTestScene);
+        Debug.Log(currentTestScene);
+        PhotonNetwork.LoadLevel(currentTestScene);
     }
 }

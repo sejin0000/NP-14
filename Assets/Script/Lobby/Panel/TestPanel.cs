@@ -63,6 +63,7 @@ public class TestPanel : MonoBehaviourPun
         SceneSelectStartButton.onClick.AddListener(OnSceneSelectStartButtonClicked);
 
         lobbyPanel = canvas.GetComponent<LobbyPanel>();
+        Debug.Log("lobbyPanel Instantiated");
         if (folderPath == null)
         {
             folderPath = "Assets/Scenes/TestScenes";
@@ -85,7 +86,7 @@ public class TestPanel : MonoBehaviourPun
             SceneEntry.transform.SetParent(parentTransform, false);
             SceneScrollViewContent.GetComponent<RectTransform>().sizeDelta += new Vector2(0, 75);
             var sceneConnectButton = SceneEntry.GetComponent<SceneConnectButton>();
-            sceneConnectButton.Initialize(sceneName, false);
+            sceneConnectButton.Initialize(sceneName, false, null, this);
             sceneConnectButtons.Add(sceneConnectButton);
         }
         foreach (var sceneButtons in sceneConnectButtons)
@@ -114,9 +115,10 @@ public class TestPanel : MonoBehaviourPun
 
     public void OnSceneConnectButtonClicked(SceneConnectButton clickedButton)
     {
+        Debug.Log("ClickedInTestPanel");
         selectedSceneName = clickedButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text;
-        Debug.Log(selectedSceneName);
         SceneSelectStartButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = selectedSceneName;
+        lobbyPanel.selectedSceneInTestLobbyPanel = selectedSceneName;
         foreach (SceneConnectButton button in sceneConnectButtons)
         {
             if (button != clickedButton)
