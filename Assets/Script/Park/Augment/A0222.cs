@@ -1,24 +1,21 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class A0222 : MonoBehaviour
+public class A0222 : MonoBehaviourPun
 {
     private TopDownCharacterController controller;
     private PlayerStatHandler playerStat;
-    private CoolTimeController coolTimeController;
     private void Awake()
     {
-        controller = GetComponent<TopDownCharacterController>();
-        playerStat = GetComponent<PlayerStatHandler>();
-
+        if (photonView.IsMine)
+        {
+            controller = GetComponent<TopDownCharacterController>();
+            playerStat = GetComponent<PlayerStatHandler>();
+            controller.OnSkillEvent += RollingHeal;
+        }
     }
-    private void Start()
-    {
-        controller.OnSkillEvent += RollingHeal;
-    }
-
-    // Update is called once per frame
     void RollingHeal()
     {
         playerStat.CurHP += playerStat.HP.total*0.1f;

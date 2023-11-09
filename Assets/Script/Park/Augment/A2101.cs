@@ -13,14 +13,9 @@ public class A2101 : MonoBehaviourPun
         {
             controller = GetComponent<TopDownCharacterController>();
             playerStat = GetComponent<PlayerStatHandler>();
+            controller.OnSkillEvent += AtkSpeedUp;
         }
     }
-    private void Start()
-    {
-        if(photonView.IsMine)
-        controller.OnSkillEvent += AtkSpeedUp;
-    }
-
     // Update is called once per frame
     void AtkSpeedUp()
     {
