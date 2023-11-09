@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
@@ -9,7 +10,7 @@ using UnityEngine.Rendering.Universal;
 public class A1107 : MonoBehaviourPun//주변힐
 {
     float time = 0;
-    List<PlayerStatHandler> target;
+    List<PlayerStatHandler> target = new List<PlayerStatHandler>();
     int healP=2;
     public GameObject Player;
 
@@ -17,14 +18,17 @@ public class A1107 : MonoBehaviourPun//주변힐
     public void Init()
     {
         PlayerStatHandler a = transform.parent.gameObject.GetComponent<PlayerStatHandler>();
-        target = new List<PlayerStatHandler>();
-        target.Add(a);
+        if (!target.Contains(a)) 
+        {
+            target.Add(a);
+        }
+
     }
     
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player") 
+        if (collision.tag == "Player" && !target.Contains(collision.GetComponent<PlayerStatHandler>())) 
         {
             target.Add(collision.GetComponent<PlayerStatHandler>());
             Debug.Log("플레이어입장");
@@ -33,7 +37,7 @@ public class A1107 : MonoBehaviourPun//주변힐
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.tag == "Player" && target.Contains(collision.GetComponent<PlayerStatHandler>()))
         {
             target.Remove(collision.GetComponent<PlayerStatHandler>());
             Debug.Log("플레이어퇴장");

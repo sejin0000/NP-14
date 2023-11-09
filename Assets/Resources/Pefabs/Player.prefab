@@ -587,6 +587,7 @@ MonoBehaviour:
   WeaponSpriteCase: {fileID: 0}
   _PlayerSprite: {fileID: 554290144144741705}
   _WeaponSprite: {fileID: 7639390929974933696}
+  isDie: 0
   CanFire: 0
   CanReload: 0
   CanSkill: 0
