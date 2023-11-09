@@ -16,7 +16,7 @@ MonoBehaviour:
   type: 0
   atk: 22
   hp: 10
-  atkSpeed: 1
+  atkdelay: 1.5
   patrolSpeed: 5
   chaseSpeed: 2
   runSpeed: 2
