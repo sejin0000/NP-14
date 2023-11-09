@@ -7,7 +7,6 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using static MainGameManager;
 
 public class TestPanel : MonoBehaviourPunCallbacks
 {
@@ -17,11 +16,11 @@ public class TestPanel : MonoBehaviourPunCallbacks
     public Button BackButton;
 
     [Header("CurrentRoomBoard")]
-    [SerializeField] private GameObject ScrollViewContent;
+    [SerializeField] public GameObject ScrollViewContent;
 
     [Header("CreateRoomBoard")]
-    [SerializeField] private TMP_InputField RoomNameSetup;
-    [SerializeField] private TMP_InputField RoomMemberSetup;
+    [SerializeField] public TMP_InputField RoomNameSetup;
+    [SerializeField] public TMP_InputField RoomMemberSetup;
 
     [Header("TestRoomInfo")]
     private string selectedRoomName;
@@ -37,78 +36,21 @@ public class TestPanel : MonoBehaviourPunCallbacks
             }
         }
     }
-    private Dictionary<string, RoomInfo> cachedTestRoomList;
-    private Dictionary<string, GameObject> testRoomEntryList;
+
+    [Header("RoomPanel")]    
+    public GameObject TestRoomPanel;
+
 
     public event Action OnEntryClicked;
+    public GameObject canvas;
+    private LobbyPanel lobbyPanel;
 
-    [Header("RoomPanel")]
-    public GameObject RoomPanel;
-
-    private void Start()
-    {
-        cachedTestRoomList = new Dictionary<string, RoomInfo>();
+    public void Initialize()
+    {        
         EnterTestRoomButton.onClick.AddListener(OnEnterTestRoomButtonClicked);
         CreateTestRoomButton.onClick.AddListener(OnCreateTestRoomButtonClicked);            
         BackButton.onClick.AddListener(OnBackButtonClicked);
-    }
-
-
-    public override void OnRoomListUpdate(List<RoomInfo> roomList)
-    {
-        ClearTestRoomListView();
-        Debug.Log("룸 추가여");
-        UpdateCachedTestRoomList(roomList);
-        UpdateTestRoomListView();
-    }
-
-    private void UpdateCachedTestRoomList(List<RoomInfo> roomList)
-    {
-        foreach (RoomInfo info in roomList)
-        {
-            info.CustomProperties.TryGetValue("IsTest", out object testBool);
-            if ((!info.IsOpen || !info.IsVisible || info.RemovedFromList ) & !(bool)testBool )
-            {
-                if (cachedTestRoomList.ContainsKey(info.Name))
-                {
-                    cachedTestRoomList.Remove(info.Name);
-                }
-                continue;
-            }
-
-            if (cachedTestRoomList.ContainsKey(info.Name))
-            {
-                cachedTestRoomList[info.Name] = info;
-            }
-            else
-            {
-                cachedTestRoomList.Add(info.Name, info);
-            }
-        }
-    }
-
-    private void UpdateTestRoomListView()
-    {
-        testRoomEntryList.Clear();
-        foreach (RoomInfo info in cachedTestRoomList.Values)
-        {
-            GameObject entry = Instantiate(Resources.Load<GameObject>("Prefabs/LobbyScene/TestRoomEntry"));            
-            entry.transform.SetParent(ScrollViewContent.transform, false);
-            entry.transform.localScale = Vector3.one;
-            entry.GetComponent<RoomListEntry>().Initialize(info.Name, (byte)info.PlayerCount, (byte)info.MaxPlayers);
-            OnEntryClicked += entry.GetComponent<RoomListEntry>().OnSelectRoomButtonClicked;
-            testRoomEntryList[info.Name] = entry;
-        }
-    }
-
-    private void ClearTestRoomListView()
-    {
-        foreach (GameObject entry in testRoomEntryList.Values)
-        {
-            Destroy(entry.gameObject);
-        }
-
-        testRoomEntryList.Clear();
+        lobbyPanel = canvas.GetComponent<LobbyPanel>();
     }
 
     #region Button
@@ -119,7 +61,7 @@ public class TestPanel : MonoBehaviourPunCallbacks
     private void OnEnterTestRoomButtonClicked()
     {
         // 발견
-        foreach (GameObject entry in testRoomEntryList.Values)
+        foreach (GameObject entry in lobbyPanel.testRoomListEntries.Values)
         {
             var entryInfo = entry.GetComponent<RoomListEntry>();
             if (entryInfo.isEntryClicked)
@@ -128,6 +70,7 @@ public class TestPanel : MonoBehaviourPunCallbacks
             }
         }
         PhotonNetwork.JoinRoom(selectedRoomName);
+        this.gameObject.SetActive(false);
     }
 
     private void OnCreateTestRoomButtonClicked()
@@ -144,7 +87,8 @@ public class TestPanel : MonoBehaviourPunCallbacks
 
         PhotonNetwork.CreateRoom(roomName, options, null);
         this.gameObject.SetActive(false);
-        RoomPanel.SetActive(true);
+        TestRoomPanel.SetActive(true);
+        Debug.Log("TestRoomPanel로 ,,");
     }
 
     private void OnBackButtonClicked()

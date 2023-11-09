@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7170430111280793268}
   - component: {fileID: 6324881637429707500}
   - component: {fileID: 8089942547363901857}
+  - component: {fileID: 5488684591040296815}
   m_Layer: 5
   m_Name: TestRoomEntry
   m_TagString: Untagged
@@ -123,6 +124,23 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5488684591040296815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4213981978534924226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37abb5993ec1b3c40b884270a932bf65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PublishedRoomNameText: {fileID: 5350845996031489481}
+  PublishedRoomMemberText: {fileID: 7581581829959064393}
+  SelectRoomButton: {fileID: 8089942547363901857}
+  roomName: 
+  isEntryClicked: 0
 --- !u!1 &4695956313842735146
 GameObject:
   m_ObjectHideFlags: 0
