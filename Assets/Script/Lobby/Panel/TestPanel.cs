@@ -110,6 +110,17 @@ public class TestPanel : MonoBehaviourPunCallbacks
         SceneScrollViewContent.SetActive(false);
     }
 
+    public void OnSceneConnectButtonClicked(SceneConnectButton clickedButton)
+    {
+        foreach (SceneConnectButton button in sceneConnectButtons)
+        {
+            if (button != clickedButton)
+            {
+                button.IsSelected = false;
+            }
+        }
+    }
+
     private void OnEnterTestRoomButtonClicked()
     {
         // ¹ß°ß

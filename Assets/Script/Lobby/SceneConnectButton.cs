@@ -17,8 +17,14 @@ public class SceneConnectButton : MonoBehaviour
         sceneNameText.text = sceneName;
         IsSelected = isSelected;
         sceneConnectButton.onClick.AddListener(OnSceneConnectButtonClicked);
-        sceneConnectButton.onClick.AddListener(() => popup.OnSceneConnectButtonClicked(this));
-        //sceneConnectButton.onClick.AddListener(() => panel.OnSceneConnectButtonClicked(this));
+        if (popup != null) 
+        {
+            sceneConnectButton.onClick.AddListener(() => popup.OnSceneConnectButtonClicked(this));
+        }
+        if (panel != null)
+        {
+            //sceneConnectButton.onClick.AddListener(() => panel.OnSceneConnectButtonClicked(this));
+        }
     }
 
     public void InitializeButtonList(List<SceneConnectButton> buttons)
