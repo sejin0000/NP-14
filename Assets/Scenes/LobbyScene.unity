@@ -384,9 +384,9 @@ RectTransform:
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &77155096
 MonoBehaviour:
@@ -1233,9 +1233,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1568722250}
         m_TargetAssemblyTypeName: PlayerInfo, Assembly-CSharp
-        m_MethodName: OnCharacterButtonClicked
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2582,8 +2582,8 @@ RectTransform:
   m_Father: {fileID: 1662378718}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.28044742}
-  m_AnchorMax: {x: 1, y: 0.9999984}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3296,7 +3296,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00015491358}
+  m_AnchoredPosition: {x: 0, y: 0.000028294142}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &508085904
@@ -3715,7 +3715,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1568722255}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: LobbyPanel, Assembly-CSharp
         m_MethodName: OnStartButtonClicked
         m_Mode: 1
@@ -4651,7 +4651,7 @@ RectTransform:
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4756,7 +4756,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1568722255}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: LobbyPanel, Assembly-CSharp
         m_MethodName: OnStartButtonClicked
         m_Mode: 1
@@ -4863,9 +4863,9 @@ RectTransform:
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &643976699
 MonoBehaviour:
@@ -5447,7 +5447,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &700913423
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5919,8 +5919,8 @@ RectTransform:
   m_Father: {fileID: 1849462178}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.43128598}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6306,7 +6306,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &844653101
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6387,8 +6387,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnterTestRoomButton: {fileID: 1487980740}
-  CreateTestRoomButton: {fileID: 799684789}
-  BackButton: {fileID: 1520668132}
   SceneSelectButton: {fileID: 812492303}
   SceneSelectStartButton: {fileID: 1013383001}
   RoomScrollViewContent: {fileID: 508085902}
@@ -11153,7 +11151,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1397847045
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11898,7 +11896,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 633584165}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.9975398
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -13440,21 +13438,23 @@ MonoBehaviour:
   Gold: {fileID: 1221515335}
   RoomPanel: {fileID: 1397847044}
   PartyBox: {fileID: 1857915279}
-  PlayerInfo: {fileID: 3808765961053771845, guid: ea3cd5d00deb56a4aa91d369b87a2fc0, type: 3}
+  PlayerInfo: {fileID: 3808765961053771845, guid: 512fd4d54a2dcb349b8780671b947ab3, type: 3}
   CharacterSelectButtonInRoom: {fileID: 922569496}
   StartButton: {fileID: 532767948}
   ReadyButton: {fileID: 435969353}
   ChatInput: {fileID: 1814743562}
-  ChatLogPrefab: {fileID: 1580934528868145059, guid: 429e494743d959644ae76b8ceb04fb82, type: 3}
+  ChatLogPrefab: {fileID: 1580934528868145059, guid: 8cabf84cabb8a8d47972021ec03c6462, type: 3}
   ChatBoxScrollContent: {fileID: 376548891}
-  CharacterSelectPopup: {fileID: 0}
+  CharacterSelectPopup: {fileID: 7140342747673913957, guid: 2eb62e0eb4b23d545825f5ecd308edf7, type: 3}
   PlayerClassText: {fileID: 0}
-  StatInfo: {fileID: 7934161811500229392, guid: 4078d8937b0aebf4cb7ec2ca3bc27428, type: 3}
+  StatInfo: {fileID: 7934161811500229392, guid: e35b10894d5452d49b52765900bb61a8, type: 3}
   SkillInfoText: {fileID: 0}
   Shop: {fileID: 548677836}
   TestLobbyPanel: {fileID: 844653100}
   CharacterSelectButtonInTestPanel: {fileID: 653759552}
-  testPanel: {fileID: 844653104}
+  CreateTestRoomButton: {fileID: 799684789}
+  BackButtonInTestPanel: {fileID: 1520668132}
+  testPanel: {fileID: 0}
   TestRoomPanel: {fileID: 700913422}
   playerDataSetting: {fileID: 0}
   playerContainer: {fileID: 577453464}
@@ -13518,7 +13518,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uD14C\uC2A4\uD2B8\uB8F8"
+  m_text: "\uC635\uC158\uBCC0\uACBD"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 29bf7b60dd66c9b45b9140d95a349ea2, type: 2}
   m_sharedMaterial: {fileID: -8976703866905884628, guid: 29bf7b60dd66c9b45b9140d95a349ea2, type: 2}
@@ -13679,7 +13679,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1568722255}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: LobbyPanel, Assembly-CSharp
         m_MethodName: OnStartButtonClicked
         m_Mode: 1
@@ -14908,9 +14908,9 @@ RectTransform:
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1752686109
 MonoBehaviour:
@@ -16807,7 +16807,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2099533331
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17136,7 +17136,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3012451638859198251, guid: 4d64eb30287bc3747b0ec5867b60a094, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3012451638859198251, guid: 4d64eb30287bc3747b0ec5867b60a094, type: 3}
       propertyPath: m_AnchorMin.x
@@ -17144,11 +17144,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3012451638859198251, guid: 4d64eb30287bc3747b0ec5867b60a094, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3012451638859198251, guid: 4d64eb30287bc3747b0ec5867b60a094, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 883
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3012451638859198251, guid: 4d64eb30287bc3747b0ec5867b60a094, type: 3}
       propertyPath: m_SizeDelta.y
@@ -17184,11 +17184,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3012451638859198251, guid: 4d64eb30287bc3747b0ec5867b60a094, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 446.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3012451638859198251, guid: 4d64eb30287bc3747b0ec5867b60a094, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -42.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3012451638859198251, guid: 4d64eb30287bc3747b0ec5867b60a094, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

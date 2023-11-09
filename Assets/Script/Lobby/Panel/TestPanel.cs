@@ -10,12 +10,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TestPanel : MonoBehaviourPunCallbacks
+public class TestPanel : MonoBehaviourPun
 {
     [Header("Button")]
     public Button EnterTestRoomButton;
-    public Button CreateTestRoomButton;    
-    public Button BackButton;
     public Button SceneSelectButton;
     public Button SceneSelectStartButton;
 
@@ -61,8 +59,6 @@ public class TestPanel : MonoBehaviourPunCallbacks
     public void Initialize()
     {        
         EnterTestRoomButton.onClick.AddListener(OnEnterTestRoomButtonClicked);
-        CreateTestRoomButton.onClick.AddListener(OnCreateTestRoomButtonClicked);         
-        BackButton.onClick.AddListener(OnBackButtonClicked);
         SceneSelectButton.onClick.AddListener(OnSceneSelectButtonClicked);
         SceneSelectStartButton.onClick.AddListener(OnSceneSelectStartButtonClicked);
 
@@ -119,6 +115,7 @@ public class TestPanel : MonoBehaviourPunCallbacks
     public void OnSceneConnectButtonClicked(SceneConnectButton clickedButton)
     {
         selectedSceneName = clickedButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text;
+        Debug.Log(selectedSceneName);
         SceneSelectStartButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = selectedSceneName;
         foreach (SceneConnectButton button in sceneConnectButtons)
         {
@@ -144,31 +141,5 @@ public class TestPanel : MonoBehaviourPunCallbacks
         this.gameObject.SetActive(false);
     }
 
-    private void OnCreateTestRoomButtonClicked()
-    {
-        string roomName = RoomNameSetup.text;
-        roomName = (roomName.Equals(string.Empty)) ? "Room " + UnityEngine.Random.Range(1000, 10000) : roomName;
-
-        byte maxPlayers;
-        byte.TryParse(RoomMemberSetup.text, out maxPlayers);
-        maxPlayers = (byte)Mathf.Clamp(maxPlayers, 2, 8);
-
-        RoomOptions options = new RoomOptions { MaxPlayers = maxPlayers, PlayerTtl = 10000 };
-        if (selectedRoomName == null)
-        {
-            selectedRoomName = sceneConnectButtons[0].sceneNameText.text;
-        }
-        options.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "IsTest", true }, { "Scene", selectedRoomName } };
-
-        PhotonNetwork.CreateRoom(roomName, options, null);
-        this.gameObject.SetActive(false);
-        TestRoomPanel.SetActive(true);
-        Debug.Log("TestRoomPanel·Î ,,");
-    }
-
-    private void OnBackButtonClicked()
-    {
-        this.gameObject.SetActive(false);
-    }
     #endregion
 }

@@ -36,8 +36,8 @@ public class SceneConnectButton : MonoBehaviour
     {
         IsSelected = true;
         var backgroundColor = this.gameObject.GetComponent<Image>().color;
-        var selectedColor = new Color(54, 117, 117);
-        var unSelectedColor = new Color(205, 146, 146);
+        var selectedColor = new Color(54f / 255f, 117f / 255f, 117f / 255f); 
+        var unSelectedColor = new Color(205f / 255f, 146f / 255f, 146f / 255f); 
         backgroundColor = selectedColor;
         sceneNameText.color = unSelectedColor;
         foreach (var button in allButtons)
@@ -46,7 +46,7 @@ public class SceneConnectButton : MonoBehaviour
             {
                 button.IsSelected = false;
                 button.gameObject.GetComponent<Image>().color = unSelectedColor;
-                button.gameObject.GetComponentInChildren<TextMeshProUGUI>().color = selectedColor;
+                button.sceneNameText.color = selectedColor;
             }
         }
     }

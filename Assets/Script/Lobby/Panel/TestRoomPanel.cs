@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TestRoomPanel : MonoBehaviour
+public class TestRoomPanel : MonoBehaviourPun
 {
     [Header("Buttons")]
     public Button TestStartButton;
@@ -47,13 +47,15 @@ public class TestRoomPanel : MonoBehaviour
     }
     public void Initialize()
     {
-        // 冯 泅犁 可记 利侩
+        //冯 泅犁 可记 利侩
         if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("Scene", out object roomScene))
         {
             currentTestScene = roomScene.ToString();
         }
         currentRoomNameText = PhotonNetwork.CurrentRoom.Name;
         currentRoomMemberText = PhotonNetwork.CurrentRoom.MaxPlayers.ToString();
+        ConnectedSceneText.text = $"Selected Scene : {lobbyPanel.selectedSceneInTestLobbyPanel}";
+        connectedScene = currentTestScene;
 
         // 可记 扑诀 Init
         testRoomOptionPopup = testRoomOptionPopupObject.GetComponent<TestRoomOptionPopup>();
@@ -92,6 +94,7 @@ public class TestRoomPanel : MonoBehaviour
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.CurrentRoom.IsVisible = false;
 
-        PhotonNetwork.LoadLevel(ConnectedScene);
+        Debug.Log(testRoomOptionPopup.currentTestScene);
+        PhotonNetwork.LoadLevel(testRoomOptionPopup.currentTestScene);
     }
 }

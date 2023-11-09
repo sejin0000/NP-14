@@ -90,7 +90,10 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     [Header("TestLobbyPanel")]
     public GameObject TestLobbyPanel;
     public Button CharacterSelectButtonInTestPanel;
+    public Button CreateTestRoomButton;
+    public Button BackButtonInTestPanel;
     public TestPanel testPanel;
+    public string selectedSceneInTestLobbyPanel;
 
     public Dictionary<string, RoomInfo> cachedTestRoomList;
     public Dictionary<string, GameObject> testRoomListEntries;
@@ -131,6 +134,10 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
         testPanel = TestLobbyPanel.GetComponent<TestPanel>();
         testPanel.Initialize();
+        CreateTestRoomButton.onClick.AddListener(OnCreateTestRoomButtonClicked);
+        BackButtonInTestPanel.onClick.AddListener(OnBackButtonInTestPanelClicked);
+
+        SetPanel(LoginPanel.name);
     }
 
     public virtual void Start()
@@ -205,6 +212,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
+        Debug.Log(PhotonNetwork.NetworkingClient.LoadBalancingPeer.DebugOut);
         SetPanel(MainLobbyPanel.name);
     }
 
@@ -459,6 +467,33 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         MainLobbyPanel.SetActive(false);
         TestLobbyPanel.SetActive(true);
     }
+
+    private void OnCreateTestRoomButtonClicked()
+    {        
+        string roomName = testPanel.RoomNameSetup.text;
+        roomName = (roomName.Equals(string.Empty)) ? "Room " + UnityEngine.Random.Range(1000, 10000) : roomName;
+
+        byte maxPlayers;
+        byte.TryParse(testPanel.RoomMemberSetup.text, out maxPlayers);
+        maxPlayers = (byte)Mathf.Clamp(maxPlayers, 2, 8);
+
+        RoomOptions options = new RoomOptions { MaxPlayers = maxPlayers, PlayerTtl = 10000 };
+        if (testPanel.SelectedRoomName == null)
+        {
+            testPanel.SelectedRoomName = testPanel.sceneConnectButtons[0].sceneNameText.text;
+        }
+        options.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "IsTest", true }, { "Scene", testPanel.SelectedRoomName } };
+        selectedSceneInTestLobbyPanel = testPanel.SelectedRoomName;
+
+        //SetPanel(TestRoomPanel.name);
+        PhotonNetwork.CreateRoom(roomName, options );
+
+    }
+
+    private void OnBackButtonInTestPanelClicked()
+    {
+        SetPanel(MainLobbyPanel.name);
+    }
     #endregion
 
 
@@ -481,8 +516,13 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     public void UpdateCachedRoomList(List<RoomInfo> roomList)
     {
         foreach (RoomInfo info in roomList)
-        {
-            if (!info.IsOpen || info.RemovedFromList)
+        {            
+            info.CustomProperties.TryGetValue("IsTest", out object testBool);
+            if (testBool == null)
+            {
+                continue;
+            }
+            if ((!info.IsOpen || info.RemovedFromList || !info.IsVisible) & (bool)testBool)
             {
                 if (cachedRoomList.ContainsKey(info.Name))
                 {

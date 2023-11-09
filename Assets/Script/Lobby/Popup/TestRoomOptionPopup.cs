@@ -100,7 +100,8 @@ public class TestRoomOptionPopup : MonoBehaviour
             var selectConnect = selectButtonTransform.GetComponent<SceneConnectButton>();
             if (selectConnect.IsSelected)
             {
-                selectedTestScene = selectConnect.sceneNameText.text;                
+                selectedTestScene = selectConnect.sceneNameText.text;
+                testRoomPanel.ConnectedSceneText.text = $"Selected Scene : {selectedTestScene}";
             }
         }
         if (TestRoomMemberInputField != null) 
