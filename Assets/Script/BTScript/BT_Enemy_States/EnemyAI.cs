@@ -51,6 +51,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         collider2D = GetComponentInChildren<CircleCollider2D>();
         PV = GetComponent<PhotonView>();
+        nav.isStopped = true;
 
         //게임 오브젝트 활성화 시, 행동 트리 생성
         CreateTreeATState();
@@ -264,10 +265,10 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
     public void IsNavAbled()
     {
-        if(isAttaking)
-            nav.isStopped = true;
+        if (isAttaking || !isLive)
+            nav.enabled = false; // 비활성화
         else
-            nav.isStopped = false;
+            nav.enabled = true; // 활성화
     }
 
 
