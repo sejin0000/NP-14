@@ -157,7 +157,8 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        UpdateCachedRoomList(roomList);
+        Debug.Log("Updated RoomList");
+        UpdateCachedRoomList(roomList);        
 
         ClearTestRoomListView();
 
@@ -226,6 +227,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     // 랜덤룸 찾기 실패했을 때
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
+        Debug.Log("join Failed");
         string roomName = $"RandRoom{Random.Range(1,200)}";
         RoomOptions options = new RoomOptions { MaxPlayers = 3 };
         options.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "IsTest", false } };
@@ -295,8 +297,8 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
                 testRoomListEntries = new Dictionary<string, GameObject>();
             }
 
+            // 나중에 들어오는 사람 Scene 안뜨는 이슈 해결해야함.
             StartButton.gameObject.SetActive(true);
-            //here
         }
         
     }
@@ -321,6 +323,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         SetPanel(MainLobbyPanel.name);
+
 
         foreach (GameObject playerInfoEntry in playerInfoListEntries.Values) 
         {
@@ -442,17 +445,19 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     {
         if (cachedRoomList == null)
         {
+            Debug.Log("cachedRoomList is Null");
             string roomName = $"Room {Random.Range(0, 200)}";
 
             RoomOptions options = new RoomOptions { MaxPlayers = 3, PlayerTtl = 10000 };
             options.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "IsTest", false } };
             
-            PhotonNetwork.CreateRoom(roomName, options, null);
+            PhotonNetwork.CreateRoom(roomName, options);
         }
         else
         {
+            Debug.Log("is Not Null");
             var testProperty = new ExitGames.Client.Photon.Hashtable() { { "IsTest", false } };
-            PhotonNetwork.JoinRandomRoom(testProperty, 0);
+            PhotonNetwork.JoinRandomRoom(testProperty, 3);
         }
     }
 
@@ -524,7 +529,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
             {
                 continue;
             }
-            if ((!info.IsOpen || info.RemovedFromList || !info.IsVisible) & (bool)testBool)
+            if (!info.IsOpen || info.RemovedFromList || !info.IsVisible || info.PlayerCount == 0 || (bool)testBool)
             {
                 if (cachedRoomList.ContainsKey(info.Name))
                 {
@@ -533,12 +538,11 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
                 continue;
             }
-
+            
             if (cachedRoomList.ContainsKey(info.Name))
             {
                 cachedRoomList[info.Name] = info;
             }
-
             else
             {
                 cachedRoomList.Add(info.Name, info);
@@ -552,7 +556,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         {
             if (info.CustomProperties.TryGetValue("IsTest", out object testBool))
             {
-                if ((!info.IsOpen || !info.IsVisible || info.RemovedFromList) & !(bool)testBool)
+                if (!info.IsOpen || !info.IsVisible || info.RemovedFromList || info.PlayerCount == 0 || !(bool)testBool)
                 {
                     if (cachedTestRoomList.ContainsKey(info.Name))
                     {
