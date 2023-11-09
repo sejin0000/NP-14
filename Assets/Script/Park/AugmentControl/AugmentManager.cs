@@ -8,12 +8,10 @@ using UnityEngine.InputSystem;
 
 public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러오는곳 AugmentManager.Instance.Invoke(code,0); 을통해 해당 증강불러옴
 {
-    public static AugmentManager Instance;
-    public PlayerStatHandler playerstatHandler;
-    public GameObject player;
-
-
-    int atk = 5;
+    public static AugmentManager Instance;//싱긍톤
+    public PlayerStatHandler playerstatHandler;//정확히는 이름을 타겟 플레이어 스탯 핸들러가 맞는 표현 같기도함 // 생각할수록 맞음
+    public GameObject player;//처음 세팅값에 필요함
+    int atk = 5;//여기서부터 아래까지  티어별로 *n으로 사용중
     int hp = 8;
     float speed = 1;
     float atkspeed = -1f;
@@ -21,14 +19,11 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     int cooltime = -1;
     int critical = 5;
     int AmmoMax = 1;
-    public PlayerInput playerInput;
+    public PlayerInput playerInput;//내가 넣은건가 ? 왜 있는것인지 당신은?? //내가넣은거 맞음 키보드상하좌우반대
     public PhotonView PlayerPv;
+    public GameObject targetPlayer;//실제 적용되는 타켓
     public int PlayerPvNumber;
-
-
-
-    // Start is called before the first frame update
-    private void Awake()
+    private void Awake()//싱글톤
     {
         if (null == Instance)
         {
@@ -42,351 +37,324 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         }
 
     }
-    public void startset(GameObject PlayerObj)
+    public void startset(GameObject PlayerObj)//스타트세팅 메인게임매니저 게임 처음 시작부분에 호출되면 값셋팅 해줌
     {
-
         player = PlayerObj;//플레이어 받아옴 
         PlayerPvNumber = player.GetPhotonView().ViewID;//
         PlayerPv = PhotonView.Find(PlayerPvNumber);//플레이어pv 확보
-                                                   //player = PlayerPv.gameObject; 생각해보니 이걸 다시바꾸는 의미가 없음
-                                                   //playerstatHandler = player.GetComponent<PlayerStatHandler>();그건 애도 마찬가지
-                                                   //playerInput = player.GetComponent<PlayerInput>();
-
     }
-    public void AugmentCall(int code)
+    public void AugmentCall(int code)//slot에서 pick으로 호출해서 punppc로 모든컴퓨터에 뿌려줌
     {
         string callName = "A" + code.ToString();
         photonView.RPC(callName, RpcTarget.All, PlayerPvNumber);
     }
+    private void ChangePlayerAndPlayerStatHandler(int PlayerNumber)
+    {
+        PhotonView photonView = PhotonView.Find(PlayerNumber);
+        targetPlayer = photonView.gameObject;
+        playerstatHandler = targetPlayer.GetComponent<PlayerStatHandler>();
+    }
+    private void ChangePlayerStatHandler(int PlayerNumber)
+    {
+        PhotonView photonView = PhotonView.Find(PlayerNumber);
+        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+    }
+    private void ChangeOnlyPlayer(int PlayerNumber)
+    {
+        PhotonView photonView = PhotonView.Find(PlayerNumber);
+        targetPlayer = photonView.gameObject;
+    }
+    //PhotonView photonView = PhotonView.Find(PlayerNumber);
+    //playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
     [PunRPC]
     private void A901(int PlayerNumber)//스탯 공 티어 1
     {
-        //photonView.RPC("A901_1", RpcTarget.All, PlayerPv);
-        PhotonView photonView = PhotonView.Find(PlayerNumber);
-        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+        ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.ATK.added += atk;
-        Debug.Log($"{photonView.gameObject.GetPhotonView().ViewID}의 공격력증가");
-
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 공격력증가");
     }
-    //[PunRPC]
-    //private void A901_1(int PlayerPvNumber)//스탯 공 티어 1
-    //{
-    //    PhotonView photonView = PhotonView.Find(PlayerPvNumber);
-    //    playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
-    //    playerstatHandler.ATK.added += atk;
-    //}
     [PunRPC]
     private void A902(int PlayerNumber)//스탯 체 티어 1
     {
-        //photonView.RPC("A902_1", RpcTarget.All, PlayerPv);
-        PhotonView photonView = PhotonView.Find(PlayerNumber);
-        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+        ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.HP.added += hp;
-        Debug.Log($"{photonView.gameObject.GetPhotonView().ViewID}의 방어력증가");
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 방어력증가");
     }
-    //private void A902_1(int PlayerPvNumber)//스탯 체 티어 1
-    //{
-    //    PhotonView photonView = PhotonView.Find(PlayerPvNumber);
-    //    playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
-    //    playerstatHandler.HP.added += hp;
-    //}
     [PunRPC]
     private void A903(int PlayerNumber)//스탯 이속 티어 1
     {
-        //photonView.RPC("A903_1", RpcTarget.All, PlayerPv);
-        PhotonView photonView = PhotonView.Find(PlayerNumber);
-        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+        ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.Speed.added += speed;
-        Debug.Log($"{photonView.gameObject.GetPhotonView().ViewID}의 이속증가");
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 이속증가");
     }
-    //[PunRPC]
-    //private void A903_1()//스탯 이속 티어 1
-    //{
-    //    PhotonView photonView = PhotonView.Find(PlayerPvNumber);
-    //    playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
-    //    playerstatHandler.Speed.added += speed;
-    //}
     [PunRPC]
     private void A904(int PlayerNumber)//스탯 공속 티어 1
     {
-        //photonView.RPC("A904_1", RpcTarget.All, PlayerPv);
-        PhotonView photonView = PhotonView.Find(PlayerNumber);
-        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+        ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.AtkSpeed.added += atkspeed;
-        Debug.Log($"{photonView.gameObject.GetPhotonView().ViewID}의 공속증가");
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 공속증가");
     }
-    //[PunRPC]
-    //private void A904_1()//스탯 공속 티어 1
-    //{
-    //    PhotonView photonView = PhotonView.Find(PlayerPvNumber);
-    //    playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
-    //    playerstatHandler.AtkSpeed.added += atkspeed;
-    //}
     [PunRPC]
     private void A905(int PlayerNumber)//스탯 정밀도 티어 1 탄퍼짐이 이상해서 정밀도로 바꿨는데 괜찮겠지? 어차피바꿔도됨
     {
-        //photonView.RPC("A905_1", RpcTarget.All, PlayerPv);
-        PhotonView photonView = PhotonView.Find(PlayerNumber);
-        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+        ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.BulletSpread.added += bulletSpread;
-        Debug.Log($"{photonView.gameObject.GetPhotonView().ViewID}의 정밀도증가");
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 정밀도증가");
     }
-    //[PunRPC]
-    //private void A905_1()//스탯 정밀도 티어 1
-    //{
-    //    PhotonView photonView = PhotonView.Find(PlayerPvNumber);
-    //    playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
-    //    playerstatHandler.BulletSpread.added += bulletSpread;
-    //}
     [PunRPC]
     private void A906(int PlayerNumber)//스탯 스킬쿨타임 티어1
     {
-        //photonView.RPC("A906_1", RpcTarget.All, PlayerPv);
-        PhotonView photonView = PhotonView.Find(PlayerNumber);
-        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
-        playerstatHandler.SkillCoolTime.added += bulletSpread;
-        Debug.Log($"{photonView.gameObject.GetPhotonView().ViewID}의 쿨타임증가");
+        ChangePlayerStatHandler(PlayerNumber);
+        playerstatHandler.SkillCoolTime.added += cooltime;
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 쿨타임증가");
     }
-    //[PunRPC]
-    //private void A906_1()//스탯 스킬쿨타임 티어 1
-    //{
-    //    PhotonView photonView = PhotonView.Find(PlayerPvNumber);
-    //    playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
-    //    playerstatHandler.SkillCoolTime.added += bulletSpread;
-    //}
     [PunRPC]
     private void A907(int PlayerNumber)//스탯 치명타 티어1
     {
-        //photonView.RPC("A906_1", RpcTarget.All, PlayerPv);
-        PhotonView photonView = PhotonView.Find(PlayerNumber);
-        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+        ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.Critical.added += critical;
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 치명타증가");
+    }
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@스탯티어2
+    [PunRPC]
+    private void A911(int PlayerNumber)//스탯 공 티어 2
+    {
+        ChangePlayerStatHandler(PlayerNumber);
+        playerstatHandler.ATK.added += atk*2;
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 공격력증가");
     }
     [PunRPC]
-    //private void A907_1()//스탯 치명타 티어 1
-    //{
-    //    PhotonView photonView = PhotonView.Find(PlayerPvNumber);
-    //    playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
-    //    playerstatHandler.Critical.added += critical;
-    //}
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 스탯2티어
-    private void A911()//스탯 공 티어 1
+    private void A912(int PlayerNumber)//스탯 체 티어 2
     {
-        photonView.RPC("A911_1", RpcTarget.All, PlayerPv);
+        ChangePlayerStatHandler(PlayerNumber);
+        playerstatHandler.HP.added += hp * 2;
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 방어력증가");
     }
     [PunRPC]
-    private void A911_1(int PlayerPvNumber)//스탯 공 티어 1
+    private void A913(int PlayerNumber)//스탯 이속 티어 2
     {
-        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
-        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
-        playerstatHandler.ATK.added += atk;
-    }
-    private void A912()//스탯 체 티어 1
-    {
-        photonView.RPC("A912_1", RpcTarget.All, PlayerPv);
+        ChangePlayerStatHandler(PlayerNumber);
+        playerstatHandler.Speed.added += speed*2;
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 이속증가");
     }
     [PunRPC]
-    private void A912_1(int PlayerPvNumber)//스탯 체 티어 1
+    private void A914(int PlayerNumber)//스탯 공속 티어 2
     {
-        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
-        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
-        playerstatHandler.HP.added += hp;
-    }
-    private void A913()//스탯 이속 티어 1
-    {
-        photonView.RPC("A903_1", RpcTarget.All, PlayerPv);
+        ChangePlayerStatHandler(PlayerNumber);
+        playerstatHandler.AtkSpeed.added += atkspeed * 2;
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 공속증가");
     }
     [PunRPC]
-    private void A913_1()//스탯 이속 티어 1
+    private void A915(int PlayerNumber)//스탯 정밀도 티어 1 탄퍼짐이 이상해서 정밀도로 바꿨는데 괜찮겠지? 어차피바꿔도됨
     {
-        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
-        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
-        playerstatHandler.Speed.added += speed;
-    }
-    private void A914()//스탯 공속 티어 1
-    {
-        photonView.RPC("A904_1", RpcTarget.All, PlayerPv);
+        ChangePlayerStatHandler(PlayerNumber);
+        playerstatHandler.BulletSpread.added += bulletSpread * 2;
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 정밀도증가");
     }
     [PunRPC]
-    private void A914_1()//스탯 공속 티어 1
+    private void A916(int PlayerNumber)//스탯 스킬쿨타임 티어2
     {
-        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
-        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
-        playerstatHandler.AtkSpeed.added += atkspeed;
-    }
-    private void A915()//스탯 정밀도 티어 1 탄퍼짐이 이상해서 정밀도로 바꿨는데 괜찮겠지? 어차피바꿔도됨
-    {
-        photonView.RPC("A905_1", RpcTarget.All, PlayerPv);
+        ChangePlayerStatHandler(PlayerNumber);
+        playerstatHandler.SkillCoolTime.added += cooltime * 2;
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 쿨타임증가");
     }
     [PunRPC]
-    private void A915_1()//스탯 정밀도 티어 1
+    private void A917(int PlayerNumber)//스탯 치명타 티어2
     {
-        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
-        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
-        playerstatHandler.BulletSpread.added += bulletSpread;
-    }
-    private void A916()//스탯 스킬쿨타임 티어2
-    {
-        photonView.RPC("A916_1", RpcTarget.All, PlayerPv);
-    }
-    [PunRPC]
-    private void A916_1()//스탯 스킬쿨타임 티어 2
-    {
-        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
-        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
-        playerstatHandler.SkillCoolTime.added += bulletSpread;
-    }
-    private void A917()//스탯 치명타 티어2
-    {
-        photonView.RPC("A917_1", RpcTarget.All, PlayerPv);
-    }
-    [PunRPC]
-    private void A917_1()//스탯 치명타 티어 2
-    {
-        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
-        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+        ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.Critical.added += critical * 2;
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 치명타증가");
     }
-    private void A918()//스탯 장탄수 티어2
-    {
-        photonView.RPC("A918_1", RpcTarget.All, PlayerPv);
-    }
-    private void A918_1()//스탯 장탄수 티어 2
+    private void A918(int PlayerNumber)//스탯 장탄수 티어2
     {
         PhotonView photonView = PhotonView.Find(PlayerPvNumber);
         playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
         playerstatHandler.AmmoMax.added += AmmoMax;
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@스탯3티어
-    private void A921()//스탯 공 티어 3
+    private void A921(int PlayerNumber)//스탯 공 티어 3
     {
+        ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.ATK.added += atk * 3;
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 공격력증가");
     }
-    private void A922()//스탯 체 티어 3
+    [PunRPC]
+    private void A922(int PlayerNumber)//스탯 체 티어 3
     {
+        ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.HP.added += hp * 3;
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 방어력증가");
     }
-    private void A923()//스탯 이속 티어 3
+    [PunRPC]
+    private void A923(int PlayerNumber)//스탯 이속 티어 3
     {
+        ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.Speed.added += speed * 3;
-
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 이속증가");
     }
-    private void A924()//스탯 공속 티어 3
+    [PunRPC]
+    private void A924(int PlayerNumber)//스탯 공속 티어 3
     {
+        ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.AtkSpeed.added += atkspeed * 3;
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 공속증가");
     }
-    private void A925()//스탯 정밀도 티어 3
+    [PunRPC]
+    private void A925(int PlayerNumber)//스탯 정밀도 티어 3
     {
+        ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.BulletSpread.added += bulletSpread * 3;
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 정밀도증가");
     }
-    private void A926()//스탯 스킬쿨타임 티어3
+    [PunRPC]
+    private void A926(int PlayerNumber)//스탯 스킬쿨타임 티어3
     {
+        ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.SkillCoolTime.added += cooltime * 3;
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 쿨타임증가");
     }
-    private void A927()//스탯 치명타 티어3
+    [PunRPC]
+    private void A927(int PlayerNumber)//스탯 치명타 티어3
     {
+        ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.Critical.added += critical * 3;
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 치명타증가");
     }
-    private void A928()//스탯 치명타 티어3
+    private void A928(int PlayerNumber)//스탯 장탄수 티어3
     {
+        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
+        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
         playerstatHandler.AmmoMax.added += AmmoMax * 2;
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@공용1티어
-    private void A101()//아이언스킨
+    [PunRPC]
+    private void A101(int PlayerNumber)//아이언스킨
     {
+        ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.defense *= 0.9f;
+        Debug.Log($"({playerstatHandler.gameObject.GetPhotonView().ViewID}의 현재 계수 {playerstatHandler.defense})");
     }
-    private void A102()//사거리 계수 -0.3 공 계수 +0.3
+    [PunRPC]
+    private void A102(int PlayerNumber)//인파이터 사거리 계수 -0.3 공 계수 +0.3
     {
+        ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.BulletLifeTime.coefficient *= 0.7f;
         playerstatHandler.ATK.coefficient *= 1.3f;
+        Debug.Log($"({playerstatHandler.gameObject.GetPhotonView().ViewID}의 현재 장전 계수 {playerstatHandler.BulletLifeTime.coefficient})");
+        Debug.Log($"({playerstatHandler.gameObject.GetPhotonView().ViewID}의 현재 공 계수 {playerstatHandler.ATK.coefficient})");
     }
-    private void A103()
+    [PunRPC]
+    private void A103(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A104()
+    [PunRPC]
+    private void A104(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A105()// 유리대포 //현재 최대 체력을 1로 만들고 그 값 의 절반 만큼 공업
+    [PunRPC]
+    private void A105(int PlayerNumber)// 유리대포 //현재 최대 체력을 1로 만들고 그 값 의 절반 만큼 공업
     {
+        ChangePlayerStatHandler(PlayerNumber);
         float up = ((int)playerstatHandler.HP.total - 1);
         playerstatHandler.HP.added -= up;
         playerstatHandler.ATK.added += up * 0.5f;
     }
-    private void A106()
+    [PunRPC]
+    private void A106(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A107()
+    [PunRPC]
+    private void A107(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A108()
+    [PunRPC]
+    private void A108(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A109()// 소형화 //테스트안해봄
+    [PunRPC]
+    private void A109(int PlayerNumber)// 소형화 //테스트안해봄
     {
-        float x = (player.transform.localScale.x * 0.75f);//절반
-        float y = (player.transform.localScale.y * 0.75f);//절반
-        player.transform.localScale = new Vector2(x, y);
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        float x = (targetPlayer.transform.localScale.x * 0.75f);//절반
+        float y = (targetPlayer.transform.localScale.y * 0.75f);//절반
+        targetPlayer.transform.localScale = new Vector2(x, y);
         playerstatHandler.HP.coefficient *= 0.8f;
         playerstatHandler.Speed.coefficient *= 1.2f;
     }
-    private void A110()//대형화 // 테스트안해봄
+    [PunRPC]
+    private void A110(int PlayerNumber)//대형화 // 테스트안해봄
     {
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
         float x = (player.transform.localScale.x * 1.25f);
         float y = (player.transform.localScale.y * 1.25f);
-        player.transform.localScale = new Vector2(x, y);
+        targetPlayer.transform.localScale = new Vector2(x, y);
         playerstatHandler.HP.coefficient *= 1.5f;
         playerstatHandler.Speed.coefficient *= 0.8f;
     }
-    private void A111()
+    [PunRPC]
+    private void A111(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A112()//빠른장전
+    [PunRPC]
+    private void A112(int PlayerNumber)//빠른장전
     {
+        ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.ReloadCoolTime.added -= 0.3f;
     }
-    private void A113()
+    [PunRPC]
+    private void A113(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A114()
+    [PunRPC]
+    private void A114(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A115()
+    [PunRPC]
+    private void A115(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A116()
+    [PunRPC]
+    private void A116(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A117()
+    [PunRPC]
+    private void A117(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A118()        //고장내기 mk3 1,2,3 공용 증강 이기에 좀 남다른 코드임  현재 10 /30 /60 총합 100확률을 가지고 있습죠
+    [PunRPC]
+    private void A118(int PlayerNumber)        //고장내기 mk3 1,2,3 공용 증강 이기에 좀 남다른 코드임  현재 10 /30 /60 총합 100확률을 가지고 있습죠
     {
-        if (player.GetComponent<BreakDownMk>()) //만약 BreakDownMk를 가지고 있다면
+        ChangeOnlyPlayer(PlayerNumber);
+        if (targetPlayer.GetComponent<BreakDownMk>()) //만약 BreakDownMk를 가지고 있다면
         {
             BreakDownMk Mk3 = player.GetComponent<BreakDownMk>();
             Mk3.PercentUp(10);
+            Debug.Log($"{Mk3.percent}");
         }
         else
         {
-            player.AddComponent<BreakDownMk>();
-            BreakDownMk Mk3 = player.GetComponent<BreakDownMk>();
+            targetPlayer.AddComponent<BreakDownMk>();
+            BreakDownMk Mk3 = targetPlayer.GetComponent<BreakDownMk>();
             Mk3.PercentUp(10);
+            Debug.Log($"{Mk3.percent}");
         }
     }
-    private void A119()// 반전 공격방향 , 이동방향이 반대가되고 공체 대폭 증가 == 현재 이동방향 반대만 구현
+    [PunRPC]
+    private void A119(int PlayerNumber)// 반전 공격방향 , 이동방향이 반대가되고 공체 대폭 증가 == 현재 이동방향 반대만 구현 A119 A2105는 동일 함수 합치는거 고려
     {
+        ChangePlayerStatHandler(PlayerNumber);
+        playerInput = targetPlayer.GetComponent<PlayerInput>();
         if ("Player" == playerInput.currentActionMap.name)
         {
             playerInput.SwitchCurrentActionMap("Player1");
@@ -398,300 +366,364 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         playerstatHandler.HP.coefficient *= 1.5f;
         playerstatHandler.ATK.coefficient *= 1.5f;
     }
-    private void A120()
+    [PunRPC]
+    private void A120(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A121()
+    [PunRPC]
+    private void A121(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A122()
+    [PunRPC]
+    private void A122(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A123()
+    [PunRPC]
+    private void A123(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
     //테스트 완료 그러나 이벤트로 작동하여 추가 테스트가 필요
-    private void A124()//눈먼총잡이 : 시야가 대폭 감소 하며 공격 속도, 재장전 속도가 증가합니다.
+    [PunRPC]
+    private void A124(int PlayerNumber)//눈먼총잡이 : 시야가 대폭 감소 하며 공격 속도, 재장전 속도가 증가합니다.
     {
-        player.AddComponent<A0124>();//A0124에서 화면어둡게 하는 프리팹 만들고 스테이지시작에 ON 끝에 OFF
+        //PhotonView photonView = PhotonView.Find(PlayerPvNumber);
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        targetPlayer.AddComponent<A0124>();//A0124에서 화면어둡게 하는 프리팹 만들고 스테이지시작에 ON 끝에 OFF
         playerstatHandler.AtkSpeed.added += 15;
         playerstatHandler.ReloadCoolTime.added += 15;
     }
-    private void A125()
+    
+    [PunRPC]
+    private void A125(int PlayerNumber)
     {
         player.AddComponent<A0125>();
     }
-    private void A126()
+    [PunRPC]
+    private void A126(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A127()
+    [PunRPC]
+    private void A127(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A128()
+    [PunRPC]
+    private void A128(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 공용2티어
-    private void A201()
-    {
-        Debug.Log("미완성");
-    }
-    private void A202()
-    {
-        Debug.Log("미완성");
-    }
-    private void A203()
-    {
-        Debug.Log("미완성");
-    }
-    private void A204()
-    {
-        Debug.Log("미완성");
-    }
-    private void A205()
-    {
-        Debug.Log("미완성");
-    }
-    private void A206()
-    {
-        Debug.Log("미완성");
-    }
-    private void A207()//하이리스크 로우리턴
-    {
-        playerstatHandler.defense = playerstatHandler.defense * 0.5f;
-        playerstatHandler.ATK.coefficient *= 2f;
-    }
-    private void A208()
-    {
-        Debug.Log("미완성");
-    }
-    private void A209()//재정비 구르기시 재장전 수행
-    {
-        player.AddComponent<A0209>();
-    }
-    private void A210()
-    {
-        Debug.Log("미완성");
-    }
-    private void A211()//피해복구 일정확률로 일정 체력 회복
-    {
-        player.AddComponent<A0211>();
-    }
-    private void A212()
-    {
-        Debug.Log("미완성");
-    }
-    private void A213()
-    {
-        Debug.Log("미완성");
-    }
-    private void A214()
-    {
-        Debug.Log("미완성");
-    }
-    private void A215()
-    {
-        Debug.Log("미완성");
-    }
-    private void A216()
-    {
-        Debug.Log("미완성");
-    }
-    private void A217()
-    {
-        Debug.Log("미완성");
-    }
-    private void A218()
-    {
-        Debug.Log("미완성");
-    }
-    private void A219() //고장내기mk2 1,2,3 공용 증강 이기에 좀 남다른 코드임 30
-    {
-        //고장내기 mk3 1,2,3 공용 증강 이기에 좀 남다른 코드임 
-        if (player.GetComponent<BreakDownMk>()) //만약 BreakDownMk를 가지고 있다면
-        {
-            BreakDownMk Mk3 = player.GetComponent<BreakDownMk>();
-            Mk3.PercentUp(30);
-        }
-        else
-        {
-            player.AddComponent<BreakDownMk>();
-            BreakDownMk Mk3 = player.GetComponent<BreakDownMk>();
-            Mk3.PercentUp(30);
-        }
-    }
-    private void A220()
-    {
-        Debug.Log("미완성");
-    }
-    private void A221()
+    [PunRPC]
+    private void A201(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A222()//재정비 구르기후 회복
+    private void A202(int PlayerNumber)
     {
-        //if()
-        player.AddComponent<A0222>();
+        Debug.Log("미완성");
     }
-    private void A223()
+    [PunRPC]
+    private void A203(int PlayerNumber)
+    {
+        Debug.Log("미완성");
+    }
+    [PunRPC]
+    private void A204(int PlayerNumber)
+    {
+        Debug.Log("미완성");
+    }
+    [PunRPC]
+    private void A205(int PlayerNumber)
+    {
+        Debug.Log("미완성");
+    }
+    [PunRPC]
+    private void A206(int PlayerNumber)
+    {
+        Debug.Log("미완성");
+    }
+    [PunRPC]
+    private void A207(int PlayerNumber)//하이리스크 로우리턴
+    {
+        ChangePlayerStatHandler(PlayerNumber);
+        playerstatHandler.defense = playerstatHandler.defense * 0.5f;
+        playerstatHandler.ATK.coefficient *= 2f;
+    }
+    [PunRPC]
+    private void A208(int PlayerNumber)
+    {
+        Debug.Log("미완성");
+    }
+    [PunRPC]
+    private void A209(int PlayerNumber)//재정비 구르기시 재장전 수행
+    {
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0209>();
+    }
+    [PunRPC]
+    private void A210(int PlayerNumber)
+    {
+        Debug.Log("미완성");
+    }
+    [PunRPC]
+    private void A211(int PlayerNumber)//피해복구 일정확률로 일정 체력 회복
+    {
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0211>();
+    }
+    [PunRPC]
+    private void A212(int PlayerNumber)
+    {
+        Debug.Log("미완성");
+    }
+    [PunRPC]
+    private void A213(int PlayerNumber)
+    {
+        Debug.Log("미완성");
+    }
+    [PunRPC]
+    private void A214(int PlayerNumber)
+    {
+        Debug.Log("미완성");
+    }
+    [PunRPC]
+    private void A215(int PlayerNumber)
+    {
+        Debug.Log("미완성");
+    }
+    [PunRPC]
+    private void A216(int PlayerNumber)
+    {
+        Debug.Log("미완성");
+    }
+    [PunRPC]
+    private void A217(int PlayerNumber)
+    {
+        Debug.Log("미완성");
+    }
+    [PunRPC]
+    private void A218(int PlayerNumber)
+    {
+        Debug.Log("미완성");
+    }
+    [PunRPC]
+    private void A219(int PlayerNumber) //고장내기mk2 1,2,3 공용 증강 이기에 좀 남다른 코드임 30
+    {
+        ChangeOnlyPlayer(PlayerNumber);
+        if (targetPlayer.GetComponent<BreakDownMk>()) //만약 BreakDownMk를 가지고 있다면
+        {
+            BreakDownMk Mk3 = player.GetComponent<BreakDownMk>();
+            Mk3.PercentUp(30);
+            Debug.Log($"{Mk3.percent}");
+        }
+        else
+        {
+            targetPlayer.AddComponent<BreakDownMk>();
+            BreakDownMk Mk3 = targetPlayer.GetComponent<BreakDownMk>();
+            Mk3.PercentUp(30);
+            Debug.Log($"{Mk3.percent}");
+        }
+    }
+    [PunRPC]
+    private void A220(int PlayerNumber)
+    {
+        Debug.Log("미완성");
+    }
+    [PunRPC]
+    private void A221(int PlayerNumber)
+    {
+        Debug.Log("미완성");
+    }
+    [PunRPC]
+    private void A222(int PlayerNumber)//재정비 구르기후 회복
+    {
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0222>();
+    }
+    [PunRPC]
+    private void A223(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@공용 3티어
-    private void A301()//고장내기 mk3 1,2,3 공용 증강 이기에 좀 남다른 코드임 
+    [PunRPC]
+    private void A301(int PlayerNumber)//고장내기 mk3 1,2,3 공용 증강 이기에 좀 남다른 코드임 
     {
-        if (player.GetComponent<BreakDownMk>()) //만약 BreakDownMk를 가지고 있다면
+        ChangeOnlyPlayer(PlayerNumber);
+        if (targetPlayer.GetComponent<BreakDownMk>()) //만약 BreakDownMk를 가지고 있다면
         {
             BreakDownMk Mk3 = player.GetComponent<BreakDownMk>();
             Mk3.PercentUp(60);
+            Debug.Log($"{Mk3.percent}");
         }
         else
         {
-            player.AddComponent<BreakDownMk>();
-            BreakDownMk Mk3 = player.GetComponent<BreakDownMk>();
+            targetPlayer.AddComponent<BreakDownMk>();
+            BreakDownMk Mk3 = targetPlayer.GetComponent<BreakDownMk>();
             Mk3.PercentUp(60);
+            Debug.Log($"{Mk3.percent}");
         }
     }
-    private void A302()//인피니티불렛 탄창 9999 획득시점의 총알 값 계산하여 9999로 맞춰줌 많든 적든 같음
+    [PunRPC]
+    private void A302(int PlayerNumber)//인피니티불렛 탄창 9999 획득시점의 총알 값 계산하여 9999로 맞춰줌 많든 적든 같음
     {
+        ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.AmmoMax.added += 9999 - playerstatHandler.AmmoMax.total;
     }
-    private void A303()
-    {
-        Debug.Log("미완성");
-    }
-    private void A304()
-    {
-        Debug.Log("미완성");
-    }
-    private void A305()//멀티샷 샷2배
-    {
-        playerstatHandler.LaunchVolume.coefficient *= 2;
-    }
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@스나이퍼 1티어
-    private void A1101()
-    {
-        Debug.Log("미완성");
-    }
-    private void A1102()
-    {
-        Debug.Log("미완성");
-    }
-    private void A1103()
-    {
-        Debug.Log("미완성");
-    }
-    private void A1104()
-    {
-        Debug.Log("미완성");
-    }
-    private void A1105()
-    {
-        Debug.Log("미완성");
-
-    }
-    private void A1106()
+    [PunRPC]
+    private void A303(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A1107_1(int viewID)//영역전개
+    private void A304(int PlayerNumber)
     {
-        GameObject Prefabs = Resources.Load<GameObject>("AugmentList/A1107");
-        GameObject go = Instantiate(Prefabs);
-        PhotonView photonView = PhotonView.Find(viewID);
-        go.transform.SetParent(photonView.transform);
-        go.transform.localPosition = Vector3.zero;
-        go.GetComponent<A1107>().Init();
+        Debug.Log("미완성");
+    }
+    [PunRPC]
+    private void A305(int PlayerNumber)//멀티샷 샷2배
+    {
+        ChangePlayerStatHandler(PlayerNumber);
+        playerstatHandler.LaunchVolume.coefficient *= 2;
+    }
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@스나이퍼 1티어
+    [PunRPC]
+    private void A1101(int PlayerNumber)
+    {
+        Debug.Log("미완성");
+    }
+    [PunRPC]
+    private void A1102(int PlayerNumber)
+    {
+        Debug.Log("미완성");
+    }
+    [PunRPC]
+    private void A1103(int PlayerNumber)
+    {
+        Debug.Log("미완성");
+    }
+    [PunRPC]
+    private void A1104(int PlayerNumber)
+    {
+        Debug.Log("미완성");
+    }
+    [PunRPC]
+    private void A1105(int PlayerNumber)
+    {
+        Debug.Log("미완성");
 
     }
-    private void A1107()
+    [PunRPC]
+    private void A1106(int PlayerNumber)
     {
-        photonView.RPC("A1107_1", RpcTarget.All, PlayerPv);
+        Debug.Log("미완성");
+    }
+
+    [PunRPC]
+    private void A1107(int PlayerNumber)//영역전개 최초의 대상에게 영구적으로 올려주는 타입 아직 세세한 오류가 있을것으로 예상된다 
+    {
+        ChangeOnlyPlayer(PlayerNumber);//
+        GameObject Prefabs = Resources.Load<GameObject>("AugmentList/A1107");
+        GameObject go = Instantiate(Prefabs,targetPlayer.transform);
+        //PhotonView photonView = PhotonView.Find(PlayerNumber);
+        //go.transform.SetParent(photonView.transform);
+        go.transform.localPosition = Vector3.zero;
+        go.GetComponent<A1107>().Init();
+        Debug.Log("영역전개의 코드를 바꿨는데 치명적일수도 있을듯함 이로그를 보면 알려주길 바람");
     }
 
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@스나이퍼 2티어
-    private void A1201()
+    [PunRPC]
+    private void A1201(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A1202()
+    [PunRPC]
+    private void A1202(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A1203()
+    [PunRPC]
+    private void A1203(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A1204()
+    [PunRPC]
+    private void A1204(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A1205()
+    [PunRPC]
+    private void A1205(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A1206()
+    [PunRPC]
+    private void A1206(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A1207()
+    [PunRPC]
+    private void A1207(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@스나이퍼 3티어
-    private void A1301()
+    [PunRPC]
+    private void A1301(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A1302()
+    [PunRPC]
+    private void A1302(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A1303()
+    [PunRPC]
+    private void A1303(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A1304()
+    [PunRPC]
+    private void A1304(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@솔져 1티어
     [PunRPC]
-    private void A2101_1(int viewID)
-    {
-        //player.AddComponent<A2101>();
-        PhotonView photonView = PhotonView.Find(viewID);
-        photonView.gameObject.AddComponent<A2101>();
+    private void A2101(int PlayerNumber) //노련함 = 스킬사용후 공속 증가 테스트 ㄴ
+    {                                                             
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A2101>();
     }
-    private void A2101() //노련함 = 스킬사용후 공속 증가 테스트 ㄴ //테스트 결과 addcomponent는 다른사람에게 보여줄필요없음 
-    {                                                              //함수에서 해줘야할듯
-
-        int viewID1 = player.GetPhotonView().ViewID;
-        photonView.RPC("A2101_1", RpcTarget.All, viewID1);
-    }
-    private void A2102() ///와다다다ㅏ다다 테스트안함 근데 스탯이라 상관없을듯함
+    [PunRPC]
+    private void A2102(int PlayerNumber) ///와다다다ㅏ다다 테스트안함 근데 스탯이라 상관없을듯함
     {
+        ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.AtkSpeed.coefficient *= 2;
         playerstatHandler.ATK.coefficient *= 0.5f;
     }
-    private void A2103()
+    [PunRPC]
+    private void A2103(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A2104()
+    [PunRPC]
+    private void A2104(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A2105()// 반전 공격방향 , 이동방향이 반대가되고 공체 대폭 증가 == 현재 이동방향 반대만 구현
+    [PunRPC]
+    private void A2105(int PlayerNumber)// 반전 공격방향 , 이동방향이 반대가되고 공체 대폭 증가 == 현재 이동방향 반대만 구현 A119 A2105는 동일 함수 합치는거 고려
     {
+        ChangePlayerStatHandler(PlayerNumber);
+        playerInput = targetPlayer.GetComponent<PlayerInput>();
         if ("Player" == playerInput.currentActionMap.name)
         {
             playerInput.SwitchCurrentActionMap("Player1");
@@ -704,70 +736,89 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         playerstatHandler.ATK.coefficient *= 1.5f;
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@솔져 2티어
-    private void A2201()// 빈틈 만들기 //기본 공격 시 구르기 쿨타임이 감소합니다.
+    [PunRPC]
+    private void A2201(int PlayerNumber)// 빈틈 만들기 //기본 공격 시 구르기 쿨타임이 감소합니다.
     {
-        player.AddComponent<A2201>();
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A2201>();
     }
-    private void A2202()//티타임 구른후 스킬 재사용 대기시간 감소
+    [PunRPC]
+    private void A2202(int PlayerNumber)//티타임 구른후 스킬 재사용 대기시간 감소
     {
-        player.AddComponent<A2202>();
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A2202>();
     }
-    private void A2203()//구른자리에힐생성 테스트 ㄴ
+    [PunRPC]
+    private void A2203(int PlayerNumber)//구른자리에힐생성 힐한다는거 자체가 어캐 될지 모르겠음 //미완성
     {
-        player.AddComponent<A2203_1>();
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A2203_1>();
     }
-    private void A2204()
+    [PunRPC]
+    private void A2204(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A2205()
+    [PunRPC]
+    private void A2205(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@솔져 3티어
-    private void A2301()
+    [PunRPC]
+    private void A2301(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A2302()
+    [PunRPC]
+    private void A2302(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A2303()
+    [PunRPC]
+    private void A2303(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A2304()
+    [PunRPC]
+    private void A2304(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@샷건 1티어
-    private void A3101()
+    [PunRPC]
+    private void A3101(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A3102()
+    [PunRPC]
+    private void A3102(int PlayerNumber)
     {
-        player.AddComponent<A3102>();
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A3102>();
     }
-    private void A3103()
-    {
-        Debug.Log("미완성");
-    }
-    private void A3104()
-    {
-        Debug.Log("미완성");
-    }
-    private void A3105()
+    [PunRPC]
+    private void A3103(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
+    [PunRPC]
+    private void A3104(int PlayerNumber)
+    {
+        Debug.Log("미완성");
+    }
+    [PunRPC]
+    private void A3105(int PlayerNumber)
+    {
+        Debug.Log("미완성");
+    }
+    [PunRPC]
     private void A3106()
     {
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A3107() // 파이어 토네이도 테스트안함
+    private void A3107(int PlayerNumber) // 파이어 토네이도 테스트안함
     {
         //if (PV.IsMine)
         //{
@@ -778,48 +829,58 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
 
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@샷건 2티어
-    private void A3201() //굴러서 장전 << 구르기 2초증가 장탄수 +3으로 재장전
+    [PunRPC]
+    private void A3201(int PlayerNumber) //굴러서 장전 << 구르기 2초증가 장탄수 +3으로 재장전
     {
         playerstatHandler.RollCoolTime.added += 2f;
-        player.AddComponent<A3201>();
+        targetPlayer.AddComponent<A3201>();
     }
-    private void A3202()
+    [PunRPC]
+    private void A3202(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A3203()//사이즈업 몸2배체력3배
+    [PunRPC]
+    private void A3203(int PlayerNumber)//사이즈업 몸2배체력3배
     {
         float x = (player.transform.localScale.x * 2f);//절반
         float y = (player.transform.localScale.y * 2f);//절반
-        player.transform.localScale = new Vector2(x, y);
+        targetPlayer.transform.localScale = new Vector2(x, y);
         playerstatHandler.HP.coefficient *= 3;
     }
-    private void A3204()
+    [PunRPC]
+    private void A3204(int PlayerNumber)
     {
-        player.AddComponent<A3204>();
+        targetPlayer.AddComponent<A3204>();
     }
-    private void A3205()
-    {
-        Debug.Log("미완성");
-    }
-    private void A3206()
+    [PunRPC]
+    private void A3205(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A3207()
+    [PunRPC]
+    private void A3206(int PlayerNumber)
+    {
+        Debug.Log("미완성");
+    }
+    [PunRPC]
+    private void A3207(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@샷건 3티어
-    private void A3301()
+    [PunRPC]
+    private void A3301(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A3302()
+    [PunRPC]
+    private void A3302(int PlayerNumber)
     {
         Debug.Log("미완성");
     }
-    private void A3303()
+    [PunRPC]
+    private void A3303(int PlayerNumber)
     {
         Debug.Log("미완성");
     }

@@ -14,6 +14,11 @@ public class PlayerInputController : TopDownCharacterController
 
     private void Awake()
     {
+        GetComponent<PlayerStatHandler>().OnDieEvent += InputOff;
+        GetComponent<PlayerStatHandler>().OnRegenEvent += InputOn;
+
+
+
         playerInput = GetComponent<PlayerInput>();
 
         _camera = Camera.main;
@@ -73,6 +78,16 @@ public class PlayerInputController : TopDownCharacterController
     {
         Debug.Log("OnReload" + value.ToString());
         CallReloadEvent();
+    }
+
+    public void InputOff() 
+    {
+        playerInput.DeactivateInput();
+    }
+
+    public void InputOn()
+    {
+        playerInput.ActivateInput();
     }
 
 }

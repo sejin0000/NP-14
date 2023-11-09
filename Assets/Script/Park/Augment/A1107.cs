@@ -9,7 +9,7 @@ using UnityEngine.Rendering.Universal;
 public class A1107 : MonoBehaviourPun//ÁÖº¯Èú
 {
     float time = 0;
-    List<PlayerStatHandler> target= new List<PlayerStatHandler>();
+    List<PlayerStatHandler> target;
     int healP=2;
     public GameObject Player;
 
@@ -17,6 +17,7 @@ public class A1107 : MonoBehaviourPun//ÁÖº¯Èú
     public void Init()
     {
         PlayerStatHandler a = transform.parent.gameObject.GetComponent<PlayerStatHandler>();
+        target = new List<PlayerStatHandler>();
         target.Add(a);
     }
     
