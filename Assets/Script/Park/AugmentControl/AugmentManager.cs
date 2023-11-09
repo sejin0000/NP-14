@@ -654,7 +654,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void setParent(int num) 
     {
-        PhotonView a =PhotonView.Find(PlayerPvNumber);
+        PhotonView a =PhotonView.Find(num);
         a.transform.SetParent(targetPlayer.transform);
         //Prefabs.transform.SetParent(targetPlayer.transform);
     } 
