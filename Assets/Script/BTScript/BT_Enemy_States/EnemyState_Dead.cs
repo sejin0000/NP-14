@@ -1,4 +1,5 @@
 using myBehaviourTree;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,15 +21,15 @@ public class EnemyState_Dead : BTAction
 
     public override void Initialize()
     {
-        MainGameManager.Instance.currentMonsterCount -= 1;
         //골드 여기에
         //사망 시 파티클이나 기타 효과 여기에
+        MainGameManager.Instance.currentMonsterCount -= 1;
+        enemyAI.PV.RPC("DestroyEnemy", RpcTarget.AllBuffered);
     }
 
     public override Status Update()
     {
         //이 부분 나중에 코루틴으로 실행
-        enemyAI.DestroyEnemy();
         return Status.BT_Success;
     }
 

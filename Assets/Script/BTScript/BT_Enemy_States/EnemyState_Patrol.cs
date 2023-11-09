@@ -10,7 +10,6 @@
         private EnemyAI enemyAI;
         private EnemySO enemySO;
         private Vector2 destination;   // 목적지
-        private int patrolSpeed;       // 순찰 속도
 
 
         private float ActionTime;      // 걷기 시간
@@ -31,7 +30,6 @@
             enemySO = enemyAI.enemySO;
 
             ActionTime = enemySO.actionTime;
-            patrolSpeed = enemySO.patrolSpeed;
 
 
             //enemyAI.nav.updateRotation = false;
@@ -78,7 +76,7 @@
     {
         //anim.SetBool("isRun", true);
         currentTime = ActionTime;
-        enemyAI.nav.speed = patrolSpeed;
+        enemyAI.nav.speed = enemySO.patrolSpeed;
 
         if (enemyAI.nav != null && enemyAI.nav.isOnNavMesh) // NavMesh 가 유효한 상태인지 확인
         {
@@ -105,8 +103,6 @@
 
         //★★★수정함
         enemyAI.isFilp(beforDestinationX, destinationX);
-
-        Debug.Log("걷기");
     }
 
 
@@ -114,8 +110,10 @@
     private void Patrol()
     {
         //수정됨
-        if (enemyAI.isAttaking)
+        if (!enemyAI.isAttaking)
+        {
             enemyAI.DestinationSet(destination);
+        }          
 
         //rigid.MovePosition(transform.position + (transform.forward * applySpeed * Time.deltaTime));
         //리지드바디 이동(현재 위치에서 전방으로, 1초당 walkSpeed 수치만큼 이동;
@@ -126,7 +124,7 @@
     {
         currentTime -= Time.deltaTime;
 
-        if (currentTime <= 0)
+        if (currentTime <= 0.3f)
         {
             Reset();
         }

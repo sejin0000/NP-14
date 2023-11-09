@@ -71,6 +71,7 @@ MonoBehaviour:
   - A916_1
   - A917_1
   - A902
+  - DestroyEnemy
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

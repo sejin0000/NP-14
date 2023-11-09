@@ -12,25 +12,25 @@ public class EnemyState_Attack : BTAction
     private EnemySO enemySO; //총알 공격력 받아야함
     private GameObject target;
 
-    private float atkSpeed; 
     private float currentTime;         // 시간 계산용
 
-    private bool isShooting;
     public EnemyState_Attack(GameObject _owner)
     {
         owner = _owner;
 
         enemyAI = owner.GetComponent<EnemyAI>();
-        enemySO = enemyAI.enemySO;
-        atkSpeed = enemySO.atkSpeed;       
+        enemySO = enemyAI.enemySO;      
     }
 
     public override void Initialize()
     {
-        currentTime = atkSpeed;
+        currentTime = enemySO.atkdelay;
         SetStateColor();
 
         target = enemyAI.target;
+
+        SetAim();
+        enemyAI.Shoot();
     }
 
     public override Status Update()
@@ -43,14 +43,13 @@ public class EnemyState_Attack : BTAction
         {
             // 공격 주기에 도달하면 공격 실행
             enemyAI.Shoot();
-            currentTime = atkSpeed;
+            currentTime = enemySO.atkdelay;
         }
 
         float distanceToTarget = Vector3.Distance(owner.transform.position, target.transform.position);
 
         if (distanceToTarget > enemySO.attackRange)
         {
-            isShooting = false;
             return Status.BT_Failure; // 노드 종료
         }
 
@@ -68,8 +67,6 @@ public class EnemyState_Attack : BTAction
 
     public void SetAim() // 피해량, 플레이어 위치 받아옴
     {
-        Debug.Log("공격");
-
         //플레이어를 바라보도록 설정
 
         //anim.SetTrigger("Attack"); // 공격 애니메이션
