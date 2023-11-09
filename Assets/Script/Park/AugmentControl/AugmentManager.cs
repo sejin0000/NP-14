@@ -10,7 +10,6 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
 {
     public static AugmentManager Instance;//싱긍톤
     public PlayerStatHandler playerstatHandler;//정확히는 이름을 타겟 플레이어 스탯 핸들러가 맞는 표현 같기도함 // 생각할수록 맞음
-    public GameObject player;//처음 세팅값에 필요함
     int atk = 5;//여기서부터 아래까지  티어별로 *n으로 사용중
     int hp = 8;
     float speed = 1;
@@ -19,10 +18,11 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     int cooltime = -1;
     int critical = 5;
     int AmmoMax = 1;
-    public PlayerInput playerInput;//내가 넣은건가 ? 왜 있는것인지 당신은?? //내가넣은거 맞음 키보드상하좌우반대
-    public PhotonView PlayerPv;
-    public GameObject targetPlayer;//실제 적용되는 타켓
-    public int PlayerPvNumber;
+    public PlayerInput playerInput;//이것도 사실 타켓플레이어 인풋 잘안쓰기에 함수가 따로 만들지 않음
+    public GameObject targetPlayer;//실제 적용되는 타켓 플레이어 99% 경우 이걸 사용함 진짜 진짜 중요함
+    public PhotonView PlayerPv;//현재플레이어의 포톤뷰값== 증강매니저의 포톤뷰가 아님 (중요)
+    public GameObject player;//처음 세팅값에 필요함
+    public int PlayerPvNumber;//현재플레이어의 포톤뷰 넘버
     private void Awake()//싱글톤
     {
         if (null == Instance)
@@ -53,19 +53,20 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         PhotonView photonView = PhotonView.Find(PlayerNumber);
         targetPlayer = photonView.gameObject;
         playerstatHandler = targetPlayer.GetComponent<PlayerStatHandler>();
-    }
-    private void ChangePlayerStatHandler(int PlayerNumber)
+    }//플레이어스탯핸들러, 타겟플레이어 모두 변하는경우
+    private void ChangePlayerStatHandler(int PlayerNumber)// 플레이어스탯핸들러만변하는경우
     {
         PhotonView photonView = PhotonView.Find(PlayerNumber);
         playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
     }
-    private void ChangeOnlyPlayer(int PlayerNumber)
+    private void ChangeOnlyPlayer(int PlayerNumber) //타겟 플레이어만 변하는경우
     {
         PhotonView photonView = PhotonView.Find(PlayerNumber);
         targetPlayer = photonView.gameObject;
     }
     //PhotonView photonView = PhotonView.Find(PlayerNumber);
     //playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+    #region stat
     [PunRPC]
     private void A901(int PlayerNumber)//스탯 공 티어 1
     {
@@ -165,10 +166,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         playerstatHandler.Critical.added += critical * 2;
         Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 치명타증가");
     }
+    [PunRPC]
     private void A918(int PlayerNumber)//스탯 장탄수 티어2
     {
-        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
-        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+        ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.AmmoMax.added += AmmoMax;
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@스탯3티어
@@ -220,12 +221,13 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         playerstatHandler.Critical.added += critical * 3;
         Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 치명타증가");
     }
+    [PunRPC]
     private void A928(int PlayerNumber)//스탯 장탄수 티어3
     {
-        PhotonView photonView = PhotonView.Find(PlayerPvNumber);
-        playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+        ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.AmmoMax.added += AmmoMax * 2;
     }
+    #endregion
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@공용1티어
     [PunRPC]
     private void A101(int PlayerNumber)//아이언스킨

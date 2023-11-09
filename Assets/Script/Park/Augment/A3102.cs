@@ -13,13 +13,13 @@ public class A3102 : MonoBehaviourPun
         {
             controller = GetComponent<TopDownCharacterController>();
             playerStat = GetComponent<PlayerStatHandler>();
-            controller.OnSkillEvent += AtkSpeedUp;
+            controller.OnSkillEvent += SkillHpUp;
         }
 
     }
 
     // Update is called once per frame
-    void AtkSpeedUp()
+    void SkillHpUp()
     {
         playerStat.HP.added += 0.01f;
     }
