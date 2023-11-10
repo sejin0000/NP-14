@@ -37,14 +37,10 @@ public class UIPlayerMiniHUD : MonoBehaviour
         foreach(var element in elements)
         {
             var temp = element.GetComponent<T>();
-
             if (temp == null)
-                return;
-
-            if (elements.GetType().Name == typeof(T).Name)
-                element.SetActive(true);
-            else
                 element.SetActive(false);
+            else
+                element.SetActive(true);
         }
     }
 }
