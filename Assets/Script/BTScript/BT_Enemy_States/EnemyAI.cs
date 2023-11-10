@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using myBehaviourTree;
-using static UnityEditor.PlayerSettings;
-using UnityEditor.Rendering.LookDev;
+//using static UnityEditor.PlayerSettings;
+//using UnityEditor.Rendering.LookDev;
 using Photon.Pun;
 using UnityEngine.UI;
 
