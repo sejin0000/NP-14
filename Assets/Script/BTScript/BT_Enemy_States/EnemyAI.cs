@@ -116,8 +116,17 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             //모든 플레이어에게 현재 적의 체력 동기화
             PV.RPC("DecreaseHP", RpcTarget.AllBuffered, collision.transform.GetComponent<Bullet>().ATK);
 
-            Debug.Log("현재 체력 :" + currentHP);
-            //TODO게이지 이미지에 hp수치 적용
+
+            //넉백
+            Vector2 directionToBullet = (collision.transform.position - transform.position).normalized;
+
+            // 넉백을 위한 거리와 속도 조절
+            float knockbackDistance = 2.0f;
+            float knockbackSpeed = 5.0f;
+
+            // 넉백 방향과 속도를 곱해서 위치를 조절
+            Vector2 knockbackPosition = (Vector2)transform.position - directionToBullet * knockbackDistance;
+            transform.position = Vector2.MoveTowards(transform.position, knockbackPosition, knockbackSpeed * Time.deltaTime);
         }
     }
 

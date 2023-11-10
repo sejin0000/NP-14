@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,7 @@ public class Bullet : MonoBehaviour
     public float BulletLifeTime;
     public float BulletSpeed = 20;
 
+    public LayerMask target;
 
     void Start()
     {
@@ -24,5 +26,13 @@ public class Bullet : MonoBehaviour
     void Destroy()
     {
         Destroy(gameObject);
+    }
+
+    private void OnCollisionEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == target)
+        {
+            Invoke("Destroy", 0.3f);
+        }
     }
 }

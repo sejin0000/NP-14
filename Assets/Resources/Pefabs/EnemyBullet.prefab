@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7691614160748915792}
   - component: {fileID: 7087018188176629489}
   - component: {fileID: 2662415570805646552}
+  - component: {fileID: 7769141772943779371}
   m_Layer: 11
   m_Name: EnemyBullet
   m_TagString: EnemyBullet
@@ -148,6 +149,9 @@ MonoBehaviour:
   ATK: 2
   BulletLifeTime: 5
   BulletSpeed: 20
+  target:
+    serializedVersion: 2
+    m_Bits: 320
 --- !u!114 &7087018188176629489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -187,3 +191,30 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 1
   m_UseLocal: 0
+--- !u!50 &7769141772943779371
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8703405332802933773}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
