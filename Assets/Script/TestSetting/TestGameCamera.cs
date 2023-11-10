@@ -15,7 +15,7 @@ public class TestGameCamera : MonoBehaviour
 
     private void Start()
     {
-        Target = TestGameManager.Instance.InstantiatedPlayer;
+        Target = TestGameManagerDohyun.Instance.InstantiatedPlayer;
     }
 
     void FixedUpdate()

@@ -20,7 +20,8 @@ public class UIPlayerMiniHUD : MonoBehaviour
             element.SetActive(false);
         }
 
-        player = MainGameManager.Instance.InstantiatedPlayer.gameObject;
+        player = TestGameManagerDohyun.Instance.InstantiatedPlayer.gameObject;
+        //player = MainGameManager.Instance.InstantiatedPlayer.gameObject;
         playerController = player.GetComponent<TopDownCharacterController>();
         statHandler = player.GetComponent<PlayerStatHandler>();
         Initialize();
