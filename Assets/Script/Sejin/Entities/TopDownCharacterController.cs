@@ -28,7 +28,7 @@ public class TopDownCharacterController : MonoBehaviour
     {
         if (AtkKeyhold)
         {
-            if (!topDownMovement.isRoll && playerStatHandler.CurAmmo > 0 && playerStatHandler.CanFire&& !playerStatHandler.CanReload)
+            if (!topDownMovement.isRoll && playerStatHandler.CurAmmo > 0 && playerStatHandler.CanFire&& playerStatHandler.CanReload)
             {
                 OnAttackEvent?.Invoke();
                 playerStatHandler.CurAmmo--;
