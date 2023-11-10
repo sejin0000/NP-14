@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.UI.CanvasScaler;
 
 public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러오는곳 AugmentManager.Instance.Invoke(code,0); 을통해 해당 증강불러옴
 {
@@ -252,9 +253,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A104(int PlayerNumber)
+    private void A104(int PlayerNumber)//약자멸시 현재 스테이지가 낮을수록 공격력 증가
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0104>();
     }
     [PunRPC]
     private void A105(int PlayerNumber)// 유리대포 //현재 최대 체력을 1로 만들고 그 값 의 절반 만큼 공업
@@ -483,9 +485,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         targetPlayer.AddComponent<A0211>();
     }
     [PunRPC]
-    private void A212(int PlayerNumber)
+    private void A212(int PlayerNumber)//강자멸시 현재 스테이지가 높을수록 공업
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0104>();
     }
     [PunRPC]
     private void A213(int PlayerNumber)
@@ -848,12 +851,14 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A3107(int PlayerNumber) // 파이어 토네이도 테스트안함
     {
-        //if (PV.IsMine)
-        //{
-        //    GameObject Prefabs = Resources.Load<GameObject>("AugmentList/A3107");
-        //    GameObject fire = Instantiate(Prefabs);
-        //    fire.transform.SetParent(player.transform);
-        //}
+        ChangeOnlyPlayer(PlayerNumber);
+        if (targetPlayer.GetPhotonView().IsMine)
+        {
+            GameObject prefab = PhotonNetwork.Instantiate("AugmentList/A3107", targetPlayer.transform.localPosition, Quaternion.identity);
+            prefab.GetComponent<A3107>().Init(targetPlayer);
+            int num = prefab.GetPhotonView().ViewID;
+            photonView.RPC("SetParent", RpcTarget.All, num);
+        }
 
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@샷건 2티어

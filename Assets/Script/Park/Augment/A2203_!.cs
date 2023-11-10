@@ -17,7 +17,6 @@ public class A2203_1 : MonoBehaviourPun
             controller = GetComponent<TopDownCharacterController>();
             playerStat = GetComponent<PlayerStatHandler>();
             controller.OnEndRollEvent += MakeHeal;
-            Prefabs = Resources.Load<GameObject>("AugmentList/A2203");
         }
 
     }

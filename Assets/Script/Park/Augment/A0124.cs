@@ -7,15 +7,16 @@ using UnityEngine.InputSystem.XR;
 
 public class A0124 : MonoBehaviourPun
 {
-    private GameObject A0124Prefabs;
+    private GameObject blindeye;
     // Start is called before the first frame update
     private void Start()
     {
         if (photonView.IsMine) 
         {
-            A0124Prefabs = Resources.Load<GameObject>("AugmentList/A1024");
-            this.transform.SetSiblingIndex(0);
-            Instantiate(A0124Prefabs);
+            GameObject A0124Prefabs = Resources.Load<GameObject>("AugmentList/A1024");
+            A0124Prefabs.transform.SetSiblingIndex(0);
+            GameObject blind = Instantiate(A0124Prefabs);
+            blindeye = blind.GetComponentInChildren<GameObject>();
             DarkEnd();
             MainGameManager.Instance.OnGameStartedEvent += DarkStart;
             MainGameManager.Instance.OnGameEndedEvent += DarkEnd;
@@ -24,10 +25,10 @@ public class A0124 : MonoBehaviourPun
     }
     void DarkStart() 
     {
-        A0124Prefabs.SetActive(true);
+        blindeye.SetActive(true);
     }
     void DarkEnd()
     {
-        A0124Prefabs.SetActive(false);
+        blindeye.SetActive(false);
     }
 }
