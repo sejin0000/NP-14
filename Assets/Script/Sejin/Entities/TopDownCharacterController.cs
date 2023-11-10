@@ -14,6 +14,7 @@ public class TopDownCharacterController : MonoBehaviour
     public event Action OnRollEvent;
     public event Action OnEndRollEvent;
     public event Action OnReloadEvent;
+    public event Action OnEndReloadEvent;
     public event Action OnStartSkillEvent;
 
 
@@ -91,5 +92,10 @@ public class TopDownCharacterController : MonoBehaviour
     public void CallReloadEvent()
     {
         OnReloadEvent?.Invoke();
+    }
+
+    public void CallEndReloadEvent()
+    {
+        OnEndReloadEvent?.Invoke();
     }
 }
