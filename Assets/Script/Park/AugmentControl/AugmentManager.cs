@@ -638,15 +638,19 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     private void A1107(int PlayerNumber)//영역전개 최초의 대상에게 영구적으로 올려주는 타입 아직 세세한 오류가 있을것으로 예상된다 
     {
         ChangeOnlyPlayer(PlayerNumber);
+        GameObject Prefabs = Resources.Load<GameObject>("AugmentList/A1107");
+        GameObject go = Instantiate(Prefabs,targetPlayer.transform);
+        go.transform.SetParent(targetPlayer.transform);
+
+    }
+    private void A1107_1(int PlayerNumber) 
+    {
+        ChangeOnlyPlayer(PlayerNumber);
         if (targetPlayer.GetPhotonView().IsMine)
         {
-            //GameObject Prefabs = Resources.Load<GameObject>("AugmentList/A1107");
-            //GameObject go = Instantiate(Prefabs,targetPlayer.transform);
-            //PhotonView photonView = PhotonView.Find(PlayerNumber);
-            //go.transform.SetParent(photonView.transform);
             GameObject Prefabs = PhotonNetwork.Instantiate("AugmentList/A1107", Vector3.zero, Quaternion.identity);
             int num = Prefabs.GetPhotonView().ViewID;
-            photonView.RPC("setParent",RpcTarget.All, num);
+            photonView.RPC("setParent", RpcTarget.All, num);
             Prefabs.GetComponent<A1107>().Init();
             Debug.Log("영역전개의 코드를 바꿨는데 치명적일수도 있을듯함 이로그를 보면 알려주길 바람");
         }

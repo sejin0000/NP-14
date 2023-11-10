@@ -17,8 +17,6 @@ public class A3102 : MonoBehaviourPun
         }
 
     }
-
-    // Update is called once per frame
     void SkillHpUp()
     {
         playerStat.HP.added += 0.01f;
