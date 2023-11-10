@@ -17,8 +17,8 @@ public class A0124 : MonoBehaviourPun
             this.transform.SetSiblingIndex(0);
             Instantiate(A0124Prefabs);
             DarkEnd();
-            GameManager1.Instance.OnStageStart += DarkStart;
-            GameManager1.Instance.OnStageEnd += DarkEnd;
+            MainGameManager.Instance.OnGameStartedEvent += DarkStart;
+            MainGameManager.Instance.OnGameEndedEvent += DarkEnd;
         }
 
     }
