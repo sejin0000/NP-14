@@ -16,7 +16,7 @@ public class UIPlayerHP : UIBase
 
     private void Start()
     {
-        playerStats = TestGameManagerDohyun.Instance.InstantiatedPlayer.GetComponent<PlayerStatHandler>();
+        playerStats = MainGameManager.Instance.InstantiatedPlayer.GetComponent<PlayerStatHandler>();
         //playerStats = MainGameManager.Instance.InstantiatedPlayer.GetComponent<PlayerStatHandler>();
         playerStats.HitEvent += SetValue;
         SetValue();
