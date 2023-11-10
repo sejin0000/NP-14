@@ -95,12 +95,37 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
         IsNavAbled();
 
-        if (isAttaking || isChase)
-            ChaseView();
-        else
-            NomalView();
+        if(isLive)
+        {
+            if (isAttaking || isChase)
+                ChaseView();
+            else
+                NomalView();
+        }
+
+
+        // 넉백 중인 경우
+        if (isKnockback)
+        {
+            // 넉백 시간 비율 계산
+            float knockbackRatio = (Time.time - knockbackStartTime) / knockbackDuration;
+
+            // Lerp를 사용하여 현재 위치를 부드럽게 이동
+            transform.position = Vector2.Lerp(knockbackStartPosition, knockbackTargetPosition, knockbackRatio);
+
+            // 넉백이 끝났는지 확인
+            if (knockbackRatio >= 0.3f)
+            {
+                isKnockback = false;
+            }
+        }
     }
 
+    private bool isKnockback = false;
+    private Vector2 knockbackStartPosition;
+    private Vector2 knockbackTargetPosition;
+    private float knockbackStartTime;
+    public float knockbackDuration = 0.2f;
 
     //★
     private void OnTriggerEnter2D(Collider2D collision)
@@ -120,13 +145,18 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             //넉백
             Vector2 directionToBullet = (collision.transform.position - transform.position).normalized;
 
-            // 넉백을 위한 거리와 속도 조절
+            // 넉백을 위한 거리 조절
             float knockbackDistance = 2.0f;
-            float knockbackSpeed = 5.0f;
 
-            // 넉백 방향과 속도를 곱해서 위치를 조절
-            Vector2 knockbackPosition = (Vector2)transform.position - directionToBullet * knockbackDistance;
-            transform.position = Vector2.MoveTowards(transform.position, knockbackPosition, knockbackSpeed * Time.deltaTime);
+            // 넉백 시작 위치와 목표 위치 계산
+            knockbackStartPosition = transform.position;
+            knockbackTargetPosition = knockbackStartPosition - directionToBullet * knockbackDistance;
+
+            // 넉백 시작 시간 저장
+            knockbackStartTime = Time.time;
+
+            // 넉백 플래그 설정
+            isKnockback = true;
         }
     }
 
@@ -160,7 +190,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void DestroyEnemy()
     {
-        Destroy(gameObject, 1f);
+        Destroy(gameObject, 0.5f);
     }
 
     public void Shoot()

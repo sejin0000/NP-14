@@ -28,11 +28,11 @@ public class Bullet : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void OnCollisionEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.layer == target)
         {
-            Invoke("Destroy", 0.3f);
+            Destroy();
         }
     }
 }
