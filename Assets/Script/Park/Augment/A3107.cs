@@ -1,3 +1,4 @@
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,11 +11,19 @@ public class A3107 : MonoBehaviour
     public float deg; //각도
     public float objSpeed= 20f; //원운동 속도
     public GameObject[] target;
+    public PlayerStatHandler playerStat;
 
     private void Start()
     {
         objSize = target.Length;
         transform.localPosition = Vector3.zero;
+    }
+    public void Init(GameObject pl)
+    {
+        GameObject player1 = pl;
+        playerStat = player1.GetComponent<PlayerStatHandler>();
+        MainGameManager.Instance.OnGameStartedEvent += damege;
+        damege();
     }
     void Update()
     {
@@ -36,5 +45,12 @@ public class A3107 : MonoBehaviour
             deg = 0;
         }
 
+    }
+    void damege() 
+    {
+        for (int i = 0; i < target.Length; ++i)
+        {
+            target[i].GetComponent<A3107_1>().DamegeUpdate(playerStat.ATK.total);
+        }
     }
 }
