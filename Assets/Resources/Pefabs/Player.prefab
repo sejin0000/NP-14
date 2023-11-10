@@ -506,7 +506,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 0.4392157}
   m_FlipX: 0
@@ -616,8 +616,8 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 6315678254743216955}
-  - {fileID: 1358485164649518670}
   - {fileID: 7372253118637177478}
+  - {fileID: 1358485164649518670}
   - {fileID: 2023649502874127936}
   - {fileID: 8845955158854411541}
   sceneViewId: 0

@@ -57,7 +57,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         nav = GetComponent<NavMeshAgent>();
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        collider2D = GetComponentInChildren<CircleCollider2D>();
+        collider2D = GetComponent<CircleCollider2D>();
         PV = GetComponent<PhotonView>();
 
         //게임 오브젝트 활성화 시, 행동 트리 생성
