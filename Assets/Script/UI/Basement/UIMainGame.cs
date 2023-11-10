@@ -8,12 +8,7 @@ public class UIMainGame : UIBase
     public override void Initialize()
     {
         Debug.Log("[UIMainGame] Initialize");
-        MainGameManager.Instance.OnPlayingStateChanged += OpenWindow;
-    }
-
-    private void OpenWindow()
-    {
-        this.Open();
+        MainGameManager.Instance.OnPlayingStateChanged += Open;
     }
 
     // Start is called before the first frame update
