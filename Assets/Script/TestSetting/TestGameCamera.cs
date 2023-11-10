@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainGameCamera : MonoBehaviour
+public class TestGameCamera : MonoBehaviour
 {
     public GameObject Target;               // Ä«¸Þ¶ó°¡ µû¶ó´Ù´Ò Å¸°Ù
 
@@ -15,7 +15,7 @@ public class MainGameCamera : MonoBehaviour
 
     private void Start()
     {
-        Target = MainGameManager.Instance.InstantiatedPlayer; 
+        Target = TestGameManager.Instance.InstantiatedPlayer;
     }
 
     void FixedUpdate()
