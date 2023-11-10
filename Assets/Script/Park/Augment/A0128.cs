@@ -7,7 +7,7 @@ public class A0128 : MonoBehaviour
     // Start is called before the first frame update
     int objSize;// 돌아가는 투사체 갯수
     public float circleR = 1f; //반지름
-    public float deg; //각도
+    private float deg; //각도
     public float objSpeed = 140f; //원운동 속도
     public GameObject[] target;
     public PlayerStatHandler playerStat;
@@ -28,7 +28,6 @@ public class A0128 : MonoBehaviour
                 var x = circleR * Mathf.Sin(rad);
                 var y = circleR * Mathf.Cos(rad);
                 target[i].transform.position = transform.position + new Vector3(x, y);
-                //target[i].transform.rotation = Quaternion.Euler(0, 0, (deg + (i * (360 / objSize))) * -1);
             }
         }
         else

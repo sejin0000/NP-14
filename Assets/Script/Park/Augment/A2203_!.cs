@@ -8,7 +8,6 @@ public class A2203_1 : MonoBehaviourPun
 {
     private TopDownCharacterController controller;
     private PlayerStatHandler playerStat;
-    private CoolTimeController coolTimeController;
     GameObject Prefabs;
     private void Awake()
     {
@@ -26,9 +25,7 @@ public class A2203_1 : MonoBehaviourPun
     void MakeHeal()
     {
         GameObject fire = PhotonNetwork.Instantiate("AugmentList/A2203",transform.localPosition,Quaternion.identity);
-        //fire.transform.SetParent(player.transform);
         A2203 a2203 = fire.GetComponent<A2203>();
-        //fire.transform.localPosition= playerStat.gameObject.transform.localPosition;
         a2203.Init(playerStat);
     }
 }
