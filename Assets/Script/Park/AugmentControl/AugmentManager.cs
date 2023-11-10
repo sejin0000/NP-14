@@ -662,6 +662,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     {
         PhotonView a = PhotonView.Find(num);
         a.transform.SetParent(targetPlayer.transform);
+        a.transform.localPosition = Vector3.zero;
         //Prefabs.transform.SetParent(targetPlayer.transform);
     }
     #endregion

@@ -19,15 +19,15 @@ public class UIPlayerHP : UIBase
         playerStats = MainGameManager.Instance.InstantiatedPlayer.GetComponent<PlayerStatHandler>();
         playerStats.HitEvent += SetValue;
         SetValue();
-        Debug.Log("[PlayerStatHandler]" + "Start Done");
+        //Debug.Log("[PlayerStatHandler]" + "Start Done");
     }
 
     private void SetValue()
     {
-        Debug.Log("[PlayerStatHandler]" + playerStats.ToString());
+        //Debug.Log("[PlayerStatHandler]" + playerStats.ToString());
         hpGauge.minValue = 0;
         hpGauge.maxValue = playerStats.HP.total;
         hpGauge.value = playerStats.CurHP;
-        Debug.Log("[PlayerStatHandler]" + "SetValue Done");
+        //Debug.Log("[PlayerStatHandler]" + "SetValue Done");
     }
 }

@@ -38,6 +38,11 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         Sniper,
     }
 
+    public enum RoomType
+    {
+        MainGameRoom,
+        TestRoom,
+    }
     [System.Serializable]
     public class LobbyUI
     {
@@ -58,9 +63,8 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
     public Button CharacterSelectButtonInLobby;
     public TextMeshProUGUI Gold;
-    //public Player player;
 
-    [Header("Room")]
+    [Header("RoomPanel")]
     public GameObject RoomPanel;
 
     public GameObject PartyBox;
@@ -81,16 +85,32 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     public TextMeshProUGUI SkillInfoText;
 
     [Header("Shop")]
-    public GameObject Shop;
-        
-    private Dictionary<int, GameObject> playerInfoListEntries;
-    private Dictionary<string, RoomInfo> cachedRoomList;
+    public GameObject Shop;        
+
+    [Header("TestLobbyPanel")]
+    public GameObject TestLobbyPanel;
+    public Button CharacterSelectButtonInTestPanel;
+    public Button CreateTestRoomButton;
+    public Button BackButtonInTestPanel;
+    public TestPanel testPanel;
+    public string selectedSceneInTestLobbyPanel;
+
+    public Dictionary<string, RoomInfo> cachedTestRoomList;
+    public Dictionary<string, GameObject> testRoomListEntries;
+
+    [Header("TestRoomPanel")]
+    public GameObject TestRoomPanel;
+    public Button CharacterSelectButtonInTestRoomPanel;
+
     [Header("ETC")]
     public GameObject playerDataSetting;
     public GameObject playerContainer;
+    private Dictionary<int, GameObject> playerInfoListEntries;
+    private Dictionary<string, RoomInfo> cachedRoomList;
 
-    private GameObject instantiatedPlayer;
-    private int viewID;
+    [Header("ClientPlayer")]
+    [SerializeField] private GameObject instantiatedPlayer;
+    [SerializeField] private int viewID;
 
     public void Awake()
     {
@@ -98,6 +118,9 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
         cachedRoomList = new Dictionary<string, RoomInfo>();
         playerInfoListEntries = new Dictionary<int, GameObject>();
+        cachedTestRoomList = new Dictionary<string, RoomInfo>();
+        testRoomListEntries = new Dictionary<string, GameObject>();
+
 
         ExitGames.Client.Photon.Hashtable playerCP = PhotonNetwork.LocalPlayer.CustomProperties;
         if (!playerCP.ContainsKey("Char_Class"))
@@ -109,9 +132,16 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         }
 
         playerDataSetting = Instantiate(Resources.Load<GameObject>("Prefabs/CharacterData/PlayerCharacterSetting"));
+
+        testPanel = TestLobbyPanel.GetComponent<TestPanel>();
+        testPanel.Initialize();
+        CreateTestRoomButton.onClick.AddListener(OnCreateTestRoomButtonClicked);
+        BackButtonInTestPanel.onClick.AddListener(OnBackButtonInTestPanelClicked);
+
+        SetPanel(LoginPanel.name);
     }
 
-    public void Start()
+    public virtual void Start()
     {
         if (PhotonNetwork.NetworkClientState == ClientState.Joined)
         {
@@ -127,7 +157,13 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        UpdateCachedRoomList(roomList);
+        Debug.Log("Updated RoomList");
+        UpdateCachedRoomList(roomList);        
+
+        ClearTestRoomListView();
+
+        UpdateCachedTestRoomList(roomList);
+        UpdateTestRoomListView();
     }
 
     public override void OnJoinedLobby()
@@ -161,6 +197,8 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
                 CharacterSelectButtonInLobby.onClick.AddListener(playerInfo.OnCharacterButtonClicked);
                 CharacterSelectButtonInRoom.onClick.AddListener(playerInfo.OnCharacterButtonClicked);
+                CharacterSelectButtonInTestPanel.onClick.AddListener(playerInfo.OnCharacterButtonClicked);
+                CharacterSelectButtonInTestRoomPanel.onClick.AddListener(playerInfo.OnCharacterButtonClicked);
             }
 
             var PlayerData = playerDataSetting.GetComponent<PlayerDataSetting>();  
@@ -177,6 +215,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
+        Debug.Log(PhotonNetwork.NetworkingClient.LoadBalancingPeer.DebugOut);
         SetPanel(MainLobbyPanel.name);
     }
 
@@ -188,9 +227,17 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     // 랜덤룸 찾기 실패했을 때
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
+        Debug.Log("join Failed");
         string roomName = $"RandRoom{Random.Range(1,200)}";
         RoomOptions options = new RoomOptions { MaxPlayers = 3 };
+        options.CustomRoomPropertiesForLobby = new string[] { "IsTest" };
+        options.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "IsTest", false } };
         PhotonNetwork.CreateRoom(roomName, options, null);
+    }
+
+    public override void OnCreatedRoom()
+    {
+            
     }
 
     public override void OnJoinedRoom()
@@ -198,25 +245,9 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         Debug.Log($"{PhotonNetwork.LocalPlayer.NickName} 입장");
         Shop.SetActive(false);
 
-
-        if (cachedRoomList != null)
-        {
-            cachedRoomList.Clear();
-        }
-
-        SetPanel(RoomPanel.name);
-
-        if (playerInfoListEntries == null)
-        {
-            playerInfoListEntries = new Dictionary<int, GameObject>();
-        }
-
         instantiatedPlayer = InstantiatePlayer();
         viewID = instantiatedPlayer.GetPhotonView().ViewID;
         instantiatedPlayer.GetComponent<ClassIdentifier>().playerData = playerDataSetting.GetComponent<PlayerDataSetting>();
-
-        // PartyPlayerInfo에서 받은 프리팹 정보를 각각의 프리팹에 적용.
-        SetPartyPlayerInfo();
 
         // 
         PlayerDataSetting playerData = playerDataSetting.GetComponent<PlayerDataSetting>();
@@ -231,8 +262,46 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out classNum);
         instantiatedPlayer.GetComponent<PhotonView>().RPC("ApplyClassChange", RpcTarget.Others, (int)classNum, viewID);
 
-        // 스타트 버튼 동기화
-        StartButton.gameObject.SetActive(CheckPlayersReady());
+        PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("IsTest", out object isTest);
+        Debug.Log($"isTest : {(bool)isTest}");
+        if ((bool)isTest == false)
+        {
+            SetPanel(RoomPanel.name);
+            
+            if (cachedRoomList != null)
+            {
+                cachedRoomList.Clear();
+            }
+            
+            if (playerInfoListEntries == null)
+            {
+                playerInfoListEntries = new Dictionary<int, GameObject>();
+            }
+
+            // PartyPlayerInfo에서 받은 프리팹 정보를 각각의 프리팹에 적용.
+            SetPartyPlayerInfo();
+
+            // 스타트 버튼 동기화
+            StartButton.gameObject.SetActive(CheckPlayersReady());
+        }
+        else
+        {
+            SetPanel(TestRoomPanel.name);
+
+            if (cachedTestRoomList != null)
+            {
+                cachedTestRoomList.Clear();
+            }
+
+            if (cachedTestRoomList == null)
+            {
+                testRoomListEntries = new Dictionary<string, GameObject>();
+            }
+
+            // 나중에 들어오는 사람 Scene 안뜨는 이슈 해결해야함.
+            StartButton.gameObject.SetActive(true);
+        }
+        
     }
 
     public GameObject InstantiatePlayer()
@@ -255,6 +324,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         SetPanel(MainLobbyPanel.name);
+
 
         foreach (GameObject playerInfoEntry in playerInfoListEntries.Values) 
         {
@@ -376,15 +446,20 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     {
         if (cachedRoomList == null)
         {
+            Debug.Log("cachedRoomList is Null");
             string roomName = $"Room {Random.Range(0, 200)}";
 
             RoomOptions options = new RoomOptions { MaxPlayers = 3, PlayerTtl = 10000 };
+            options.CustomRoomPropertiesForLobby = new string[] { "IsTest" };
+            options.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "IsTest", false } };
             
-            PhotonNetwork.CreateRoom(roomName, options, null);
+            PhotonNetwork.CreateRoom(roomName, options);
         }
         else
         {
-            PhotonNetwork.JoinRandomRoom();
+            Debug.Log("is Not Null");
+            var testProperty = new ExitGames.Client.Photon.Hashtable() { { "IsTest", false } };
+            PhotonNetwork.JoinRandomRoom(testProperty, 3);
         }
     }
 
@@ -396,6 +471,39 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel("MainGameScene");
     }
 
+    public void OnTestRoomButtonClicked()
+    {
+        MainLobbyPanel.SetActive(false);
+        TestLobbyPanel.SetActive(true);
+    }
+
+    private void OnCreateTestRoomButtonClicked()
+    {        
+        string roomName = testPanel.RoomNameSetup.text;
+        roomName = (roomName.Equals(string.Empty)) ? "Room " + UnityEngine.Random.Range(1000, 10000) : roomName;
+
+        byte maxPlayers;
+        byte.TryParse(testPanel.RoomMemberSetup.text, out maxPlayers);
+        maxPlayers = (byte)Mathf.Clamp(maxPlayers, 2, 8);
+
+        RoomOptions options = new RoomOptions { MaxPlayers = maxPlayers, PlayerTtl = 10000 };
+        if (selectedSceneInTestLobbyPanel == null)
+        {
+            selectedSceneInTestLobbyPanel = testPanel.sceneConnectButtons[0].sceneNameText.text;
+        }
+        options.CustomRoomPropertiesForLobby = new string[] { "IsTest", "Scene" };
+        options.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "IsTest", true }, { "Scene", selectedSceneInTestLobbyPanel } };
+        
+
+        //SetPanel(TestRoomPanel.name);
+        PhotonNetwork.CreateRoom(roomName, options );
+
+    }
+
+    private void OnBackButtonInTestPanelClicked()
+    {
+        SetPanel(MainLobbyPanel.name);
+    }
     #endregion
 
 
@@ -406,6 +514,8 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         LoginPanel.SetActive(panelName.Equals(LoginPanel.name));
         MainLobbyPanel.SetActive(panelName.Equals(MainLobbyPanel.name));
         RoomPanel.SetActive(panelName.Equals(RoomPanel.name));
+        TestLobbyPanel.SetActive(panelName.Equals(TestLobbyPanel.name));
+        TestRoomPanel.SetActive(panelName.Equals(TestRoomPanel.name));
     }
 
     public void SetPopup(string popupName) 
@@ -417,7 +527,12 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     {
         foreach (RoomInfo info in roomList)
         {
-            if (!info.IsOpen || info.RemovedFromList)
+            info.CustomProperties.TryGetValue("IsTest", out object testBool);
+            if (testBool == null)
+            {
+                cachedRoomList.Remove(info.Name);
+            }
+            if (!info.IsOpen || info.RemovedFromList || !info.IsVisible || info.PlayerCount == 0 || (bool)testBool)
             {
                 if (cachedRoomList.ContainsKey(info.Name))
                 {
@@ -426,17 +541,68 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
                 continue;
             }
-
+            
             if (cachedRoomList.ContainsKey(info.Name))
             {
                 cachedRoomList[info.Name] = info;
             }
-
             else
             {
                 cachedRoomList.Add(info.Name, info);
             }
         }
+    }
+
+    private void UpdateCachedTestRoomList(List<RoomInfo> roomList)
+    {
+        foreach (RoomInfo info in roomList)
+        {
+            if (info.CustomProperties.TryGetValue("IsTest", out object testBool))
+            {
+                if (!info.IsOpen || !info.IsVisible || info.RemovedFromList || info.PlayerCount == 0 || !(bool)testBool)
+                {
+                    if (cachedTestRoomList.ContainsKey(info.Name))
+                    {
+                        cachedTestRoomList.Remove(info.Name);
+                    }
+                    continue;
+                }
+            }
+
+            if (cachedTestRoomList.ContainsKey(info.Name))
+            {
+                cachedTestRoomList[info.Name] = info;
+            }
+            else
+            {
+                cachedTestRoomList.Add(info.Name, info);
+            }
+        }
+    }
+
+    private void UpdateTestRoomListView()
+    {
+        testRoomListEntries.Clear();
+        
+        foreach (RoomInfo info in cachedTestRoomList.Values)
+        {
+            GameObject entry = Instantiate(Resources.Load<GameObject>("Prefabs/LobbyScene/TestRoomEntry"));
+            entry.transform.SetParent(testPanel.RoomScrollViewContent.transform, false);
+            entry.transform.localScale = Vector3.one;
+            entry.GetComponent<RoomListEntry>().Initialize(info.Name, (byte)info.PlayerCount, (byte)info.MaxPlayers);
+            testPanel.OnEntryClicked += entry.GetComponent<RoomListEntry>().OnSelectRoomButtonClicked;
+            testRoomListEntries[info.Name] = entry;
+        }
+    }
+
+    private void ClearTestRoomListView()
+    {
+        foreach (GameObject entry in testRoomListEntries.Values)
+        {
+            Destroy(entry.gameObject);
+        }
+
+        testRoomListEntries.Clear();
     }
 
     public bool CheckPlayersReady()
