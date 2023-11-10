@@ -42,12 +42,9 @@ public class TestGameManagerDohyun : MonoBehaviourPun
         // PhotonNetwork.Instantiate()
         string playerPrefabPath = "Pefabs/Player";
         InstantiatedPlayer = PhotonNetwork.Instantiate(playerPrefabPath, Vector3.zero, Quaternion.identity);
+        InstantiatedPlayer.GetComponent<PhotonView>().RPC("AttachMiniHUD", RpcTarget.All);
         characterSetting.ownerPlayer = InstantiatedPlayer;
         characterSetting.viewID = InstantiatedPlayer.GetPhotonView().ViewID;
-
-        // Attach Mini HUD
-        GameObject attachUI = Instantiate(Resources.Load<GameObject>("Prefabs/PlayerHUD/HUD_Root"));
-        attachUI.transform.SetParent(InstantiatedPlayer.transform);
         
 
         // ClassIdentifier µ•¿Ã≈Õ Init()
@@ -62,5 +59,13 @@ public class TestGameManagerDohyun : MonoBehaviourPun
             int viewID = characterSetting.viewID;
             InstantiatedPlayer.GetComponent<PhotonView>().RPC("ApplyClassChange", RpcTarget.Others, (int)classNum, viewID);
         }
+    }
+
+    [PunRPC]
+    private void AttachMiniHUD()
+    {
+        // Attach Mini HUD
+        GameObject attachUI = Instantiate(Resources.Load<GameObject>("Prefabs/PlayerHUD/HUD_Root"));
+        attachUI.transform.SetParent(InstantiatedPlayer.transform);
     }
 }
