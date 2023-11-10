@@ -13439,7 +13439,7 @@ MonoBehaviour:
   ChatInput: {fileID: 1814743562}
   ChatLogPrefab: {fileID: 1580934528868145059, guid: 8cabf84cabb8a8d47972021ec03c6462, type: 3}
   ChatBoxScrollContent: {fileID: 376548891}
-  CharacterSelectPopup: {fileID: 7140342747673913957, guid: 2eb62e0eb4b23d545825f5ecd308edf7, type: 3}
+  CharacterSelectPopup: {fileID: 0}
   PlayerClassText: {fileID: 0}
   StatInfo: {fileID: 7934161811500229392, guid: e35b10894d5452d49b52765900bb61a8, type: 3}
   SkillInfoText: {fileID: 0}
