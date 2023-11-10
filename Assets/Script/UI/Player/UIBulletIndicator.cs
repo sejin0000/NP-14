@@ -25,7 +25,7 @@ public class UIBulletIndicator : UIBase
         player = MainGameManager.Instance.InstantiatedPlayer.GetComponent<PlayerInputController>(); 
         playerStat = player.playerStatHandler;
 
-        player.OnAttackEvent += ChangeValue;
+        playerStat.OnChangeAmmorEvent += ChangeValue;
         ChangeValue();
     }
 
