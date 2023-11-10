@@ -1,14 +1,23 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class A3107_1 : MonoBehaviour
+public class A3107_1 : MonoBehaviourPun
 {
-    private void OnTriggerEnter2D(Collider2D collision)
+    public float damege;
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Enemy") 
+        if (collision.gameObject.layer == LayerMask.NameToLayer("EnemyBullet")) 
         {
-            //대충 데미지 주기
+            EnemyAI wjr =  collision.GetComponent<EnemyAI>();
+            wjr.PV.RPC("DecreaseHP", RpcTarget.All, damege);
         }
     }
+    public void DamegeUpdate(float a) 
+    {
+        damege = a*0.8f;
+    }
+
 }

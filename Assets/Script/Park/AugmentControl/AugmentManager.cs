@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.UI.CanvasScaler;
 
 public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러오는곳 AugmentManager.Instance.Invoke(code,0); 을통해 해당 증강불러옴
 {
@@ -252,9 +253,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A104(int PlayerNumber)
+    private void A104(int PlayerNumber)//약자멸시 현재 스테이지가 낮을수록 공격력 증가
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0104>();
     }
     [PunRPC]
     private void A105(int PlayerNumber)// 유리대포 //현재 최대 체력을 1로 만들고 그 값 의 절반 만큼 공업
@@ -483,9 +485,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         targetPlayer.AddComponent<A0211>();
     }
     [PunRPC]
-    private void A212(int PlayerNumber)
+    private void A212(int PlayerNumber)//강자멸시 현재 스테이지가 높을수록 공업
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0104>();
     }
     [PunRPC]
     private void A213(int PlayerNumber)
@@ -635,21 +638,32 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     }
 
     [PunRPC]
-    private void A1107(int PlayerNumber)//영역전개 최초의 대상에게 영구적으로 올려주는 타입 아직 세세한 오류가 있을것으로 예상된다 
+    private void A1107_1(int PlayerNumber)//오브젝트 생성형 폐기된 디자인
+    {
+        ChangeOnlyPlayer(PlayerNumber);
+        GameObject Prefabs = Resources.Load<GameObject>("AugmentList/A1107");
+        GameObject go = Instantiate(Prefabs, targetPlayer.transform);
+        go.transform.SetParent(targetPlayer.transform);
+
+    }
+    private void A1107(int PlayerNumber) //영역전개 최초의 대상에게 영구적으로 올려주는 타입 아직 세세한 오류가 있을것으로 예상된
     {
         ChangeOnlyPlayer(PlayerNumber);
         if (targetPlayer.GetPhotonView().IsMine)
         {
-            //GameObject Prefabs = Resources.Load<GameObject>("AugmentList/A1107");
-            //GameObject go = Instantiate(Prefabs,targetPlayer.transform);
-            GameObject Prefabs = PhotonNetwork.Instantiate("AugmentList/A1107", Vector3.zero, Quaternion.identity);
-            //PhotonView photonView = PhotonView.Find(PlayerNumber);
-            //go.transform.SetParent(photonView.transform);
-            Prefabs.transform.SetParent(targetPlayer.transform);
+            GameObject Prefabs = PhotonNetwork.Instantiate("AugmentList/A1107", targetPlayer.transform.localPosition, Quaternion.identity);
+            int num = Prefabs.GetPhotonView().ViewID;
+            photonView.RPC("setParent", RpcTarget.All, num);
             Prefabs.GetComponent<A1107>().Init();
-            Debug.Log("영역전개의 코드를 바꿨는데 치명적일수도 있을듯함 이로그를 보면 알려주길 바람");
-
         }
+    }
+    [PunRPC]
+    private void setParent(int num)
+    {
+        PhotonView a = PhotonView.Find(num);
+        a.transform.SetParent(targetPlayer.transform);
+        a.transform.localPosition = Vector3.zero;
+        //Prefabs.transform.SetParent(targetPlayer.transform);
     }
     #endregion
     #region Sniper2
@@ -838,12 +852,14 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A3107(int PlayerNumber) // 파이어 토네이도 테스트안함
     {
-        //if (PV.IsMine)
-        //{
-        //    GameObject Prefabs = Resources.Load<GameObject>("AugmentList/A3107");
-        //    GameObject fire = Instantiate(Prefabs);
-        //    fire.transform.SetParent(player.transform);
-        //}
+        ChangeOnlyPlayer(PlayerNumber);
+        if (targetPlayer.GetPhotonView().IsMine)
+        {
+            GameObject prefab = PhotonNetwork.Instantiate("AugmentList/A3107", targetPlayer.transform.localPosition, Quaternion.identity);
+            prefab.GetComponent<A3107>().Init(targetPlayer);
+            int num = prefab.GetPhotonView().ViewID;
+            photonView.RPC("SetParent", RpcTarget.All, num);
+        }
 
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@샷건 2티어

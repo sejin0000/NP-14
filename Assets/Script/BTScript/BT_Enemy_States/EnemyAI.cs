@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using myBehaviourTree;
-using static UnityEditor.PlayerSettings;
-using UnityEditor.Rendering.LookDev;
+//using static UnityEditor.PlayerSettings;
+//using UnityEditor.Rendering.LookDev;
 using Photon.Pun;
 using UnityEngine.UI;
 
@@ -57,7 +57,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         nav = GetComponent<NavMeshAgent>();
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        collider2D = GetComponentInChildren<CircleCollider2D>();
+        collider2D = GetComponent<CircleCollider2D>();
         PV = GetComponent<PhotonView>();
 
         //게임 오브젝트 활성화 시, 행동 트리 생성

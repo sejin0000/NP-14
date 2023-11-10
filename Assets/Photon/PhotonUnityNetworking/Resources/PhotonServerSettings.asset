@@ -181,6 +181,9 @@ MonoBehaviour:
   - DestroyEnemy
   - A918
   - A928
+  - IncreaseHP
+  - setParent
+  - AttachMiniHUD
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
