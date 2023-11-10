@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class TestGameManager : MonoBehaviourPun
 {
+    public static TestGameManager Instance;
+
     [Header("ClientPlayer")]
     public GameObject InstantiatedPlayer;
     [SerializeField] private bool isPlayerInstantiated;
@@ -20,6 +22,11 @@ public class TestGameManager : MonoBehaviourPun
             isPlayerInstantiated = true;
             SpawnPlayer();
             SyncPlayer();
+        }
+
+        if (Instance == null)
+        {
+            Instance = this;
         }
     }
 
