@@ -418,9 +418,15 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A128(int PlayerNumber)
+    private void A128(int PlayerNumber)//프렌드 실드 현재 속도 140
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        if (targetPlayer.GetPhotonView().IsMine)
+        {
+            GameObject prefab = PhotonNetwork.Instantiate("AugmentList/A0128", targetPlayer.transform.localPosition, Quaternion.identity);
+            int num = prefab.GetPhotonView().ViewID;
+            photonView.RPC("SetParent", RpcTarget.All, num);
+        }
     }
     #endregion
     #region All2
