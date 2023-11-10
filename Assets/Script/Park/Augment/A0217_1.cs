@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 public class A0217_1 : MonoBehaviour
 {
     float time = 0;
-    int stack = 0;//지속시간
+    int stack = 0;
     int maxtime = 5; //사라지는시간
     List<PlayerStatHandler> target = new List<PlayerStatHandler>();
     int healP = 2;
