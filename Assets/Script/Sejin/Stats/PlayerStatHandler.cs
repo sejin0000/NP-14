@@ -11,6 +11,7 @@ public class PlayerStatHandler : MonoBehaviour
     public event Action HitEvent;
     public event Action OnDieEvent;
     public event Action OnRegenEvent;
+    public event Action OnChangeAmmorEvent;
 
 
     [SerializeField] private PlayerSO playerStats;
@@ -65,7 +66,7 @@ public class PlayerStatHandler : MonoBehaviour
     }               //현재   체력
 
     private float curAmmo;
-    [HideInInspector] public float CurAmmo { get { return curAmmo; } set { if (value > AmmoMax.total) curAmmo = AmmoMax.total; curAmmo = value; } } //현재   잔탄
+    [HideInInspector] public float CurAmmo { get { return curAmmo; } set { if (value > AmmoMax.total) curAmmo = AmmoMax.total; curAmmo = value; OnChangeAmmorEvent?.Invoke(); } } //현재   잔탄
     [HideInInspector] public bool CanFire;                                //발사   가능한지
     [HideInInspector] public bool CanReload;                              //장전   가능한지
     [HideInInspector] public bool CanSkill;                               //스킬   가능한지

@@ -22,10 +22,11 @@ public class UIBulletIndicator : UIBase
 
     private void Initialize()
     {
-        player = MainGameManager.Instance.InstantiatedPlayer.GetComponent<PlayerInputController>(); 
+        player = TestGameManagerDohyun.Instance.InstantiatedPlayer.GetComponent<PlayerInputController>();
+        //player = MainGameManager.Instance.InstantiatedPlayer.GetComponent<PlayerInputController>(); 
         playerStat = player.playerStatHandler;
 
-        player.OnAttackEvent += ChangeValue;
+        playerStat.OnChangeAmmorEvent += ChangeValue;
         ChangeValue();
     }
 

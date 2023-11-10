@@ -14,6 +14,7 @@ public class TopDownCharacterController : MonoBehaviour
     public event Action OnRollEvent;
     public event Action OnEndRollEvent;
     public event Action OnReloadEvent;
+    public event Action OnEndReloadEvent;
     public event Action OnStartSkillEvent;
 
 
@@ -27,7 +28,7 @@ public class TopDownCharacterController : MonoBehaviour
     {
         if (AtkKeyhold)
         {
-            if (!topDownMovement.isRoll && playerStatHandler.CurAmmo > 0 && playerStatHandler.CanFire)
+            if (!topDownMovement.isRoll && playerStatHandler.CurAmmo > 0 && playerStatHandler.CanFire&& playerStatHandler.CanReload)
             {
                 OnAttackEvent?.Invoke();
                 playerStatHandler.CurAmmo--;
@@ -90,6 +91,15 @@ public class TopDownCharacterController : MonoBehaviour
 
     public void CallReloadEvent()
     {
-        OnReloadEvent?.Invoke();
+        if (playerStatHandler.CanReload&& playerStatHandler.CurAmmo != playerStatHandler.AmmoMax.total)
+        {
+            Debug.Log("¿Á¿Â¿¸");
+            OnReloadEvent?.Invoke();
+        }
+    }
+
+    public void CallEndReloadEvent()
+    {
+        OnEndReloadEvent?.Invoke();
     }
 }

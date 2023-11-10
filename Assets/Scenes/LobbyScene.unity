@@ -3715,7 +3715,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1568722255}
         m_TargetAssemblyTypeName: LobbyPanel, Assembly-CSharp
         m_MethodName: OnStartButtonClicked
         m_Mode: 1

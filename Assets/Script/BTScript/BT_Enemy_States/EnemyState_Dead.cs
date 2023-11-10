@@ -23,7 +23,10 @@ public class EnemyState_Dead : BTAction
     {
         //골드 여기에
         //사망 시 파티클이나 기타 효과 여기에
-        MainGameManager.Instance.currentMonsterCount -= 1;
+        if (MainGameManager.Instance != null)
+        {
+            MainGameManager.Instance.currentMonsterCount -= 1;
+        }
         enemyAI.PV.RPC("DestroyEnemy", RpcTarget.AllBuffered);
     }
 

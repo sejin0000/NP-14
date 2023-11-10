@@ -10,19 +10,20 @@ public class UIReloadHUD : MonoBehaviour
     private CoolTimeController controller;
     private PlayerStatHandler statHandler;
 
+    private void Awake()
+    {
+        slider = GetComponentInChildren<Slider>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        slider = GetComponentInChildren<Slider>();
-
-        if (MainGameManager.Instance != null)
-        {
-            player = MainGameManager.Instance.InstantiatedPlayer;
-            controller = player.GetComponent<CoolTimeController>();
-            statHandler = player.GetComponent<PlayerStatHandler>();
-            player.GetComponent<TopDownCharacterController>().OnEndRollEvent += Close;
-            Initialize();
-        }
+        player = TestGameManagerDohyun.Instance.InstantiatedPlayer;
+        //player = MainGameManager.Instance.InstantiatedPlayer;
+        controller = player.GetComponent<CoolTimeController>();
+        statHandler = player.GetComponent<PlayerStatHandler>();
+        player.GetComponent<TopDownCharacterController>().OnEndReloadEvent += Close;
+        Initialize();
     }
 
     void Initialize()
@@ -33,7 +34,8 @@ public class UIReloadHUD : MonoBehaviour
 
     private void OnEnable()
     {
-        Initialize();
+        if(player != null)
+            Initialize();
     }
 
     private void Close()

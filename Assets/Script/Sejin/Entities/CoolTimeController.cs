@@ -95,8 +95,8 @@ public class CoolTimeController : MonoBehaviour
     {
         controller.playerStatHandler.CanReload = true;
         controller.playerStatHandler.CurAmmo = controller.playerStatHandler.AmmoMax.total;
+        controller.CallEndReloadEvent();
     }
-
 
     private void AttackCoolTime()
     {

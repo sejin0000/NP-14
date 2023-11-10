@@ -1,16 +1,44 @@
 using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using UnityEditor;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TestGameManager : MonoBehaviourPun
 {
+    public static TestGameManager Instance;
+
+    public enum MonsterType
+    {
+        몬스터1,
+        몬스터2,
+        몬스터3,
+    }
+
     [Header("ClientPlayer")]
     public GameObject InstantiatedPlayer;
     [SerializeField] private bool isPlayerInstantiated;
 
     [Header("PlayerData")]
-    public PlayerDataSetting characterSetting;
+    public PlayerDataSetting characterSetting;     
+
+    [Header("GameData")]
+    public List<MonsterData> monsterDataList;
+    public int currentMonsterCount;
+
+    [Serializable]
+    public struct MonsterData
+    {
+        public int monsterNum;
+        public MonsterType monsterType;
+    }
+
+    [Header("Button")]
+    public Button MonsterSpawnButton;
 
     private void Awake()
     {
@@ -21,6 +49,13 @@ public class TestGameManager : MonoBehaviourPun
             SpawnPlayer();
             SyncPlayer();
         }
+
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+
+        MonsterSpawnButton.onClick.AddListener(OnMonsterSpawnButtonClicked);
     }
 
     private void SpawnPlayer()
@@ -50,4 +85,39 @@ public class TestGameManager : MonoBehaviourPun
         }
     }
 
+    private void SpawnMonster(int spawnNum, string targetMonster)
+    {
+        //monsterDataList.Add(new MonsterData { monsterNum = spawnNum, monsterType = Enum.GetName(typeof(MonsterType), targetMonster) });
+        GameObject go = PhotonNetwork.Instantiate("Prefabs/Enemy/SpawnPoint", transform.position, Quaternion.identity);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            float destinationX = UnityEngine.Random.Range(-5f, 5f);
+            float destinationY = UnityEngine.Random.Range(-5f, 5f);
+            go.transform.position = new Vector3(destinationX, destinationY, 0);
+
+            EnemySpawn enemySpawn = go.GetComponent<EnemySpawn>();
+            enemySpawn.Spawn();
+        }
+    }
+    
+    private void SetSpawnData()
+    {
+
+    }
+
+    public void OnMonsterSpawnButtonClicked()
+    {
+        foreach (var monsterInfo in monsterDataList)
+        {
+            int monsterCount = monsterInfo.monsterNum;
+            var monsterType = monsterInfo.monsterType;
+            string monsterPar = Enum.GetName(typeof(MonsterType), monsterType);
+
+            for (int i = 0; i < monsterCount; i++) 
+            {
+                SpawnMonster(monsterCount, monsterPar);
+                currentMonsterCount += 1;
+            }
+        }
+    }
 }
