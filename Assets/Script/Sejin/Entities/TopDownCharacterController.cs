@@ -91,8 +91,9 @@ public class TopDownCharacterController : MonoBehaviour
 
     public void CallReloadEvent()
     {
-        if (playerStatHandler.CanReload&& playerStatHandler.CurAmmo == playerStatHandler.AmmoMax.total)
+        if (playerStatHandler.CanReload&& playerStatHandler.CurAmmo != playerStatHandler.AmmoMax.total)
         {
+            Debug.Log("¿Á¿Â¿¸");
             OnReloadEvent?.Invoke();
         }
     }
