@@ -517,9 +517,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A217(int PlayerNumber)
+    private void A217(int PlayerNumber)//용기의 깃발 범위내 이속 공속증가
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0217>();
     }
     [PunRPC]
     private void A218(int PlayerNumber)
