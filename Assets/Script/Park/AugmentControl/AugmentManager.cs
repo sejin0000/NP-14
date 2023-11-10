@@ -635,34 +635,33 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     }
 
     [PunRPC]
-    private void A1107(int PlayerNumber)//영역전개 최초의 대상에게 영구적으로 올려주는 타입 아직 세세한 오류가 있을것으로 예상된다 
+    private void A1107_1(int PlayerNumber)//오브젝트 생성형 폐기된 디자인
     {
         ChangeOnlyPlayer(PlayerNumber);
         GameObject Prefabs = Resources.Load<GameObject>("AugmentList/A1107");
-        GameObject go = Instantiate(Prefabs,targetPlayer.transform);
+        GameObject go = Instantiate(Prefabs, targetPlayer.transform);
         go.transform.SetParent(targetPlayer.transform);
 
     }
-    private void A1107_1(int PlayerNumber) 
+    private void A1107(int PlayerNumber) //영역전개 최초의 대상에게 영구적으로 올려주는 타입 아직 세세한 오류가 있을것으로 예상된
     {
         ChangeOnlyPlayer(PlayerNumber);
         if (targetPlayer.GetPhotonView().IsMine)
         {
-            GameObject Prefabs = PhotonNetwork.Instantiate("AugmentList/A1107", Vector3.zero, Quaternion.identity);
+            GameObject Prefabs = PhotonNetwork.Instantiate("AugmentList/A1107", targetPlayer.transform.localPosition, Quaternion.identity);
             int num = Prefabs.GetPhotonView().ViewID;
             photonView.RPC("setParent", RpcTarget.All, num);
             Prefabs.GetComponent<A1107>().Init();
-            Debug.Log("영역전개의 코드를 바꿨는데 치명적일수도 있을듯함 이로그를 보면 알려주길 바람");
         }
     }
     [PunRPC]
-    private void setParent(int num) 
+    private void setParent(int num)
     {
-        PhotonView a =PhotonView.Find(num);
+        PhotonView a = PhotonView.Find(num);
         a.transform.SetParent(targetPlayer.transform);
         a.transform.localPosition = Vector3.zero;
         //Prefabs.transform.SetParent(targetPlayer.transform);
-    } 
+    }
     #endregion
     #region Sniper2
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@스나이퍼 2티어
