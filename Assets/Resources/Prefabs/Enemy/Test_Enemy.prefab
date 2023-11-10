@@ -221,6 +221,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1616252627983104131}
   - component: {fileID: 61385077797086651}
+  - component: {fileID: 8143056649410404635}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Untagged
@@ -295,6 +296,41 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!58 &8143056649410404635
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6537732574070128214}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.13545507}
+  serializedVersion: 2
+  m_Radius: 0.40324622
 --- !u!1 &8136548992316328934
 GameObject:
   m_ObjectHideFlags: 0
@@ -309,7 +345,6 @@ GameObject:
   - component: {fileID: 2011073214277895600}
   - component: {fileID: 8578663482648120765}
   - component: {fileID: 7589394617890055635}
-  - component: {fileID: 2117261141405125113}
   m_Layer: 7
   m_Name: Test_Enemy
   m_TagString: Enemy
@@ -333,7 +368,7 @@ Transform:
   - {fileID: 6567458745279537072}
   - {fileID: 6753200118535865298}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5757660685505581427
 MonoBehaviour:
@@ -350,7 +385,7 @@ MonoBehaviour:
   currentHP: 0
   enemySO: {fileID: 11400000, guid: 3462c6ca5a0aec84eb2a06161ff250a7, type: 2}
   spriteRenderer: {fileID: 61385077797086651}
-  collider2D: {fileID: 0}
+  collider2D: {fileID: 8143056649410404635}
   anim: {fileID: 0}
   target: {fileID: 0}
   targetColl: {fileID: 0}
@@ -455,42 +490,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
---- !u!58 &2117261141405125113
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8136548992316328934}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.13545507}
-  serializedVersion: 2
-  m_Radius: 0.40324622
+  m_Constraints: 4
 --- !u!1 &8698610189699625042
 GameObject:
   m_ObjectHideFlags: 0
