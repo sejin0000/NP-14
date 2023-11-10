@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHUD : UIBase
+public class UIPlayerHUD : UIBase
 {
     UIPlayerHP hpGauge;
     UIBulletIndicator bulletIndicator;
