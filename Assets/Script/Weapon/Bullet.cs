@@ -9,6 +9,7 @@ public class Bullet : MonoBehaviour
     public float BulletLifeTime;
     public float BulletSpeed = 20;
 
+    //내일하자
     public LayerMask target;
 
     void Start()
