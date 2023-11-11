@@ -182,25 +182,29 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         {
             case GameStates.UIPlaying:
                 OnUIPlayingStateChanged?.Invoke();
+                Debug.Log("MainGameManger : UIPlaying");
                 break;
             case GameStates.Start:
                 OnStartStateChanged?.Invoke();
+                Debug.Log("MainGameManger : Start");
                 break;
             case GameStates.Playing:
                 OnPlayingStateChanged?.Invoke();
+                Debug.Log("MainGameManger : Playing");
                 break;
             case GameStates.End:
                 OnEndStateChanged?.Invoke();
+                Debug.Log("MainGameManger : End");
                 break;
             case GameStates.AugmentListing:
                 OnAugmentListingStateChanged?.Invoke();
+                Debug.Log("MainGameManger : AugmentListing");
                 break;
         }
     }
 
     private void OnStartStateChangedHandler()
-    {
-        Debug.Log("Start state 진입");
+    {        
         InstantiatedPlayer.SetActive(true);
 
         if (stageData.isFarmingRoom)
@@ -239,6 +243,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         {
             // 게임 결과 패널 띄워주고
             OnGameClearedEvent();
+            Debug.Log("MainGameManger : ClearedPanel");
 
             // 게임 엔딩 씬으로 ..
 
