@@ -402,7 +402,7 @@ MonoBehaviour:
   isAttaking: 0
   images_Gauge: {fileID: 7702857846665888690}
   PV: {fileID: 2011073214277895600}
-  knockbackDuration: 0.2
+  knockbackDuration: 0.5
 --- !u!195 &7302048549800893148
 NavMeshAgent:
   m_ObjectHideFlags: 0

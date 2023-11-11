@@ -15,7 +15,7 @@ MonoBehaviour:
   enemyName: "\uBAAC\uC2A4\uD1301"
   type: 0
   atk: 22
-  hp: 10
+  hp: 60
   atkdelay: 1.5
   patrolSpeed: 5
   chaseSpeed: 2
