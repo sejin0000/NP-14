@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 685035604639313452}
   - component: {fileID: 6365214206783976116}
   m_Layer: 5
-  m_Name: ResultText (1)
+  m_Name: PlayerNickName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -147,7 +147,7 @@ GameObject:
   - component: {fileID: 5799207243464119747}
   - component: {fileID: 930257098100444299}
   m_Layer: 5
-  m_Name: Image
+  m_Name: PlayerImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -220,6 +220,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3264629809135649278}
+  - component: {fileID: 2756703248377044460}
   m_Layer: 5
   m_Name: EndPlayerInfo
   m_TagString: Untagged
@@ -249,3 +250,17 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 220, y: 350}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2756703248377044460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7321025659116310448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ec23c0c68f5d144ea2b8c5b58ade612, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerImage: {fileID: 930257098100444299}
+  PlayerNickName: {fileID: 6365214206783976116}
