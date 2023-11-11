@@ -15,8 +15,7 @@ public class A0124 : MonoBehaviourPun
         {
             GameObject A0124Prefabs = Resources.Load<GameObject>("AugmentList/A1024");
             A0124Prefabs.transform.SetSiblingIndex(0);
-            GameObject blind = Instantiate(A0124Prefabs);
-            blindeye = blind.GetComponentInChildren<GameObject>();
+            blindeye = Instantiate(A0124Prefabs);
             DarkEnd();
             MainGameManager.Instance.OnGameStartedEvent += DarkStart;
             MainGameManager.Instance.OnGameEndedEvent += DarkEnd;

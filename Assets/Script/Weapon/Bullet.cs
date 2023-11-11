@@ -9,6 +9,7 @@ public class Bullet : MonoBehaviour
     public float BulletLifeTime;
     public float BulletSpeed = 20;
 
+    //내일하자
     public LayerMask target;
 
     void Start()
@@ -28,9 +29,14 @@ public class Bullet : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == target)
+        int collLayer = collision.gameObject.layer;
+        //비트연산
+        //(1 << collLayer) 레이어 번호 이진수 변환(<<) : 해당하는 비트(충돌한 레이어)를 1로 만듬
+        //(target & (1 << collLayer) 타겟 레이어면서, 충돌한 경우
+        // != 0 : 즉, 참인경우
+        if ((target & (1 << collLayer)) != 0)
         {
             Destroy();
         }
