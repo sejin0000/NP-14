@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1232083451322257694}
   - component: {fileID: 8538863058479898093}
   - component: {fileID: 7447945858854864148}
+  - component: {fileID: -1394414633732761201}
   m_Layer: 0
   m_Name: A3204_1
   m_TagString: Untagged
@@ -133,3 +134,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db1f1488486763043a809b84ec92e383, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-1394414633732761201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4192136529832950489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
