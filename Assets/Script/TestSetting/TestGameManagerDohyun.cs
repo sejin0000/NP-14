@@ -67,8 +67,15 @@ public class TestGameManagerDohyun : MonoBehaviourPun
         // PhotonNetwork.Instantiate()
         string playerPrefabPath = "Pefabs/Player";
         InstantiatedPlayer = PhotonNetwork.Instantiate(playerPrefabPath, Vector3.zero, Quaternion.identity);
+
+        // Attach Mini HUD
+        GameObject attachUI = Instantiate(Resources.Load<GameObject>("Prefabs/PlayerHUD/HUD_Root"));
+        attachUI.transform.SetParent(InstantiatedPlayer.transform);
+
         characterSetting.ownerPlayer = InstantiatedPlayer;
         characterSetting.viewID = InstantiatedPlayer.GetPhotonView().ViewID;
+
+
 
         // ClassIdentifier µ•¿Ã≈Õ Init()
         InstantiatedPlayer.GetComponent<ClassIdentifier>().playerData = characterSetting;
