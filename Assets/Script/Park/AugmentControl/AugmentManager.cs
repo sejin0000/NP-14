@@ -772,17 +772,26 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     private void A2105(int PlayerNumber)// 반전 공격방향 , 이동방향이 반대가되고 공체 대폭 증가 == 현재 이동방향 반대만 구현 A119 A2105는 동일 함수 합치는거 고려
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
-        playerInput = targetPlayer.GetComponent<PlayerInput>();
-        if ("Player" == playerInput.currentActionMap.name)
+        if (targetPlayer.GetComponent<PlayerInput>() == null)
         {
+            Debug.Log("널값임 비상비상비상비상비상비상");
+        }
+        playerInput = targetPlayer.GetComponent<PlayerInput>();
+        if (playerInput.currentActionMap.name == "Player")
+        {
+            Debug.Log($"현재인풋이름{playerInput.currentActionMap.name}");
+            Debug.Log("이게 보이면 반드시 말을해줘야합니다 타입1");
             playerInput.SwitchCurrentActionMap("Player1");
+            Debug.Log($"현재인풋이름{playerInput.currentActionMap.name}");
         }
         else
         {
             playerInput.SwitchCurrentActionMap("Player");
+            Debug.Log("이게 보이면 반드시 말을해줘야합니다 타입2");
         }
         playerstatHandler.HP.coefficient *= 1.5f;
         playerstatHandler.ATK.coefficient *= 1.5f;
+
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@솔져 2티어
     [PunRPC]
