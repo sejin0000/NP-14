@@ -32,17 +32,12 @@ public class Bullet : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         int collLayer = collision.gameObject.layer;
-
-        Debug.Log("레이어에 충돌함");
-
-        Debug.Log("레이어 정보" + collLayer);
         //비트연산
         //(1 << collLayer) 레이어 번호 이진수 변환(<<) : 해당하는 비트(충돌한 레이어)를 1로 만듬
         //(target & (1 << collLayer) 타겟 레이어면서, 충돌한 경우
         // != 0 : 즉, 참인경우
         if ((target & (1 << collLayer)) != 0)
         {
-            Debug.Log("타겟 레이어에 충돌함");
             Destroy();
         }
     }

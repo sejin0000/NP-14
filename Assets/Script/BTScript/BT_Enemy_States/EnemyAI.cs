@@ -99,10 +99,11 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             return;
 
 
-            if (isAttaking || isChase)
-                ChaseView();
-            else
-                NomalView();
+
+        if (isAttaking || isChase)
+            ChaseView();
+        else
+            NomalView();
 
 
         // 넉백 중인 경우
