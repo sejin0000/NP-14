@@ -31,7 +31,7 @@ public class GameClearPanel : UIBase
         ResultText.text = "Game Cleared!";
         isCleared = true;
         string endPartyInfoPath = "Prefabs/MainGameScene/EndPlayerInfo";
-        string imagePath = "Prefabs/Images/CharClass";
+        string imagePath = "Images/CharClass";
         var playerPrefab = Resources.Load<GameObject>(endPartyInfoPath);
         var playerArray = MainGameManager.Instance.PartyViewIDList.ToArray();
 
@@ -44,7 +44,7 @@ public class GameClearPanel : UIBase
             var playerPV = PhotonView.Find(playerArray[i]);
             var playerNickName = playerPV.Owner.NickName;
             playerPV.Owner.CustomProperties.TryGetValue("Char_Class", out object playerClass);
-            Debug.Log($"CustomProperty of {playerPV.ViewID} : (int)playerClass");
+            Debug.Log($"CustomProperty of {playerPV.ViewID} :  {(int)playerClass}");
             var playerImage = Resources.Load<Sprite>(imagePath + ((int)playerClass).ToString());
             playerInfo.PlayerImage.sprite = playerImage;
             playerInfo.PlayerNickName.text = playerNickName;
@@ -57,7 +57,7 @@ public class GameClearPanel : UIBase
         ResultText.text = "Game Over,,,";
         isCleared = false;
         string endPartyInfoPath = "Prefabs/MainGameScene/EndPlayerInfo";
-        string imagePath = "Prefabs/Images/CharClass";
+        string imagePath = "Images/CharClass";
         var playerPrefab = Resources.Load<GameObject>(endPartyInfoPath);
         var playerArray = MainGameManager.Instance.PartyViewIDList.ToArray();
 
@@ -70,7 +70,7 @@ public class GameClearPanel : UIBase
             var playerPV = PhotonView.Find(playerArray[i]);
             var playerNickName = playerPV.Owner.NickName;
             playerPV.Owner.CustomProperties.TryGetValue("Char_Class", out object playerClass);
-            Debug.Log($"CustomProperty of {playerPV.ViewID} : (int)playerClass");
+            Debug.Log($"CustomProperty of {playerPV.ViewID} : {(int)playerClass}");
             var playerImage = Resources.Load<Sprite>(imagePath + ((int)playerClass).ToString());
             playerInfo.PlayerImage.sprite = playerImage;
             playerInfo.PlayerNickName.text = playerNickName;
