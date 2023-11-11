@@ -388,7 +388,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     {
         if (PartyDeathCount == PhotonNetwork.CurrentRoom.PlayerCount)
         {
-            GameState = GameStates.End;
+            photonView.RPC("SetEndState", RpcTarget.All);
         }
     }
     private string GetStageName()
@@ -400,5 +400,11 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     public void AddPartyDeathCount()
     {
         PartyDeathCount++;
+    }
+
+    [PunRPC]
+    public void SetEndState()
+    {
+        GameState = GameStates.End;
     }
 }

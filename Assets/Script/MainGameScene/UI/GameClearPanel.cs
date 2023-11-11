@@ -44,7 +44,8 @@ public class GameClearPanel : UIBase
             var playerPV = PhotonView.Find(playerArray[i]);
             var playerNickName = playerPV.Owner.NickName;
             playerPV.Owner.CustomProperties.TryGetValue("Char_Class", out object playerClass);
-            var playerImage = Resources.Load<Image>(imagePath + (string)playerClass);
+            Debug.Log($"CustomProperty of {playerPV.ViewID} : (int)playerClass");
+            var playerImage = Resources.Load<Image>(imagePath + ((int)playerClass).ToString());
             playerInfo.PlayerImage = playerImage;
             playerInfo.PlayerNickName.text = playerNickName;
         }
@@ -69,7 +70,8 @@ public class GameClearPanel : UIBase
             var playerPV = PhotonView.Find(playerArray[i]);
             var playerNickName = playerPV.Owner.NickName;
             playerPV.Owner.CustomProperties.TryGetValue("Char_Class", out object playerClass);
-            var playerImage = Resources.Load<Image>(imagePath + (string)playerClass);
+            Debug.Log($"CustomProperty of {playerPV.ViewID} : (int)playerClass");
+            var playerImage = Resources.Load<Image>(imagePath + ((int)playerClass).ToString());
             playerInfo.PlayerImage = playerImage;
             playerInfo.PlayerNickName.text = playerNickName;
         }
