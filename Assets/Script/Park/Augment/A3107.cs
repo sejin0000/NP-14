@@ -9,7 +9,7 @@ public class A3107 : MonoBehaviour
     int objSize;// 돌아가는 투사체 갯수
     public float circleR=1f; //반지름
     public float deg; //각도
-    public float objSpeed= 20f; //원운동 속도
+    public float objSpeed= 120f; //원운동 속도
     public GameObject[] target;
     public PlayerStatHandler playerStat;
 
@@ -17,6 +17,7 @@ public class A3107 : MonoBehaviour
     {
         objSize = target.Length;
         transform.localPosition = Vector3.zero;
+        objSpeed = 120f;
     }
     public void Init(GameObject pl)
     {
