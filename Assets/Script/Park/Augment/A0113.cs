@@ -7,11 +7,9 @@ public class A0113 : MonoBehaviourPun
 {
     private TopDownCharacterController controller;
     private PlayerStatHandler playerStat;
-    private CoolTimeController coolTimeController;
 
     private int nowgold;
     private float nowpower;
-    private int oldgold;
     private float oldpower;
     private void Awake()
     {
@@ -19,7 +17,7 @@ public class A0113 : MonoBehaviourPun
         {
             controller = GetComponent<TopDownCharacterController>();
             playerStat = GetComponent<PlayerStatHandler>();
-            nowgold = MainGameManager.Instance.gold;
+            nowgold = MainGameManager.Instance.Gold;
             nowpower = nowgold * 0.1f;
             oldpower = 0;
             MainGameManager.Instance.OnGameStartedEvent += setgold;//¿Ã∞… µ∑»πµÊ ¿Ã∫•∆Æø°∞À 

@@ -506,9 +506,11 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         targetPlayer.AddComponent<A0104>();
     }
     [PunRPC]
-    private void A213(int PlayerNumber)
+    private void A213(int PlayerNumber)//생존자 플레이어 혼자 남았을때 능력치업
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0213>();
+   
     }
     [PunRPC]
     private void A214(int PlayerNumber)
