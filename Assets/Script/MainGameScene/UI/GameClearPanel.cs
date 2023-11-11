@@ -45,8 +45,8 @@ public class GameClearPanel : UIBase
             var playerNickName = playerPV.Owner.NickName;
             playerPV.Owner.CustomProperties.TryGetValue("Char_Class", out object playerClass);
             Debug.Log($"CustomProperty of {playerPV.ViewID} : (int)playerClass");
-            var playerImage = Resources.Load<Image>(imagePath + ((int)playerClass).ToString());
-            playerInfo.PlayerImage = playerImage;
+            var playerImage = Resources.Load<Sprite>(imagePath + ((int)playerClass).ToString());
+            playerInfo.PlayerImage.sprite = playerImage;
             playerInfo.PlayerNickName.text = playerNickName;
         }
         ToLobbyButton.onClick.AddListener(LoadRoomInLobbyScene);
@@ -71,8 +71,8 @@ public class GameClearPanel : UIBase
             var playerNickName = playerPV.Owner.NickName;
             playerPV.Owner.CustomProperties.TryGetValue("Char_Class", out object playerClass);
             Debug.Log($"CustomProperty of {playerPV.ViewID} : (int)playerClass");
-            var playerImage = Resources.Load<Image>(imagePath + ((int)playerClass).ToString());
-            playerInfo.PlayerImage = playerImage;
+            var playerImage = Resources.Load<Sprite>(imagePath + ((int)playerClass).ToString());
+            playerInfo.PlayerImage.sprite = playerImage;
             playerInfo.PlayerNickName.text = playerNickName;
         }
         ToLobbyButton.onClick.AddListener(LoadRoomInLobbyScene);
