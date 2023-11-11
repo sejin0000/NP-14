@@ -26,6 +26,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
 
     [Header("PlayerData")]
     public PlayerDataSetting characterSetting;
+    public List<int> PartyViewIDArray;    
 
     [Header("GameData")]
     public int currentMonsterCount;
@@ -78,6 +79,8 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     [HideInInspector]
     public event Action OnGameStartedEvent;
     public event Action OnGameEndedEvent;
+    public event Action OnGameClearedEvent;
+    public event Action OnGameOverEvent;
 
     [HideInInspector]
     public event Action OnUIPlayingStateChanged;
@@ -89,6 +92,8 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     [HideInInspector]
     public int tier;
     public int Ready;
+    public bool IsCleared;
+    public bool IsOvered;
 
 
 
@@ -275,10 +280,19 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         string playerPrefabPath = "Pefabs/Player";
         InstantiatedPlayer = PhotonNetwork.Instantiate(playerPrefabPath, Vector3.zero, Quaternion.identity);
         characterSetting.ownerPlayer = InstantiatedPlayer;
-        characterSetting.viewID = InstantiatedPlayer.GetPhotonView().ViewID;
+        int viewID = InstantiatedPlayer.GetPhotonView().ViewID;
+        characterSetting.viewID = viewID;
+        PartyViewIDArray.Add(viewID);
+        photonView.RPC("SendViewID", RpcTarget.Others, viewID);
 
         // ClassIdentifier µ•¿Ã≈Õ Init()
         InstantiatedPlayer.GetComponent<ClassIdentifier>().playerData = characterSetting;
+    }
+
+    [PunRPC]
+    private void SendViewID(int viewID)
+    {
+        PartyViewIDArray.Add(viewID);
     }
 
     private void SyncPlayer()
@@ -322,8 +336,8 @@ public class MainGameManager : MonoBehaviourPunCallbacks
                 {
                     for (int i = 0; i < currentMonsterCount; i++) 
                     {
-                        float destinationX = Random.Range(-5f, 5f);
-                        float destinationY = Random.Range(-5f, 5f);
+                        float destinationX = Random.Range(-13f, 13f);
+                        float destinationY = Random.Range(-13f, 13f);
                         go.transform.position = new Vector3(destinationX, destinationY, 0);
 
                         Debug.Log(currentMonsterCount);
