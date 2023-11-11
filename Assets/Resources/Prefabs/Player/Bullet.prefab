@@ -150,7 +150,6 @@ MonoBehaviour:
   target:
     serializedVersion: 2
     m_Bits: 192
-  collider2D: {fileID: 8887858406777451807}
 --- !u!50 &-8600854552173727201
 Rigidbody2D:
   serializedVersion: 4

@@ -95,13 +95,14 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
         IsNavAbled();
 
-        if(isLive)
-        {
+        if (!isLive)
+            return;
+
+
             if (isAttaking || isChase)
                 ChaseView();
             else
                 NomalView();
-        }
 
 
         // 넉백 중인 경우
