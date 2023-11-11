@@ -76,7 +76,8 @@
     {
         //anim.SetBool("isRun", true);
         currentTime = ActionTime;
-        enemyAI.nav.speed = enemySO.patrolSpeed;
+        enemyAI.nav.speed = enemySO.patrolSpeed;       
+
 
         if (enemyAI.nav != null && enemyAI.nav.isOnNavMesh) // NavMesh 가 유효한 상태인지 확인
         {
@@ -125,7 +126,7 @@
         currentTime -= Time.deltaTime;
 
         if (currentTime <= 0.3f)
-        {
+        {           
             Reset();
         }
     }

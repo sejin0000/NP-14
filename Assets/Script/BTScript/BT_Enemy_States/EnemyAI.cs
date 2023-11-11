@@ -39,6 +39,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     public LayerMask targetMask;             // Å¸°Ù ·¹ÀÌ¾î(Player)
 
     public bool isLive;
+    public bool isIdle;
     public bool isChase;
     public bool isAttaking;
 
@@ -64,6 +65,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         CreateTreeATState();
         currentHP = enemySO.hp;
         isLive = true;
+        isIdle = true;
 
         nav.updateRotation = false;
         nav.updateUpAxis = false;
@@ -121,6 +123,18 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
                 isKnockback = false;
             }
         }
+
+
+        if(nav.remainingDistance < 0.2f)
+            isIdle = true;
+        else
+            isIdle = false;
+
+
+        if (isChase || !isIdle )
+            anim.SetBool("isWalk", true);
+        else
+            anim.SetBool("isWalk", false);
     }
 
     private bool isKnockback = false;
