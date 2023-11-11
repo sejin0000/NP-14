@@ -159,7 +159,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
                 IsStateEnded = true;
                 GameState = GameStates.End;
             }
-        }
+        }        
     }
 
 
@@ -238,7 +238,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         else
         {
             // 게임 결과 패널 띄워주고
-
+            OnGameClearedEvent();
 
             // 게임 엔딩 씬으로 ..
 
