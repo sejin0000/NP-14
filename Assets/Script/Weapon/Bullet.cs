@@ -29,7 +29,7 @@ public class Bullet : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         int collLayer = collision.gameObject.layer;
 
