@@ -12504,7 +12504,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InstantiatedPlayer: {fileID: 0}
   characterSetting: {fileID: 0}
-  PartyViewIDArray: 
+  isDie: 0
+  Gold: 0
+  PartyViewIDList: 
+  PartyDeathCount: 0
   currentMonsterCount: 0
   monsterDataList: []
   stageData:
