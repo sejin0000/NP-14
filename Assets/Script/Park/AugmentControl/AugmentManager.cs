@@ -366,8 +366,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         playerInput = targetPlayer.GetComponent<PlayerInput>();
         if (playerInput.currentActionMap.name == "Player")
         {
+            Debug.Log($"현재인풋이름{playerInput.currentActionMap.name}");
             Debug.Log("이게 보이면 반드시 말을해줘야합니다 타입1");
             playerInput.SwitchCurrentActionMap("Player1");
+            Debug.Log($"현재인풋이름{playerInput.currentActionMap.name}");
         }
         else
         {
