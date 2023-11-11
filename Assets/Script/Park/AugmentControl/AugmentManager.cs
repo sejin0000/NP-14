@@ -313,9 +313,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         playerstatHandler.ReloadCoolTime.added -= 0.3f;
     }
     [PunRPC]
-    private void A113(int PlayerNumber)
+    private void A113(int PlayerNumber)// 머니=파워
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0113>();
     }
     [PunRPC]
     private void A114(int PlayerNumber)
@@ -426,9 +427,15 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A128(int PlayerNumber)
+    private void A128(int PlayerNumber)//프렌드 실드 현재 속도 140
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        if (targetPlayer.GetPhotonView().IsMine)
+        {
+            GameObject prefab = PhotonNetwork.Instantiate("AugmentList/A0128", targetPlayer.transform.localPosition, Quaternion.identity);
+            int num = prefab.GetPhotonView().ViewID;
+            photonView.RPC("SetParent", RpcTarget.All, num);
+        }
     }
     #endregion
     #region All2
@@ -499,9 +506,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         targetPlayer.AddComponent<A0104>();
     }
     [PunRPC]
-    private void A213(int PlayerNumber)
+    private void A213(int PlayerNumber)//생존자 플레이어 혼자 남았을때 능력치업
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0213>();
     }
     [PunRPC]
     private void A214(int PlayerNumber)
@@ -519,9 +527,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A217(int PlayerNumber)
+    private void A217(int PlayerNumber)//용기의 깃발 범위내 이속 공속증가
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0217>();
     }
     [PunRPC]
     private void A218(int PlayerNumber)

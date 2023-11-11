@@ -1,10 +1,9 @@
 using Photon.Pun;
-using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class A2203_1 : MonoBehaviourPun
+public class A0217 : MonoBehaviourPun
 {
     private TopDownCharacterController controller;
     private PlayerStatHandler playerStat;
@@ -21,7 +20,7 @@ public class A2203_1 : MonoBehaviourPun
     // Update is called once per frame
     void MakeHeal()
     {
-        GameObject fire = PhotonNetwork.Instantiate("AugmentList/A2203",transform.localPosition,Quaternion.identity);
+        GameObject fire = PhotonNetwork.Instantiate("AugmentList/A2203", transform.localPosition, Quaternion.identity);
         A2203 a2203 = fire.GetComponent<A2203>();
         a2203.Init(playerStat);
     }
