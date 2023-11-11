@@ -360,13 +360,15 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         playerInput = targetPlayer.GetComponent<PlayerInput>();
-        if ("Player" == playerInput.currentActionMap.name)
+        if (playerInput.currentActionMap.name == "Player")
         {
+            Debug.Log("이게 보이면 반드시 말을해줘야합니다 타입1");
             playerInput.SwitchCurrentActionMap("Player1");
         }
         else
         {
             playerInput.SwitchCurrentActionMap("Player");
+            Debug.Log("이게 보이면 반드시 말을해줘야합니다 타입2");
         }
         playerstatHandler.HP.coefficient *= 1.5f;
         playerstatHandler.ATK.coefficient *= 1.5f;
