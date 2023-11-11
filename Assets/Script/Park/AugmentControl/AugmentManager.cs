@@ -510,7 +510,6 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A0213>();
-   
     }
     [PunRPC]
     private void A214(int PlayerNumber)
