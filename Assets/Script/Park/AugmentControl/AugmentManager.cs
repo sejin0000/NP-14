@@ -359,6 +359,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     private void A119(int PlayerNumber)// 반전 공격방향 , 이동방향이 반대가되고 공체 대폭 증가 == 현재 이동방향 반대만 구현 A119 A2105는 동일 함수 합치는거 고려
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        if (targetPlayer.GetComponent<PlayerInput>() == null) 
+        {
+            Debug.Log("널값임 비상비상비상비상비상비상");
+        }
         playerInput = targetPlayer.GetComponent<PlayerInput>();
         if (playerInput.currentActionMap.name == "Player")
         {
