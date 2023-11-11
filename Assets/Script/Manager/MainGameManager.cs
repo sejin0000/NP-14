@@ -28,9 +28,12 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     [Header("PlayerData")]
     public PlayerDataSetting characterSetting;
     public bool isDie;
+    public int Gold;
+
     [HideInInspector]
     public List<int> PartyViewIDList;
     public int PartyDeathCount;
+
 
     [Header("GameData")]
     public int currentMonsterCount;
@@ -376,7 +379,8 @@ public class MainGameManager : MonoBehaviourPunCallbacks
 
     public void DiedAfter()
     {
-        PartyDeathCount++;
+        photonView.RPC("AddPartyDeathCount", RpcTarget.All);
+        Debug.Log("MainGameManager : DiedAfter() => PartyDeath : " + PartyDeathCount.ToString());
         OnOverCheckEvent?.Invoke();
     }
 
@@ -390,5 +394,11 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     private string GetStageName()
     {
         return $"Stage_{stageData.currentArea}_{stageData.currentStage}";
+    }
+
+    [PunRPC]
+    public void AddPartyDeathCount()
+    {
+        PartyDeathCount++;
     }
 }
