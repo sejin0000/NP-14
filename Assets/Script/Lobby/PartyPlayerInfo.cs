@@ -51,8 +51,8 @@ public class PartyPlayerInfo : MonoBehaviourPun
 
         Sprite playerImage;
         string spritePath = "Images/CharClass";
-        PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out object curClassType);
-        playerImage = Resources.Load<Sprite>($"{spritePath}{((int)curClassType).ToString()}");
+        player.CustomProperties.TryGetValue("Char_Class", out object curClassType);
+        playerImage = Resources.Load<Sprite>($"{spritePath}{curClassType}");
         this.playerImage.sprite = playerImage;
     }
 
