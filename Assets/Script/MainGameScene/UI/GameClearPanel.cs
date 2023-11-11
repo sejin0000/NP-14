@@ -33,7 +33,7 @@ public class GameClearPanel : UIBase
         string endPartyInfoPath = "Prefabs/MainGameScene/EndPlayerInfo";
         string imagePath = "Prefabs/Images/CharClass";
         var playerPrefab = Resources.Load<GameObject>(endPartyInfoPath);
-        var playerArray = MainGameManager.Instance.PartyViewIDArray.ToArray();
+        var playerArray = MainGameManager.Instance.PartyViewIDList.ToArray();
 
 
         for (int i = 0; i < ResultPartyBox.transform.childCount; i++) 
@@ -58,7 +58,7 @@ public class GameClearPanel : UIBase
         string endPartyInfoPath = "Prefabs/MainGameScene/EndPlayerInfo";
         string imagePath = "Prefabs/Images/CharClass";
         var playerPrefab = Resources.Load<GameObject>(endPartyInfoPath);
-        var playerArray = MainGameManager.Instance.PartyViewIDArray.ToArray();
+        var playerArray = MainGameManager.Instance.PartyViewIDList.ToArray();
 
 
         for (int i = 0; i < ResultPartyBox.transform.childCount; i++)

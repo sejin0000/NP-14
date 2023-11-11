@@ -3,6 +3,7 @@ using Photon.Realtime;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -26,7 +27,13 @@ public class MainGameManager : MonoBehaviourPunCallbacks
 
     [Header("PlayerData")]
     public PlayerDataSetting characterSetting;
-    public List<int> PartyViewIDArray;    
+    public bool isDie;
+    public int Gold;
+
+    [HideInInspector]
+    public List<int> PartyViewIDList;
+    public int PartyDeathCount;
+
 
     [Header("GameData")]
     public int currentMonsterCount;
@@ -81,6 +88,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     public event Action OnGameEndedEvent;
     public event Action OnGameClearedEvent;
     public event Action OnGameOverEvent;
+    public event Action OnOverCheckEvent;
 
     [HideInInspector]
     public event Action OnUIPlayingStateChanged;
@@ -140,6 +148,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         OnStartStateChanged += OnStartStateChangedHandler;
         OnEndStateChanged += OnEndStateChangedHandler;
         OnAugmentListingStateChanged += OnAugmentListingStateChangedHandler;
+        OnOverCheckEvent += OverCheck;
     }
 
     private void Start()
@@ -223,15 +232,23 @@ public class MainGameManager : MonoBehaviourPunCallbacks
 
     private void OnEndStateChangedHandler()
     {
-        //
+        // 게임 오버라면...
+        if (stageData.currentStage < EndingStage && PartyDeathCount == PhotonNetwork.CurrentRoom.PlayerCount)
+        {
+            OnGameOverEvent();
+            Debug.Log("MainGameManger : OverPanel");
+            return;
+        }
         //InstantiatedPlayer.SetActive(false);
         // 스테이지 끝났을 때 결과 패널 같은 거 보여주고,,
 
         // 게임 엔딩 여부 파악
         if (stageData.currentStage < EndingStage)
         {
+            // 다음 스테이지에서 플레이어 부활 시,
+            //PartyDeathCount = 0;
             stageData.currentStage += 1;
-
+            
             // 여기서 랜덤방일 지, 파밍 방일 지, 이벤트 방일 지 결정.
             stageData.isFarmingRoom = true;
 
@@ -287,8 +304,14 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         characterSetting.ownerPlayer = InstantiatedPlayer;
         int viewID = InstantiatedPlayer.GetPhotonView().ViewID;
         characterSetting.viewID = viewID;
-        PartyViewIDArray.Add(viewID);
+        PartyViewIDList.Add(viewID);
         photonView.RPC("SendViewID", RpcTarget.Others, viewID);
+        // isDie
+        var playerStatHandler = InstantiatedPlayer.GetComponent<PlayerStatHandler>();
+        isDie = playerStatHandler.isDie;
+        PartyDeathCount = 0;
+        playerStatHandler.OnDieEvent += DiedAfter;
+
 
         // ClassIdentifier 데이터 Init()
         InstantiatedPlayer.GetComponent<ClassIdentifier>().playerData = characterSetting;
@@ -297,7 +320,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     private void SendViewID(int viewID)
     {
-        PartyViewIDArray.Add(viewID);
+        PartyViewIDList.Add(viewID);
     }
 
     private void SyncPlayer()
@@ -354,9 +377,28 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         }
     }
 
+    public void DiedAfter()
+    {
+        photonView.RPC("AddPartyDeathCount", RpcTarget.All);
+        Debug.Log("MainGameManager : DiedAfter() => PartyDeath : " + PartyDeathCount.ToString());
+        OnOverCheckEvent?.Invoke();
+    }
 
+    public void OverCheck()
+    {
+        if (PartyDeathCount == PhotonNetwork.CurrentRoom.PlayerCount)
+        {
+            GameState = GameStates.End;
+        }
+    }
     private string GetStageName()
     {
         return $"Stage_{stageData.currentArea}_{stageData.currentStage}";
+    }
+
+    [PunRPC]
+    public void AddPartyDeathCount()
+    {
+        PartyDeathCount++;
     }
 }
