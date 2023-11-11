@@ -49,11 +49,11 @@ public class PartyPlayerInfo : MonoBehaviourPun
     {
         playerNickNameText.text = player.NickName;
 
-        Image playerImage;
-        string spritePath = "Prefabs/CharacterInfoSprites/";
+        Sprite playerImage;
+        string spritePath = "Images/CharClass";
         PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out object curClassType);
-        playerImage = Resources.Load<GameObject>($"{spritePath}Player_{curClassType}").GetComponent<Image>();
-        this.playerImage = playerImage;
+        playerImage = Resources.Load<Sprite>($"{spritePath}{((int)curClassType).ToString()}");
+        this.playerImage.sprite = playerImage;
     }
 
     private void OnPlayerNumberingChanged()
