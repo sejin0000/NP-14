@@ -313,9 +313,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         playerstatHandler.ReloadCoolTime.added -= 0.3f;
     }
     [PunRPC]
-    private void A113(int PlayerNumber)
+    private void A113(int PlayerNumber)// 머니=파워
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0113>();
     }
     [PunRPC]
     private void A114(int PlayerNumber)
