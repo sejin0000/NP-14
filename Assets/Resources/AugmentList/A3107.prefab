@@ -158,6 +158,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b41920e4b983fb4da6fe52c035f4f38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damege: 0
 --- !u!50 &4510560388411971120
 Rigidbody2D:
   serializedVersion: 4
@@ -343,6 +344,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b41920e4b983fb4da6fe52c035f4f38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damege: 0
 --- !u!50 &83721800887378033
 Rigidbody2D:
   serializedVersion: 4
@@ -528,6 +530,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b41920e4b983fb4da6fe52c035f4f38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damege: 0
 --- !u!50 &966556858261806862
 Rigidbody2D:
   serializedVersion: 4
@@ -610,6 +613,7 @@ MonoBehaviour:
   - {fileID: 3620736480285940277}
   - {fileID: 743237513502095473}
   - {fileID: 1717959323536876718}
+  playerStat: {fileID: 0}
 --- !u!114 &4459925803665127597
 MonoBehaviour:
   m_ObjectHideFlags: 0
