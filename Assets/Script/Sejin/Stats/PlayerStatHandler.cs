@@ -42,6 +42,7 @@ public class PlayerStatHandler : MonoBehaviour
     public GameObject _PlayerSprite;
     public GameObject _WeaponSprite;
 
+    public bool isNoramlMove;
     public bool isDie;
 
     private float curHP;
@@ -100,6 +101,8 @@ public class PlayerStatHandler : MonoBehaviour
         CanSkill = true;
         CanRoll = true;
         Invincibility = false;
+
+        isNoramlMove = true;
 
         PlayerSpriteCase = _PlayerSprite.GetComponent<SpriteLibrary>();
         WeaponSpriteCase = _WeaponSprite.GetComponent<SpriteLibrary>();
