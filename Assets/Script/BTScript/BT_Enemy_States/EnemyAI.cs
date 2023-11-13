@@ -7,6 +7,7 @@ using myBehaviourTree;
 //using UnityEditor.Rendering.LookDev;
 using Photon.Pun;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI.Table;
 
 //[Root 노드] => 왜 액션과 다르게 상속 안받음?
 //==>특정 AI 동작과 상태에 맞게 유연하게 조정하기 위해서
@@ -38,6 +39,9 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     public float viewDistance;               // 시야 거리 (기본 10)
     public LayerMask targetMask;             // 타겟 레이어(Player)
 
+    public float currentMoveSpeed;           // 현재 이동속도
+    public float SpeedCoefficient = 1f;      // 이동속도 계수
+   
     public bool isLive;
     public bool isIdle;
     public bool isChase;
@@ -74,6 +78,10 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         //쫓는 플레이어도 호스트가 판별?
 
         nowEnemyPosition = this.gameObject.transform.position;
+
+        currentMoveSpeed = enemySO.enemyMoveSpeed;
+
+        nav.speed = currentMoveSpeed;
 
         /*
         if (photonView.AmOwner)
@@ -181,6 +189,11 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
+    public void ChangeSpeed(float statSpeed)
+    {
+        nav.speed = statSpeed * SpeedCoefficient;
+    }
+
 
 
     private void GaugeUpdate()
@@ -216,7 +229,12 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
     public void Shoot()
     {
-        Instantiate(enemyBullet, enemyAim.transform.position, enemyAim.transform.rotation);
+        GameObject _object = Instantiate(enemyBullet, enemyAim.transform.position, enemyAim.transform.rotation);
+        Bullet _bullet = _object.GetComponent<Bullet>();
+
+        _bullet.ATK = enemySO.atk;
+        _bullet.BulletLifeTime = enemySO.bulletLifeTime;
+        _bullet.target = BulletTarget.Player;
     }
 
     private Vector2 BoundaryAngle(float angle)

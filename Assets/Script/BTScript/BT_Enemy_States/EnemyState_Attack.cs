@@ -53,6 +53,14 @@ public class EnemyState_Attack : BTAction
             return Status.BT_Failure; // 노드 종료
         }
 
+        if (target == null)
+        {
+            enemyAI.isAttaking = false;
+            enemyAI.isChase = false;
+            return Status.BT_Failure;
+        }
+
+
         //★★★수정함
         enemyAI.isFilp(owner.transform.position.x, target.transform.position.x);
 

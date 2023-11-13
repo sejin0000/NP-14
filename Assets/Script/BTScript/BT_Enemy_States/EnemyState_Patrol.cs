@@ -22,35 +22,36 @@
         float beforDestinationX = 0f;
         float beforDestinationY = 0f;
 
-        public EnemyState_Patrol(GameObject _owner)
+    public EnemyState_Patrol(GameObject _owner)
+    {
+        owner = _owner;
+
+        enemyAI = owner.GetComponent<EnemyAI>();
+        enemySO = enemyAI.enemySO;
+
+        ActionTime = enemySO.actionTime;
+
+
+        //enemyAI.nav.updateRotation = false;
+        //enemyAI.nav.updateUpAxis = false;
+    }
+
+
+    //노드 Start()
+    public override void Initialize()
+    {
+        SetStateColor();
+
+        if (enemyAI.nav != null)
         {
-            owner = _owner;
-
-            enemyAI = owner.GetComponent<EnemyAI>();
-            enemySO = enemyAI.enemySO;
-
-            ActionTime = enemySO.actionTime;
-
-
-            //enemyAI.nav.updateRotation = false;
-            //enemyAI.nav.updateUpAxis = false;
+            enemyAI.ChangeSpeed(enemySO.enemyMoveSpeed);
+            Reset();
         }
+    }
 
 
-        //노드 Start()
-        public override void Initialize()
-        {
-            SetStateColor();
-
-            if (enemyAI.nav != null)
-            {
-                Reset();
-            }
-        }
-
-
-        //노드 종료 순간 호출
-        public override void Terminate()
+    //노드 종료 순간 호출
+    public override void Terminate()
         {
 
         }
@@ -75,8 +76,7 @@
     private void Reset()
     {
         //anim.SetBool("isRun", true);
-        currentTime = ActionTime;
-        enemyAI.nav.speed = enemySO.patrolSpeed;       
+        currentTime = ActionTime; 
 
 
         if (enemyAI.nav != null && enemyAI.nav.isOnNavMesh) // NavMesh 가 유효한 상태인지 확인

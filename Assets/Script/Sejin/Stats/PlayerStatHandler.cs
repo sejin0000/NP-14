@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,13 +6,14 @@ using UnityEngine;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.U2D.Animation;
 
-public class PlayerStatHandler : MonoBehaviour
+public class PlayerStatHandler : MonoBehaviourPun
 {
     public event Action<float> HitEvent2;
     public event Action HitEvent;
     public event Action OnDieEvent;
     public event Action OnRegenEvent;
     public event Action OnChangeAmmorEvent;
+    public event Action OnChangeCurHPEvent;
 
 
     [SerializeField] private PlayerSO playerStats;
@@ -56,6 +58,8 @@ public class PlayerStatHandler : MonoBehaviour
         }
         set
         {
+            OnChangeCurHPEvent?.Invoke();
+
             if (value > HP.total)
             {
                 curHP = HP.total;
@@ -75,9 +79,11 @@ public class PlayerStatHandler : MonoBehaviour
     [HideInInspector] public bool CanRoll;                                //구르기 가능한지
     [HideInInspector] public bool Invincibility;                          //무적
 
+    int viewID;
+
+
     private void Awake()
     {
-
         ATK = new Stats(playerStats.atk);
         HP = new Stats(playerStats.hp);
         Speed = new Stats(playerStats.unitSpeed);
@@ -115,10 +121,12 @@ public class PlayerStatHandler : MonoBehaviour
 
     private void Start()
     {
-        if (MainGameManager.Instance != null) 
+        if (MainGameManager.Instance != null)
         {
             MainGameManager.Instance.OnGameStartedEvent += RefillCoin;
+            viewID = photonView.ViewID;
         }
+
     }
     public override string ToString()
     {
@@ -156,6 +164,11 @@ public class PlayerStatHandler : MonoBehaviour
         Debug.Log("[PlayerStatHandler] " + "Damage Done");
     }
 
+    public void HPadd(float addhp)
+    {
+        CurHP += addhp;
+    }
+
     public void Regen(float HP)
     {
         CurHP = HP;
@@ -167,5 +180,19 @@ public class PlayerStatHandler : MonoBehaviour
     public void RefillCoin()
     {
         CurRegenCoin = MaxRegenCoin;
+    }
+
+    public void SendSyncHP()
+    {
+        photonView.RPC("SetSyncHP",RpcTarget.OthersBuffered,viewID,CurHP);
+    }
+
+    [PunRPC]
+    public void SetSyncHP(int viewID,float _CurHP )
+    {
+        PhotonView _PV;
+        _PV = PhotonView.Find(viewID);
+
+        _PV.gameObject.GetComponent <PlayerStatHandler>().CurHP = _CurHP;
     }
 }
