@@ -19,7 +19,8 @@ public class Player3Skill : Skill
             _weaponSystem.target = BulletTarget.Player;
             _weaponSystem.isDamage = false;
         }
-        else
+
+        if (_weaponSystem.target == BulletTarget.Player)
         {
             _weaponSystem.target = BulletTarget.Enemy;
             _weaponSystem.isDamage = true;

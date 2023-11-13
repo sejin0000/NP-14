@@ -34,6 +34,8 @@ public class CollisionController : MonoBehaviour
             else
             {
                 playerStat.CurHP += damage;
+                Destroy(collision.gameObject);
+
             }
         }
     }
