@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+
 public class Debuff : MonoBehaviourPun
 {
     public static void GiveFire(GameObject gameObject , float totalpower) 
@@ -61,9 +62,9 @@ public class Debuff : MonoBehaviourPun
         GameObject targetPlayer = photonView.gameObject;
         EnemyAI a = targetPlayer.GetComponent<EnemyAI>();
 
-        //a.DecreaseHP(damege);
-            yield return endtime;
-        //
+        a.SpeedCoefficient = 0.8f;
+        yield return endtime;
+        a.SpeedCoefficient = 1f;
 
     }
 
