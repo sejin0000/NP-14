@@ -188,7 +188,10 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     public void SendSyncHP()
     {
-        photonView.RPC("SetSyncHP",RpcTarget.OthersBuffered,viewID,CurHP);
+        if(PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC("SetSyncHP",RpcTarget.OthersBuffered,viewID,CurHP);
+        }
     }
 
     [PunRPC]
