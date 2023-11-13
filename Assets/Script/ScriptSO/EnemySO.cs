@@ -6,19 +6,20 @@ using UnityEngine;
 public class EnemySO : ScriptableObject
 {
     [Header("EnemySO")]
-    public string enemyName;   // 이름
-    public EnemyType type;     // 적 유형(BT기반 행동 제어를 할거라 필요없으면 지우기)
-    public float atk;            // 공격력
-    public float hp;             // 체력
-    public float atkdelay;     // 공격 속도
-    public float bulletLifeTime; // 총알 유지 시간
+    public string enemyName;      // 이름
+    public EnemyType type;        // 적 유형(BT기반 행동 제어를 할거라 필요없으면 지우기)
+    public float atk;             // 공격력
+    public float hp;              // 체력
+    public float atkdelay;        // 공격 속도
+    public float bulletLifeTime;  // 총알 유지 시간
 
-    public int patrolSpeed;    // 일반[순찰] 이동속도(느림)
-    public int chaseSpeed;    // 추적 시 이동속도(빠름)
-    public int runSpeed;       // 도주 시 속도(매우 빠름)
-    public int detectionRange; // 탐지 범위
-    public int attackRange;    // 공격 범위
-    public int patrolRange;    // 순찰 범위
+    public float enemyMoveSpeed;  // 기본 이동속도
+    public float enemyChaseSpeed; // 기본 추적속도
+
+
+    public float detectionRange; // 탐지 범위
+    public float attackRange;    // 공격 범위
+    public float patrolRange;    // 순찰 범위
 
     public int dropGold;       // 주는 재화의 양
 
