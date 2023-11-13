@@ -12,7 +12,6 @@ public class EnemyState_Chase : BTAction
     private EnemySO enemySO;
     private GameObject target;
     public NavMeshAgent nav;
-    private float chaseSpeed = 5.0f;
 
     private float chaseTime = 4f;      // 걷기 시간
     private float currentTime;         // 시간 계산용
@@ -27,7 +26,6 @@ public class EnemyState_Chase : BTAction
         enemySO = enemyAI.enemySO;
 
         chaseTime = enemySO.actionTime;
-        chaseSpeed = enemySO.chaseSpeed;
 
         //enemyAI.nav.updateRotation = false;
         //enemyAI.nav.updateUpAxis = false;
