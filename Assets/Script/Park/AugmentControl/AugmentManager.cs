@@ -611,7 +611,9 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A304(int PlayerNumber)
     {
-        Debug.Log("미완성");
+        ChangePlayerStatHandler(PlayerNumber);
+        playerstatHandler.MaxRegenCoin += 1;
+        playerstatHandler.HP.coefficient *= 0.5f;
     }
     [PunRPC]
     private void A305(int PlayerNumber)//멀티샷 샷2배

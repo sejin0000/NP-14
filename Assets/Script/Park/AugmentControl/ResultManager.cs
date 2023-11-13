@@ -19,7 +19,8 @@ public class ResultManager : MonoBehaviour//vs코드
     public List<IAugment> stat2;
     public List<IAugment> stat3;
 
-
+    public MainGameManager gameManager;
+    //public TestGameManager gameManager;
     public List<SpecialAugment> SpecialAugment1 = new List<SpecialAugment>();
     public List<SpecialAugment> SpecialAugment2 = new List<SpecialAugment>();
     public List<SpecialAugment> SpecialAugment3 = new List<SpecialAugment>();
@@ -31,7 +32,11 @@ public class ResultManager : MonoBehaviour//vs코드
     public void startset(GameObject playerObj)
     {
         Player = playerObj;
-        MainGameManager.Instance.OnGameEndedEvent += Result;
+        if (MainGameManager.Instance != null)
+        {
+            gameManager = MainGameManager.Instance;
+        }
+        gameManager.OnGameEndedEvent += Result;
         pv = GetComponent<PhotonView>();
     }
     void Awake()
@@ -46,8 +51,15 @@ public class ResultManager : MonoBehaviour//vs코드
         {
             Destroy(this);
         }
-        //PickStatList(MakeAugmentListManager.stat1);//스탯1 
-
+        //PickStatList(MakeAugmentListManager.stat1);//스탯1
+        if (MainGameManager.Instance != null)
+        {
+            gameManager = MainGameManager.Instance;
+        }
+        //if (TestGameManager.Instance != null)
+        //{
+        //    gameManager = TestGameManager.Instance;
+        //}
 
     }
     private void Start()
@@ -66,7 +78,7 @@ public class ResultManager : MonoBehaviour//vs코드
     }
     public void Result()
     {
-        if (MainGameManager.Instance.stageData.isFarmingRoom)
+        if (gameManager.stageData.isFarmingRoom)
         {
             //CallStatResult();애가 정상임 아래는 테스트용으로 그뭐냐 스페셜증강뽑을려고넣어둠 수정필
             Debug.Log("이부분 수정");//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -90,7 +102,7 @@ public class ResultManager : MonoBehaviour//vs코드
     }
     public void CallStatResult() 
     {
-        int tier = MainGameManager.Instance.tier;
+        int tier = gameManager.tier;
         switch (tier) 
             {
                 case 1:
@@ -114,7 +126,7 @@ public class ResultManager : MonoBehaviour//vs코드
     }
     public void testCallStatResult()
     {
-        int tier = MainGameManager.Instance.tier;
+        int tier = gameManager.tier;
         //int tier = 1;
         Debug.Log("여기수정해여기수정해여기수정해여기수정해여기수정해");
         //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Debug.Log("여기수정해여기수정해여기수정해여기수정해여기수정해");
@@ -136,7 +148,7 @@ public class ResultManager : MonoBehaviour//vs코드
     }
     public void CallSpecialResult()//
     {
-        int tier = MainGameManager.Instance.tier;
+        int tier = gameManager.tier;
         switch (tier)
         {
             case 1:
@@ -215,8 +227,8 @@ public class ResultManager : MonoBehaviour//vs코드
     [PunRPC]
     public void ready() 
     {
-            MainGameManager.Instance.Ready++;
-            Debug.Log($"현재 레디 수 {MainGameManager.Instance.Ready}");
-            MainGameManager.Instance.AllReady();
+            gameManager.Ready++;
+            Debug.Log($"현재 레디 수 {gameManager.Ready}");
+            gameManager.AllReady();
     }
 }

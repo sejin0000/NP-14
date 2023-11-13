@@ -43,6 +43,8 @@ public class PlayerStatHandler : MonoBehaviour
     public GameObject _WeaponSprite;
 
     public bool isDie;
+    public int MaxRegenCoin;
+    public int CurRegenCoin;
 
     private float curHP;
     [HideInInspector]
@@ -88,6 +90,8 @@ public class PlayerStatHandler : MonoBehaviour
         LaunchVolume = new Stats(playerStats.launchVolume);
         Critical = new Stats(playerStats.critical);
         AmmoMax = new Stats(playerStats.ammoMax);
+        MaxRegenCoin = 0;
+        CurRegenCoin = MaxRegenCoin;        
 
         PlayerSprite = playerStats.playerSprite;
         WeaponSprite = playerStats.weaponSprite;
@@ -109,6 +113,13 @@ public class PlayerStatHandler : MonoBehaviour
         defense = 1;
     }
 
+    private void Start()
+    {
+        if (MainGameManager.Instance != null) 
+        {
+            MainGameManager.Instance.OnGameStartedEvent += RefillCoin;
+        }
+    }
     public override string ToString()
     {
         return curHP.ToString() + "/" + HP.total.ToString();
@@ -124,11 +135,20 @@ public class PlayerStatHandler : MonoBehaviour
 
     public void Damage(float damage)
     {
+        
         if(CurHP - damage <= 0)
         {
+            if (CurRegenCoin > 0)
+            {                
+                CurRegenCoin -= 1;
+                Regen(HP.total);
+                return;
+            }
+
             isDie = true;
             OnDieEvent?.Invoke();
         }
+
         damage = damage * defense;
         CurHP -= damage;
         HitEvent?.Invoke();
@@ -138,8 +158,14 @@ public class PlayerStatHandler : MonoBehaviour
 
     public void Regen(float HP)
     {
-        OnRegenEvent?.Invoke();
         CurHP = HP;
+        Debug.Log("부활하였습니다. 부활 파티클 추가해야함");
+        OnRegenEvent?.Invoke();
         isDie = false;
+    }
+
+    public void RefillCoin()
+    {
+        CurRegenCoin = MaxRegenCoin;
     }
 }

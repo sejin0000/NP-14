@@ -24,11 +24,16 @@ public class TestGameManager : MonoBehaviourPun
     [SerializeField] private bool isPlayerInstantiated;
 
     [Header("PlayerData")]
-    public PlayerDataSetting characterSetting;     
+    public PlayerDataSetting characterSetting;
 
     [Header("GameData")]
     public List<MonsterData> monsterDataList;
     public int currentMonsterCount;
+
+    [Header("Auguments")]
+    public int tier;
+    public int Ready;
+
 
     [Serializable]
     public struct MonsterData
@@ -46,8 +51,13 @@ public class TestGameManager : MonoBehaviourPun
         if (!isPlayerInstantiated)
         {
             isPlayerInstantiated = true;
+
             SpawnPlayer();
             SyncPlayer();
+
+            // Augument ¿¬°á
+            PlayerResultController MakeSetting = InstantiatedPlayer.GetComponent<PlayerResultController>();
+            MakeSetting.MakeManager();
         }
 
         if (Instance == null)
@@ -118,6 +128,14 @@ public class TestGameManager : MonoBehaviourPun
                 SpawnMonster(monsterCount, monsterPar);
                 currentMonsterCount += 1;
             }
+        }
+    }
+
+    public void AllReady()
+    {
+        if (Ready == PhotonNetwork.CurrentRoom.MaxPlayers)
+        {
+            photonView.RPC("uiscene", RpcTarget.All);
         }
     }
 }
