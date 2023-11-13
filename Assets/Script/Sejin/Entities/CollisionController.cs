@@ -26,13 +26,17 @@ public class CollisionController : MonoBehaviour
         {
             float damage = collision.gameObject.GetComponent<Bullet>().ATK;
 
+            Debug.Log(_bullet.IsDamage);
+
             if (_bullet.IsDamage)
             {
+                Debug.Log(playerStat.CurHP);
                 playerStat.Damage(damage);
                 Destroy(collision.gameObject);
             }
             else
             {
+                Debug.Log(playerStat.CurHP);
                 playerStat.HPadd(damage);
                 Destroy(collision.gameObject);
             }
