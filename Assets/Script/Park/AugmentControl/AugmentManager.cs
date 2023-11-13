@@ -638,7 +638,9 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A304(int PlayerNumber)
     {
-        Debug.Log("미완성");
+        ChangePlayerStatHandler(PlayerNumber);
+        playerstatHandler.MaxRegenCoin += 1;
+        playerstatHandler.HP.coefficient *= 0.5f;
     }
     [PunRPC]
     private void A305(int PlayerNumber)//멀티샷 샷2배
@@ -799,6 +801,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     private void A2105(int PlayerNumber)// 반전 공격방향 , 이동방향이 반대가되고 공체 대폭 증가 == 현재 이동방향 반대만 구현 A119 A2105는 동일 함수 합치는거 고려
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        if (targetPlayer.GetComponent<PlayerInput>() == null)
+        {
+            Debug.Log("널값임 비상비상비상비상비상비상");
+        }
         playerInput = targetPlayer.GetComponent<PlayerInput>();
         Debug.Log("현재 좌우 상하 이동이 반전됬는지 연락 바람(엄격 근엄 진지)");
         if (playerstatHandler.isNoramlMove)
@@ -806,15 +812,15 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
             playerInput.actions.FindAction("Move2").Enable();
             playerInput.actions.FindAction("Move").Disable();
             playerstatHandler.isNoramlMove = false;
+            Debug.Log($"현재인풋이름{playerInput.currentActionMap.name}");
         }
         else
         {
-            playerInput.actions.FindAction("Move2").Disable();
-            playerInput.actions.FindAction("Move").Enable();
-            playerstatHandler.isNoramlMove = true;
+            playerInput.SwitchCurrentActionMap("Player");
         }
         playerstatHandler.HP.coefficient *= 1.5f;
         playerstatHandler.ATK.coefficient *= 1.5f;
+
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@솔져 2티어
     [PunRPC]

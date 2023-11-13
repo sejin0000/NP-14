@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: "\uBAAC\uC2A4\uD1301"
   type: 0
-  atk: 22
+  atk: 5
   hp: 40
   atkdelay: 1.5
-  patrolSpeed: 5
-  chaseSpeed: 2
-  runSpeed: 2
+  bulletLifeTime: 1
+  enemyMoveSpeed: 3.5
+  enemyChaseSpeed: 2.5
   detectionRange: 22
   attackRange: 5
   patrolRange: 22

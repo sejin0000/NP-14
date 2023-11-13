@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,10 +15,32 @@ public class CollisionController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.layer == LayerMask.NameToLayer("EnemyBullet") && !playerStat.Invincibility && !playerStat.isDie)
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet") && !playerStat.Invincibility && !playerStat.isDie && collision.gameObject.GetComponent<Bullet>().target == BulletTarget.Player)
         {
+
+            Bullet _bullet = collision.gameObject.GetComponent<Bullet>();
+
             float damage = collision.gameObject.GetComponent<Bullet>().ATK;
-            playerStat.Damage(damage);
+
+            Debug.Log("콜리전 데미지를 주는가?");
+            Debug.Log(_bullet.IsDamage);
+
+            if (_bullet.IsDamage)
+            {
+                Debug.Log("데미지 받음 ");
+                Debug.Log(playerStat.CurHP);
+                playerStat.Damage(damage);
+                Destroy(collision.gameObject);
+            }
+            else
+            {
+                Debug.Log("체력 회복 ");
+                playerStat.HPadd(damage);
+                Destroy(collision.gameObject);
+            }
         }
     }
 }

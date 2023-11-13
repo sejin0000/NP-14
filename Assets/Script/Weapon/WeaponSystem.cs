@@ -9,13 +9,16 @@ public class WeaponSystem : MonoBehaviour
     private PhotonView pv;
     public Transform muzzleOfAGun;
     private GameObject bullet;
-
+    public BulletTarget target;
+    public bool isDamage;
 
     private void Awake()
     {
+        isDamage = true;
         bullet         = Resources.Load<GameObject>("Prefabs/Player/Bullet");
         pv             = GetComponent<PhotonView>();
         _controller    = GetComponent<TopDownCharacterController>();
+        target = BulletTarget.Enemy;
     }
     private void Start()
     {
@@ -29,18 +32,31 @@ public class WeaponSystem : MonoBehaviour
             Quaternion rot = muzzleOfAGun.transform.rotation;
             rot.eulerAngles += new Vector3(0, 0, Random.Range(-1 * _controller.playerStatHandler.BulletSpread.total, _controller.playerStatHandler.BulletSpread.total));// 중요함
 
-            pv.RPC("BS", RpcTarget.All, rot, _controller.playerStatHandler.ATK.total, _controller.playerStatHandler.BulletLifeTime.total);
+            float _ATK = _controller.playerStatHandler.ATK.total;
+            float _BLT = _controller.playerStatHandler.BulletLifeTime.total;
+            int _target = (int)target;
+            bool _isDamage = isDamage;
+
+
+            pv.RPC("BS", RpcTarget.All, rot, _ATK, _BLT, _target, _isDamage);
         }
     }
 
     [PunRPC]
-    public void BS(Quaternion rot, float Atk, float bulletLifeTime)//BulletSpawn
+    public void BS(Quaternion rot, float Atk, float bulletLifeTime,int _target, bool _isDamage)//BulletSpawn
     {
+        Debug.Log("타겟");
+        Debug.Log(_target);
+        Debug.Log("데미지를 주는가?");
+        Debug.Log(_isDamage);
+
         GameObject _object =  Instantiate(bullet, muzzleOfAGun.transform.position, rot);
+        Bullet _bullet = _object.GetComponent<Bullet>();
 
-        _object.GetComponent<Bullet>().ATK = Atk;
-        _object.GetComponent<Bullet>().BulletLifeTime = bulletLifeTime;
+        _bullet.ATK = Atk;
+        _bullet.BulletLifeTime = bulletLifeTime;
+        _bullet.target = (BulletTarget)_target;
+        _bullet.IsDamage = _isDamage;
         _object.GetComponent<SpriteRenderer>().sprite = _controller.playerStatHandler.BulletSprite;
-
     }
 }

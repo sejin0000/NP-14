@@ -3,14 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum BulletTarget
+{
+    Player,
+    Enemy
+}
+
 public class Bullet : MonoBehaviour
 {
     public float ATK;
     public float BulletLifeTime;
     public float BulletSpeed = 20;
-
-    //내일하자
-    public LayerMask target;
+    public bool IsDamage = true;
+    public BulletTarget target;
 
     void Start()
     {
@@ -24,19 +29,14 @@ public class Bullet : MonoBehaviour
         transform.Translate(Vector2.right * BulletSpeed * Time.deltaTime);
     }
 
-    void Destroy()
+    public void Destroy()
     {
         Destroy(gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        int collLayer = collision.gameObject.layer;
-        //비트연산
-        //(1 << collLayer) 레이어 번호 이진수 변환(<<) : 해당하는 비트(충돌한 레이어)를 1로 만듬
-        //(target & (1 << collLayer) 타겟 레이어면서, 충돌한 경우
-        // != 0 : 즉, 참인경우
-        if ((target & (1 << collLayer)) != 0)
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
         {
             Destroy();
         }

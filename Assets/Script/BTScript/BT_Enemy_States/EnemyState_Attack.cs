@@ -49,9 +49,15 @@ public class EnemyState_Attack : BTAction
         float distanceToTarget = Vector3.Distance(owner.transform.position, target.transform.position);
 
         if (distanceToTarget > enemySO.attackRange)
-        {
+        {            
             return Status.BT_Failure; // 노드 종료
         }
+
+        if (target == null)
+        {
+            return Status.BT_Failure;
+        }
+
 
         //★★★수정함
         enemyAI.isFilp(owner.transform.position.x, target.transform.position.x);
@@ -61,7 +67,9 @@ public class EnemyState_Attack : BTAction
     }
 
     public override void Terminate()
-    {      
+    {
+        enemyAI.isAttaking = false;
+        enemyAI.isChase = false;
     }
 
 

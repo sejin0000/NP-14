@@ -222,6 +222,7 @@ GameObject:
   - component: {fileID: 1616252627983104131}
   - component: {fileID: 61385077797086651}
   - component: {fileID: 8143056649410404635}
+  - component: {fileID: 2620774945296316658}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Untagged
@@ -331,6 +332,27 @@ CircleCollider2D:
   m_Offset: {x: 0, y: -0.13545507}
   serializedVersion: 2
   m_Radius: 0.40324622
+--- !u!95 &2620774945296316658
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6537732574070128214}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5f958df8fabf07b44b958f0d92eb8b77, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8136548992316328934
 GameObject:
   m_ObjectHideFlags: 0
@@ -368,7 +390,7 @@ Transform:
   - {fileID: 6567458745279537072}
   - {fileID: 6753200118535865298}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5757660685505581427
 MonoBehaviour:
@@ -391,13 +413,14 @@ MonoBehaviour:
   targetColl: {fileID: 0}
   nav: {fileID: 7302048549800893148}
   enemyAim: {fileID: 4931010869674023689}
-  enemyBullet: {fileID: 8703405332802933773, guid: 49ee3851dc2245b4db4a735ada91bd98, type: 3}
+  enemyBullet: {fileID: 8703405332802933773, guid: ffaf2c7e3b6a9714398653f89e5593ca, type: 3}
   viewAngle: 57
   viewDistance: 5
   targetMask:
     serializedVersion: 2
     m_Bits: 256
   isLive: 0
+  isIdle: 0
   isChase: 0
   isAttaking: 0
   images_Gauge: {fileID: 7702857846665888690}

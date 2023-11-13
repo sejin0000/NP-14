@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,13 +6,14 @@ using UnityEngine;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.U2D.Animation;
 
-public class PlayerStatHandler : MonoBehaviour
+public class PlayerStatHandler : MonoBehaviourPun
 {
     public event Action<float> HitEvent2;
     public event Action HitEvent;
     public event Action OnDieEvent;
     public event Action OnRegenEvent;
     public event Action OnChangeAmmorEvent;
+    public event Action OnChangeCurHPEvent;
 
 
     [SerializeField] private PlayerSO playerStats;
@@ -44,6 +46,8 @@ public class PlayerStatHandler : MonoBehaviour
 
     public bool isNoramlMove;
     public bool isDie;
+    public int MaxRegenCoin;
+    public int CurRegenCoin;
 
     private float curHP;
     [HideInInspector]
@@ -55,13 +59,18 @@ public class PlayerStatHandler : MonoBehaviour
         }
         set
         {
-            if (value > HP.total)
+            if (curHP != value)
             {
-                curHP = HP.total;
-            }
-            else
-            {
-                curHP = value;
+                if (value > HP.total)
+                {
+                    curHP = HP.total;
+                }
+                else
+                {
+                    curHP = value;
+                }
+                OnChangeCurHPEvent?.Invoke();
+                Debug.Log($"HPHPHPHPHPHHP  {CurHP}");
             }
         }
     }               //현재   체력
@@ -74,9 +83,11 @@ public class PlayerStatHandler : MonoBehaviour
     [HideInInspector] public bool CanRoll;                                //구르기 가능한지
     [HideInInspector] public bool Invincibility;                          //무적
 
+    int viewID;
+
+
     private void Awake()
     {
-
         ATK = new Stats(playerStats.atk);
         HP = new Stats(playerStats.hp);
         Speed = new Stats(playerStats.unitSpeed);
@@ -89,6 +100,8 @@ public class PlayerStatHandler : MonoBehaviour
         LaunchVolume = new Stats(playerStats.launchVolume);
         Critical = new Stats(playerStats.critical);
         AmmoMax = new Stats(playerStats.ammoMax);
+        MaxRegenCoin = 0;
+        CurRegenCoin = MaxRegenCoin;        
 
         PlayerSprite = playerStats.playerSprite;
         WeaponSprite = playerStats.weaponSprite;
@@ -112,6 +125,16 @@ public class PlayerStatHandler : MonoBehaviour
         defense = 1;
     }
 
+    private void Start()
+    {
+        if (MainGameManager.Instance != null)
+        {
+            MainGameManager.Instance.OnGameStartedEvent += RefillCoin;
+            viewID = photonView.ViewID;
+            OnChangeCurHPEvent += SendSyncHP;
+        }
+
+    }
     public override string ToString()
     {
         return curHP.ToString() + "/" + HP.total.ToString();
@@ -127,11 +150,20 @@ public class PlayerStatHandler : MonoBehaviour
 
     public void Damage(float damage)
     {
+        
         if(CurHP - damage <= 0)
         {
+            if (CurRegenCoin > 0)
+            {                
+                CurRegenCoin -= 1;
+                Regen(HP.total);
+                return;
+            }
+
             isDie = true;
             OnDieEvent?.Invoke();
         }
+
         damage = damage * defense;
         CurHP -= damage;
         HitEvent?.Invoke();
@@ -139,10 +171,39 @@ public class PlayerStatHandler : MonoBehaviour
         Debug.Log("[PlayerStatHandler] " + "Damage Done");
     }
 
+    public void HPadd(float addhp)
+    {
+        CurHP += addhp;
+    }
+
     public void Regen(float HP)
     {
-        OnRegenEvent?.Invoke();
         CurHP = HP;
+        Debug.Log("부활하였습니다. 부활 파티클 추가해야함");
+        OnRegenEvent?.Invoke();
         isDie = false;
+    }
+
+    public void RefillCoin()
+    {
+        CurRegenCoin = MaxRegenCoin;
+    }
+
+    public void SendSyncHP()
+    {
+        if(PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC("SetSyncHP",RpcTarget.OthersBuffered,viewID,CurHP);
+        }
+    }
+
+    [PunRPC]
+    public void SetSyncHP(int viewID,float _CurHP )
+    {
+        Debug.Log($" { viewID} : HP : {_CurHP}");
+        PhotonView _PV;
+        _PV = PhotonView.Find(viewID);
+
+        _PV.gameObject.GetComponent <PlayerStatHandler>().CurHP = _CurHP;
     }
 }

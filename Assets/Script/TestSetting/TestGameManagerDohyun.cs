@@ -1,4 +1,4 @@
-using Photon.Pun;
+Ôªøusing Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,9 +13,9 @@ public class TestGameManagerDohyun : MonoBehaviourPun
 
     public enum MonsterType
     {
-        ∏ÛΩ∫≈Õ1,
-        ∏ÛΩ∫≈Õ2,
-        ∏ÛΩ∫≈Õ3,
+        Î™¨Ïä§ÌÑ∞1,
+        Î™¨Ïä§ÌÑ∞2,
+        Î™¨Ïä§ÌÑ∞3,
     }
 
     [Header("ClientPlayer")]
@@ -28,6 +28,10 @@ public class TestGameManagerDohyun : MonoBehaviourPun
     [Header("GameData")]
     public List<MonsterData> monsterDataList;
     public int currentMonsterCount;
+
+    [Header("Auguments")]
+    public int tier;
+    public int Ready;
 
     [Serializable]
     public struct MonsterData
@@ -47,6 +51,10 @@ public class TestGameManagerDohyun : MonoBehaviourPun
             isPlayerInstantiated = true;
             SpawnPlayer();
             SyncPlayer();
+
+            //// Augument
+            //PlayerResultController MakeSetting = InstantiatedPlayer.GetComponent<PlayerResultController>();
+            //MakeSetting.MakeManager();
         }
 
         if (Instance == null)
@@ -68,27 +76,27 @@ public class TestGameManagerDohyun : MonoBehaviourPun
         string playerPrefabPath = "Pefabs/Player";
         InstantiatedPlayer = PhotonNetwork.Instantiate(playerPrefabPath, Vector3.zero, Quaternion.identity);
 
-        // Attach Mini HUD
-        GameObject attachUI = Instantiate(Resources.Load<GameObject>("Prefabs/PlayerHUD/HUD_Root"));
-        attachUI.transform.SetParent(InstantiatedPlayer.transform);
-
         characterSetting.ownerPlayer = InstantiatedPlayer;
         characterSetting.viewID = InstantiatedPlayer.GetPhotonView().ViewID;
 
-
-
-        // ClassIdentifier µ•¿Ã≈Õ Init()
+        // ClassIdentifier Îç∞Ïù¥ÌÑ∞ Init()
         InstantiatedPlayer.GetComponent<ClassIdentifier>().playerData = characterSetting;
+
+        // AttachMiniHUD
+        GameObject attachUI = Instantiate(Resources.Load<GameObject>("Prefabs/PlayerHUD/HUD_Root"));
+        attachUI.transform.SetParent(InstantiatedPlayer.gameObject.transform);
     }
 
     private void SyncPlayer()
     {
+        int viewID = characterSetting.viewID;
         if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out object classNum))
         {
             characterSetting.SetClassType((int)classNum, InstantiatedPlayer);
-            int viewID = characterSetting.viewID;
             InstantiatedPlayer.GetComponent<PhotonView>().RPC("ApplyClassChange", RpcTarget.Others, (int)classNum, viewID);
         }
+
+        gameObject.GetComponent<PhotonView>().RPC("AttachMiniUI", RpcTarget.Others, viewID);
     }
 
     private void SpawnMonster(int spawnNum, string targetMonster)
@@ -125,5 +133,21 @@ public class TestGameManagerDohyun : MonoBehaviourPun
                 currentMonsterCount += 1;
             }
         }
+    }
+
+    public void AllReady()
+    {
+        if (Ready == PhotonNetwork.CurrentRoom.MaxPlayers)
+        {
+            photonView.RPC("uiscene", RpcTarget.All);
+        }
+    }
+
+    [PunRPC]
+    public void AttachMiniUI(int viewID)
+    {
+        PhotonView photonView = PhotonView.Find(viewID);
+        GameObject attachUI = Instantiate(Resources.Load<GameObject>("Prefabs/PlayerHUD/HUD_Root"));
+        attachUI.transform.SetParent(photonView.gameObject.transform);
     }
 }
