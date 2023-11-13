@@ -1,6 +1,8 @@
+using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class A3107 : MonoBehaviour
@@ -12,6 +14,7 @@ public class A3107 : MonoBehaviour
     public float objSpeed= 120f; //원운동 속도
     public GameObject[] target;
     public PlayerStatHandler playerStat;
+    public float damege;
 
     private void Start()
     {
@@ -23,8 +26,8 @@ public class A3107 : MonoBehaviour
     {
         GameObject player1 = pl;
         playerStat = player1.GetComponent<PlayerStatHandler>();
-        MainGameManager.Instance.OnGameStartedEvent += damege;
-        damege();
+        MainGameManager.Instance.OnGameStartedEvent += DamegeUpdate;
+        DamegeUpdate();
     }
     void Update()
     {
@@ -47,11 +50,17 @@ public class A3107 : MonoBehaviour
         }
 
     }
-    void damege() 
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        for (int i = 0; i < target.Length; ++i)
+        Debug.Log("");
+        if (collision.gameObject.layer == LayerMask.NameToLayer("EnemyBullet"))
         {
-            target[i].GetComponent<A3107_1>().DamegeUpdate(playerStat.ATK.total);
+            EnemyAI wjr = collision.GetComponent<EnemyAI>();
+            wjr.PV.RPC("DecreaseHP", RpcTarget.All, damege);
         }
+    }
+    public void DamegeUpdate()
+    {
+        damege = playerStat.ATK.total * 0.8f;
     }
 }
