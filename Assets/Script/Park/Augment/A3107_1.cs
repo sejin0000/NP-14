@@ -6,18 +6,18 @@ using UnityEngine;
 
 public class A3107_1 : MonoBehaviourPun
 {
-    public float damege;
+    public float damage;
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("EnemyBullet")) 
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy")) 
         {
             EnemyAI wjr =  collision.GetComponent<EnemyAI>();
-            wjr.PV.RPC("DecreaseHP", RpcTarget.All, damege);
+            wjr.PV.RPC("DecreaseHP", RpcTarget.All, damage);
         }
     }
     public void DamegeUpdate(float a) 
     {
-        damege = a*0.8f;
+        damage = a*0.8f;
     }
 
 }
