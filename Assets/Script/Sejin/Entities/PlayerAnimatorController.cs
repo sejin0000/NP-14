@@ -128,6 +128,7 @@ public class PlayerAnimatorController : MonoBehaviour
         Debug.Log("Á×À½¿ä");
         _animation.SetTrigger("IsDie");
     }
+    
 
     private void Regen()
     {
