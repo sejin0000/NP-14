@@ -35,6 +35,9 @@ public class EnemyState_Attack : BTAction
 
     public override Status Update()
     {
+        if (target == null)
+            return Status.BT_Failure;
+
         SetAim();
 
         currentTime -= Time.deltaTime;
@@ -46,17 +49,17 @@ public class EnemyState_Attack : BTAction
             currentTime = enemySO.atkdelay;
         }
 
+                 
+
         float distanceToTarget = Vector3.Distance(owner.transform.position, target.transform.position);
 
         if (distanceToTarget > enemySO.attackRange)
-        {            
+        {
+            enemyAI.isAttaking = false;
+            enemyAI.isChase = false;
             return Status.BT_Failure; // 노드 종료
         }
 
-        if (target == null)
-        {
-            return Status.BT_Failure;
-        }
 
 
         //★★★수정함
@@ -68,8 +71,6 @@ public class EnemyState_Attack : BTAction
 
     public override void Terminate()
     {
-        enemyAI.isAttaking = false;
-        enemyAI.isChase = false;
     }
 
 

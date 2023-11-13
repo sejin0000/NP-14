@@ -189,6 +189,12 @@ MonoBehaviour:
   - SetEndState
   - AttachMiniUI
   - SetSyncHP
+  - Die
+  - Regen
+  - PunDie
+  - PunRegen
+  - FireGive
+  - IceGive
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

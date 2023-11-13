@@ -36,4 +36,11 @@ public class A0128 : MonoBehaviour
         }
 
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("EnemyBullet"))
+        {
+            Destroy(collision.gameObject);
+        }
+    }
 }

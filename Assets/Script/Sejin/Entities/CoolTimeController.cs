@@ -107,6 +107,7 @@ public class CoolTimeController : MonoBehaviour
     private void EndAttackCoolTime()
     {
         controller.playerStatHandler.CanFire = true;
+        controller.CallAttackEndEvent();
     }
 
     private void SkillCoolTime()
