@@ -52,9 +52,9 @@ public class TestGameManagerDohyun : MonoBehaviourPun
             SpawnPlayer();
             SyncPlayer();
 
-            // Augument
-            PlayerResultController MakeSetting = InstantiatedPlayer.GetComponent<PlayerResultController>();
-            MakeSetting.MakeManager();
+            //// Augument
+            //PlayerResultController MakeSetting = InstantiatedPlayer.GetComponent<PlayerResultController>();
+            //MakeSetting.MakeManager();
         }
 
         if (Instance == null)
