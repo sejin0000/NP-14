@@ -590,6 +590,7 @@ MonoBehaviour:
   WeaponSpriteCase: {fileID: 0}
   _PlayerSprite: {fileID: 554290144144741705}
   _WeaponSprite: {fileID: 7639390929974933696}
+  isNoramlMove: 0
   isDie: 0
   MaxRegenCoin: 0
   CurRegenCoin: 0
@@ -640,6 +641,7 @@ MonoBehaviour:
   playerStatHandler: {fileID: 3012830528697824806}
   topDownMovement: {fileID: 8906668803129869717}
   playerInput: {fileID: 0}
+  atkPercent: 0
 --- !u!114 &8906668803129869717
 MonoBehaviour:
   m_ObjectHideFlags: 0
