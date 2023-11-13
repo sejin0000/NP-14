@@ -8,7 +8,7 @@ public class UIMainGame : UIBase
     public override void Initialize()
     {
         Debug.Log("[UIMainGame] Initialize");
-        Open();
+        //Open();
         MainGameManager.Instance.OnPlayingStateChanged += Open;
     }
 

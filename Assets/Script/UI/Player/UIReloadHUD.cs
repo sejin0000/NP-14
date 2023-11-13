@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIReloadHUD : MonoBehaviour
@@ -18,11 +19,15 @@ public class UIReloadHUD : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = TestGameManagerDohyun.Instance.InstantiatedPlayer;
-        //player = MainGameManager.Instance.InstantiatedPlayer;
+        if (SceneManager.GetActiveScene().name == "Test_ DoHyun")
+            player = TestGameManagerDohyun.Instance.InstantiatedPlayer.gameObject;
+        else
+            player = MainGameManager.Instance.InstantiatedPlayer.gameObject;
+
         controller = player.GetComponent<CoolTimeController>();
         statHandler = player.GetComponent<PlayerStatHandler>();
         player.GetComponent<TopDownCharacterController>().OnEndReloadEvent += Close;
+
         Initialize();
     }
 
