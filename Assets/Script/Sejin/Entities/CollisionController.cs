@@ -32,6 +32,7 @@ public class CollisionController : MonoBehaviour
             if (_bullet.IsDamage)
             {
                 Debug.Log("데미지 받음 ");
+                Debug.Log(playerStat.CurHP);
                 playerStat.Damage(damage);
                 Destroy(collision.gameObject);
             }
