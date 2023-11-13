@@ -6,19 +6,17 @@ using UnityEngine;
 public class CollisionController : MonoBehaviour
 {
     private PlayerStatHandler playerStat;
-
+    private PhotonView PV;
 
     private void Awake()
     {
         playerStat = GetComponent<PlayerStatHandler>();   
+        PV = GetComponent<PhotonView>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!PhotonNetwork.IsMasterClient)
-            return;
-
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet") && !playerStat.Invincibility && !playerStat.isDie && collision.gameObject.GetComponent<Bullet>().target == BulletTarget.Player)
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet") && !playerStat.Invincibility && !playerStat.isDie && collision.gameObject.GetComponent<Bullet>().target == BulletTarget.Player&&PV.IsMine)
         {
 
             Bullet _bullet = collision.gameObject.GetComponent<Bullet>();

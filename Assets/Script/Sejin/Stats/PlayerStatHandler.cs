@@ -58,15 +58,18 @@ public class PlayerStatHandler : MonoBehaviourPun
         }
         set
         {
-            OnChangeCurHPEvent?.Invoke();
-
-            if (value > HP.total)
+            if (curHP != value)
             {
-                curHP = HP.total;
-            }
-            else
-            {
-                curHP = value;
+                if (value > HP.total)
+                {
+                    curHP = HP.total;
+                }
+                else
+                {
+                    curHP = value;
+                }
+                OnChangeCurHPEvent?.Invoke();
+                Debug.Log($"HPHPHPHPHPHHP  {CurHP}");
             }
         }
     }               //현재   체력
@@ -125,6 +128,7 @@ public class PlayerStatHandler : MonoBehaviourPun
         {
             MainGameManager.Instance.OnGameStartedEvent += RefillCoin;
             viewID = photonView.ViewID;
+            OnChangeCurHPEvent += SendSyncHP;
         }
 
     }
@@ -184,12 +188,16 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     public void SendSyncHP()
     {
-        photonView.RPC("SetSyncHP",RpcTarget.OthersBuffered,viewID,CurHP);
+        if(photonView.IsMine)
+        {
+            photonView.RPC("SetSyncHP",RpcTarget.OthersBuffered,viewID,CurHP);
+        }
     }
 
     [PunRPC]
     public void SetSyncHP(int viewID,float _CurHP )
     {
+        Debug.Log($" { viewID} : HP : {_CurHP}");
         PhotonView _PV;
         _PV = PhotonView.Find(viewID);
 
