@@ -10,13 +10,14 @@ public class PlayerInputController : TopDownCharacterController
 
     private Camera _camera;
     public PlayerInput playerInput;
+    public int atkPercent;
     
 
     private void Awake()
     {
         GetComponent<PlayerStatHandler>().OnDieEvent += InputOff;
         GetComponent<PlayerStatHandler>().OnRegenEvent += InputOn;
-
+        atkPercent = 100;
 
 
         playerInput = GetComponent<PlayerInput>();
@@ -48,18 +49,23 @@ public class PlayerInputController : TopDownCharacterController
 
     public void OnAttack(InputValue value)
     {
-        Debug.Log("OnAttack" + value.ToString());
-        if (EventSystem.current != null)
+        int random = Random.Range(0, 100);
+        if (atkPercent >= random) 
         {
-            if (!IsAtking && !EventSystem.current.IsPointerOverGameObject() && playerInput.actions["Attack"].ReadValue<float>() == 1)//playerInput.actions["Attack"].ReadValue<float>()마우스 눌리는거 확인하는 변수
+            Debug.Log("OnAttack" + value.ToString());
+            if (EventSystem.current != null)
             {
-                CallAttackEvent(true);
-            }
-            else
-            {
-                CallAttackEvent(false);
+                if (!IsAtking && !EventSystem.current.IsPointerOverGameObject() && playerInput.actions["Attack"].ReadValue<float>() == 1)//playerInput.actions["Attack"].ReadValue<float>()마우스 눌리는거 확인하는 변수
+                {
+                    CallAttackEvent(true);
+                }
+                else
+                {
+                    CallAttackEvent(false);
+                }
             }
         }
+
     }
 
     public void OnSkill(InputValue value)

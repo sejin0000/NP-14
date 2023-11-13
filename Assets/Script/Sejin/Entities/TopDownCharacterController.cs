@@ -9,6 +9,7 @@ public class TopDownCharacterController : MonoBehaviour
     public event Action<Vector2> OnMoveEvent;
     public event Action<Vector2> OnLookEvent;
     public event Action OnAttackEvent;
+    public event Action OnEndAttackEvent;
     public event Action OnSkillEvent;
     public event Action OnEndSkillEvent;
     public event Action OnRollEvent;
@@ -54,6 +55,10 @@ public class TopDownCharacterController : MonoBehaviour
     public void CallAttackEvent(bool hold)
     {
         AtkKeyhold = hold;
+    }
+    public void CallAttackEndEvent() 
+    {
+        OnEndAttackEvent?.Invoke();
     }
 
     public void CallSkillEvent()

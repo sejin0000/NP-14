@@ -248,9 +248,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log($"({playerstatHandler.gameObject.GetPhotonView().ViewID}의 현재 공 계수 {playerstatHandler.ATK.coefficient})");
     }
     [PunRPC]
-    private void A103(int PlayerNumber)
+    private void A103(int PlayerNumber)//난사//탄퍼짐이 높을수록 장전시간 감소 //스테이지 시작시 탄퍼짐*0.2f 쿨감
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0103>();
     }
     [PunRPC]
     private void A104(int PlayerNumber)//약자멸시 현재 스테이지가 낮을수록 공격력 증가
@@ -334,9 +335,12 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A117(int PlayerNumber)
+    private void A117(int PlayerNumber)//777 공격 확률 조정 추후 공격 성공 확률 비슷한 개념으로 도입될가능성이 있음
     {
-        Debug.Log("미완성");
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        PlayerInputController inputControl = targetPlayer.GetComponent<PlayerInputController>();
+        inputControl.atkPercent -= 30;
+        playerstatHandler.ATK.coefficient *= 1.3f;
     }
     [PunRPC]
     private void A118(int PlayerNumber)        //고장내기 mk3 1,2,3 공용 증강 이기에 좀 남다른 코드임  현재 10 /30 /60 총합 100확률을 가지고 있습죠
@@ -451,9 +455,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A203(int PlayerNumber)
+    private void A203(int PlayerNumber)//버서커 최대체력 / 현재 체력비례 뎀증
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0203>();
     }
     [PunRPC]
     private void A204(int PlayerNumber)
@@ -461,9 +466,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A205(int PlayerNumber)
+    private void A205(int PlayerNumber)//퍼스트 블러드 장전후 첫총알 데미지 증가
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0205>();
     }
     [PunRPC]
     private void A206(int PlayerNumber)
