@@ -543,8 +543,8 @@ GameObject:
   - component: {fileID: 4195880295105262226}
   - component: {fileID: 2073819192828081166}
   - component: {fileID: 216501136413859800}
-  - component: {fileID: -8035367074399242217}
   - component: {fileID: 6315678254743216955}
+  - component: {fileID: 1733995229782742517}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -709,6 +709,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   muzzleOfAGun: {fileID: 6787653164829430967}
+  target: 0
+  isDamage: 0
 --- !u!114 &3736999086756257612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -885,18 +887,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1afc47a776f29e642a4e48fe59352761, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-8035367074399242217
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8735806354994587177}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5cdb6197a9cbea1488aecc99626e8f8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6315678254743216955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -913,3 +903,15 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 1
   m_UseLocal: 1
+--- !u!114 &1733995229782742517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8735806354994587177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cd9806ff053b2d43917441c4eea8831, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

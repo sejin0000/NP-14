@@ -9,13 +9,16 @@ public class WeaponSystem : MonoBehaviour
     private PhotonView pv;
     public Transform muzzleOfAGun;
     private GameObject bullet;
-
+    public BulletTarget target;
+    public bool isDamage;
 
     private void Awake()
     {
+        isDamage = true;
         bullet         = Resources.Load<GameObject>("Prefabs/Player/Bullet");
         pv             = GetComponent<PhotonView>();
         _controller    = GetComponent<TopDownCharacterController>();
+        target = BulletTarget.Enemy;
     }
     private void Start()
     {
@@ -37,10 +40,12 @@ public class WeaponSystem : MonoBehaviour
     public void BS(Quaternion rot, float Atk, float bulletLifeTime)//BulletSpawn
     {
         GameObject _object =  Instantiate(bullet, muzzleOfAGun.transform.position, rot);
+        Bullet _bullet = _object.GetComponent<Bullet>();
 
-        _object.GetComponent<Bullet>().ATK = Atk;
-        _object.GetComponent<Bullet>().BulletLifeTime = bulletLifeTime;
+        _bullet.ATK = Atk;
+        _bullet.BulletLifeTime = bulletLifeTime;
+        _bullet.target = target;
+        _bullet.IsDamage = isDamage;
         _object.GetComponent<SpriteRenderer>().sprite = _controller.playerStatHandler.BulletSprite;
-
     }
 }
