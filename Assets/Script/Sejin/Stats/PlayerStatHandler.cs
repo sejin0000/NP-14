@@ -117,7 +117,6 @@ public class PlayerStatHandler : MonoBehaviourPun
         PlayerSpriteCase.spriteLibraryAsset = PlayerSprite;
         WeaponSpriteCase.spriteLibraryAsset = WeaponSprite;
         defense = 1;
-        OnChangeCurHPEvent += SendSyncHP;
     }
 
     private void Start()
@@ -126,6 +125,7 @@ public class PlayerStatHandler : MonoBehaviourPun
         {
             MainGameManager.Instance.OnGameStartedEvent += RefillCoin;
             viewID = photonView.ViewID;
+            OnChangeCurHPEvent += SendSyncHP;
         }
 
     }
