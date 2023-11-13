@@ -117,6 +117,7 @@ public class PlayerStatHandler : MonoBehaviourPun
         PlayerSpriteCase.spriteLibraryAsset = PlayerSprite;
         WeaponSpriteCase.spriteLibraryAsset = WeaponSprite;
         defense = 1;
+        OnChangeCurHPEvent += SendSyncHP;
     }
 
     private void Start()
@@ -190,6 +191,7 @@ public class PlayerStatHandler : MonoBehaviourPun
     [PunRPC]
     public void SetSyncHP(int viewID,float _CurHP )
     {
+        Debug.Log($" { viewID} : HP : {_CurHP}");
         PhotonView _PV;
         _PV = PhotonView.Find(viewID);
 
