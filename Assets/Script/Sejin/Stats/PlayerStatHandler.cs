@@ -202,5 +202,10 @@ public class PlayerStatHandler : MonoBehaviourPun
         _PV = PhotonView.Find(viewID);
 
         _PV.gameObject.GetComponent <PlayerStatHandler>().CurHP = _CurHP;
+
+        if(_PV.gameObject.GetComponent<PlayerStatHandler>().CurHP == 0 )
+        {
+            OnDieEvent?.Invoke();
+        }
     }
 }

@@ -419,6 +419,8 @@ MonoBehaviour:
   targetMask:
     serializedVersion: 2
     m_Bits: 256
+  currentMoveSpeed: 0
+  SpeedCoefficient: 1
   isLive: 0
   isIdle: 0
   isChase: 0

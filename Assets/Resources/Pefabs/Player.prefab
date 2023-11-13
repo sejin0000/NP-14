@@ -185,10 +185,10 @@ MonoBehaviour:
     SynchronizeType: 1
     Name: IsDie
   - Type: 9
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: IsRegen
   m_SynchronizeLayers:
-  - SynchronizeType: 0
+  - SynchronizeType: 1
     LayerIndex: 0
 --- !u!1 &5210721623018569777
 GameObject:
