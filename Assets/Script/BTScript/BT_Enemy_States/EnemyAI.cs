@@ -249,6 +249,14 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     //추적, 공격시 플레이어를 바라보는 시야각으로 전환
     private void ChaseView()
     {
+        if (target == null)
+        {
+            isAttaking = false;
+            isChase = false;
+            return;
+        }
+
+
         Vector2 directionToTarget = (target.transform.position - transform.position).normalized;
 
 
