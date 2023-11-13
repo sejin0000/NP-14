@@ -58,15 +58,17 @@ public class PlayerStatHandler : MonoBehaviourPun
         }
         set
         {
-            OnChangeCurHPEvent?.Invoke();
-
-            if (value > HP.total)
+            if (curHP != value)
             {
-                curHP = HP.total;
-            }
-            else
-            {
-                curHP = value;
+                if (value > HP.total)
+                {
+                    curHP = HP.total;
+                }
+                else
+                {
+                    curHP = value;
+                }
+                OnChangeCurHPEvent?.Invoke();
             }
         }
     }               //현재   체력
