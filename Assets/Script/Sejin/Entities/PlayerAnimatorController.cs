@@ -125,7 +125,7 @@ public class PlayerAnimatorController : MonoBehaviour
     {
         Debug.Log("Á×À½¿ä");
         _animation.SetTrigger("IsDie");
-        pv.RPC("PunDie", RpcTarget.AllBuffered);
+        pv.RPC("PunDie", RpcTarget.OthersBuffered);
     }
 
     [PunRPC]
@@ -138,7 +138,7 @@ public class PlayerAnimatorController : MonoBehaviour
     private void Regen()
     {
         _animation.SetTrigger("IsRegen");
-        pv.RPC("PunRegen", RpcTarget.AllBuffered);
+        pv.RPC("PunRegen", RpcTarget.OthersBuffered);
     }
 
     [PunRPC]
