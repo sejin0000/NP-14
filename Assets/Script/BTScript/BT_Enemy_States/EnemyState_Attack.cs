@@ -55,8 +55,6 @@ public class EnemyState_Attack : BTAction
 
         if (target == null)
         {
-            enemyAI.isAttaking = false;
-            enemyAI.isChase = false;
             return Status.BT_Failure;
         }
 
@@ -71,6 +69,7 @@ public class EnemyState_Attack : BTAction
     public override void Terminate()
     {
         enemyAI.isAttaking = false;
+        enemyAI.isChase = false;
     }
 
 
