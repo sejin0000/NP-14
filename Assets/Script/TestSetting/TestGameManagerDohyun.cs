@@ -96,7 +96,7 @@ public class TestGameManagerDohyun : MonoBehaviourPun
             InstantiatedPlayer.GetComponent<PhotonView>().RPC("ApplyClassChange", RpcTarget.Others, (int)classNum, viewID);
         }
 
-        InstantiatedPlayer.GetComponent<PhotonView>().RPC("AttachMiniUI", RpcTarget.Others, viewID);
+        gameObject.GetComponent<PhotonView>().RPC("AttachMiniUI", RpcTarget.Others, viewID);
     }
 
     private void SpawnMonster(int spawnNum, string targetMonster)
