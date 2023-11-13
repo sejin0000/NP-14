@@ -232,9 +232,10 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         GameObject _object = Instantiate(enemyBullet, enemyAim.transform.position, enemyAim.transform.rotation);
         Bullet _bullet = _object.GetComponent<Bullet>();
 
+        _bullet.IsDamage = true;
         _bullet.ATK = enemySO.atk;
         _bullet.BulletLifeTime = enemySO.bulletLifeTime;
-        _bullet.target = BulletTarget.Player;
+        _bullet.target = BulletTarget.Player;       
     }
 
     private Vector2 BoundaryAngle(float angle)
