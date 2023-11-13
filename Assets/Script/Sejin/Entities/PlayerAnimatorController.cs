@@ -126,12 +126,12 @@ public class PlayerAnimatorController : MonoBehaviour
     private void Die()
     {
         Debug.Log("Á×À½¿ä");
-        _animation.SetTrigger("IsDie");
+        _animation.SetBool("IsDie", true);
     }
     
 
     private void Regen()
     {
-        _animation.SetTrigger("IsRegen");
+        _animation.SetBool("IsDie", false);
     }
 }
