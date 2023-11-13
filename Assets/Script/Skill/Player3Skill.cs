@@ -16,12 +16,14 @@ public class Player3Skill : Skill
         base.SkillStart();
         if (_weaponSystem.target == BulletTarget.Enemy)
         {
+            Debug.Log("힐 모드 전환");
             _weaponSystem.target = BulletTarget.Player;
             _weaponSystem.isDamage = false;
         }
-
-        if (_weaponSystem.target == BulletTarget.Player)
+        else if (_weaponSystem.target == BulletTarget.Player)
         {
+            Debug.Log("딜 모드 전환");
+
             _weaponSystem.target = BulletTarget.Enemy;
             _weaponSystem.isDamage = true;
         }

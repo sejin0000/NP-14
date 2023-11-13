@@ -39,6 +39,12 @@ public class WeaponSystem : MonoBehaviour
     [PunRPC]
     public void BS(Quaternion rot, float Atk, float bulletLifeTime,int _target, bool _isDamage)//BulletSpawn
     {
+        Debug.Log("타겟");
+        Debug.Log(_target);
+        Debug.Log("데미지를 주는가?");
+        Debug.Log(_isDamage);
+
+
         GameObject _object =  Instantiate(bullet, muzzleOfAGun.transform.position, rot);
         Bullet _bullet = _object.GetComponent<Bullet>();
 
