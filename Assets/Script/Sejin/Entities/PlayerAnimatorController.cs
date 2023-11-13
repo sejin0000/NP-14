@@ -137,6 +137,7 @@ public class PlayerAnimatorController : MonoBehaviour
 
     private void Regen()
     {
+        Debug.Log("∫Œ»∞");
         _animation.SetTrigger("IsRegen");
         pv.RPC("PunRegen", RpcTarget.OthersBuffered);
     }
