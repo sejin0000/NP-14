@@ -24,6 +24,5 @@ public class A0303 : MonoBehaviourPun
             Player.layer = LayerMask.NameToLayer(PartnerLayerName);
         }        
     }
-
-    
+    }    
 }
