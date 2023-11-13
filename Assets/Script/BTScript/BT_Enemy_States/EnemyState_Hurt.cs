@@ -30,7 +30,7 @@ public class EnemyState_Hurt : BTAction
         enemySO = enemyAI.enemySO;
 
         ActionTime = enemySO.actionTime;
-        runSpeed = enemySO.runSpeed;
+        //runSpeed = enemySO.runSpeed;
 
         //임시 타겟지정
         enemyAI.target = tempTarget;

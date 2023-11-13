@@ -32,7 +32,13 @@ public class WeaponSystem : MonoBehaviour
             Quaternion rot = muzzleOfAGun.transform.rotation;
             rot.eulerAngles += new Vector3(0, 0, Random.Range(-1 * _controller.playerStatHandler.BulletSpread.total, _controller.playerStatHandler.BulletSpread.total));// 중요함
 
-            pv.RPC("BS", RpcTarget.All, rot, _controller.playerStatHandler.ATK.total, _controller.playerStatHandler.BulletLifeTime.total,(int)target, isDamage);
+            float _ATK = _controller.playerStatHandler.ATK.total;
+            float _BLT = _controller.playerStatHandler.BulletLifeTime.total;
+            int _target = (int)target;
+            bool _isDamage = isDamage;
+
+
+            pv.RPC("BS", RpcTarget.All, rot, _ATK, _BLT, _target, _isDamage);
         }
     }
 
@@ -43,7 +49,6 @@ public class WeaponSystem : MonoBehaviour
         Debug.Log(_target);
         Debug.Log("데미지를 주는가?");
         Debug.Log(_isDamage);
-
 
         GameObject _object =  Instantiate(bullet, muzzleOfAGun.transform.position, rot);
         Bullet _bullet = _object.GetComponent<Bullet>();

@@ -5,11 +5,13 @@ using UnityEngine;
 public class Player3Skill : Skill
 {
     WeaponSystem _weaponSystem;
+    
 
     public override void Start()
     {
         base.Start();
         _weaponSystem = GetComponent<WeaponSystem>();
+
     }
     public override void SkillStart()
     {

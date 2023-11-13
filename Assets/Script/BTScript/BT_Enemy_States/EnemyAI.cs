@@ -39,6 +39,9 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     public float viewDistance;               // 시야 거리 (기본 10)
     public LayerMask targetMask;             // 타겟 레이어(Player)
 
+    public float currentMoveSpeed;           // 현재 이동속도
+    public float SpeedCoefficient = 1f;      // 이동속도 계수
+   
     public bool isLive;
     public bool isIdle;
     public bool isChase;
@@ -75,6 +78,10 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         //쫓는 플레이어도 호스트가 판별?
 
         nowEnemyPosition = this.gameObject.transform.position;
+
+        currentMoveSpeed = enemySO.enemyMoveSpeed;
+
+        nav.speed = currentMoveSpeed;
 
         /*
         if (photonView.AmOwner)
@@ -180,6 +187,11 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
             Destroy(collision.gameObject);
         }
+    }
+
+    public void ChangeSpeed(float statSpeed)
+    {
+        nav.speed = statSpeed * SpeedCoefficient;
     }
 
 

@@ -14,12 +14,11 @@ public class Bullet : MonoBehaviour
     public float ATK;
     public float BulletLifeTime;
     public float BulletSpeed = 20;
-    public bool IsDamage;
+    public bool IsDamage = true;
     public BulletTarget target;
 
     void Start()
     {
-        IsDamage = true;
         BulletLifeTime = Random.Range(BulletLifeTime * 0.15f, BulletLifeTime * 0.2f);
         Invoke("Destroy", BulletLifeTime);
     }

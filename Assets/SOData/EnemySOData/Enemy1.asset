@@ -18,9 +18,8 @@ MonoBehaviour:
   hp: 40
   atkdelay: 1.5
   bulletLifeTime: 1
-  patrolSpeed: 5
-  chaseSpeed: 2
-  runSpeed: 2
+  enemyMoveSpeed: 3.5
+  enemyChaseSpeed: 2.5
   detectionRange: 22
   attackRange: 5
   patrolRange: 22

@@ -34,7 +34,7 @@ public class EnemyState_Chase : BTAction
     public override void Initialize()
     {
         SetStateColor();
-        
+        enemyAI.ChangeSpeed(enemySO.enemyChaseSpeed);
         currentTime = chaseTime;
         enemyAI.isAttaking = false;
         //¼öÁ¤µÊ

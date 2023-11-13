@@ -18,21 +18,26 @@ public class CollisionController : MonoBehaviour
         if (!PhotonNetwork.IsMasterClient)
             return;
 
-        Bullet _bullet = collision.gameObject.gameObject.GetComponent<Bullet>();
-
-
-
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet") && !playerStat.Invincibility && !playerStat.isDie && _bullet.target == BulletTarget.Player)
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet") && !playerStat.Invincibility && !playerStat.isDie && collision.gameObject.GetComponent<Bullet>().target == BulletTarget.Player)
         {
+
+            Bullet _bullet = collision.gameObject.GetComponent<Bullet>();
+
             float damage = collision.gameObject.GetComponent<Bullet>().ATK;
+
+            Debug.Log("콜리전 데미지를 주는가?");
+            Debug.Log(_bullet.IsDamage);
 
             if (_bullet.IsDamage)
             {
+                Debug.Log("데미지 받음 ");
+                Debug.Log(playerStat.CurHP);
                 playerStat.Damage(damage);
                 Destroy(collision.gameObject);
             }
             else
             {
+                Debug.Log("체력 회복 ");
                 playerStat.HPadd(damage);
                 Destroy(collision.gameObject);
             }
