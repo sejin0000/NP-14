@@ -156,6 +156,11 @@ public class PlayerStatHandler : MonoBehaviour
         Debug.Log("[PlayerStatHandler] " + "Damage Done");
     }
 
+    public void HPadd(float addhp)
+    {
+        CurHP += addhp;
+    }
+
     public void Regen(float HP)
     {
         CurHP = HP;
