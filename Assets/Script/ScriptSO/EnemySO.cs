@@ -11,6 +11,7 @@ public class EnemySO : ScriptableObject
     public float atk;            // 공격력
     public float hp;             // 체력
     public float atkdelay;     // 공격 속도
+    public float bulletLifeTime; // 총알 유지 시간
 
     public int patrolSpeed;    // 일반[순찰] 이동속도(느림)
     public int chaseSpeed;    // 추적 시 이동속도(빠름)

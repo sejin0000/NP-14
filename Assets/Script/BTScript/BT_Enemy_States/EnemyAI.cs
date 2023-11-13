@@ -7,6 +7,7 @@ using myBehaviourTree;
 //using UnityEditor.Rendering.LookDev;
 using Photon.Pun;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI.Table;
 
 //[Root 노드] => 왜 액션과 다르게 상속 안받음?
 //==>특정 AI 동작과 상태에 맞게 유연하게 조정하기 위해서
@@ -150,7 +151,10 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         if (!PhotonNetwork.IsMasterClient)
             return;
 
-        if (collision.gameObject.tag == "Bullet")
+        Bullet playerBullet = collision.gameObject.GetComponent<Bullet>();
+
+
+        if (collision.gameObject.tag == "Bullet" && playerBullet.target == BulletTarget.Enemy && playerBullet.IsDamage)
         {
             isChase = true;
 
@@ -173,6 +177,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
             // 넉백 플래그 설정
             isKnockback = true;
+
+            Destroy(collision.gameObject);
         }
     }
 
@@ -211,7 +217,12 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
     public void Shoot()
     {
-        Instantiate(enemyBullet, enemyAim.transform.position, enemyAim.transform.rotation);
+        GameObject _object = Instantiate(enemyBullet, enemyAim.transform.position, enemyAim.transform.rotation);
+        Bullet _bullet = _object.GetComponent<Bullet>();
+
+        _bullet.ATK = enemySO.atk;
+        _bullet.BulletLifeTime = enemySO.bulletLifeTime;
+        _bullet.target = BulletTarget.Player;
     }
 
     private Vector2 BoundaryAngle(float angle)

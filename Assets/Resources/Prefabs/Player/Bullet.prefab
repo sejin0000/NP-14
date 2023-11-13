@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8887858406777451807}
   - component: {fileID: 7691614160748915792}
   - component: {fileID: -8600854552173727201}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bullet
   m_TagString: Bullet
   m_Icon: {fileID: 0}
@@ -147,9 +147,8 @@ MonoBehaviour:
   ATK: 0
   BulletLifeTime: 0
   BulletSpeed: 20
-  target:
-    serializedVersion: 2
-    m_Bits: 192
+  IsDamage: 0
+  target: 0
 --- !u!50 &-8600854552173727201
 Rigidbody2D:
   serializedVersion: 4
