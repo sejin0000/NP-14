@@ -69,6 +69,7 @@ public class PlayerStatHandler : MonoBehaviourPun
                     curHP = value;
                 }
                 OnChangeCurHPEvent?.Invoke();
+                Debug.Log($"HPHPHPHPHPHHP  {CurHP}");
             }
         }
     }               //현재   체력
