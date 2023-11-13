@@ -122,7 +122,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     private void A911(int PlayerNumber)//스탯 공 티어 2
     {
         ChangePlayerStatHandler(PlayerNumber);
-        playerstatHandler.ATK.added += atk*2;
+        playerstatHandler.ATK.added += atk * 2;
         Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 공격력증가");
     }
     [PunRPC]
@@ -136,7 +136,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     private void A913(int PlayerNumber)//스탯 이속 티어 2
     {
         ChangePlayerStatHandler(PlayerNumber);
-        playerstatHandler.Speed.added += speed*2;
+        playerstatHandler.Speed.added += speed * 2;
         Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 이속증가");
     }
     [PunRPC]
@@ -248,9 +248,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log($"({playerstatHandler.gameObject.GetPhotonView().ViewID}의 현재 공 계수 {playerstatHandler.ATK.coefficient})");
     }
     [PunRPC]
-    private void A103(int PlayerNumber)
+    private void A103(int PlayerNumber)//난사//탄퍼짐이 높을수록 장전시간 감소 //스테이지 시작시 탄퍼짐*0.2f 쿨감
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0103>();
     }
     [PunRPC]
     private void A104(int PlayerNumber)//약자멸시 현재 스테이지가 낮을수록 공격력 증가
@@ -334,9 +335,12 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A117(int PlayerNumber)
+    private void A117(int PlayerNumber)//777 공격 확률 조정 추후 공격 성공 확률 비슷한 개념으로 도입될가능성이 있음
     {
-        Debug.Log("미완성");
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        PlayerInputController inputControl = targetPlayer.GetComponent<PlayerInputController>();
+        inputControl.atkPercent -= 30;
+        playerstatHandler.ATK.coefficient *= 1.3f;
     }
     [PunRPC]
     private void A118(int PlayerNumber)        //고장내기 mk3 1,2,3 공용 증강 이기에 좀 남다른 코드임  현재 10 /30 /60 총합 100확률을 가지고 있습죠
@@ -360,30 +364,47 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     private void A119(int PlayerNumber)// 반전 공격방향 , 이동방향이 반대가되고 공체 대폭 증가 == 현재 이동방향 반대만 구현 A119 A2105는 동일 함수 합치는거 고려
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
-        if (targetPlayer.GetComponent<PlayerInput>() == null) 
-        {
-            Debug.Log("널값임 비상비상비상비상비상비상");
-        }
         playerInput = targetPlayer.GetComponent<PlayerInput>();
-        if (playerInput.currentActionMap.name == "Player")
+        Debug.Log("현재 좌우 상하 이동이 반전됬는지 연락 바람(엄격 근엄 진지)");
+        if (playerstatHandler.isNoramlMove)
         {
-            Debug.Log($"현재인풋이름{playerInput.currentActionMap.name}");
-            Debug.Log("이게 보이면 반드시 말을해줘야합니다 타입1");
-            playerInput.SwitchCurrentActionMap("Player1");
-            Debug.Log($"현재인풋이름{playerInput.currentActionMap.name}");
+            playerInput.actions.FindAction("Move2").Enable();
+            playerInput.actions.FindAction("Move").Disable();
+            playerstatHandler.isNoramlMove = false;
         }
         else
         {
-            playerInput.SwitchCurrentActionMap("Player");
-            Debug.Log("이게 보이면 반드시 말을해줘야합니다 타입2");
+            playerInput.actions.FindAction("Move2").Disable();
+            playerInput.actions.FindAction("Move").Enable();
+            playerstatHandler.isNoramlMove = true;
         }
         playerstatHandler.HP.coefficient *= 1.5f;
         playerstatHandler.ATK.coefficient *= 1.5f;
     }
+    //private void A119(int PlayerNumber)// 원시 고대 반전 보존
+    //{
+    //    ChangePlayerAndPlayerStatHandler(PlayerNumber);
+    //    if (targetPlayer.GetComponent<PlayerInput>() == null)
+    //    {
+    //        Debug.Log("널값임 비상비상비상비상비상비상");
+    //    }
+    //    playerInput = targetPlayer.GetComponent<PlayerInput>();
+    //    if (playerInput.currentActionMap.name == "Player")
+    //    {
+    //        playerInput.SwitchCurrentActionMap("Player1");
+    //    }
+    //    else
+    //    {
+    //        playerInput.SwitchCurrentActionMap("Player");
+    //    }
+    //    playerstatHandler.HP.coefficient *= 1.5f;
+    //    playerstatHandler.ATK.coefficient *= 1.5f;
+    //}
     [PunRPC]
-    private void A120(int PlayerNumber)
+    private void A120(int PlayerNumber)//워터 파크 개장 122의 물버전
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0120>();
     }
     [PunRPC]
     private void A121(int PlayerNumber)
@@ -391,9 +412,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A122(int PlayerNumber)
+    private void A122(int PlayerNumber)//화다닥 120의 불버전//122없음
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0122>();
     }
     [PunRPC]
     private void A123(int PlayerNumber)
@@ -410,7 +432,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         playerstatHandler.AtkSpeed.added += 15;
         playerstatHandler.ReloadCoolTime.added += 15;
     }
-    
+
     [PunRPC]
     private void A125(int PlayerNumber)
     {
@@ -451,9 +473,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A203(int PlayerNumber)
+    private void A203(int PlayerNumber)//버서커 최대체력 / 현재 체력비례 뎀증
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0203>();
     }
     [PunRPC]
     private void A204(int PlayerNumber)
@@ -461,9 +484,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A205(int PlayerNumber)
+    private void A205(int PlayerNumber)//퍼스트 블러드 장전후 첫총알 데미지 증가
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0205>();
     }
     [PunRPC]
     private void A206(int PlayerNumber)
@@ -512,9 +536,12 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         targetPlayer.AddComponent<A0213>();
     }
     [PunRPC]
-    private void A214(int PlayerNumber)
+    private void A214(int PlayerNumber)// 평타 극대화 << 이름 맘에안듬 스킬포기 데미지 대폭 증가 << 대폭 급인가? 그급은 아닌거 같은데
     {
-        Debug.Log("미완성");
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        playerInput=targetPlayer.GetComponent<PlayerInput>();
+        playerInput.actions.FindAction("Skill").Disable();
+        Debug.Log("이 증강도 상당히 우려가 됩니다 우클릭 체크 하고 말해주세요");
     }
     [PunRPC]
     private void A215(int PlayerNumber)
@@ -749,7 +776,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@솔져 1티어
     [PunRPC]
     private void A2101(int PlayerNumber) //노련함 = 스킬사용후 공속 증가 테스트 ㄴ
-    {                                                             
+    {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A2101>();
     }
@@ -779,17 +806,17 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
             Debug.Log("널값임 비상비상비상비상비상비상");
         }
         playerInput = targetPlayer.GetComponent<PlayerInput>();
-        if (playerInput.currentActionMap.name == "Player")
+        Debug.Log("현재 좌우 상하 이동이 반전됬는지 연락 바람(엄격 근엄 진지)");
+        if (playerstatHandler.isNoramlMove)
         {
-            Debug.Log($"현재인풋이름{playerInput.currentActionMap.name}");
-            Debug.Log("이게 보이면 반드시 말을해줘야합니다 타입1");
-            playerInput.SwitchCurrentActionMap("Player1");
+            playerInput.actions.FindAction("Move2").Enable();
+            playerInput.actions.FindAction("Move").Disable();
+            playerstatHandler.isNoramlMove = false;
             Debug.Log($"현재인풋이름{playerInput.currentActionMap.name}");
         }
         else
         {
             playerInput.SwitchCurrentActionMap("Player");
-            Debug.Log("이게 보이면 반드시 말을해줘야합니다 타입2");
         }
         playerstatHandler.HP.coefficient *= 1.5f;
         playerstatHandler.ATK.coefficient *= 1.5f;

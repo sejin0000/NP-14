@@ -9,7 +9,6 @@ public class A0217_1 : MonoBehaviour
     int stack = 0;
     int maxtime = 5; //사라지는시간
     List<PlayerStatHandler> target = new List<PlayerStatHandler>();
-    int healP = 2;
     public void Init(PlayerStatHandler playerstatHandler)
     {
         target.Add(playerstatHandler);

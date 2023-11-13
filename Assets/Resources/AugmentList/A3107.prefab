@@ -12,8 +12,6 @@ GameObject:
   - component: {fileID: 5129300688948347730}
   - component: {fileID: 4348415484709828851}
   - component: {fileID: 6613697017679149934}
-  - component: {fileID: 4886050762467560145}
-  - component: {fileID: 4510560388411971120}
   m_Layer: 0
   m_Name: GameObject (1)
   m_TagString: Untagged
@@ -146,46 +144,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.35515082, y: 0.47754693}
   m_EdgeRadius: 0
---- !u!114 &4886050762467560145
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 743237513502095473}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b41920e4b983fb4da6fe52c035f4f38, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damege: 0
---- !u!50 &4510560388411971120
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 743237513502095473}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &1717959323536876718
 GameObject:
   m_ObjectHideFlags: 0
@@ -198,8 +156,6 @@ GameObject:
   - component: {fileID: 6315021027805411676}
   - component: {fileID: 1823638640354559758}
   - component: {fileID: 2187889057984779827}
-  - component: {fileID: 4779293320244044449}
-  - component: {fileID: 83721800887378033}
   m_Layer: 0
   m_Name: GameObject (2)
   m_TagString: Untagged
@@ -332,46 +288,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.35515082, y: 0.47754693}
   m_EdgeRadius: 0
---- !u!114 &4779293320244044449
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1717959323536876718}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b41920e4b983fb4da6fe52c035f4f38, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damege: 0
---- !u!50 &83721800887378033
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1717959323536876718}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &3620736480285940277
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,8 +300,6 @@ GameObject:
   - component: {fileID: 855657984702627481}
   - component: {fileID: 8836457571854015944}
   - component: {fileID: 8089148892572621833}
-  - component: {fileID: 150267976989748830}
-  - component: {fileID: 966556858261806862}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -518,46 +432,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.35515082, y: 0.47754693}
   m_EdgeRadius: 0
---- !u!114 &150267976989748830
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3620736480285940277}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b41920e4b983fb4da6fe52c035f4f38, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damege: 0
---- !u!50 &966556858261806862
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3620736480285940277}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &5525147125929182903
 GameObject:
   m_ObjectHideFlags: 0
@@ -569,6 +443,7 @@ GameObject:
   - component: {fileID: 3075726459529656427}
   - component: {fileID: 5196880937050486914}
   - component: {fileID: 4459925803665127597}
+  - component: {fileID: 5768553867170461417}
   m_Layer: 0
   m_Name: A3107
   m_TagString: Untagged
@@ -592,7 +467,7 @@ Transform:
   - {fileID: 3167784411927211502}
   - {fileID: 265825110569803541}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5196880937050486914
 MonoBehaviour:
@@ -614,6 +489,7 @@ MonoBehaviour:
   - {fileID: 743237513502095473}
   - {fileID: 1717959323536876718}
   playerStat: {fileID: 0}
+  damege: 0
 --- !u!114 &4459925803665127597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -636,3 +512,30 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!50 &5768553867170461417
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5525147125929182903}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
