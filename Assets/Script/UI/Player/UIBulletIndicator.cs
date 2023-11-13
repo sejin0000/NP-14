@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.Text;
+using UnityEngine.SceneManagement;
 
 public class UIBulletIndicator : UIBase
 {
@@ -22,8 +23,11 @@ public class UIBulletIndicator : UIBase
 
     private void Initialize()
     {
-        //player = TestGameManagerDohyun.Instance.InstantiatedPlayer.GetComponent<PlayerInputController>();
-        player = MainGameManager.Instance.InstantiatedPlayer.GetComponent<PlayerInputController>(); 
+        if (SceneManager.GetActiveScene().name == "Test_ DoHyun")
+            player = TestGameManagerDohyun.Instance.InstantiatedPlayer.GetComponent<PlayerInputController>();
+        else
+            player = MainGameManager.Instance.InstantiatedPlayer.GetComponent<PlayerInputController>();
+
         playerStat = player.playerStatHandler;
 
         playerStat.OnChangeAmmorEvent += ChangeValue;

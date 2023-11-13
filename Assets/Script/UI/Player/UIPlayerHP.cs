@@ -1,7 +1,9 @@
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIPlayerHP : UIBase
@@ -16,10 +18,15 @@ public class UIPlayerHP : UIBase
 
     private void Start()
     {
-        playerStats = MainGameManager.Instance.InstantiatedPlayer.GetComponent<PlayerStatHandler>();
-        //playerStats = TestGameManagerDohyun.Instance.InstantiatedPlayer.GetComponent<PlayerStatHandler>();
+        if (SceneManager.GetActiveScene().name == "Test_ DoHyun")
+            playerStats = TestGameManagerDohyun.Instance.InstantiatedPlayer.GetComponent<PlayerStatHandler>();
+        else
+            playerStats = MainGameManager.Instance.InstantiatedPlayer.GetComponent<PlayerStatHandler>();
+        
         playerStats.HitEvent += SetValue;
+        
         SetValue();
+
         //Debug.Log("[PlayerStatHandler]" + "Start Done");
     }
 
