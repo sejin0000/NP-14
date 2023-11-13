@@ -50,6 +50,7 @@ public class EnemyState_Attack : BTAction
 
         if (distanceToTarget > enemySO.attackRange)
         {
+            enemyAI.isAttaking = false;
             return Status.BT_Failure; // 노드 종료
         }
 
