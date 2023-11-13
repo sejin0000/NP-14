@@ -195,6 +195,9 @@ MonoBehaviour:
   - PunRegen
   - FireGive
   - IceGive
+  - SetInfo
+  - FindPlayer
+  - NomalView
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
