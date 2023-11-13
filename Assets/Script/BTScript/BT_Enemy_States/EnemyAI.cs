@@ -150,7 +150,10 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         if (!PhotonNetwork.IsMasterClient)
             return;
 
-        if (collision.gameObject.tag == "Bullet")
+        Bullet playerBullet = collision.gameObject.GetComponent<Bullet>();
+
+
+        if (collision.gameObject.tag == "Bullet" && playerBullet.target == BulletTarget.Enemy && playerBullet.IsDamage)
         {
             isChase = true;
 
@@ -173,6 +176,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
             // 넉백 플래그 설정
             isKnockback = true;
+
+            Destroy(collision.gameObject);
         }
     }
 
