@@ -10,10 +10,8 @@ public class A0303 : MonoBehaviourPun
     public GameObject Player;
 
     public int viewID;
-
     public void Awake()
     {
-        
     }
     //
     public void SpawnPartner()
@@ -22,13 +20,11 @@ public class A0303 : MonoBehaviourPun
         {
             Player = MainGameManager.Instance.InstantiatedPlayer;
             viewID = Player.GetPhotonView().ViewID;
+            string playerPrefabPath = "Pefabs/Player";
+            Player = PhotonNetwork.Instantiate(playerPrefabPath, Vector3.zero, Quaternion.identity);            
+            
         }        
     }
 
-    [PunRPC]
-    public void SetInfo(int viewID)
-    {
-        var parentTransform = 
-        //Partner = Instantiate(Player, )
-    }
+    
 }
