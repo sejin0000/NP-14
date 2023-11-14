@@ -13,20 +13,31 @@ public class UIBulletIndicator : UIBase, ICommonUI
 
     void ICommonUI.Initialize()
     {
+        InitializeData();
+    }
+
+    void ICommonUI.Behavior()
+    {
+        ChangeValue();
+    }
+
+    public void InitializeData()
+    {
         if (SceneManager.GetActiveScene().name == "Test_DoHyun")
             player = TestGameManagerDohyun.Instance.InstantiatedPlayer.GetComponent<PlayerInputController>();
         else
             player = MainGameManager.Instance.InstantiatedPlayer.GetComponent<PlayerInputController>();
 
         playerStat = player.playerStatHandler;
-        
+
         ammo = GetComponent<TMP_Text>();
 
         playerStat.OnChangeAmmorEvent += ChangeValue;
     }
 
-    void ICommonUI.Behavior()
+    public override void Initialize()
     {
+        InitializeData();
         ChangeValue();
     }
 
