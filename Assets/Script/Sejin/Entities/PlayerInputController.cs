@@ -36,6 +36,12 @@ public class PlayerInputController : TopDownCharacterController
         Vector2 moveInput = value.Get<Vector2>().normalized;
         CallMoveEvent(moveInput);
     }
+    public void OnMove2(InputValue value)
+    {
+        // Debug.Log("OnMove" + value.ToString());
+        Vector2 moveInput = value.Get<Vector2>().normalized;
+        CallMoveEvent(moveInput);
+    }
 
     public void OnLook(InputValue value)
     {
