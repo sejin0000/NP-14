@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using System;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class EnemyState_Attack : BTAction
 {
@@ -65,6 +66,14 @@ public class EnemyState_Attack : BTAction
         //¡Ú¡Ú¡Ú¼öÁ¤ÇÔ
         enemyAI.isFilp(owner.transform.position.x, target.transform.position.x);
 
+        enemyAI.targetColl = Physics2D.OverlapCircle(enemyAI.transform.position, enemyAI.viewDistance, enemyAI.targetMask);
+
+
+        if (enemyAI.targetColl == null)
+        {
+            target = null;
+            return Status.BT_Failure;
+        }
 
         return Status.BT_Running;
     }
