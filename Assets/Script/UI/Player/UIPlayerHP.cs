@@ -6,25 +6,20 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UIPlayerHP : UIBase
+public class UIPlayerHP : UIBase, ICommonUI
 {
     private Slider hpGauge;
     private PlayerStatHandler playerStats;
 
-    private void Awake()
-    {
-        hpGauge = GetComponentInChildren<Slider>();
-    }
-
-    private void Start()
-    {
-        //Debug.Log("[PlayerStatHandler]" + "Start Done");
-    }
-
-    public override void Initialize()
+    void ICommonUI.Initialize()
     {
         InitializeData();
-        SetValue();
+    }
+
+    void ICommonUI.Behavior()
+    {
+        UpdateValue();
+        Open();
     }
 
     void InitializeData()
@@ -34,10 +29,12 @@ public class UIPlayerHP : UIBase
         else
             playerStats = MainGameManager.Instance.InstantiatedPlayer.GetComponent<PlayerStatHandler>();
 
-        playerStats.HitEvent += SetValue;
+        hpGauge = GetComponentInChildren<Slider>();
+
+        playerStats.OnChangeCurHPEvent += UpdateValue;
     }
 
-    private void SetValue()
+    private void UpdateValue()
     {
         //Debug.Log("[PlayerStatHandler]" + playerStats.ToString());
         hpGauge.minValue = 0;
@@ -45,4 +42,16 @@ public class UIPlayerHP : UIBase
         hpGauge.value = playerStats.CurHP;
         //Debug.Log("[PlayerStatHandler]" + "SetValue Done");
     }
+
+    public override void Open()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public override void Close()
+    {
+        gameObject.SetActive(false);
+    }
+
+
 }

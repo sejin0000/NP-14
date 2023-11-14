@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class UIMainGame : UIBase
 {
-
     public override void Initialize()
     {
         Debug.Log("[UIMainGame] Initialize");

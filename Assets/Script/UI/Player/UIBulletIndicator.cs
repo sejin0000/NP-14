@@ -5,23 +5,13 @@ using TMPro;
 using System.Text;
 using UnityEngine.SceneManagement;
 
-public class UIBulletIndicator : UIBase
+public class UIBulletIndicator : UIBase, ICommonUI
 {
     private TMP_Text ammo;
     private PlayerInputController player;
     private PlayerStatHandler playerStat;
 
-    private void Awake()
-    {
-        ammo = GetComponent<TMP_Text>();
-    }
-
-    private void Start()
-    {
-
-    }
-
-    public override void Initialize()
+    void ICommonUI.Initialize()
     {
         if (SceneManager.GetActiveScene().name == "Test_DoHyun")
             player = TestGameManagerDohyun.Instance.InstantiatedPlayer.GetComponent<PlayerInputController>();
@@ -29,8 +19,14 @@ public class UIBulletIndicator : UIBase
             player = MainGameManager.Instance.InstantiatedPlayer.GetComponent<PlayerInputController>();
 
         playerStat = player.playerStatHandler;
+        
+        ammo = GetComponent<TMP_Text>();
 
         playerStat.OnChangeAmmorEvent += ChangeValue;
+    }
+
+    void ICommonUI.Behavior()
+    {
         ChangeValue();
     }
 
@@ -42,5 +38,15 @@ public class UIBulletIndicator : UIBase
         sb.Append(playerStat.AmmoMax.total);
 
         ammo.text = sb.ToString();
+    }
+
+    public override void Open()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public override void Close()
+    {
+        gameObject.SetActive(false);
     }
 }

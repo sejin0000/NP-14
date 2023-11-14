@@ -4,25 +4,14 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UIReloadHUD : UIBase
+public class UIReloadHUD : UIBase, ICommonUI
 {
     private Slider slider;
     private GameObject player;
     private CoolTimeController controller;
     private PlayerStatHandler statHandler;
 
-    private void Awake()
-    {
-        slider = GetComponentInChildren<Slider>();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    public override void Initialize()
+    void ICommonUI.Initialize()
     {
         if (SceneManager.GetActiveScene().name == "Test_DoHyun")
             player = TestGameManagerDohyun.Instance.InstantiatedPlayer.gameObject;
@@ -31,12 +20,19 @@ public class UIReloadHUD : UIBase
 
         controller = player.GetComponent<CoolTimeController>();
         statHandler = player.GetComponent<PlayerStatHandler>();
-        player.GetComponent<TopDownCharacterController>().OnEndReloadEvent += Close;
+        //player.GetComponent<TopDownCharacterController>().OnEndReloadEvent += Close;
+        slider = GetComponentInChildren<Slider>();
 
-        InitializeData();
+        Debug.Log("[[CheckInterface] Done Initialize");
     }
 
-    public void InitializeData()
+    void ICommonUI.Behavior()
+    {
+        UpdateData();
+        Close();
+    }
+
+    public void UpdateData()
     {
         slider.maxValue = statHandler.ReloadCoolTime.total;
         slider.value = controller.curReloadCool;
@@ -45,12 +41,22 @@ public class UIReloadHUD : UIBase
     private void OnEnable()
     {
         if(player != null)
-            InitializeData();
+            UpdateData();
     }
 
     // Update is called once per frame
     void Update()
     {
         slider.value = controller.curReloadCool;
+    }
+
+    public override void Open()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public override void Close()
+    {
+        gameObject.SetActive(false);
     }
 }
