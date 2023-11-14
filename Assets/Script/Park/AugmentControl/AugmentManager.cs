@@ -380,12 +380,14 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
             playerInput.actions.FindAction("Move2").Enable();
             playerInput.actions.FindAction("Move").Disable();
             playerstatHandler.isNoramlMove = false;
+            Debug.Log("반전타입1");
         }
         else
         {
             playerInput.actions.FindAction("Move2").Disable();
             playerInput.actions.FindAction("Move").Enable();
             playerstatHandler.isNoramlMove = true;
+            Debug.Log("반전타입2");
         }
         playerstatHandler.HP.coefficient *= 1.5f;
         playerstatHandler.ATK.coefficient *= 1.5f;
@@ -802,14 +804,24 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         playerstatHandler.ATK.coefficient *= 0.5f;
     }
     [PunRPC]
-    private void A2103(int PlayerNumber)
+    private void A2103(int PlayerNumber)//긴장감 주변 적 비례 스탯 ++//이거 생각보다 엄청까다롭네
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        if (targetPlayer.GetPhotonView().IsMine)
+        {
+            GameObject prefab = PhotonNetwork.Instantiate("AugmentList/A2103", targetPlayer.transform.localPosition, Quaternion.identity);
+            int num = prefab.GetPhotonView().ViewID;
+            photonView.RPC("FindMaster", RpcTarget.All, num);
+            prefab.GetComponent<A2204>().Init();
+        }
     }
     [PunRPC]
-    private void A2104(int PlayerNumber)
+    private void A2104(int PlayerNumber)//무기교체 :  핸드건 >> 등가 교환 최대 장탄수가 감소하지만  스팀팩 효과를 증가시키는 핸드건으로변경
     {
-        Debug.Log("미완성");
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        playerstatHandler.AmmoMax.added -= 5;
+        Player1Skill.applicationAtkSpeed+=2f;
+        Player1Skill.applicationspeed += 2f;
     }
     [PunRPC]
     private void A2105(int PlayerNumber)// 반전 공격방향 , 이동방향이 반대가되고 공체 대폭 증가 == 현재 이동방향 반대만 구현 A119 A2105는 동일 함수 합치는거 고려
@@ -856,20 +868,33 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         targetPlayer.AddComponent<A2203_1>();
     }
     [PunRPC]
-    private void A2204(int PlayerNumber)
+    private void A2204(int PlayerNumber)//열광전염
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        if (targetPlayer.GetPhotonView().IsMine)
+        {
+            GameObject prefab = PhotonNetwork.Instantiate("AugmentList/A2204", targetPlayer.transform.localPosition, Quaternion.identity);
+            int num = prefab.GetPhotonView().ViewID;
+            photonView.RPC("FindMaster", RpcTarget.All, num);
+            prefab.GetComponent<A2204>().Init();
+        }
     }
     [PunRPC]
-    private void A2205(int PlayerNumber)
+    private void A2205(int PlayerNumber)//무기교체 어썰트라이플 >> 묵직한 탄창 장탄수 30+ 이동속도- 구르기 쿨업
     {
-        Debug.Log("미완성");
+        ChangePlayerStatHandler(PlayerNumber);
+        playerstatHandler.AmmoMax.added += 30;
+        playerstatHandler.Speed.added -= 2;
+        playerstatHandler.RollCoolTime.added += 2;
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@솔져 3티어
     [PunRPC]
-    private void A2301(int PlayerNumber)
+    private void A2301(int PlayerNumber)// 집중 총알이 1발이 되지만 감소한 총알수 비례 공 ++
     {
-        Debug.Log("미완성");
+        ChangePlayerStatHandler(PlayerNumber);
+        float changePower = playerstatHandler.AmmoMax.total - 1;
+        playerstatHandler.AmmoMax.added -= playerstatHandler.AmmoMax.total - 1;
+        playerstatHandler.ATK.added += changePower * 0.5f;
     }
     [PunRPC]
     private void A2302(int PlayerNumber)
@@ -882,9 +907,13 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A2304(int PlayerNumber)
+    private void A2304(int PlayerNumber)//스팀팩 막히고 일부 상시 적용
     {
-        Debug.Log("미완성");
+        ChangePlayerStatHandler(PlayerNumber);
+        playerInput=targetPlayer.GetComponent<PlayerInput>();
+        playerInput.actions.FindAction("Skill").Disable();
+        playerstatHandler.AtkSpeed.added += Player1Skill.applicationAtkSpeed * 0.5f;
+        playerstatHandler.Speed.added += Player1Skill.applicationspeed * 0.5f;
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@샷건 1티어
     [PunRPC]

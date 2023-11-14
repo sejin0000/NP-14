@@ -47,6 +47,19 @@ public class EnemyState_Attack : BTAction
         {
             // 공격 주기에 도달하면 공격 실행
             enemyAI.Shoot();
+
+
+            enemyAI.targetColl = null;
+            enemyAI.targetColl = Physics2D.OverlapCircle(enemyAI.transform.position, enemySO.attackRange, enemyAI.targetMask);
+
+
+            if (enemyAI.targetColl == null)
+            {
+                target = null;
+                return Status.BT_Failure;
+            }
+
+
             currentTime = enemySO.atkdelay;
         }
 
@@ -57,7 +70,6 @@ public class EnemyState_Attack : BTAction
         if (distanceToTarget > enemySO.attackRange)
         {
             enemyAI.isAttaking = false;
-            enemyAI.isChase = false;
             return Status.BT_Failure; // 노드 종료
         }
 
@@ -65,15 +77,6 @@ public class EnemyState_Attack : BTAction
 
         //★★★수정함
         enemyAI.isFilp(owner.transform.position.x, target.transform.position.x);
-
-        enemyAI.targetColl = Physics2D.OverlapCircle(enemyAI.transform.position, enemyAI.viewDistance, enemyAI.targetMask);
-
-
-        if (enemyAI.targetColl == null)
-        {
-            target = null;
-            return Status.BT_Failure;
-        }
 
         return Status.BT_Running;
     }
