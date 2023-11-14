@@ -417,7 +417,9 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {       
+    {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
 
         if (stream.IsWriting)
         {
