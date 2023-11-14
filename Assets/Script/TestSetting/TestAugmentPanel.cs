@@ -48,6 +48,10 @@ public class TestAugmentPanel : MonoBehaviourPun
 
     public void ShowAugmentListOfButton(Button clickedButton)
     {
+        // scroll view size init
+        int cnt = 0;
+        AugmentScrollViewContent.GetComponent<RectTransform>().sizeDelta = new Vector2(410, 110);
+
         // 기존 목록 삭제
         for (int i = 0; i < AugmentScrollViewContent.transform.childCount; i++) 
         {
@@ -65,6 +69,12 @@ public class TestAugmentPanel : MonoBehaviourPun
                 GameObject sampleButton = Instantiate(Resources.Load<GameObject>(augmentButtonPath));
                 sampleButton.GetComponent<TestAugmentBtn>().Initialize(augment.Name, augment.Code);
                 sampleButton.transform.SetParent(AugmentScrollViewContent.transform, false);
+                if (cnt > 1)
+                {
+                    cnt = 0;
+                    AugmentScrollViewContent.GetComponent<RectTransform>().sizeDelta += new Vector2(0, 110);
+                }
+                cnt += 1;
             }
         }
         else
@@ -74,6 +84,12 @@ public class TestAugmentPanel : MonoBehaviourPun
                 GameObject sampleButton = Instantiate(Resources.Load<GameObject>(augmentButtonPath), AugmentScrollViewContent.transform, false);
                 sampleButton.GetComponent<TestAugmentBtn>().Initialize(augment.Name, augment.Code);
                 sampleButton.transform.SetParent(AugmentScrollViewContent.transform, false);
+                if (cnt > 1)
+                {
+                    cnt = 0;
+                    AugmentScrollViewContent.GetComponent<RectTransform>().sizeDelta += new Vector2(0, 110);
+                }
+                cnt += 1;
             }
         }
 
