@@ -465,7 +465,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         {
             GameObject prefab = PhotonNetwork.Instantiate("AugmentList/A0128", targetPlayer.transform.localPosition, Quaternion.identity);
             int num = prefab.GetPhotonView().ViewID;
-            photonView.RPC("SetParent", RpcTarget.All, num);
+            photonView.RPC("setParent", RpcTarget.All, num);
         }
     }
     #endregion
@@ -649,7 +649,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
             GameObject prefab = PhotonNetwork.Instantiate("AugmentList/A0303", targetPlayer.transform.localPosition, Quaternion.identity);
             prefab.GetComponent<A0303>().Initialize(prefab.transform);
             int num = prefab.GetPhotonView().ViewID;
-            prefab.GetPhotonView().RPC("SetParent", RpcTarget.All, num);
+            prefab.GetPhotonView().RPC("setParent", RpcTarget.All, num);
         }
     }
     [PunRPC]
@@ -922,7 +922,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
             GameObject prefab = PhotonNetwork.Instantiate("AugmentList/A3107", targetPlayer.transform.localPosition, Quaternion.identity);
             prefab.GetComponent<A3107>().Init(targetPlayer);
             int num = prefab.GetPhotonView().ViewID;
-            photonView.RPC("SetParent", RpcTarget.All, num);
+            photonView.RPC("setParent", RpcTarget.All, num);
         }
 
     }
