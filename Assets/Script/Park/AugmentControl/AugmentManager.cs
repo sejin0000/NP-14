@@ -67,6 +67,15 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     }
     //PhotonView photonView = PhotonView.Find(PlayerNumber);
     //playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+    [PunRPC]
+    private void setParent(int num)
+    {
+        PhotonView a = PhotonView.Find(num);
+        a.transform.SetParent(targetPlayer.transform);
+        a.transform.localPosition = Vector3.zero;
+        //Prefabs.transform.SetParent(targetPlayer.transform);
+    }
+
     #region stat
     [PunRPC]
     private void A901(int PlayerNumber)//스탯 공 티어 1
@@ -640,7 +649,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
             GameObject prefab = PhotonNetwork.Instantiate("AugmentList/A0303", targetPlayer.transform.localPosition, Quaternion.identity);
             prefab.GetComponent<A0303>().Initialize(prefab.transform);
             int num = prefab.GetPhotonView().ViewID;
-            photonView.RPC("SetParent", RpcTarget.All, num);
+            prefab.GetPhotonView().RPC("SetParent", RpcTarget.All, num);
         }
     }
     [PunRPC]
@@ -710,14 +719,6 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
             photonView.RPC("setParent", RpcTarget.All, num);
             Prefabs.GetComponent<A1107>().Init();
         }
-    }
-    [PunRPC]
-    private void setParent(int num)
-    {
-        PhotonView a = PhotonView.Find(num);
-        a.transform.SetParent(targetPlayer.transform);
-        a.transform.localPosition = Vector3.zero;
-        //Prefabs.transform.SetParent(targetPlayer.transform);
     }
     #endregion
     #region Sniper2

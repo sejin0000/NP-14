@@ -38,6 +38,7 @@ public class A0303 : MonoBehaviourPun
         SetClassType((int)classNum, partner);
         partner.GetPhotonView().RPC("ApplyClassChange", RpcTarget.Others, (int)classNum, viewID);
         partner.transform.parent = parentTransform;
+        partner.transform.localPosition = Vector3.zero;
     }
 
     private void SetClassType(int charType, GameObject playerGo)
