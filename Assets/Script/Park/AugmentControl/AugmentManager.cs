@@ -594,7 +594,11 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A220(int PlayerNumber)
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        A0220 drainComponent = targetPlayer.GetComponent<A0220>();
+        drainComponent.PercentUp(30);
+        Debug.Log($"{drainComponent.percent}%의 확률로 흡혈 중");
+
     }
     [PunRPC]
     private void A221(int PlayerNumber)
