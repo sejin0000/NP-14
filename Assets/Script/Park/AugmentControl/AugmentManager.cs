@@ -380,12 +380,14 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
             playerInput.actions.FindAction("Move2").Enable();
             playerInput.actions.FindAction("Move").Disable();
             playerstatHandler.isNoramlMove = false;
+            Debug.Log("반전타입1");
         }
         else
         {
             playerInput.actions.FindAction("Move2").Disable();
             playerInput.actions.FindAction("Move").Enable();
             playerstatHandler.isNoramlMove = true;
+            Debug.Log("반전타입2");
         }
         playerstatHandler.HP.coefficient *= 1.5f;
         playerstatHandler.ATK.coefficient *= 1.5f;
