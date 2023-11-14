@@ -10,6 +10,7 @@ using UnityEngine.UI;
 public class TestGameManagerDohyun : MonoBehaviourPun
 {
     public static TestGameManagerDohyun Instance;
+    public event Action OnInitialized;
 
     public enum MonsterType
     {
@@ -65,6 +66,11 @@ public class TestGameManagerDohyun : MonoBehaviourPun
         MonsterSpawnButton.onClick.AddListener(OnMonsterSpawnButtonClicked);
     }
 
+    private void Start()
+    {
+        OnInitialized?.Invoke();
+    }
+
     private void SpawnPlayer()
     {
         // PlayerCharacterSetting 
@@ -81,10 +87,6 @@ public class TestGameManagerDohyun : MonoBehaviourPun
 
         // ClassIdentifier 데이터 Init()
         InstantiatedPlayer.GetComponent<ClassIdentifier>().playerData = characterSetting;
-
-        // AttachMiniHUD
-        GameObject attachUI = Instantiate(Resources.Load<GameObject>("Prefabs/PlayerHUD/HUD_Root"));
-        attachUI.transform.SetParent(InstantiatedPlayer.gameObject.transform);
     }
 
     private void SyncPlayer()
@@ -95,8 +97,6 @@ public class TestGameManagerDohyun : MonoBehaviourPun
             characterSetting.SetClassType((int)classNum, InstantiatedPlayer);
             InstantiatedPlayer.GetComponent<PhotonView>().RPC("ApplyClassChange", RpcTarget.Others, (int)classNum, viewID);
         }
-
-        gameObject.GetComponent<PhotonView>().RPC("AttachMiniUI", RpcTarget.Others, viewID);
     }
 
     private void SpawnMonster(int spawnNum, string targetMonster)
@@ -141,13 +141,5 @@ public class TestGameManagerDohyun : MonoBehaviourPun
         {
             photonView.RPC("uiscene", RpcTarget.All);
         }
-    }
-
-    [PunRPC]
-    public void AttachMiniUI(int viewID)
-    {
-        PhotonView photonView = PhotonView.Find(viewID);
-        GameObject attachUI = Instantiate(Resources.Load<GameObject>("Prefabs/PlayerHUD/HUD_Root"));
-        attachUI.transform.SetParent(photonView.gameObject.transform);
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using myBehaviourTree;
+using Photon.Pun;
 
 //추적
 public class EnemyState_Chase : BTAction
@@ -10,10 +11,10 @@ public class EnemyState_Chase : BTAction
     private GameObject owner;
     private EnemyAI enemyAI;
     private EnemySO enemySO;
-    private GameObject target;
+    private Collider2D target;
     public NavMeshAgent nav;
 
-    private float chaseTime = 4f;      // 걷기 시간
+    private float chaseTime;           // 걷기 시간
     private float currentTime;         // 시간 계산용
 
 
@@ -25,7 +26,7 @@ public class EnemyState_Chase : BTAction
         nav = owner.GetComponent<NavMeshAgent>();
         enemySO = enemyAI.enemySO;
 
-        chaseTime = enemySO.actionTime;
+        chaseTime = enemySO.chaseTime;
 
         //enemyAI.nav.updateRotation = false;
         //enemyAI.nav.updateUpAxis = false;
@@ -36,7 +37,7 @@ public class EnemyState_Chase : BTAction
         SetStateColor();
         enemyAI.ChangeSpeed(enemySO.enemyChaseSpeed);
         currentTime = chaseTime;
-        enemyAI.isAttaking = false;
+        target = enemyAI.target;
         //수정됨
         //enemyAI.nav.enabled = true;
     }
@@ -47,15 +48,12 @@ public class EnemyState_Chase : BTAction
 
     public override Status Update()
     {
-        target = enemyAI.target;
-
         currentTime -= Time.deltaTime;
 
         if (currentTime <= 0.3f)
         {
             enemyAI.isChase = false;
-            enemyAI.targetColl = null;
-            enemyAI.target = null;
+            target = null;
             return Status.BT_Failure;
         }
 
@@ -74,7 +72,8 @@ public class EnemyState_Chase : BTAction
     //현재 목표점 수정, 플립, ....
     private void OnChase()
     {
-        enemyAI.DestinationSet(target.transform.position);
+        enemyAI.PV.RPC("DestinationSet", RpcTarget.AllBuffered, target.transform.position);
+        //enemyAI.DestinationSet(target.transform.position);
         float distanceToTarget = Vector3.Distance(owner.transform.position, target.transform.position);
 
         if(distanceToTarget < enemySO.attackRange)
@@ -112,6 +111,6 @@ public class EnemyState_Chase : BTAction
 
     private void SetStateColor()
     {
-        enemyAI.spriteRenderer.color = Color.yellow;
+        enemyAI.spriteRenderer.color = Color.gray;
     }
 }

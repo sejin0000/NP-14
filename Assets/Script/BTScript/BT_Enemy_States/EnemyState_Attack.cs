@@ -11,7 +11,7 @@ public class EnemyState_Attack : BTAction
     private GameObject owner;
     private EnemyAI enemyAI;
     private EnemySO enemySO; //총알 공격력 받아야함
-    private GameObject target;
+    private Collider2D target;
 
     private float currentTime;         // 시간 계산용
 
@@ -20,25 +20,19 @@ public class EnemyState_Attack : BTAction
         owner = _owner;
 
         enemyAI = owner.GetComponent<EnemyAI>();
-        enemySO = enemyAI.enemySO;      
+        enemySO = enemyAI.enemySO;
     }
 
     public override void Initialize()
     {
-        currentTime = enemySO.atkdelay;
+        currentTime = enemySO.atkDelay;
         SetStateColor();
 
         target = enemyAI.target;
-
-        SetAim();
-        enemyAI.Shoot();
     }
 
     public override Status Update()
     {
-        if (target == null)
-            return Status.BT_Failure;
-
         SetAim();
 
         currentTime -= Time.deltaTime;
@@ -47,20 +41,7 @@ public class EnemyState_Attack : BTAction
         {
             // 공격 주기에 도달하면 공격 실행
             enemyAI.Shoot();
-
-
-            enemyAI.targetColl = null;
-            enemyAI.targetColl = Physics2D.OverlapCircle(enemyAI.transform.position, enemySO.attackRange, enemyAI.targetMask);
-
-
-            if (enemyAI.targetColl == null)
-            {
-                target = null;
-                return Status.BT_Failure;
-            }
-
-
-            currentTime = enemySO.atkdelay;
+            currentTime = enemySO.atkDelay;
         }
 
                  
@@ -94,6 +75,8 @@ public class EnemyState_Attack : BTAction
 
         //공격() 각도 바꿔준 후 -> 생성
         Vector3 direction = (target.transform.position - enemyAI.enemyAim.transform.position).normalized;
+
+
 
         RotateArm(direction);        
     }

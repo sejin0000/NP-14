@@ -10,22 +10,26 @@ public class EnemySO : ScriptableObject
     public EnemyType type;        // 적 유형(BT기반 행동 제어를 할거라 필요없으면 지우기)
     public float atk;             // 공격력
     public float hp;              // 체력
-    public float atkdelay;        // 공격 속도
+
+    public float bulletSpeed;     // 탄환 속도
+    public float atkDelay;        // 공격 딜레이
+    public float patrolDelay;     // 순찰 딜레이
+    public float chaseTime;       // 추적 유지시간
+
     public float bulletLifeTime;  // 총알 유지 시간
 
     public float enemyMoveSpeed;  // 기본 이동속도
     public float enemyChaseSpeed; // 기본 추적속도
 
 
-    public float detectionRange; // 탐지 범위
-    public float attackRange;    // 공격 범위
-    public float patrolRange;    // 순찰 범위
+    public float viewAngle;       // 탐지 범위
+    public float viewDistance;     // 탐지 길이
+    public float attackRange;     // 공격 범위
 
-    public int dropGold;       // 주는 재화의 양
 
-    public int unitScale;      // 유닛 크기
+    public int dropGold;          // 주는 재화의 양
 
-    public int actionTime;     // 일부 패턴 시간 계산용
+    public int unitScale;         // 유닛 크기
 }
 public enum EnemyType
 {

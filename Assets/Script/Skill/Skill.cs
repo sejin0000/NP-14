@@ -18,20 +18,37 @@ public class Skill : MonoBehaviourPun
 
     public virtual void Start()
     {
-        controller.OnSkillEvent += SkillStart;
+        if (photonView.IsMine)
+        {
+            controller.OnSkillEvent += SkillStart;
+        }
     }
 
 
     public virtual void SkillStart()
     {
-        controller.playerStatHandler.CanSkill = false;
-        Debug.Log("스킬 발동");
+        if (photonView.IsMine)
+        {
+            controller.playerStatHandler.CanSkill = false;
+            Debug.Log("스킬 발동");
+        }
     }
 
     public virtual void SkillEnd()
     {
-        //스킬이 끝나면 쿨타임을 계산하고 쿨타임이 끝나면  controller.playerStatHandler.CanSkill = 진실; 로 바꿔줌
-        Debug.Log("스킬 종료");
-        controller.CallEndSkillEvent();
+        if (photonView.IsMine)
+        {
+            //스킬이 끝나면 쿨타임을 계산하고 쿨타임이 끝나면  controller.playerStatHandler.CanSkill = 진실; 로 바꿔줌
+            Debug.Log("스킬 종료");
+            controller.CallEndSkillEvent();
+        }
+    }
+
+    public void OnDestroy()
+    {
+        if (photonView.IsMine)
+        {
+            controller.OnSkillEvent -= SkillStart;
+        }
     }
 }

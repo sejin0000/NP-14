@@ -15,6 +15,9 @@ public class PlayerDataSetting : MonoBehaviourPun
     public GameObject ownerPlayer;
     public int viewID;
 
+    [Header("Skills")]
+    [SerializeField] private List<Skill> skillList;
+
     public void SetClassType(int charType, GameObject playerGo = null)
     {
         PlayerStatHandler statSO;
@@ -32,14 +35,40 @@ public class PlayerDataSetting : MonoBehaviourPun
         switch (charType)
         {
             case (int)LobbyPanel.CharClass.Soldier:
+                Debug.Log("솔져로 변환");
                 statSO.CharacterChange(soldierSO);
+                DelComponent(statSO.gameObject);
+                statSO.gameObject.AddComponent<Player1Skill>();               
                 break;
             case (int)LobbyPanel.CharClass.Shotgun:
+                Debug.Log("샷건으로 변환");
                 statSO.CharacterChange(shotGunSO);
+                DelComponent(statSO.gameObject);
+                statSO.gameObject.AddComponent<Player2Skill>();
                 break;
             case (int)LobbyPanel.CharClass.Sniper:
+                Debug.Log("스나이퍼로 변환");
                 statSO.CharacterChange(sniperSO);
+                DelComponent(statSO.gameObject);
+                statSO.gameObject.AddComponent<Player3Skill>();
                 break;
+        }
+    }
+
+    public void DelComponent(GameObject GO)
+    {
+        
+        if (GO.GetComponent<Player1Skill>())
+        {            
+            Destroy(GO.GetComponent<Player1Skill>());
+        }
+        if (GO.GetComponent<Player2Skill>())
+        {            
+            Destroy(GO.GetComponent<Player2Skill>());
+        }
+        if (GO.GetComponent<Player3Skill>())
+        {            
+            Destroy(GO.GetComponent<Player3Skill>());
         }
     }
 }
