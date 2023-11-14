@@ -319,6 +319,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         spriteRenderer.color = Color.red;
     }
 
+
+    //이거 동기화
     public void isFilp(float myX, float otherX)
     {
         if (otherX < myX)
@@ -419,12 +421,14 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             // 데이터를 전송
             stream.SendNext(nowEnemyPosition);
             stream.SendNext(nowEnemyRotation);
+            stream.SendNext(target);
         }
         else if (stream.IsReading)
         {
             // 데이터를 수신
             nowEnemyPosition = (Vector2)stream.ReceiveNext();
             nowEnemyRotation = (Quaternion)stream.ReceiveNext();
+            target = (Collider2D)stream.ReceiveNext();
         }
     }
 }
