@@ -2,28 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shield : MonoBehaviour
+public class A3301_1 : MonoBehaviour
 {
-    public float shieldSurvivalTime = 3;
-    public float shieldHP= 20;
-    public float shieldPower;
-    private float time = 0;
+    public float time = 0f;
+    public float shieldHP = 1f;
+    public float shieldSurvivalTime =0.5f;
+    //public LayerMask
+    // Start is called before the first frame update
 
+    // Update is called once per frame
     private void Update()
     {
         time += Time.deltaTime;
-        if (time > shieldSurvivalTime) 
+        if (time >= shieldSurvivalTime) 
         {
             Destroy();
         }
     }
-    public void Initialized(float hp, float scale,float time)
+    private void Destroy()
     {
-        transform.localScale =new Vector3(scale, scale, 0);
-        shieldHP= hp;
-        shieldSurvivalTime = time;
+        Destroy(gameObject);
     }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("EnemyBullet"))
@@ -33,13 +32,10 @@ public class Shield : MonoBehaviour
             {
                 Destroy();
             }
-            Destroy(collision.gameObject);
+            //collision.gameObject.layer =
+
+            //아래는 반사
+            collision.gameObject.transform.right = -collision.gameObject.transform.right;
         }
     }
-
-    private void Destroy()
-    {
-        Destroy(gameObject);
-    }
-
 }
