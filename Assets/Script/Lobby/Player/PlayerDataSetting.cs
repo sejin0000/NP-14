@@ -35,16 +35,19 @@ public class PlayerDataSetting : MonoBehaviourPun
         switch (charType)
         {
             case (int)LobbyPanel.CharClass.Soldier:
+                Debug.Log("솔져로 변환");
                 statSO.CharacterChange(soldierSO);
                 DelComponent(statSO.gameObject);
                 statSO.gameObject.AddComponent<Player1Skill>();               
                 break;
             case (int)LobbyPanel.CharClass.Shotgun:
+                Debug.Log("샷건으로 변환");
                 statSO.CharacterChange(shotGunSO);
                 DelComponent(statSO.gameObject);
                 statSO.gameObject.AddComponent<Player2Skill>();
                 break;
             case (int)LobbyPanel.CharClass.Sniper:
+                Debug.Log("스나이퍼로 변환");
                 statSO.CharacterChange(sniperSO);
                 DelComponent(statSO.gameObject);
                 statSO.gameObject.AddComponent<Player3Skill>();
