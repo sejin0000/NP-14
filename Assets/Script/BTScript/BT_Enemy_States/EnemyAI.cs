@@ -58,6 +58,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
     void Awake()
     {
+
         nav = GetComponent<NavMeshAgent>();
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
@@ -333,8 +334,12 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
+    [PunRPC]
     public void DestinationSet(Vector3 targetPoint)
     {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
         if (!isAttaking || isLive)
         {
             nav.SetDestination(targetPoint);
@@ -414,6 +419,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         TreeAIState.AddChild(BTMainSelector);
     }
 
+    
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
@@ -431,4 +437,5 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             target = (Collider2D)stream.ReceiveNext();
         }
     }
+ 
 }

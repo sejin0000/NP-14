@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using myBehaviourTree;
+using Photon.Pun;
 
 //추적
 public class EnemyState_Chase : BTAction
@@ -71,7 +72,8 @@ public class EnemyState_Chase : BTAction
     //현재 목표점 수정, 플립, ....
     private void OnChase()
     {
-        enemyAI.DestinationSet(target.transform.position);
+        enemyAI.PV.RPC("DestinationSet", RpcTarget.AllBuffered, target.transform.position);
+        //enemyAI.DestinationSet(target.transform.position);
         float distanceToTarget = Vector3.Distance(owner.transform.position, target.transform.position);
 
         if(distanceToTarget < enemySO.attackRange)
