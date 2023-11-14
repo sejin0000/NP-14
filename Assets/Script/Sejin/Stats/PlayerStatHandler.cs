@@ -162,6 +162,8 @@ public class PlayerStatHandler : MonoBehaviourPun
 
             isDie = true;
             OnDieEvent?.Invoke();
+            this.gameObject.layer = 0;
+            photonView.RPC("SetSyncHP", RpcTarget.OthersBuffered, viewID, CurHP);
         }
 
         damage = damage * defense;
@@ -206,9 +208,11 @@ public class PlayerStatHandler : MonoBehaviourPun
 
         _PV.gameObject.GetComponent <PlayerStatHandler>().CurHP = _CurHP;
 
-        if(_PV.gameObject.GetComponent<PlayerStatHandler>().CurHP == 0 )
+        if(_PV.gameObject.GetComponent<PlayerStatHandler>().CurHP <= 0 )
         {
+            isDie = true;
             OnDieEvent?.Invoke();
+            this.gameObject.layer = 0;
         }
     }
 }
