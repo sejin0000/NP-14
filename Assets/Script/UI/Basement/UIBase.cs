@@ -6,20 +6,20 @@ public class UIBase : MonoBehaviour
 {
     public virtual void Initialize()
     {
-        Debug.Log("[UIBase] Initialize");
+        
     }
 
-    public void ToggleActive()
+    public virtual void ToggleActive()
     {
         gameObject.SetActive(!gameObject.activeSelf);
     }
 
-    public void Open()
+    public virtual void Open()
     {
         gameObject.SetActive(true);
     }
 
-    public void Close()
+    public virtual void Close()
     {
         gameObject.SetActive(false);
     }

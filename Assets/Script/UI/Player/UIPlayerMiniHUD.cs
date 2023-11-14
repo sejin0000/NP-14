@@ -1,15 +1,13 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static UnityEditor.Rendering.FilterWindow;
 
 public class UIPlayerMiniHUD : UIBase
 {
-    [SerializeField] private List<UIBase> elements;
+    [SerializeField] private List<GameObject> elements;
     private GameObject player;
     private PlayerStatHandler statHandler;
     private TopDownCharacterController playerController;
@@ -17,26 +15,23 @@ public class UIPlayerMiniHUD : UIBase
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("[test] start.");
         if ((SceneManager.GetActiveScene().name == "Test_DoHyun") || (SceneManager.GetActiveScene().name == "MainGameScene"))
-        {
-            Debug.Log("[test] CheckCondition");
             InitializeData();
-        }
         else
-        {
-            Debug.Log("[test] Fail.");
             return;
-        }
     }
 
     public void InitializeData()
     {
-        Debug.Log("[test] InitializeData");
         foreach (var element in elements)
         {
-            element.Initialize();
-            element.Close();
+            var temp = element.GetComponent<ICommonUI>();
+            if (temp != null)
+            {
+                Debug.Log("[CheckInterface] Init " + element.GetType());
+                temp.Initialize();
+                temp.Behavior();
+            }
         }
 
         if (SceneManager.GetActiveScene().name == "Test_DoHyun")
@@ -47,25 +42,29 @@ public class UIPlayerMiniHUD : UIBase
         playerController = player.GetComponent<TopDownCharacterController>();
         statHandler = player.GetComponent<PlayerStatHandler>();
 
+
+        Open<UIPlayerHP>();
         InitializeEvent();
     }
 
     public void InitializeEvent()
     {
-        Debug.Log("[test] Initialize");
         statHandler.HitEvent += Open<UIPlayerHP>;
         playerController.OnReloadEvent += Open<UIReloadHUD>;
+        playerController.OnEndReloadEvent += Open<UIPlayerHP>;
     }
 
     public void Open<T>() where T : UIBase
     {
-        foreach (var element in elements)
+        var new_elements = player.GetComponentInChildren<UIPlayerMiniHUD>().elements;
+        foreach (var element in new_elements)
         {
-            Debug.Log("[test] " + element.GetType().Name + "==" + typeof(T).Name);
-            if(element.GetType().Name == typeof(T).Name)
-                element.Open();
+            //Debug.Log("[CheckInterface] " + element.GetType().Name + "/" + element.GetComponentInChildren<T>().name);
+            T temp = element.GetComponent<T>();
+            if (temp == null)
+                element.SetActive(false);
             else
-                element.Close();
+                temp.Open();
         }
     }
 }
