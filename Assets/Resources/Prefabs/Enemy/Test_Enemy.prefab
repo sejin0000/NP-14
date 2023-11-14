@@ -412,7 +412,6 @@ MonoBehaviour:
   collider2D: {fileID: 8143056649410404635}
   anim: {fileID: 0}
   target: {fileID: 0}
-  targetColl: {fileID: 0}
   nav: {fileID: 7302048549800893148}
   enemyAim: {fileID: 4931010869674023689}
   enemyBullet: {fileID: 8703405332802933773, guid: ffaf2c7e3b6a9714398653f89e5593ca, type: 3}

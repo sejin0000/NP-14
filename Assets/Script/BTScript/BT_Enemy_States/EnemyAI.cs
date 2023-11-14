@@ -93,8 +93,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         if (!isLive)
             return;
 
-
-
         IsNavAbled();
 
 
