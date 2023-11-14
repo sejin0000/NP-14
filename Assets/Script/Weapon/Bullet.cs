@@ -13,7 +13,7 @@ public class Bullet : MonoBehaviour
 {
     public float ATK;
     public float BulletLifeTime;
-    public float BulletSpeed = 20;
+    public float BulletSpeed = 15;
     public bool IsDamage = true;
     public BulletTarget target;
 
