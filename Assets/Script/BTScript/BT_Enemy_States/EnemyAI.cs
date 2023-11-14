@@ -66,7 +66,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         PV = GetComponent<PhotonView>();
 
         //게임 오브젝트 활성화 시, 행동 트리 생성
-        CreateTreeATState();
+        CreateTreeAIState();
         currentHP = enemySO.hp;
         isLive = true;
         isIdle = true;
@@ -251,6 +251,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
 
     //플레이어 탐지★ 여기서 추적시&공격시 시야각도 지정하자
+
     private void NomalView()
     {
         Vector2 rightBoundary = BoundaryAngle(-viewAngle * 0.5f);
@@ -265,7 +266,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
         Debug.DrawRay(transform.position, rightBoundary * viewDistance, Color.yellow);
         Debug.DrawRay(transform.position, leftBoundary * viewDistance, Color.yellow);
-
 
         FindPlayer(rightBoundary, leftBoundary);
     }
@@ -362,7 +362,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
 
     //행동 트리 실제 생성
-    void CreateTreeATState()
+    void CreateTreeAIState()
     {
         //초기화&루트 노드로 설정
         TreeAIState = new BTRoot();
@@ -404,7 +404,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         BTPatrol.AddChild(state_Patrol);
 
 
-        //사망(상시 체크)
 
         //셀렉터는 우선순위 높은 순서로 배치 : 생존 여부 -> 특수 패턴 -> 플레이어 체크(공격 여부) -> 이동 여부 순서로 셀렉터 배치 
         //메인 셀렉터 : Squence를 Selector의 자식으로 추가(자식 순서 중요함) 
@@ -418,8 +417,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {       
-
+    {
         if (stream.IsWriting)
         {
             // 데이터를 전송

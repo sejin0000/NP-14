@@ -10,7 +10,6 @@ public class PlayerAnimatorController : MonoBehaviour
     [SerializeField] private GameObject playerSprite;
     [SerializeField] private GameObject weaponSprite;
 
-
     private TopDownCharacterController characterController;
     private PlayerStatHandler playerStatHandler;
 
@@ -122,15 +121,31 @@ public class PlayerAnimatorController : MonoBehaviour
         }
     }
 
-
     private void Die()
     {
         Debug.Log("Á×À½¿ä");
         _animation.SetTrigger("IsDie");
+        pv.RPC("PunDie", RpcTarget.OthersBuffered);
     }
+
+    [PunRPC]
+    private void PunDie()
+    {
+        _animation.SetTrigger("IsDie");
+    }
+
 
     private void Regen()
     {
+        Debug.Log("ºÎÈ°");
+        _animation.SetTrigger("IsRegen");
+        pv.RPC("PunRegen", RpcTarget.OthersBuffered);
+    }
+
+    [PunRPC]
+    private void PunRegen()
+    {
         _animation.SetTrigger("IsRegen");
     }
+
 }

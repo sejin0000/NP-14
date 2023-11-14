@@ -133,7 +133,7 @@
 
     private void SetStateColor()
     {
-        enemyAI.spriteRenderer.color = Color.green;
+        enemyAI.spriteRenderer.color = Color.yellow;
     }
 
     /*

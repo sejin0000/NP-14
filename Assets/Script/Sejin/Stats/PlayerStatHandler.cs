@@ -162,6 +162,7 @@ public class PlayerStatHandler : MonoBehaviourPun
 
             isDie = true;
             OnDieEvent?.Invoke();
+            this.gameObject.layer = 0;
         }
 
         damage = damage * defense;
@@ -191,7 +192,7 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     public void SendSyncHP()
     {
-        if(PhotonNetwork.IsMasterClient)
+        if(photonView.IsMine)
         {
             photonView.RPC("SetSyncHP",RpcTarget.OthersBuffered,viewID,CurHP);
         }
@@ -205,5 +206,12 @@ public class PlayerStatHandler : MonoBehaviourPun
         _PV = PhotonView.Find(viewID);
 
         _PV.gameObject.GetComponent <PlayerStatHandler>().CurHP = _CurHP;
+
+        if(_PV.gameObject.GetComponent<PlayerStatHandler>().CurHP <= 0 )
+        {
+            isDie = true;
+            OnDieEvent?.Invoke();
+            this.gameObject.layer = 0;
+        }
     }
 }
