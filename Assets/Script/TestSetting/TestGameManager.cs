@@ -42,6 +42,10 @@ public class TestGameManager : MonoBehaviourPun
 
     [Header("Button")]
     public Button MonsterSpawnButton;
+    public Button AugmentPanelOpenButton;
+
+    [Header("Panel")]
+    [SerializeField] private GameObject AugmentPanel;
 
     private void Awake()
     {
@@ -52,10 +56,6 @@ public class TestGameManager : MonoBehaviourPun
 
             SpawnPlayer();
             SyncPlayer();
-
-            // Augument 연결
-            PlayerResultController MakeSetting = InstantiatedPlayer.GetComponent<PlayerResultController>();
-            MakeSetting.MakeManager();
         }
 
         if (Instance == null)
@@ -64,6 +64,14 @@ public class TestGameManager : MonoBehaviourPun
         }
 
         MonsterSpawnButton.onClick.AddListener(OnMonsterSpawnButtonClicked);
+        AugmentPanelOpenButton.onClick.AddListener(OnAugmentPanelOpenButtonClicked);
+    }
+
+    private void Start()
+    {
+        // Augument 연결
+        TestResultController MakeSetting = InstantiatedPlayer.GetComponent<TestResultController>();
+        MakeSetting.MakeManager();
     }
 
     private void SpawnPlayer()
@@ -74,7 +82,7 @@ public class TestGameManager : MonoBehaviourPun
         characterSetting = characterSettingGO.GetComponent<PlayerDataSetting>();
 
         // PhotonNetwork.Instantiate()
-        string playerPrefabPath = "Pefabs/Player";
+        string playerPrefabPath = "Pefabs/TestPlayer";
         InstantiatedPlayer = PhotonNetwork.Instantiate(playerPrefabPath, Vector3.zero, Quaternion.identity);
         characterSetting.ownerPlayer = InstantiatedPlayer;
         characterSetting.viewID = InstantiatedPlayer.GetPhotonView().ViewID;
@@ -110,7 +118,7 @@ public class TestGameManager : MonoBehaviourPun
     
     private void SetSpawnData()
     {
-
+        AugmentPanel.SetActive(true);
     }
 
     public void OnMonsterSpawnButtonClicked()
@@ -127,6 +135,11 @@ public class TestGameManager : MonoBehaviourPun
                 currentMonsterCount += 1;
             }
         }
+    }
+
+    public void OnAugmentPanelOpenButtonClicked()
+    {
+        AugmentPanel.SetActive(true);
     }
 
     public void AllReady()
