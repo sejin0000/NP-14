@@ -405,6 +405,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentHP: 0
+  viewAngle: 57
+  viewDistance: 5
   enemySO: {fileID: 11400000, guid: 3462c6ca5a0aec84eb2a06161ff250a7, type: 2}
   spriteRenderer: {fileID: 61385077797086651}
   collider2D: {fileID: 8143056649410404635}
@@ -414,8 +416,6 @@ MonoBehaviour:
   nav: {fileID: 7302048549800893148}
   enemyAim: {fileID: 4931010869674023689}
   enemyBullet: {fileID: 8703405332802933773, guid: ffaf2c7e3b6a9714398653f89e5593ca, type: 3}
-  viewAngle: 57
-  viewDistance: 5
   targetMask:
     serializedVersion: 2
     m_Bits: 256

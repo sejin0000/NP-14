@@ -29,11 +29,9 @@ public class EnemyState_Hurt : BTAction
         enemyAI = owner.GetComponent<EnemyAI>();
         enemySO = enemyAI.enemySO;
 
-        ActionTime = enemySO.actionTime;
+        ActionTime = enemySO.chaseTime;
         //runSpeed = enemySO.runSpeed;
 
-        //임시 타겟지정
-        enemyAI.target = tempTarget;
     }
 
     //노드 Start() !기본 Update 이후 작업이 일어남
