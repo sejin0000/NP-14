@@ -11,7 +11,7 @@ public class UIMainGame : UIBase
     {
         Debug.Log("[UIMainGame] Initialize");
 
-        if (SceneManager.GetActiveScene().name == "Test_ DoHyun")
+        if (SceneManager.GetActiveScene().name == "Test_DoHyun")
             Open();
         else
             MainGameManager.Instance.OnPlayingStateChanged += Open;

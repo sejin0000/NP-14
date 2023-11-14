@@ -18,12 +18,12 @@ public class UIBulletIndicator : UIBase
 
     private void Start()
     {
-        Initialize();
+
     }
 
-    private void Initialize()
+    public override void Initialize()
     {
-        if (SceneManager.GetActiveScene().name == "Test_ DoHyun")
+        if (SceneManager.GetActiveScene().name == "Test_DoHyun")
             player = TestGameManagerDohyun.Instance.InstantiatedPlayer.GetComponent<PlayerInputController>();
         else
             player = MainGameManager.Instance.InstantiatedPlayer.GetComponent<PlayerInputController>();

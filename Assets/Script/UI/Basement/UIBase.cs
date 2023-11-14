@@ -6,7 +6,7 @@ public class UIBase : MonoBehaviour
 {
     public virtual void Initialize()
     {
-
+        Debug.Log("[UIBase] Initialize");
     }
 
     public void ToggleActive()

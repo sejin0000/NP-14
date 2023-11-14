@@ -7,11 +7,11 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.UI.CanvasScaler;
 
-public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•ì„ ë¶ˆëŸ¬ì˜¤ëŠ”ê³³ AugmentManager.Instance.Invoke(code,0); ì„í†µí•´ í•´ë‹¹ ì¦ê°•ë¶ˆëŸ¬ì˜´
+public class TestAugmentManager : MonoBehaviourPunCallbacks //½ÇÁúÀûÀ¸·Î Áõ°­À» ºÒ·¯¿À´Â°÷ AugmentManager.Instance.Invoke(code,0); À»ÅëÇØ ÇØ´ç Áõ°­ºÒ·¯¿È
 {
-    public static AugmentManager Instance;//ì‹±ê¸í†¤
-    public PlayerStatHandler playerstatHandler;//ì •í™•íˆëŠ” ì´ë¦„ì„ íƒ€ê²Ÿ í”Œë ˆì´ì–´ ìŠ¤íƒ¯ í•¸ë“¤ëŸ¬ê°€ ë§ëŠ” í‘œí˜„ ê°™ê¸°ë„í•¨ // ìƒê°í• ìˆ˜ë¡ ë§ìŒ
-    int atk = 5;//ì—¬ê¸°ì„œë¶€í„° ì•„ë˜ê¹Œì§€  í‹°ì–´ë³„ë¡œ *nìœ¼ë¡œ ì‚¬ìš©ì¤‘
+    public static TestAugmentManager Instance;
+    public PlayerStatHandler playerstatHandler;
+    int atk = 5;
     int hp = 8;
     float speed = 1;
     float atkspeed = -1f;
@@ -19,12 +19,12 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
     int cooltime = -1;
     int critical = 5;
     int AmmoMax = 1;
-    public PlayerInput playerInput;//ì´ê²ƒë„ ì‚¬ì‹¤ íƒ€ì¼“í”Œë ˆì´ì–´ ì¸í’‹ ì˜ì•ˆì“°ê¸°ì— í•¨ìˆ˜ê°€ ë”°ë¡œ ë§Œë“¤ì§€ ì•ŠìŒ
-    public GameObject targetPlayer;//ì‹¤ì œ ì ìš©ë˜ëŠ” íƒ€ì¼“ í”Œë ˆì´ì–´ 99% ê²½ìš° ì´ê±¸ ì‚¬ìš©í•¨ ì§„ì§œ ì§„ì§œ ì¤‘ìš”í•¨
-    public PhotonView PlayerPv;//í˜„ì¬í”Œë ˆì´ì–´ì˜ í¬í†¤ë·°ê°’== ì¦ê°•ë§¤ë‹ˆì €ì˜ í¬í†¤ë·°ê°€ ì•„ë‹˜ (ì¤‘ìš”)
-    public GameObject player;//ì²˜ìŒ ì„¸íŒ…ê°’ì— í•„ìš”í•¨
-    public int PlayerPvNumber;//í˜„ì¬í”Œë ˆì´ì–´ì˜ í¬í†¤ë·° ë„˜ë²„
-    private void Awake()//ì‹±ê¸€í†¤
+    public PlayerInput playerInput;//ÀÌ°Íµµ »ç½Ç Å¸ÄÏÇÃ·¹ÀÌ¾î ÀÎÇ² Àß¾È¾²±â¿¡ ÇÔ¼ö°¡ µû·Î ¸¸µéÁö ¾ÊÀ½
+    public GameObject targetPlayer;//½ÇÁ¦ Àû¿ëµÇ´Â Å¸ÄÏ ÇÃ·¹ÀÌ¾î 99% °æ¿ì ÀÌ°É »ç¿ëÇÔ ÁøÂ¥ ÁøÂ¥ Áß¿äÇÔ
+    public PhotonView PlayerPv;//ÇöÀçÇÃ·¹ÀÌ¾îÀÇ Æ÷Åæºä°ª== Áõ°­¸Å´ÏÀúÀÇ Æ÷Åæºä°¡ ¾Æ´Ô (Áß¿ä)
+    public GameObject player;//Ã³À½ ¼¼ÆÃ°ª¿¡ ÇÊ¿äÇÔ
+    public int PlayerPvNumber;//ÇöÀçÇÃ·¹ÀÌ¾îÀÇ Æ÷Åæºä ³Ñ¹ö
+    private void Awake()//½Ì±ÛÅæ
     {
         if (null == Instance)
         {
@@ -38,13 +38,13 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
         }
 
     }
-    public void startset(GameObject PlayerObj)//ìŠ¤íƒ€íŠ¸ì„¸íŒ… ë©”ì¸ê²Œì„ë§¤ë‹ˆì € ê²Œì„ ì²˜ìŒ ì‹œì‘ë¶€ë¶„ì— í˜¸ì¶œë˜ë©´ ê°’ì…‹íŒ… í•´ì¤Œ
+    public void startset(GameObject PlayerObj)//½ºÅ¸Æ®¼¼ÆÃ ¸ŞÀÎ°ÔÀÓ¸Å´ÏÀú °ÔÀÓ Ã³À½ ½ÃÀÛºÎºĞ¿¡ È£ÃâµÇ¸é °ª¼ÂÆÃ ÇØÁÜ
     {
-        player = PlayerObj;//í”Œë ˆì´ì–´ ë°›ì•„ì˜´ 
+        player = PlayerObj;//ÇÃ·¹ÀÌ¾î ¹Ş¾Æ¿È 
         PlayerPvNumber = player.GetPhotonView().ViewID;//
-        PlayerPv = PhotonView.Find(PlayerPvNumber);//í”Œë ˆì´ì–´pv í™•ë³´
+        PlayerPv = PhotonView.Find(PlayerPvNumber);//ÇÃ·¹ÀÌ¾îpv È®º¸
     }
-    public void AugmentCall(int code)//slotì—ì„œ pickìœ¼ë¡œ í˜¸ì¶œí•´ì„œ punppcë¡œ ëª¨ë“ ì»´í“¨í„°ì— ë¿Œë ¤ì¤Œ
+    public void AugmentCall(int code)//slot¿¡¼­ pickÀ¸·Î È£ÃâÇØ¼­ punppc·Î ¸ğµçÄÄÇ»ÅÍ¿¡ »Ñ·ÁÁÜ
     {
         string callName = "A" + code.ToString();
         photonView.RPC(callName, RpcTarget.All, PlayerPvNumber);
@@ -54,13 +54,13 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
         PhotonView photonView = PhotonView.Find(PlayerNumber);
         targetPlayer = photonView.gameObject;
         playerstatHandler = targetPlayer.GetComponent<PlayerStatHandler>();
-    }//í”Œë ˆì´ì–´ìŠ¤íƒ¯í•¸ë“¤ëŸ¬, íƒ€ê²Ÿí”Œë ˆì´ì–´ ëª¨ë‘ ë³€í•˜ëŠ”ê²½ìš°
-    private void ChangePlayerStatHandler(int PlayerNumber)// í”Œë ˆì´ì–´ìŠ¤íƒ¯í•¸ë“¤ëŸ¬ë§Œë³€í•˜ëŠ”ê²½ìš°
+    }//ÇÃ·¹ÀÌ¾î½ºÅÈÇÚµé·¯, Å¸°ÙÇÃ·¹ÀÌ¾î ¸ğµÎ º¯ÇÏ´Â°æ¿ì
+    private void ChangePlayerStatHandler(int PlayerNumber)// ÇÃ·¹ÀÌ¾î½ºÅÈÇÚµé·¯¸¸º¯ÇÏ´Â°æ¿ì
     {
         PhotonView photonView = PhotonView.Find(PlayerNumber);
         playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
     }
-    private void ChangeOnlyPlayer(int PlayerNumber) //íƒ€ê²Ÿ í”Œë ˆì´ì–´ë§Œ ë³€í•˜ëŠ”ê²½ìš°
+    private void ChangeOnlyPlayer(int PlayerNumber) //Å¸°Ù ÇÃ·¹ÀÌ¾î¸¸ º¯ÇÏ´Â°æ¿ì
     {
         PhotonView photonView = PhotonView.Find(PlayerNumber);
         targetPlayer = photonView.gameObject;
@@ -78,198 +78,198 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
 
     #region stat
     [PunRPC]
-    private void A901(int PlayerNumber)//ìŠ¤íƒ¯ ê³µ í‹°ì–´ 1
+    private void A901(int PlayerNumber)//½ºÅÈ °ø Æ¼¾î 1
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.ATK.added += atk;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ì˜ ê³µê²©ë ¥ì¦ê°€");
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ÀÇ °ø°İ·ÂÁõ°¡");
     }
     [PunRPC]
-    private void A902(int PlayerNumber)//ìŠ¤íƒ¯ ì²´ í‹°ì–´ 1
+    private void A902(int PlayerNumber)//½ºÅÈ Ã¼ Æ¼¾î 1
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.HP.added += hp;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ì˜ ë°©ì–´ë ¥ì¦ê°€");
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ÀÇ ¹æ¾î·ÂÁõ°¡");
     }
     [PunRPC]
-    private void A903(int PlayerNumber)//ìŠ¤íƒ¯ ì´ì† í‹°ì–´ 1
+    private void A903(int PlayerNumber)//½ºÅÈ ÀÌ¼Ó Æ¼¾î 1
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.Speed.added += speed;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ì˜ ì´ì†ì¦ê°€");
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ÀÇ ÀÌ¼ÓÁõ°¡");
     }
     [PunRPC]
-    private void A904(int PlayerNumber)//ìŠ¤íƒ¯ ê³µì† í‹°ì–´ 1
+    private void A904(int PlayerNumber)//½ºÅÈ °ø¼Ó Æ¼¾î 1
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.AtkSpeed.added += atkspeed;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ì˜ ê³µì†ì¦ê°€");
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ÀÇ °ø¼ÓÁõ°¡");
     }
     [PunRPC]
-    private void A905(int PlayerNumber)//ìŠ¤íƒ¯ ì •ë°€ë„ í‹°ì–´ 1 íƒ„í¼ì§ì´ ì´ìƒí•´ì„œ ì •ë°€ë„ë¡œ ë°”ê¿¨ëŠ”ë° ê´œì°®ê² ì§€? ì–´ì°¨í”¼ë°”ê¿”ë„ë¨
+    private void A905(int PlayerNumber)//½ºÅÈ Á¤¹Ğµµ Æ¼¾î 1 ÅºÆÛÁüÀÌ ÀÌ»óÇØ¼­ Á¤¹Ğµµ·Î ¹Ù²å´Âµ¥ ±¦Âú°ÚÁö? ¾îÂ÷ÇÇ¹Ù²ãµµµÊ
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.BulletSpread.added += bulletSpread;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ì˜ ì •ë°€ë„ì¦ê°€");
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ÀÇ Á¤¹ĞµµÁõ°¡");
     }
     [PunRPC]
-    private void A906(int PlayerNumber)//ìŠ¤íƒ¯ ìŠ¤í‚¬ì¿¨íƒ€ì„ í‹°ì–´1
+    private void A906(int PlayerNumber)//½ºÅÈ ½ºÅ³ÄğÅ¸ÀÓ Æ¼¾î1
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.SkillCoolTime.added += cooltime;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ì˜ ì¿¨íƒ€ì„ì¦ê°€");
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ÀÇ ÄğÅ¸ÀÓÁõ°¡");
     }
     [PunRPC]
-    private void A907(int PlayerNumber)//ìŠ¤íƒ¯ ì¹˜ëª…íƒ€ í‹°ì–´1
+    private void A907(int PlayerNumber)//½ºÅÈ Ä¡¸íÅ¸ Æ¼¾î1
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.Critical.added += critical;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ì˜ ì¹˜ëª…íƒ€ì¦ê°€");
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ÀÇ Ä¡¸íÅ¸Áõ°¡");
     }
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ìŠ¤íƒ¯í‹°ì–´2
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@½ºÅÈÆ¼¾î2
     [PunRPC]
-    private void A911(int PlayerNumber)//ìŠ¤íƒ¯ ê³µ í‹°ì–´ 2
+    private void A911(int PlayerNumber)//½ºÅÈ °ø Æ¼¾î 2
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.ATK.added += atk * 2;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ì˜ ê³µê²©ë ¥ì¦ê°€");
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ÀÇ °ø°İ·ÂÁõ°¡");
     }
     [PunRPC]
-    private void A912(int PlayerNumber)//ìŠ¤íƒ¯ ì²´ í‹°ì–´ 2
+    private void A912(int PlayerNumber)//½ºÅÈ Ã¼ Æ¼¾î 2
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.HP.added += hp * 2;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ì˜ ë°©ì–´ë ¥ì¦ê°€");
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ÀÇ ¹æ¾î·ÂÁõ°¡");
     }
     [PunRPC]
-    private void A913(int PlayerNumber)//ìŠ¤íƒ¯ ì´ì† í‹°ì–´ 2
+    private void A913(int PlayerNumber)//½ºÅÈ ÀÌ¼Ó Æ¼¾î 2
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.Speed.added += speed * 2;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ì˜ ì´ì†ì¦ê°€");
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ÀÇ ÀÌ¼ÓÁõ°¡");
     }
     [PunRPC]
-    private void A914(int PlayerNumber)//ìŠ¤íƒ¯ ê³µì† í‹°ì–´ 2
+    private void A914(int PlayerNumber)//½ºÅÈ °ø¼Ó Æ¼¾î 2
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.AtkSpeed.added += atkspeed * 2;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ì˜ ê³µì†ì¦ê°€");
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ÀÇ °ø¼ÓÁõ°¡");
     }
     [PunRPC]
-    private void A915(int PlayerNumber)//ìŠ¤íƒ¯ ì •ë°€ë„ í‹°ì–´ 1 íƒ„í¼ì§ì´ ì´ìƒí•´ì„œ ì •ë°€ë„ë¡œ ë°”ê¿¨ëŠ”ë° ê´œì°®ê² ì§€? ì–´ì°¨í”¼ë°”ê¿”ë„ë¨
+    private void A915(int PlayerNumber)//½ºÅÈ Á¤¹Ğµµ Æ¼¾î 1 ÅºÆÛÁüÀÌ ÀÌ»óÇØ¼­ Á¤¹Ğµµ·Î ¹Ù²å´Âµ¥ ±¦Âú°ÚÁö? ¾îÂ÷ÇÇ¹Ù²ãµµµÊ
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.BulletSpread.added += bulletSpread * 2;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ì˜ ì •ë°€ë„ì¦ê°€");
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ÀÇ Á¤¹ĞµµÁõ°¡");
     }
     [PunRPC]
-    private void A916(int PlayerNumber)//ìŠ¤íƒ¯ ìŠ¤í‚¬ì¿¨íƒ€ì„ í‹°ì–´2
+    private void A916(int PlayerNumber)//½ºÅÈ ½ºÅ³ÄğÅ¸ÀÓ Æ¼¾î2
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.SkillCoolTime.added += cooltime * 2;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ì˜ ì¿¨íƒ€ì„ì¦ê°€");
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ÀÇ ÄğÅ¸ÀÓÁõ°¡");
     }
     [PunRPC]
-    private void A917(int PlayerNumber)//ìŠ¤íƒ¯ ì¹˜ëª…íƒ€ í‹°ì–´2
+    private void A917(int PlayerNumber)//½ºÅÈ Ä¡¸íÅ¸ Æ¼¾î2
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.Critical.added += critical * 2;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ì˜ ì¹˜ëª…íƒ€ì¦ê°€");
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ÀÇ Ä¡¸íÅ¸Áõ°¡");
     }
     [PunRPC]
-    private void A918(int PlayerNumber)//ìŠ¤íƒ¯ ì¥íƒ„ìˆ˜ í‹°ì–´2
+    private void A918(int PlayerNumber)//½ºÅÈ ÀåÅº¼ö Æ¼¾î2
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.AmmoMax.added += AmmoMax;
     }
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ìŠ¤íƒ¯3í‹°ì–´
-    private void A921(int PlayerNumber)//ìŠ¤íƒ¯ ê³µ í‹°ì–´ 3
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@½ºÅÈ3Æ¼¾î
+    private void A921(int PlayerNumber)//½ºÅÈ °ø Æ¼¾î 3
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.ATK.added += atk * 3;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ì˜ ê³µê²©ë ¥ì¦ê°€");
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ÀÇ °ø°İ·ÂÁõ°¡");
     }
     [PunRPC]
-    private void A922(int PlayerNumber)//ìŠ¤íƒ¯ ì²´ í‹°ì–´ 3
+    private void A922(int PlayerNumber)//½ºÅÈ Ã¼ Æ¼¾î 3
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.HP.added += hp * 3;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ì˜ ë°©ì–´ë ¥ì¦ê°€");
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ÀÇ ¹æ¾î·ÂÁõ°¡");
     }
     [PunRPC]
-    private void A923(int PlayerNumber)//ìŠ¤íƒ¯ ì´ì† í‹°ì–´ 3
+    private void A923(int PlayerNumber)//½ºÅÈ ÀÌ¼Ó Æ¼¾î 3
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.Speed.added += speed * 3;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ì˜ ì´ì†ì¦ê°€");
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ÀÇ ÀÌ¼ÓÁõ°¡");
     }
     [PunRPC]
-    private void A924(int PlayerNumber)//ìŠ¤íƒ¯ ê³µì† í‹°ì–´ 3
+    private void A924(int PlayerNumber)//½ºÅÈ °ø¼Ó Æ¼¾î 3
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.AtkSpeed.added += atkspeed * 3;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ì˜ ê³µì†ì¦ê°€");
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ÀÇ °ø¼ÓÁõ°¡");
     }
     [PunRPC]
-    private void A925(int PlayerNumber)//ìŠ¤íƒ¯ ì •ë°€ë„ í‹°ì–´ 3
+    private void A925(int PlayerNumber)//½ºÅÈ Á¤¹Ğµµ Æ¼¾î 3
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.BulletSpread.added += bulletSpread * 3;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ì˜ ì •ë°€ë„ì¦ê°€");
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ÀÇ Á¤¹ĞµµÁõ°¡");
     }
     [PunRPC]
-    private void A926(int PlayerNumber)//ìŠ¤íƒ¯ ìŠ¤í‚¬ì¿¨íƒ€ì„ í‹°ì–´3
+    private void A926(int PlayerNumber)//½ºÅÈ ½ºÅ³ÄğÅ¸ÀÓ Æ¼¾î3
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.SkillCoolTime.added += cooltime * 3;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ì˜ ì¿¨íƒ€ì„ì¦ê°€");
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ÀÇ ÄğÅ¸ÀÓÁõ°¡");
     }
     [PunRPC]
-    private void A927(int PlayerNumber)//ìŠ¤íƒ¯ ì¹˜ëª…íƒ€ í‹°ì–´3
+    private void A927(int PlayerNumber)//½ºÅÈ Ä¡¸íÅ¸ Æ¼¾î3
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.Critical.added += critical * 3;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ì˜ ì¹˜ëª…íƒ€ì¦ê°€");
+        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}ÀÇ Ä¡¸íÅ¸Áõ°¡");
     }
     [PunRPC]
-    private void A928(int PlayerNumber)//ìŠ¤íƒ¯ ì¥íƒ„ìˆ˜ í‹°ì–´3
+    private void A928(int PlayerNumber)//½ºÅÈ ÀåÅº¼ö Æ¼¾î3
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.AmmoMax.added += AmmoMax * 2;
     }
     #endregion
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ê³µìš©1í‹°ì–´
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@°ø¿ë1Æ¼¾î
     #region ALL1
     [PunRPC]
-    private void A101(int PlayerNumber)//ì•„ì´ì–¸ìŠ¤í‚¨
+    private void A101(int PlayerNumber)//¾ÆÀÌ¾ğ½ºÅ²
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.defense *= 0.9f;
-        Debug.Log($"({playerstatHandler.gameObject.GetPhotonView().ViewID}ì˜ í˜„ì¬ ê³„ìˆ˜ {playerstatHandler.defense})");
+        Debug.Log($"({playerstatHandler.gameObject.GetPhotonView().ViewID}ÀÇ ÇöÀç °è¼ö {playerstatHandler.defense})");
     }
     [PunRPC]
-    private void A102(int PlayerNumber)//ì¸íŒŒì´í„° ì‚¬ê±°ë¦¬ ê³„ìˆ˜ -0.3 ê³µ ê³„ìˆ˜ +0.3
+    private void A102(int PlayerNumber)//ÀÎÆÄÀÌÅÍ »ç°Å¸® °è¼ö -0.3 °ø °è¼ö +0.3
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.BulletLifeTime.coefficient *= 0.7f;
         playerstatHandler.ATK.coefficient *= 1.3f;
-        Debug.Log($"({playerstatHandler.gameObject.GetPhotonView().ViewID}ì˜ í˜„ì¬ ì¥ì „ ê³„ìˆ˜ {playerstatHandler.BulletLifeTime.coefficient})");
-        Debug.Log($"({playerstatHandler.gameObject.GetPhotonView().ViewID}ì˜ í˜„ì¬ ê³µ ê³„ìˆ˜ {playerstatHandler.ATK.coefficient})");
+        Debug.Log($"({playerstatHandler.gameObject.GetPhotonView().ViewID}ÀÇ ÇöÀç ÀåÀü °è¼ö {playerstatHandler.BulletLifeTime.coefficient})");
+        Debug.Log($"({playerstatHandler.gameObject.GetPhotonView().ViewID}ÀÇ ÇöÀç °ø °è¼ö {playerstatHandler.ATK.coefficient})");
     }
     [PunRPC]
-    private void A103(int PlayerNumber)//ë‚œì‚¬//íƒ„í¼ì§ì´ ë†’ì„ìˆ˜ë¡ ì¥ì „ì‹œê°„ ê°ì†Œ //ìŠ¤í…Œì´ì§€ ì‹œì‘ì‹œ íƒ„í¼ì§*0.2f ì¿¨ê°
+    private void A103(int PlayerNumber)//³­»ç//ÅºÆÛÁüÀÌ ³ôÀ»¼ö·Ï ÀåÀü½Ã°£ °¨¼Ò //½ºÅ×ÀÌÁö ½ÃÀÛ½Ã ÅºÆÛÁü*0.2f Äğ°¨
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A0103>();
     }
     [PunRPC]
-    private void A104(int PlayerNumber)//ì•½ìë©¸ì‹œ í˜„ì¬ ìŠ¤í…Œì´ì§€ê°€ ë‚®ì„ìˆ˜ë¡ ê³µê²©ë ¥ ì¦ê°€
+    private void A104(int PlayerNumber)//¾àÀÚ¸ê½Ã ÇöÀç ½ºÅ×ÀÌÁö°¡ ³·À»¼ö·Ï °ø°İ·Â Áõ°¡
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A0104>();
     }
     [PunRPC]
-    private void A105(int PlayerNumber)// ìœ ë¦¬ëŒ€í¬ //í˜„ì¬ ìµœëŒ€ ì²´ë ¥ì„ 1ë¡œ ë§Œë“¤ê³  ê·¸ ê°’ ì˜ ì ˆë°˜ ë§Œí¼ ê³µì—…
+    private void A105(int PlayerNumber)// À¯¸®´ëÆ÷ //ÇöÀç ÃÖ´ë Ã¼·ÂÀ» 1·Î ¸¸µé°í ±× °ª ÀÇ Àı¹İ ¸¸Å­ °ø¾÷
     {
         ChangePlayerStatHandler(PlayerNumber);
         float up = ((int)playerstatHandler.HP.total - 1);
@@ -279,30 +279,30 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
     [PunRPC]
     private void A106(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A107(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A108(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
-    private void A109(int PlayerNumber)// ì†Œí˜•í™” //í…ŒìŠ¤íŠ¸ì•ˆí•´ë´„
+    private void A109(int PlayerNumber)// ¼ÒÇüÈ­ //Å×½ºÆ®¾ÈÇØº½
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
-        float x = (targetPlayer.transform.localScale.x * 0.75f);//ì ˆë°˜
-        float y = (targetPlayer.transform.localScale.y * 0.75f);//ì ˆë°˜
+        float x = (targetPlayer.transform.localScale.x * 0.75f);//Àı¹İ
+        float y = (targetPlayer.transform.localScale.y * 0.75f);//Àı¹İ
         targetPlayer.transform.localScale = new Vector2(x, y);
         playerstatHandler.HP.coefficient *= 0.8f;
         playerstatHandler.Speed.coefficient *= 1.2f;
     }
     [PunRPC]
-    private void A110(int PlayerNumber)//ëŒ€í˜•í™” // í…ŒìŠ¤íŠ¸ì•ˆí•´ë´„
+    private void A110(int PlayerNumber)//´ëÇüÈ­ // Å×½ºÆ®¾ÈÇØº½
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         float x = (targetPlayer.transform.localScale.x * 1.25f);
@@ -314,16 +314,16 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
     [PunRPC]
     private void A111(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
-    private void A112(int PlayerNumber)//ë¹ ë¥¸ì¥ì „
+    private void A112(int PlayerNumber)//ºü¸¥ÀåÀü
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.ReloadCoolTime.added -= 0.3f;
     }
     [PunRPC]
-    private void A113(int PlayerNumber)// ë¨¸ë‹ˆ=íŒŒì›Œ
+    private void A113(int PlayerNumber)// ¸Ó´Ï=ÆÄ¿ö
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A0113>();
@@ -331,20 +331,20 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
     [PunRPC]
     private void A114(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A115(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A116(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
-    private void A117(int PlayerNumber)//777 ê³µê²© í™•ë¥  ì¡°ì • ì¶”í›„ ê³µê²© ì„±ê³µ í™•ë¥  ë¹„ìŠ·í•œ ê°œë…ìœ¼ë¡œ ë„ì…ë ê°€ëŠ¥ì„±ì´ ìˆìŒ
+    private void A117(int PlayerNumber)//777 °ø°İ È®·ü Á¶Á¤ ÃßÈÄ °ø°İ ¼º°ø È®·ü ºñ½ÁÇÑ °³³äÀ¸·Î µµÀÔµÉ°¡´É¼ºÀÌ ÀÖÀ½
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         PlayerInputController inputControl = targetPlayer.GetComponent<PlayerInputController>();
@@ -352,10 +352,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
         playerstatHandler.ATK.coefficient *= 1.3f;
     }
     [PunRPC]
-    private void A118(int PlayerNumber)        //ê³ ì¥ë‚´ê¸° mk3 1,2,3 ê³µìš© ì¦ê°• ì´ê¸°ì— ì¢€ ë‚¨ë‹¤ë¥¸ ì½”ë“œì„  í˜„ì¬ 10 /30 /60 ì´í•© 100í™•ë¥ ì„ ê°€ì§€ê³  ìˆìŠµì£ 
+    private void A118(int PlayerNumber)        //°íÀå³»±â mk3 1,2,3 °ø¿ë Áõ°­ ÀÌ±â¿¡ Á» ³²´Ù¸¥ ÄÚµåÀÓ  ÇöÀç 10 /30 /60 ÃÑÇÕ 100È®·üÀ» °¡Áö°í ÀÖ½ÀÁÒ
     {
         ChangeOnlyPlayer(PlayerNumber);
-        if (targetPlayer.GetComponent<BreakDownMk>()) //ë§Œì•½ BreakDownMkë¥¼ ê°€ì§€ê³  ìˆë‹¤ë©´
+        if (targetPlayer.GetComponent<BreakDownMk>()) //¸¸¾à BreakDownMk¸¦ °¡Áö°í ÀÖ´Ù¸é
         {
             BreakDownMk Mk3 = targetPlayer.GetComponent<BreakDownMk>();
             Mk3.PercentUp(10);
@@ -370,34 +370,32 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
         }
     }
     [PunRPC]
-    private void A119(int PlayerNumber)// ë°˜ì „ ê³µê²©ë°©í–¥ , ì´ë™ë°©í–¥ì´ ë°˜ëŒ€ê°€ë˜ê³  ê³µì²´ ëŒ€í­ ì¦ê°€ == í˜„ì¬ ì´ë™ë°©í–¥ ë°˜ëŒ€ë§Œ êµ¬í˜„ A119 A2105ëŠ” ë™ì¼ í•¨ìˆ˜ í•©ì¹˜ëŠ”ê±° ê³ ë ¤
+    private void A119(int PlayerNumber)// ¹İÀü °ø°İ¹æÇâ , ÀÌµ¿¹æÇâÀÌ ¹İ´ë°¡µÇ°í °øÃ¼ ´ëÆø Áõ°¡ == ÇöÀç ÀÌµ¿¹æÇâ ¹İ´ë¸¸ ±¸Çö A119 A2105´Â µ¿ÀÏ ÇÔ¼ö ÇÕÄ¡´Â°Å °í·Á
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         playerInput = targetPlayer.GetComponent<PlayerInput>();
-        Debug.Log("í˜„ì¬ ì¢Œìš° ìƒí•˜ ì´ë™ì´ ë°˜ì „ë¬ëŠ”ì§€ ì—°ë½ ë°”ëŒ(ì—„ê²© ê·¼ì—„ ì§„ì§€)");
+        Debug.Log("ÇöÀç ÁÂ¿ì »óÇÏ ÀÌµ¿ÀÌ ¹İÀü‰ç´ÂÁö ¿¬¶ô ¹Ù¶÷(¾ö°İ ±Ù¾ö ÁøÁö)");
         if (playerstatHandler.isNoramlMove)
         {
             playerInput.actions.FindAction("Move2").Enable();
             playerInput.actions.FindAction("Move").Disable();
             playerstatHandler.isNoramlMove = false;
-            Debug.Log("ë°˜ì „íƒ€ì…1");
         }
         else
         {
             playerInput.actions.FindAction("Move2").Disable();
             playerInput.actions.FindAction("Move").Enable();
             playerstatHandler.isNoramlMove = true;
-            Debug.Log("ë°˜ì „íƒ€ì…2");
         }
         playerstatHandler.HP.coefficient *= 1.5f;
         playerstatHandler.ATK.coefficient *= 1.5f;
     }
-    //private void A119(int PlayerNumber)// ì›ì‹œ ê³ ëŒ€ ë°˜ì „ ë³´ì¡´
+    //private void A119(int PlayerNumber)// ¿ø½Ã °í´ë ¹İÀü º¸Á¸
     //{
     //    ChangePlayerAndPlayerStatHandler(PlayerNumber);
     //    if (targetPlayer.GetComponent<PlayerInput>() == null)
     //    {
-    //        Debug.Log("ë„ê°’ì„ ë¹„ìƒë¹„ìƒë¹„ìƒë¹„ìƒë¹„ìƒë¹„ìƒ");
+    //        Debug.Log("³Î°ªÀÓ ºñ»óºñ»óºñ»óºñ»óºñ»óºñ»ó");
     //    }
     //    playerInput = targetPlayer.GetComponent<PlayerInput>();
     //    if (playerInput.currentActionMap.name == "Player")
@@ -412,7 +410,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
     //    playerstatHandler.ATK.coefficient *= 1.5f;
     //}
     [PunRPC]
-    private void A120(int PlayerNumber)//ì›Œí„° íŒŒí¬ ê°œì¥ 122ì˜ ë¬¼ë²„ì „
+    private void A120(int PlayerNumber)//¿öÅÍ ÆÄÅ© °³Àå 122ÀÇ ¹°¹öÀü
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A0120>();
@@ -420,10 +418,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
     [PunRPC]
     private void A121(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
-    private void A122(int PlayerNumber)//í™”ë‹¤ë‹¥ 120ì˜ ë¶ˆë²„ì „//122ì—†ìŒ
+    private void A122(int PlayerNumber)//È­´Ù´Ú 120ÀÇ ºÒ¹öÀü//122¾øÀ½
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A0122>();
@@ -431,15 +429,15 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
     [PunRPC]
     private void A123(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
-    //í…ŒìŠ¤íŠ¸ ì™„ë£Œ ê·¸ëŸ¬ë‚˜ ì´ë²¤íŠ¸ë¡œ ì‘ë™í•˜ì—¬ ì¶”ê°€ í…ŒìŠ¤íŠ¸ê°€ í•„ìš”
+    //Å×½ºÆ® ¿Ï·á ±×·¯³ª ÀÌº¥Æ®·Î ÀÛµ¿ÇÏ¿© Ãß°¡ Å×½ºÆ®°¡ ÇÊ¿ä
     [PunRPC]
-    private void A124(int PlayerNumber)//ëˆˆë¨¼ì´ì¡ì´ : ì‹œì•¼ê°€ ëŒ€í­ ê°ì†Œ í•˜ë©° ê³µê²© ì†ë„, ì¬ì¥ì „ ì†ë„ê°€ ì¦ê°€í•©ë‹ˆë‹¤.
+    private void A124(int PlayerNumber)//´«¸ÕÃÑÀâÀÌ : ½Ã¾ß°¡ ´ëÆø °¨¼Ò ÇÏ¸ç °ø°İ ¼Óµµ, ÀçÀåÀü ¼Óµµ°¡ Áõ°¡ÇÕ´Ï´Ù.
     {
         //PhotonView photonView = PhotonView.Find(PlayerPvNumber);
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
-        targetPlayer.AddComponent<A0124>();//A0124ì—ì„œ í™”ë©´ì–´ë‘¡ê²Œ í•˜ëŠ” í”„ë¦¬íŒ¹ ë§Œë“¤ê³  ìŠ¤í…Œì´ì§€ì‹œì‘ì— ON ëì— OFF
+        targetPlayer.AddComponent<A0124>();//A0124¿¡¼­ È­¸é¾îµÓ°Ô ÇÏ´Â ÇÁ¸®ÆÕ ¸¸µé°í ½ºÅ×ÀÌÁö½ÃÀÛ¿¡ ON ³¡¿¡ OFF
         playerstatHandler.AtkSpeed.added += 15;
         playerstatHandler.ReloadCoolTime.added -= 5;
     }
@@ -452,15 +450,15 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
     [PunRPC]
     private void A126(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A127(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
-    private void A128(int PlayerNumber)//í”„ë Œë“œ ì‹¤ë“œ í˜„ì¬ ì†ë„ 140
+    private void A128(int PlayerNumber)//ÇÁ·»µå ½Çµå ÇöÀç ¼Óµµ 140
     {
         ChangeOnlyPlayer(PlayerNumber);
         if (targetPlayer.GetPhotonView().IsMine)
@@ -472,19 +470,19 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
     }
     #endregion
     #region All2
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ê³µìš©2í‹°ì–´
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ °ø¿ë2Æ¼¾î
     [PunRPC]
     private void A201(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A202(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
-    private void A203(int PlayerNumber)//ë²„ì„œì»¤ ìµœëŒ€ì²´ë ¥ / í˜„ì¬ ì²´ë ¥ë¹„ë¡€ ë€ì¦
+    private void A203(int PlayerNumber)//¹ö¼­Ä¿ ÃÖ´ëÃ¼·Â / ÇöÀç Ã¼·Âºñ·Ê µ©Áõ
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A0203>();
@@ -492,10 +490,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
     [PunRPC]
     private void A204(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
-    private void A205(int PlayerNumber)//í¼ìŠ¤íŠ¸ ë¸”ëŸ¬ë“œ ì¥ì „í›„ ì²«ì´ì•Œ ë°ë¯¸ì§€ ì¦ê°€
+    private void A205(int PlayerNumber)//ÆÛ½ºÆ® ºí·¯µå ÀåÀüÈÄ Ã¹ÃÑ¾Ë µ¥¹ÌÁö Áõ°¡
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A0205>();
@@ -503,10 +501,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
     [PunRPC]
     private void A206(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
-    private void A207(int PlayerNumber)//í•˜ì´ë¦¬ìŠ¤í¬ ë¡œìš°ë¦¬í„´
+    private void A207(int PlayerNumber)//ÇÏÀÌ¸®½ºÅ© ·Î¿ì¸®ÅÏ
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.defense = playerstatHandler.defense * 0.5f;
@@ -515,10 +513,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
     [PunRPC]
     private void A208(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
-    private void A209(int PlayerNumber)//ì¬ì •ë¹„ êµ¬ë¥´ê¸°ì‹œ ì¬ì¥ì „ ìˆ˜í–‰
+    private void A209(int PlayerNumber)//ÀçÁ¤ºñ ±¸¸£±â½Ã ÀçÀåÀü ¼öÇà
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A0209>();
@@ -526,46 +524,46 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
     [PunRPC]
     private void A210(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
-    private void A211(int PlayerNumber)//í”¼í•´ë³µêµ¬ ì¼ì •í™•ë¥ ë¡œ ì¼ì • ì²´ë ¥ íšŒë³µ
+    private void A211(int PlayerNumber)//ÇÇÇØº¹±¸ ÀÏÁ¤È®·ü·Î ÀÏÁ¤ Ã¼·Â È¸º¹
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A0211>();
     }
     [PunRPC]
-    private void A212(int PlayerNumber)//ê°•ìë©¸ì‹œ í˜„ì¬ ìŠ¤í…Œì´ì§€ê°€ ë†’ì„ìˆ˜ë¡ ê³µì—…
+    private void A212(int PlayerNumber)//°­ÀÚ¸ê½Ã ÇöÀç ½ºÅ×ÀÌÁö°¡ ³ôÀ»¼ö·Ï °ø¾÷
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A0104>();
     }
     [PunRPC]
-    private void A213(int PlayerNumber)//ìƒì¡´ì í”Œë ˆì´ì–´ í˜¼ì ë‚¨ì•˜ì„ë•Œ ëŠ¥ë ¥ì¹˜ì—…
+    private void A213(int PlayerNumber)//»ıÁ¸ÀÚ ÇÃ·¹ÀÌ¾î È¥ÀÚ ³²¾ÒÀ»¶§ ´É·ÂÄ¡¾÷
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A0213>();
     }
     [PunRPC]
-    private void A214(int PlayerNumber)// í‰íƒ€ ê·¹ëŒ€í™” << ì´ë¦„ ë§˜ì—ì•ˆë“¬ ìŠ¤í‚¬í¬ê¸° ë°ë¯¸ì§€ ëŒ€í­ ì¦ê°€ << ëŒ€í­ ê¸‰ì¸ê°€? ê·¸ê¸‰ì€ ì•„ë‹Œê±° ê°™ì€ë°
+    private void A214(int PlayerNumber)// ÆòÅ¸ ±Ø´ëÈ­ << ÀÌ¸§ ¸¾¿¡¾Èµë ½ºÅ³Æ÷±â µ¥¹ÌÁö ´ëÆø Áõ°¡ << ´ëÆø ±ŞÀÎ°¡? ±×±ŞÀº ¾Æ´Ñ°Å °°Àºµ¥
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
-        playerInput=targetPlayer.GetComponent<PlayerInput>();
+        playerInput = targetPlayer.GetComponent<PlayerInput>();
         playerInput.actions.FindAction("Skill").Disable();
-        Debug.Log("ì´ ì¦ê°•ë„ ìƒë‹¹íˆ ìš°ë ¤ê°€ ë©ë‹ˆë‹¤ ìš°í´ë¦­ ì²´í¬ í•˜ê³  ë§í•´ì£¼ì„¸ìš”");
+        Debug.Log("ÀÌ Áõ°­µµ »ó´çÈ÷ ¿ì·Á°¡ µË´Ï´Ù ¿ìÅ¬¸¯ Ã¼Å© ÇÏ°í ¸»ÇØÁÖ¼¼¿ä");
     }
     [PunRPC]
     private void A215(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A216(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
-    private void A217(int PlayerNumber)//ìš©ê¸°ì˜ ê¹ƒë°œ ë²”ìœ„ë‚´ ì´ì† ê³µì†ì¦ê°€
+    private void A217(int PlayerNumber)//¿ë±âÀÇ ±ê¹ß ¹üÀ§³» ÀÌ¼Ó °ø¼ÓÁõ°¡
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A0217>();
@@ -573,13 +571,13 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
     [PunRPC]
     private void A218(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
-    private void A219(int PlayerNumber) //ê³ ì¥ë‚´ê¸°mk2 1,2,3 ê³µìš© ì¦ê°• ì´ê¸°ì— ì¢€ ë‚¨ë‹¤ë¥¸ ì½”ë“œì„ 30
+    private void A219(int PlayerNumber) //°íÀå³»±âmk2 1,2,3 °ø¿ë Áõ°­ ÀÌ±â¿¡ Á» ³²´Ù¸¥ ÄÚµåÀÓ 30
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
-        if (targetPlayer.GetComponent<BreakDownMk>()) //ë§Œì•½ BreakDownMkë¥¼ ê°€ì§€ê³  ìˆë‹¤ë©´
+        if (targetPlayer.GetComponent<BreakDownMk>()) //¸¸¾à BreakDownMk¸¦ °¡Áö°í ÀÖ´Ù¸é
         {
             BreakDownMk Mk3 = targetPlayer.GetComponent<BreakDownMk>();
             Mk3.PercentUp(30);
@@ -599,16 +597,16 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
         ChangeOnlyPlayer(PlayerNumber);
         A0220 drainComponent = targetPlayer.GetComponent<A0220>();
         drainComponent.PercentUp(30);
-        Debug.Log($"{drainComponent.percent}%ì˜ í™•ë¥ ë¡œ í¡í˜ˆ ì¤‘");
+        Debug.Log($"{drainComponent.percent}%ÀÇ È®·ü·Î ÈíÇ÷ Áß");
 
     }
     [PunRPC]
     private void A221(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
-    private void A222(int PlayerNumber)//ì¬ì •ë¹„ êµ¬ë¥´ê¸°í›„ íšŒë³µ
+    private void A222(int PlayerNumber)//ÀçÁ¤ºñ ±¸¸£±âÈÄ È¸º¹
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A0222>();
@@ -616,16 +614,16 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
     [PunRPC]
     private void A223(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     #endregion
     #region All3
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ê³µìš© 3í‹°ì–´
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@°ø¿ë 3Æ¼¾î
     [PunRPC]
-    private void A301(int PlayerNumber)//ê³ ì¥ë‚´ê¸° mk3 1,2,3 ê³µìš© ì¦ê°• ì´ê¸°ì— ì¢€ ë‚¨ë‹¤ë¥¸ ì½”ë“œì„ 
+    private void A301(int PlayerNumber)//°íÀå³»±â mk3 1,2,3 °ø¿ë Áõ°­ ÀÌ±â¿¡ Á» ³²´Ù¸¥ ÄÚµåÀÓ 
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
-        if (targetPlayer.GetComponent<BreakDownMk>()) //ë§Œì•½ BreakDownMkë¥¼ ê°€ì§€ê³  ìˆë‹¤ë©´
+        if (targetPlayer.GetComponent<BreakDownMk>()) //¸¸¾à BreakDownMk¸¦ °¡Áö°í ÀÖ´Ù¸é
         {
             BreakDownMk Mk3 = targetPlayer.GetComponent<BreakDownMk>();
             Mk3.PercentUp(60);
@@ -640,15 +638,15 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
         }
     }
     [PunRPC]
-    private void A302(int PlayerNumber)//ì¸í”¼ë‹ˆí‹°ë¶ˆë › íƒ„ì°½ 9999 íšë“ì‹œì ì˜ ì´ì•Œ ê°’ ê³„ì‚°í•˜ì—¬ 9999ë¡œ ë§ì¶°ì¤Œ ë§ë“  ì ë“  ê°™ìŒ
+    private void A302(int PlayerNumber)//ÀÎÇÇ´ÏÆ¼ºÒ·¿ ÅºÃ¢ 9999 È¹µæ½ÃÁ¡ÀÇ ÃÑ¾Ë °ª °è»êÇÏ¿© 9999·Î ¸ÂÃçÁÜ ¸¹µç Àûµç °°À½
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.AmmoMax.added += 9999 - playerstatHandler.AmmoMax.total;
     }
     [PunRPC]
-    private void A303(int PlayerNumber)//ë¶„ì‹ 
+    private void A303(int PlayerNumber)//ºĞ½Å
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
         ChangeOnlyPlayer(PlayerNumber);
         if (targetPlayer.GetPhotonView().IsMine)
         {
@@ -666,48 +664,48 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
         playerstatHandler.HP.coefficient *= 0.5f;
     }
     [PunRPC]
-    private void A305(int PlayerNumber)//ë©€í‹°ìƒ· ìƒ·2ë°°
+    private void A305(int PlayerNumber)//¸ÖÆ¼¼¦ ¼¦2¹è
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.LaunchVolume.coefficient *= 2;
     }
     #endregion
     #region Sniper1
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@ìŠ¤ë‚˜ì´í¼ 1í‹°ì–´
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@½º³ªÀÌÆÛ 1Æ¼¾î
     [PunRPC]
     private void A1101(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A1102(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A1103(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A1104(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A1105(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
 
     }
     [PunRPC]
     private void A1106(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
 
     [PunRPC]
-    private void A1107_1(int PlayerNumber)//ì˜¤ë¸Œì íŠ¸ ìƒì„±í˜• íê¸°ëœ ë””ìì¸
+    private void A1107_1(int PlayerNumber)//¿ÀºêÁ§Æ® »ı¼ºÇü Æó±âµÈ µğÀÚÀÎ
     {
         ChangeOnlyPlayer(PlayerNumber);
         GameObject Prefabs = Resources.Load<GameObject>("AugmentList/A1107");
@@ -716,7 +714,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
 
     }
     [PunRPC]
-    private void A1107(int PlayerNumber) //ì˜ì—­ì „ê°œ ìµœì´ˆì˜ ëŒ€ìƒì—ê²Œ ì˜êµ¬ì ìœ¼ë¡œ ì˜¬ë ¤ì£¼ëŠ” íƒ€ì… ì•„ì§ ì„¸ì„¸í•œ ì˜¤ë¥˜ê°€ ìˆì„ê²ƒìœ¼ë¡œ ì˜ˆìƒëœ
+    private void A1107(int PlayerNumber) //¿µ¿ªÀü°³ ÃÖÃÊÀÇ ´ë»ó¿¡°Ô ¿µ±¸ÀûÀ¸·Î ¿Ã·ÁÁÖ´Â Å¸ÀÔ ¾ÆÁ÷ ¼¼¼¼ÇÑ ¿À·ù°¡ ÀÖÀ»°ÍÀ¸·Î ¿¹»óµÈ
     {
         ChangeOnlyPlayer(PlayerNumber);
         if (targetPlayer.GetPhotonView().IsMine)
@@ -729,116 +727,106 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
     }
     #endregion
     #region Sniper2
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@ìŠ¤ë‚˜ì´í¼ 2í‹°ì–´
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@½º³ªÀÌÆÛ 2Æ¼¾î
     [PunRPC]
     private void A1201(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A1202(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A1203(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A1204(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A1205(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A1206(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A1207(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     #endregion
     #region Sniper3
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@ìŠ¤ë‚˜ì´í¼ 3í‹°ì–´
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@½º³ªÀÌÆÛ 3Æ¼¾î
     [PunRPC]
     private void A1301(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A1302(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A1303(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A1304(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     #endregion
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@ì†”ì ¸ 1í‹°ì–´
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@¼ÖÁ® 1Æ¼¾î
     [PunRPC]
-    private void A2101(int PlayerNumber) //ë…¸ë ¨í•¨ = ìŠ¤í‚¬ì‚¬ìš©í›„ ê³µì† ì¦ê°€ í…ŒìŠ¤íŠ¸ ã„´
+    private void A2101(int PlayerNumber) //³ë·ÃÇÔ = ½ºÅ³»ç¿ëÈÄ °ø¼Ó Áõ°¡ Å×½ºÆ® ¤¤
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A2101>();
     }
     [PunRPC]
-    private void A2102(int PlayerNumber) ///ì™€ë‹¤ë‹¤ë‹¤ã…ë‹¤ë‹¤ í…ŒìŠ¤íŠ¸ì•ˆí•¨ ê·¼ë° ìŠ¤íƒ¯ì´ë¼ ìƒê´€ì—†ì„ë“¯í•¨
+    private void A2102(int PlayerNumber) ///¿Í´Ù´Ù´Ù¤¿´Ù´Ù Å×½ºÆ®¾ÈÇÔ ±Ùµ¥ ½ºÅÈÀÌ¶ó »ó°ü¾øÀ»µíÇÔ
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.AtkSpeed.coefficient *= 2;
         playerstatHandler.ATK.coefficient *= 0.5f;
     }
     [PunRPC]
-    private void A2103(int PlayerNumber)//ê¸´ì¥ê° ì£¼ë³€ ì  ë¹„ë¡€ ìŠ¤íƒ¯ ++//ì´ê±° ìƒê°ë³´ë‹¤ ì—„ì²­ê¹Œë‹¤ë¡­ë„¤
+    private void A2103(int PlayerNumber)
     {
-        ChangeOnlyPlayer(PlayerNumber);
-        if (targetPlayer.GetPhotonView().IsMine)
-        {
-            GameObject prefab = PhotonNetwork.Instantiate("AugmentList/A2103", targetPlayer.transform.localPosition, Quaternion.identity);
-            int num = prefab.GetPhotonView().ViewID;
-            photonView.RPC("FindMaster", RpcTarget.All, num);
-            prefab.GetComponent<A2204>().Init();
-        }
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
-    private void A2104(int PlayerNumber)//ë¬´ê¸°êµì²´ :  í•¸ë“œê±´ >> ë“±ê°€ êµí™˜ ìµœëŒ€ ì¥íƒ„ìˆ˜ê°€ ê°ì†Œí•˜ì§€ë§Œ  ìŠ¤íŒ€íŒ© íš¨ê³¼ë¥¼ ì¦ê°€ì‹œí‚¤ëŠ” í•¸ë“œê±´ìœ¼ë¡œë³€ê²½
+    private void A2104(int PlayerNumber)
     {
-        ChangePlayerAndPlayerStatHandler(PlayerNumber);
-        playerstatHandler.AmmoMax.added -= 5;
-        Player1Skill.applicationAtkSpeed+=2f;
-        Player1Skill.applicationspeed += 2f;
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
-    private void A2105(int PlayerNumber)// ë°˜ì „ ê³µê²©ë°©í–¥ , ì´ë™ë°©í–¥ì´ ë°˜ëŒ€ê°€ë˜ê³  ê³µì²´ ëŒ€í­ ì¦ê°€ == í˜„ì¬ ì´ë™ë°©í–¥ ë°˜ëŒ€ë§Œ êµ¬í˜„ A119 A2105ëŠ” ë™ì¼ í•¨ìˆ˜ í•©ì¹˜ëŠ”ê±° ê³ ë ¤
+    private void A2105(int PlayerNumber)// ¹İÀü °ø°İ¹æÇâ , ÀÌµ¿¹æÇâÀÌ ¹İ´ë°¡µÇ°í °øÃ¼ ´ëÆø Áõ°¡ == ÇöÀç ÀÌµ¿¹æÇâ ¹İ´ë¸¸ ±¸Çö A119 A2105´Â µ¿ÀÏ ÇÔ¼ö ÇÕÄ¡´Â°Å °í·Á
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         if (targetPlayer.GetComponent<PlayerInput>() == null)
         {
-            Debug.Log("ë„ê°’ì„ ë¹„ìƒë¹„ìƒë¹„ìƒë¹„ìƒë¹„ìƒë¹„ìƒ");
+            Debug.Log("³Î°ªÀÓ ºñ»óºñ»óºñ»óºñ»óºñ»óºñ»ó");
         }
         playerInput = targetPlayer.GetComponent<PlayerInput>();
-        Debug.Log("í˜„ì¬ ì¢Œìš° ìƒí•˜ ì´ë™ì´ ë°˜ì „ë¬ëŠ”ì§€ ì—°ë½ ë°”ëŒ(ì—„ê²© ê·¼ì—„ ì§„ì§€)");
+        Debug.Log("ÇöÀç ÁÂ¿ì »óÇÏ ÀÌµ¿ÀÌ ¹İÀü‰ç´ÂÁö ¿¬¶ô ¹Ù¶÷(¾ö°İ ±Ù¾ö ÁøÁö)");
         if (playerstatHandler.isNoramlMove)
         {
             playerInput.actions.FindAction("Move2").Enable();
             playerInput.actions.FindAction("Move").Disable();
             playerstatHandler.isNoramlMove = false;
-            Debug.Log($"í˜„ì¬ì¸í’‹ì´ë¦„{playerInput.currentActionMap.name}");
+            Debug.Log($"ÇöÀçÀÎÇ²ÀÌ¸§{playerInput.currentActionMap.name}");
         }
         else
         {
@@ -848,78 +836,61 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
         playerstatHandler.ATK.coefficient *= 1.5f;
 
     }
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@ì†”ì ¸ 2í‹°ì–´
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@¼ÖÁ® 2Æ¼¾î
     [PunRPC]
-    private void A2201(int PlayerNumber)// ë¹ˆí‹ˆ ë§Œë“¤ê¸° //ê¸°ë³¸ ê³µê²© ì‹œ êµ¬ë¥´ê¸° ì¿¨íƒ€ì„ì´ ê°ì†Œí•©ë‹ˆë‹¤.
+    private void A2201(int PlayerNumber)// ºóÆ´ ¸¸µé±â //±âº» °ø°İ ½Ã ±¸¸£±â ÄğÅ¸ÀÓÀÌ °¨¼ÒÇÕ´Ï´Ù.
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A2201>();
     }
     [PunRPC]
-    private void A2202(int PlayerNumber)//í‹°íƒ€ì„ êµ¬ë¥¸í›„ ìŠ¤í‚¬ ì¬ì‚¬ìš© ëŒ€ê¸°ì‹œê°„ ê°ì†Œ
+    private void A2202(int PlayerNumber)//Æ¼Å¸ÀÓ ±¸¸¥ÈÄ ½ºÅ³ Àç»ç¿ë ´ë±â½Ã°£ °¨¼Ò
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A2202>();
     }
     [PunRPC]
-    private void A2203(int PlayerNumber)//êµ¬ë¥¸ìë¦¬ì—íìƒì„± íí•œë‹¤ëŠ”ê±° ìì²´ê°€ ì–´ìº ë ì§€ ëª¨ë¥´ê² ìŒ //ë¯¸ì™„ì„±
+    private void A2203(int PlayerNumber)//±¸¸¥ÀÚ¸®¿¡Èú»ı¼º ÈúÇÑ´Ù´Â°Å ÀÚÃ¼°¡ ¾îÄ³ µÉÁö ¸ğ¸£°ÚÀ½ //¹Ì¿Ï¼º
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A2203_1>();
     }
     [PunRPC]
-    private void A2204(int PlayerNumber)//ì—´ê´‘ì „ì—¼
+    private void A2204(int PlayerNumber)
     {
-        ChangeOnlyPlayer(PlayerNumber);
-        if (targetPlayer.GetPhotonView().IsMine)
-        {
-            GameObject prefab = PhotonNetwork.Instantiate("AugmentList/A2204", targetPlayer.transform.localPosition, Quaternion.identity);
-            int num = prefab.GetPhotonView().ViewID;
-            photonView.RPC("FindMaster", RpcTarget.All, num);
-            prefab.GetComponent<A2204>().Init();
-        }
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
-    private void A2205(int PlayerNumber)//ë¬´ê¸°êµì²´ ì–´ì°íŠ¸ë¼ì´í”Œ >> ë¬µì§í•œ íƒ„ì°½ ì¥íƒ„ìˆ˜ 30+ ì´ë™ì†ë„- êµ¬ë¥´ê¸° ì¿¨ì—…
+    private void A2205(int PlayerNumber)
     {
-        ChangePlayerStatHandler(PlayerNumber);
-        playerstatHandler.AmmoMax.added += 30;
-        playerstatHandler.Speed.added -= 2;
-        playerstatHandler.RollCoolTime.added += 2;
+        Debug.Log("¹Ì¿Ï¼º");
     }
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@ì†”ì ¸ 3í‹°ì–´
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@¼ÖÁ® 3Æ¼¾î
     [PunRPC]
-    private void A2301(int PlayerNumber)// ì§‘ì¤‘ ì´ì•Œì´ 1ë°œì´ ë˜ì§€ë§Œ ê°ì†Œí•œ ì´ì•Œìˆ˜ ë¹„ë¡€ ê³µ ++
+    private void A2301(int PlayerNumber)
     {
-        ChangePlayerStatHandler(PlayerNumber);
-        float changePower = playerstatHandler.AmmoMax.total - 1;
-        playerstatHandler.AmmoMax.added -= playerstatHandler.AmmoMax.total - 1;
-        playerstatHandler.ATK.added += changePower * 0.5f;
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A2302(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A2303(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
-    private void A2304(int PlayerNumber)//ìŠ¤íŒ€íŒ© ë§‰íˆê³  ì¼ë¶€ ìƒì‹œ ì ìš©
+    private void A2304(int PlayerNumber)
     {
-        ChangePlayerStatHandler(PlayerNumber);
-        playerInput=targetPlayer.GetComponent<PlayerInput>();
-        playerInput.actions.FindAction("Skill").Disable();
-        playerstatHandler.AtkSpeed.added += Player1Skill.applicationAtkSpeed * 0.5f;
-        playerstatHandler.Speed.added += Player1Skill.applicationspeed * 0.5f;
+        Debug.Log("¹Ì¿Ï¼º");
     }
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@ìƒ·ê±´ 1í‹°ì–´
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@¼¦°Ç 1Æ¼¾î
     [PunRPC]
     private void A3101(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A3102(int PlayerNumber)
@@ -930,25 +901,25 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
     [PunRPC]
     private void A3103(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A3104(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A3105(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A3106()
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
-    private void A3107(int PlayerNumber) // íŒŒì´ì–´ í† ë„¤ì´ë„ í…ŒìŠ¤íŠ¸ì•ˆí•¨
+    private void A3107(int PlayerNumber) // ÆÄÀÌ¾î Åä³×ÀÌµµ Å×½ºÆ®¾ÈÇÔ
     {
         ChangeOnlyPlayer(PlayerNumber);
         if (targetPlayer.GetPhotonView().IsMine)
@@ -960,9 +931,9 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
         }
 
     }
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@ìƒ·ê±´ 2í‹°ì–´
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@¼¦°Ç 2Æ¼¾î
     [PunRPC]
-    private void A3201(int PlayerNumber) //êµ´ëŸ¬ì„œ ì¥ì „ << êµ¬ë¥´ê¸° 2ì´ˆì¦ê°€ ì¥íƒ„ìˆ˜ +3ìœ¼ë¡œ ì¬ì¥ì „
+    private void A3201(int PlayerNumber) //±¼·¯¼­ ÀåÀü << ±¸¸£±â 2ÃÊÁõ°¡ ÀåÅº¼ö +3À¸·Î ÀçÀåÀü
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         playerstatHandler.RollCoolTime.added += 2f;
@@ -971,14 +942,14 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
     [PunRPC]
     private void A3202(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
-    private void A3203(int PlayerNumber)//ì‚¬ì´ì¦ˆì—… ëª¸2ë°°ì²´ë ¥3ë°°
+    private void A3203(int PlayerNumber)//»çÀÌÁî¾÷ ¸ö2¹èÃ¼·Â3¹è
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
-        float x = (targetPlayer.transform.localScale.x * 2f);//ì ˆë°˜
-        float y = (targetPlayer.transform.localScale.y * 2f);//ì ˆë°˜
+        float x = (targetPlayer.transform.localScale.x * 2f);//Àı¹İ
+        float y = (targetPlayer.transform.localScale.y * 2f);//Àı¹İ
         targetPlayer.transform.localScale = new Vector2(x, y);
         playerstatHandler.HP.coefficient *= 3;
     }
@@ -991,32 +962,32 @@ public class AugmentManager : MonoBehaviourPunCallbacks //ì‹¤ì§ˆì ìœ¼ë¡œ ì¦ê°•
     [PunRPC]
     private void A3205(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A3206(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A3207(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@ìƒ·ê±´ 3í‹°ì–´
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@¼¦°Ç 3Æ¼¾î
     [PunRPC]
     private void A3301(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A3302(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
     [PunRPC]
     private void A3303(int PlayerNumber)
     {
-        Debug.Log("ë¯¸ì™„ì„±");
+        Debug.Log("¹Ì¿Ï¼º");
     }
 }

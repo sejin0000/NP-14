@@ -18,16 +18,23 @@ public class UIPlayerHP : UIBase
 
     private void Start()
     {
-        if (SceneManager.GetActiveScene().name == "Test_ DoHyun")
+        //Debug.Log("[PlayerStatHandler]" + "Start Done");
+    }
+
+    public override void Initialize()
+    {
+        InitializeData();
+        SetValue();
+    }
+
+    void InitializeData()
+    {
+        if (SceneManager.GetActiveScene().name == "Test_DoHyun")
             playerStats = TestGameManagerDohyun.Instance.InstantiatedPlayer.GetComponent<PlayerStatHandler>();
         else
             playerStats = MainGameManager.Instance.InstantiatedPlayer.GetComponent<PlayerStatHandler>();
-        
-        playerStats.HitEvent += SetValue;
-        
-        SetValue();
 
-        //Debug.Log("[PlayerStatHandler]" + "Start Done");
+        playerStats.HitEvent += SetValue;
     }
 
     private void SetValue()
