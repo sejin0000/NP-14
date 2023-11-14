@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UIReloadHUD : MonoBehaviour
+public class UIReloadHUD : UIBase
 {
     private Slider slider;
     private GameObject player;
@@ -19,7 +19,12 @@ public class UIReloadHUD : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (SceneManager.GetActiveScene().name == "Test_ DoHyun")
+
+    }
+
+    public override void Initialize()
+    {
+        if (SceneManager.GetActiveScene().name == "Test_DoHyun")
             player = TestGameManagerDohyun.Instance.InstantiatedPlayer.gameObject;
         else
             player = MainGameManager.Instance.InstantiatedPlayer.gameObject;
@@ -28,10 +33,10 @@ public class UIReloadHUD : MonoBehaviour
         statHandler = player.GetComponent<PlayerStatHandler>();
         player.GetComponent<TopDownCharacterController>().OnEndReloadEvent += Close;
 
-        Initialize();
+        InitializeData();
     }
 
-    void Initialize()
+    public void InitializeData()
     {
         slider.maxValue = statHandler.ReloadCoolTime.total;
         slider.value = controller.curReloadCool;
@@ -40,12 +45,7 @@ public class UIReloadHUD : MonoBehaviour
     private void OnEnable()
     {
         if(player != null)
-            Initialize();
-    }
-
-    private void Close()
-    {
-        gameObject.SetActive(false);
+            InitializeData();
     }
 
     // Update is called once per frame

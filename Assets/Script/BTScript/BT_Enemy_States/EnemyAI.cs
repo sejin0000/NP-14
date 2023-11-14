@@ -21,22 +21,21 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     private BTRoot TreeAIState;
 
     public float currentHP;                  // 현재 체력 계산
-     
+    public float viewAngle;                  // 시야각 (기본120도)
+    public float viewDistance;               // 시야 거리 (기본 10)
 
     //컴포넌트 및 기타 외부요소(일부 할당은 하위 노드에서 진행)
     public EnemySO enemySO;                  // Enemy 정보 [모든 Action Node에 owner로 획득시킴]
     public SpriteRenderer spriteRenderer;
     public CircleCollider2D collider2D;
     public Animator anim;  
-    public GameObject target;                //추적 타겟[Palyer]
-    public Collider2D targetColl;
+    public Collider2D target;                //추적 타겟[Palyer]
     public NavMeshAgent nav;
 
     public GameObject enemyAim;
     public GameObject enemyBullet;
 
-    public float viewAngle;                  // 시야각 (기본120도)
-    public float viewDistance;               // 시야 거리 (기본 10)
+
     public LayerMask targetMask;             // 타겟 레이어(Player)
 
     public float currentMoveSpeed;           // 현재 이동속도
@@ -68,6 +67,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         //게임 오브젝트 활성화 시, 행동 트리 생성
         CreateTreeAIState();
         currentHP = enemySO.hp;
+        viewAngle = enemySO.viewAngle;
+        viewDistance = enemySO.viewDistance;
         isLive = true;
         isIdle = true;
 
@@ -82,18 +83,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         currentMoveSpeed = enemySO.enemyMoveSpeed;
 
         nav.speed = currentMoveSpeed;
-
-        /*
-        if (photonView.AmOwner)
-        {
-            nav.enabled = true;
-        }
-        else
-        {
-            nav.enabled = false;
-        }
-        */
-
     }
     void Update()
     {
@@ -101,12 +90,10 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         TreeAIState.Tick();       
         GaugeUpdate();
 
-
-
-        IsNavAbled();
-
         if (!isLive)
             return;
+
+        IsNavAbled();
 
 
 
@@ -139,7 +126,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             isIdle = false;
 
 
-        if (isChase || !isIdle )
+        if (IsNavAbled())
             anim.SetBool("isWalk", true);
         else
             anim.SetBool("isWalk", false);
@@ -224,7 +211,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void DestroyEnemy()
     {
-        Destroy(gameObject, 0.5f);
+        Destroy(gameObject);
     }
 
     public void Shoot()
@@ -235,6 +222,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         _bullet.IsDamage = true;
         _bullet.ATK = enemySO.atk;
         _bullet.BulletLifeTime = enemySO.bulletLifeTime;
+        _bullet.BulletSpeed = enemySO.bulletSpeed;
         _bullet.target = BulletTarget.Player;       
     }
 
@@ -295,15 +283,14 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
     private void FindPlayer(Vector2 _rightBoundary, Vector2 _leftBoundary)
     {
-        targetColl = Physics2D.OverlapCircle(transform.position, viewDistance, targetMask);
+        target = Physics2D.OverlapCircle(transform.position, viewDistance, targetMask);
 
 
-        if (targetColl == null)
+        if (target == null)
             return;
 
-        target = targetColl.gameObject;
 
-        if (targetColl.tag == "Player")
+        if (target.tag == "Player")
         {
 
             //시야각 방향의 직선 Direction
@@ -312,7 +299,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             //Debug.DrawRay(transform.position, middleDirection * viewDistance, Color.green);
 
             //Enemy와 Player 사이의 방향
-            Vector2 directionToPlayer = (targetColl.transform.position - transform.position).normalized;
+            Vector2 directionToPlayer = (target.transform.position - transform.position).normalized;
 
             //플레이어 시야 중앙~타겟위치 사이의 각도
             float angle = Vector3.Angle(directionToPlayer, middleDirection);
@@ -352,12 +339,18 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
-    public void IsNavAbled()
+    public bool IsNavAbled()
     {
         if (isAttaking || !isLive)
+        {
             nav.isStopped = true;
+            return false;
+        }            
         else
+        {
             nav.isStopped = false; // 활성화
+            return true;
+        }           
     }
 
 
@@ -389,6 +382,9 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         BTChase.AddChild(chaseCondition);
         EnemyState_Chase state_Chase = new EnemyState_Chase(gameObject);
         BTChase.AddChild (state_Chase);
+
+        EnemyState_Attack_AttackCondition attackCondition = new EnemyState_Attack_AttackCondition(gameObject);
+        BTChase.AddChild(attackCondition);
         EnemyState_Attack state_Attack = new EnemyState_Attack(gameObject);
         BTChase.AddChild(state_Attack);
 

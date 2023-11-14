@@ -45,7 +45,7 @@ public class Debuff : MonoBehaviourPun
         {
             PhotonView pv = gameObject.GetComponent<PhotonView>();
             int viewID = pv.ViewID;
-            pv.RPC("FireGive", RpcTarget.All, power, viewID);
+            pv.RPC("IceGive", RpcTarget.All, power, viewID);
         }
     }
 
@@ -65,6 +65,37 @@ public class Debuff : MonoBehaviourPun
         a.SpeedCoefficient = 0.8f;
         yield return endtime;
         a.SpeedCoefficient = 1f;
+
+    }
+
+    public static void GiveLowSteamPack(GameObject gameObject)
+    {
+        if (gameObject.tag == "Enemy")
+        {
+            PhotonView pv = gameObject.GetComponent<PhotonView>();
+            int viewID = pv.ViewID;
+            pv.RPC("LowSteamPackGive", RpcTarget.All, viewID);
+        }
+    }
+
+    [PunRPC]
+    public void LowSteamPackGive(int viewID)
+    {
+        StartCoroutine("LowSteamPack", viewID);
+    }
+
+    static IEnumerator LowSteamPack(int viewID)
+    {
+        int endtime = 5;
+        PhotonView photonView = PhotonView.Find(viewID);
+        GameObject targetPlayer = photonView.gameObject;
+        PlayerStatHandler a = targetPlayer.GetComponent<PlayerStatHandler>();
+
+        a.AtkSpeed.added += 0.5f;
+        a.Speed.added += 0.5f;
+        yield return endtime;
+        a.AtkSpeed.added -= 0.5f;
+        a.Speed.added -= 0.5f;
 
     }
 
