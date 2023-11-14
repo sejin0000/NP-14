@@ -112,7 +112,7 @@ using Photon.Pun;
     private void Patrol()
     {
         //¼öÁ¤µÊ
-        if (!enemyAI.isAttaking)
+        if (!enemyAI.isAttaking && enemyAI.photonView.AmOwner)
         {
             enemyAI.PV.RPC("DestinationSet", RpcTarget.AllBuffered, destination);
             //enemyAI.DestinationSet(destination);
