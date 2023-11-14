@@ -3,13 +3,14 @@
     using UnityEngine;
     using myBehaviourTree;
     using static UnityEngine.RuleTile.TilingRuleOutput;
+using Photon.Pun;
 
     public class EnemyState_Patrol : BTAction
     {
         private GameObject owner;
         private EnemyAI enemyAI;
         private EnemySO enemySO;
-        private Vector2 destination;   // 목적지
+        private Vector3 destination;   // 목적지
 
 
         private float partrolDelay;      // 걷기 시간
@@ -96,7 +97,7 @@
         destinationY = Random.Range(-5f, 5f);
 
 
-        destination.Set(destinationX, destinationY); // 목적지 지정
+        destination.Set(destinationX, destinationY, 0); // 목적지 지정
 
 
         //스프라이트 조정(anim = 최대 4방향[대각] + 4방향[정방향] 지정 가능)
@@ -113,7 +114,8 @@
         //수정됨
         if (!enemyAI.isAttaking)
         {
-            enemyAI.DestinationSet(destination);
+            enemyAI.PV.RPC("DestinationSet", RpcTarget.AllBuffered, destination);
+            //enemyAI.DestinationSet(destination);
         }          
 
         //rigid.MovePosition(transform.position + (transform.forward * applySpeed * Time.deltaTime));
