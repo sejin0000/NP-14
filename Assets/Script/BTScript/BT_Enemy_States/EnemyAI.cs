@@ -423,14 +423,12 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             // 데이터를 전송
             stream.SendNext(nowEnemyPosition);
             stream.SendNext(nowEnemyRotation);
-            Debug.Log($"보내는 트랜스폼 {nowEnemyPosition}");
         }
         else if (stream.IsReading)
         {
             // 데이터를 수신
             nowEnemyPosition = (Vector2)stream.ReceiveNext();
             nowEnemyRotation = (Quaternion)stream.ReceiveNext();
-            Debug.Log($"받는 트랜스폼 {nowEnemyPosition}");
         }
     }
 }
