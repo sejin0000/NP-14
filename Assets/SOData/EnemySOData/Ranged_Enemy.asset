@@ -10,20 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1f76e7dab80292843a8ceb8dbf8daab0, type: 3}
-  m_Name: Ranged_Enemy_SO
+  m_Name: Ranged_Enemy
   m_EditorClassIdentifier: 
-  enemyName: "\uC6D0\uAC70\uB9AC_\uBAAC\uC2A4\uD130"
+  enemyName: "\uC0C8\uB07C\uC6A9"
   type: 1
   atk: 5
   hp: 40
+  bulletSpeed: 5
   atkDelay: 1.5
   patrolDelay: 3
   chaseTime: 4
   bulletLifeTime: 2
   enemyMoveSpeed: 3.5
   enemyChaseSpeed: 2.5
-  detectionRange: 0
+  viewAngle: 55
+  viewDistance: 5
   attackRange: 3
-  patrolRange: 0
   dropGold: 0
   unitScale: 2
