@@ -68,7 +68,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     //PhotonView photonView = PhotonView.Find(PlayerNumber);
     //playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
     [PunRPC]
-    private void setParent(int num)
+    private void FindMaster(int num)
     {
         PhotonView a = PhotonView.Find(num);
         a.transform.SetParent(targetPlayer.transform);
@@ -465,7 +465,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         {
             GameObject prefab = PhotonNetwork.Instantiate("AugmentList/A0128", targetPlayer.transform.localPosition, Quaternion.identity);
             int num = prefab.GetPhotonView().ViewID;
-            photonView.RPC("setParent", RpcTarget.All, num);
+            photonView.RPC("FindMaster", RpcTarget.All, num);
         }
     }
     #endregion
@@ -653,7 +653,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
             GameObject prefab = PhotonNetwork.Instantiate("AugmentList/A0303", targetPlayer.transform.localPosition, Quaternion.identity);
             prefab.GetComponent<A0303>().Initialize(prefab.transform);
             int num = prefab.GetPhotonView().ViewID;
-            prefab.GetPhotonView().RPC("setParent", RpcTarget.All, num);
+            prefab.GetPhotonView().RPC("FindMaster", RpcTarget.All, num);
         }
     }
     [PunRPC]
@@ -720,7 +720,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         {
             GameObject Prefabs = PhotonNetwork.Instantiate("AugmentList/A1107", targetPlayer.transform.localPosition, Quaternion.identity);
             int num = Prefabs.GetPhotonView().ViewID;
-            photonView.RPC("setParent", RpcTarget.All, num);
+            photonView.RPC("FindMaster", RpcTarget.All, num);
             Prefabs.GetComponent<A1107>().Init();
         }
     }
@@ -926,7 +926,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
             GameObject prefab = PhotonNetwork.Instantiate("AugmentList/A3107", targetPlayer.transform.localPosition, Quaternion.identity);
             prefab.GetComponent<A3107>().Init(targetPlayer);
             int num = prefab.GetPhotonView().ViewID;
-            photonView.RPC("setParent", RpcTarget.All, num);
+            photonView.RPC("FindMaster", RpcTarget.All, num);
         }
 
     }
