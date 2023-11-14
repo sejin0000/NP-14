@@ -31,6 +31,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     public Animator anim;  
     public Collider2D target;                //추적 타겟[Palyer]
     public NavMeshAgent nav;
+    public Vector3 navTargetPoint;              //nav 목적지
+
 
     public GameObject enemyAim;
     public GameObject enemyBullet;
@@ -83,6 +85,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         currentMoveSpeed = enemySO.enemyMoveSpeed;
 
         nav.speed = currentMoveSpeed;
+        navTargetPoint = transform.position;
     }
     void Update()
     {
@@ -333,15 +336,11 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
-    [PunRPC]
-    public void DestinationSet(Vector3 targetPoint)
+    public void DestinationSet()
     {
-        if (!PhotonNetwork.IsMasterClient)
-            return;
-
         if (!isAttaking || isLive)
         {
-            nav.SetDestination(targetPoint);
+            nav.SetDestination(navTargetPoint);
         }
     }
 
@@ -427,14 +426,12 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         if (stream.IsWriting)
         {
             // 데이터를 전송
-            stream.SendNext(nowEnemyPosition);
-            stream.SendNext(nowEnemyRotation);
+            stream.SendNext(navTargetPoint);
         }
         else if (stream.IsReading)
         {
             // 데이터를 수신
-            nowEnemyPosition = (Vector2)stream.ReceiveNext();
-            nowEnemyRotation = (Quaternion)stream.ReceiveNext();
+            navTargetPoint = (Vector3)stream.ReceiveNext();
         }
     }
  
