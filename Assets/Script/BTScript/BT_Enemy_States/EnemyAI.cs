@@ -16,7 +16,7 @@ using static UnityEngine.Rendering.DebugUI.Table;
 
 
 //Enemy에 필요한 컴포넌트들 + 기타 요소들 여기에 다 추가
-public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
+public class EnemyAI : MonoBehaviourPunCallbacks//, IPunObservable
 {
     private BTRoot TreeAIState;
 
@@ -58,6 +58,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
     void Awake()
     {
+
         nav = GetComponent<NavMeshAgent>();
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
@@ -333,8 +334,12 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
-    public void DestinationSet(Vector3 targetPoint)
+    [PunRPC]
+    public void DestinationSet(Vector2 targetPoint)
     {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
         if (!isAttaking || isLive)
         {
             nav.SetDestination(targetPoint);
@@ -414,6 +419,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         TreeAIState.AddChild(BTMainSelector);
     }
 
+   /* 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
@@ -431,4 +437,5 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             target = (Collider2D)stream.ReceiveNext();
         }
     }
+ */   
 }

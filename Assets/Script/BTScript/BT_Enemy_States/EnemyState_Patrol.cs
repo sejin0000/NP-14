@@ -3,6 +3,7 @@
     using UnityEngine;
     using myBehaviourTree;
     using static UnityEngine.RuleTile.TilingRuleOutput;
+using Photon.Pun;
 
     public class EnemyState_Patrol : BTAction
     {
@@ -113,7 +114,8 @@
         //¼öÁ¤µÊ
         if (!enemyAI.isAttaking)
         {
-            enemyAI.DestinationSet(destination);
+            enemyAI.PV.RPC("DestinationSet", RpcTarget.AllBuffered, destination);
+            //enemyAI.DestinationSet(destination);
         }          
 
         //rigid.MovePosition(transform.position + (transform.forward * applySpeed * Time.deltaTime));
