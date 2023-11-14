@@ -135,9 +135,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11ffad769cd89174eabda93a685ad86c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AugmentNameText: {fileID: 0}
+  AugmentNameText: {fileID: 1216059771607165938}
   Augmentcode: 0
-  AugmentSelectButton: {fileID: 0}
+  AugmentSelectButton: {fileID: 617827940974117712}
 --- !u!1 &3869683183623132613
 GameObject:
   m_ObjectHideFlags: 0

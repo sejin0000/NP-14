@@ -64,13 +64,13 @@ public class TestResultManager : MonoBehaviour//vsÄÚµå
     }
     public void startset()
     {
-        stat1 = MakeAugmentListManager.Instance.stat1;
-        stat2 = MakeAugmentListManager.Instance.stat2;
-        stat3 = MakeAugmentListManager.Instance.stat3;
-        SpecialAugment1 = MakeAugmentListManager.Instance.SpecialAugment1;
-        SpecialAugment2 = MakeAugmentListManager.Instance.SpecialAugment2;
-        SpecialAugment3 = MakeAugmentListManager.Instance.SpecialAugment3;
-        ProtoList = MakeAugmentListManager.Instance.Prototype;
+        stat1 = TestMakeAugmentListManager.Instance.stat1;
+        stat2 = TestMakeAugmentListManager.Instance.stat2;
+        stat3 = TestMakeAugmentListManager.Instance.stat3;
+        SpecialAugment1 = TestMakeAugmentListManager.Instance.SpecialAugment1;
+        SpecialAugment2 = TestMakeAugmentListManager.Instance.SpecialAugment2;
+        SpecialAugment3 = TestMakeAugmentListManager.Instance.SpecialAugment3;
+        ProtoList = TestMakeAugmentListManager.Instance.Prototype;
     }
 
     public void Result()

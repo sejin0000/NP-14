@@ -9,9 +9,9 @@ using static UnityEngine.UI.CanvasScaler;
 
 public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러오는곳 AugmentManager.Instance.Invoke(code,0); 을통해 해당 증강불러옴
 {
-    public static TestAugmentManager Instance;//싱긍톤
-    public PlayerStatHandler playerstatHandler;//정확히는 이름을 타겟 플레이어 스탯 핸들러가 맞는 표현 같기도함 // 생각할수록 맞음
-    int atk = 5;//여기서부터 아래까지  티어별로 *n으로 사용중
+    public static TestAugmentManager Instance;
+    public PlayerStatHandler playerstatHandler;
+    int atk = 5;
     int hp = 8;
     float speed = 1;
     float atkspeed = -1f;
