@@ -920,6 +920,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8050595d3f3d5b044bb22aa708738f0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  applicationTime: 5
   applicationspeed: 2
   applicationAtkSpeed: 2
 --- !u!1001 &7349556988077420125
