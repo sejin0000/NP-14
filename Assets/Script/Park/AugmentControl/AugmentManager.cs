@@ -713,6 +713,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         go.transform.SetParent(targetPlayer.transform);
 
     }
+    [PunRPC]
     private void A1107(int PlayerNumber) //영역전개 최초의 대상에게 영구적으로 올려주는 타입 아직 세세한 오류가 있을것으로 예상된
     {
         ChangeOnlyPlayer(PlayerNumber);
