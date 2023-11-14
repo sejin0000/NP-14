@@ -5,9 +5,9 @@ using UnityEngine.InputSystem.XR;
 
 public class Player1Skill : Skill
 {
-    public static int applicationTime = 5;
-    public static float applicationspeed = 5f;
-    public static float applicationAtkSpeed =5f;
+    public int applicationTime = 5;
+    public float applicationspeed = 2f;
+    public float applicationAtkSpeed =2f;
     //디버프 클래스 안에 절반효과를 주는 열광전염이 있음 1f기준으로 설계되있기에 수정시 같이 수정바람
     public override void SkillStart()
     {

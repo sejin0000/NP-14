@@ -118,6 +118,7 @@ public class CoolTimeController : MonoBehaviour
         Debug.Log("스킬 쿨 타임 시작");
 
     }
+    
     private void EndSkillCoolTime()
     {
         controller.playerStatHandler.CanSkill = true;

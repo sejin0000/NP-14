@@ -68,6 +68,10 @@ public class TopDownCharacterController : MonoBehaviour
             OnSkillEvent?.Invoke();
         }
     }
+    public void SkillReset() 
+    {
+        OnSkillEvent = null;
+    }
     public void CallEndSkillEvent()
     {
         OnEndSkillEvent?.Invoke();
