@@ -113,7 +113,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         if (isAttaking || isChase)
             ChaseView();
         else
-            PV.RPC("NomalView", RpcTarget.AllBuffered);
+            NomalView();
 
 
         // 넉백 중인 경우
@@ -252,7 +252,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
     //플레이어 탐지★ 여기서 추적시&공격시 시야각도 지정하자
 
-    [PunRPC]
     private void NomalView()
     {
         Vector2 rightBoundary = BoundaryAngle(-viewAngle * 0.5f);
@@ -268,8 +267,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         Debug.DrawRay(transform.position, rightBoundary * viewDistance, Color.yellow);
         Debug.DrawRay(transform.position, leftBoundary * viewDistance, Color.yellow);
 
-
-        PV.RPC("FindPlayer", RpcTarget.AllBuffered, rightBoundary, leftBoundary);
+        FindPlayer(rightBoundary, leftBoundary);
     }
 
     //추적, 공격시 플레이어를 바라보는 시야각으로 전환
@@ -292,11 +290,9 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         Debug.DrawRay(transform.position, rightBoundary * viewDistance, Color.black);
         Debug.DrawRay(transform.position, leftBoundary * viewDistance, Color.black);
 
-        PV.RPC("FindPlayer", RpcTarget.AllBuffered, rightBoundary, leftBoundary);
-        //FindPlayer(rightBoundary, leftBoundary);
+        FindPlayer(rightBoundary, leftBoundary);
     }
 
-    [PunRPC]
     private void FindPlayer(Vector2 _rightBoundary, Vector2 _leftBoundary)
     {
         targetColl = Physics2D.OverlapCircle(transform.position, viewDistance, targetMask);

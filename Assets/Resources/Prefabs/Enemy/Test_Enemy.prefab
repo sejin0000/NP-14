@@ -365,7 +365,6 @@ GameObject:
   - component: {fileID: 5757660685505581427}
   - component: {fileID: 7302048549800893148}
   - component: {fileID: 2011073214277895600}
-  - component: {fileID: 8578663482648120765}
   - component: {fileID: 7589394617890055635}
   m_Layer: 7
   m_Name: Test_Enemy
@@ -470,26 +469,10 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 5757660685505581427}
-  - {fileID: 8578663482648120765}
+  - {fileID: 0}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &8578663482648120765
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8136548992316328934}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizePosition: 1
-  m_SynchronizeRotation: 1
-  m_SynchronizeScale: 0
-  m_UseLocal: 1
 --- !u!50 &7589394617890055635
 Rigidbody2D:
   serializedVersion: 4
