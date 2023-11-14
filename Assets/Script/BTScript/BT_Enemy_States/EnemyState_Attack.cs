@@ -28,7 +28,7 @@ public class EnemyState_Attack : BTAction
         currentTime = enemySO.atkDelay;
         SetStateColor();
 
-        target = enemyAI.target;
+        target = enemyAI.Target;
     }
 
     public override Status Update()

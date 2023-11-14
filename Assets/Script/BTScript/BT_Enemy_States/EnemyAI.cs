@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using myBehaviourTree;
-//using static UnityEditor.PlayerSettings;
-//using UnityEditor.Rendering.LookDev;
 using Photon.Pun;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.DebugUI.Table;
+using static UnityEngine.Rendering.DebugUI;
 
 //[Root 노드] => 왜 액션과 다르게 상속 안받음?
 //==>특정 AI 동작과 상태에 맞게 유연하게 조정하기 위해서
@@ -28,8 +26,12 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     public EnemySO enemySO;                  // Enemy 정보 [모든 Action Node에 owner로 획득시킴]
     public SpriteRenderer spriteRenderer;
     public CircleCollider2D collider2D;
-    public Animator anim;  
-    public Collider2D target;                //추적 타겟[Palyer]
+    public Animator anim;
+
+    private Collider2D target;
+    public Collider2D Target { get { return target; } 
+                               set { if (target != value) { OnTargetChaged(value); target = value; } } }//추적 타겟[Palyer]
+    //public Collider2D target;
     public NavMeshAgent nav;
     public Vector3 navTargetPoint;              //nav 목적지
 
@@ -264,15 +266,15 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     //추적, 공격시 플레이어를 바라보는 시야각으로 전환
     private void ChaseView()
     {
-        if (target == null)
-        {
+        if (Target == null)
+        {           
             isAttaking = false;
             isChase = false;
             return;
         }
 
 
-        Vector2 directionToTarget = (target.transform.position - transform.position).normalized;
+        Vector2 directionToTarget = (Target.transform.position - transform.position).normalized;
 
 
         Vector2 rightBoundary = Quaternion.Euler(0, 0,-viewAngle * 0.5f) * directionToTarget;
@@ -286,14 +288,18 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
     private void FindPlayer(Vector2 _rightBoundary, Vector2 _leftBoundary)
     {
-        target = Physics2D.OverlapCircle(transform.position, viewDistance, targetMask);
+        if (PhotonNetwork.IsMasterClient && Target == null)
+        {
+            Target = Physics2D.OverlapCircle(transform.position, viewDistance, targetMask);
+            Debug.Log($"타겟 수집{Target}");
+        }           
 
 
-        if (target == null)
+        if (Target == null)
             return;
 
 
-        if (target.tag == "Player")
+        if (Target.tag == "Player")
         {
 
             //시야각 방향의 직선 Direction
@@ -302,7 +308,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             //Debug.DrawRay(transform.position, middleDirection * viewDistance, Color.green);
 
             //Enemy와 Player 사이의 방향
-            Vector2 directionToPlayer = (target.transform.position - transform.position).normalized;
+            Vector2 directionToPlayer = (Target.transform.position - transform.position).normalized;
 
             //플레이어 시야 중앙~타겟위치 사이의 각도
             float angle = Vector3.Angle(directionToPlayer, middleDirection);
@@ -314,6 +320,34 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
                 Debug.DrawRay(transform.position, directionToPlayer * viewDistance, Color.red);
             }
         }
+    }
+
+    private void OnTargetChaged(Collider2D _target)
+    {
+        //마스터 클라이언트가 몬스터를 소환하고, 해당 몬스터들이
+        if(PhotonNetwork.IsMasterClient)
+        {
+            if (_target == null)
+                photonView.RPC("SendTargetNull", RpcTarget.Others);
+            else
+            {
+                int viewID = _target.gameObject.GetPhotonView().ViewID; //변하는 viewID
+                photonView.RPC("SendTarget", RpcTarget.Others, viewID);
+            }            
+        }
+    }
+
+    [PunRPC]
+    private void SendTarget(int viewID)
+    {
+        PhotonView targetPV = PhotonView.Find(viewID);
+        Target = targetPV.gameObject.GetComponent<Collider2D>();
+    }
+
+    [PunRPC]
+    private void SendTargetNull()
+    {
+        Target = null;
     }
 
 
@@ -420,19 +454,22 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if (!PhotonNetwork.IsMasterClient)
-            return;
-
         if (stream.IsWriting)
         {
             // 데이터를 전송
             stream.SendNext(navTargetPoint);
+               
+            //stream.SendNext(target.gameObject.transform.position);
+            //Debug.Log($"뿌려주는 타겟 포지션 {target.gameObject.transform.position}");
         }
         else if (stream.IsReading)
         {
             // 데이터를 수신
             navTargetPoint = (Vector3)stream.ReceiveNext();
-        }
+
+            //target.gameObject.transform.position = (Vector3)stream.ReceiveNext();
+            //Debug.Log($"받는 타겟 포지션 {target.gameObject.transform.position}");
+        }   
     }
  
 }
