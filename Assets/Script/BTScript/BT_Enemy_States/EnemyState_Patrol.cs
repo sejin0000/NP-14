@@ -111,12 +111,11 @@ using Photon.Pun;
 
     private void Patrol()
     {
-        //수정됨
-        if (!enemyAI.isAttaking && enemyAI.photonView.AmOwner)
-        {
-            enemyAI.PV.RPC("DestinationSet", RpcTarget.AllBuffered, destination);
-            //enemyAI.DestinationSet(destination);
-        }          
+        if (enemyAI.photonView.AmOwner)
+            enemyAI.navTargetPoint = destination;
+
+        if (!enemyAI.isAttaking)
+            enemyAI.DestinationSet();
 
         //rigid.MovePosition(transform.position + (transform.forward * applySpeed * Time.deltaTime));
         //리지드바디 이동(현재 위치에서 전방으로, 1초당 walkSpeed 수치만큼 이동;
