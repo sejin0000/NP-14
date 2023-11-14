@@ -67,6 +67,15 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     }
     //PhotonView photonView = PhotonView.Find(PlayerNumber);
     //playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
+    [PunRPC]
+    private void FindMaster(int num)
+    {
+        PhotonView a = PhotonView.Find(num);
+        a.transform.SetParent(targetPlayer.transform);
+        a.transform.localPosition = Vector3.zero;
+        //Prefabs.transform.SetParent(targetPlayer.transform);
+    }
+
     #region stat
     [PunRPC]
     private void A901(int PlayerNumber)//스탯 공 티어 1
@@ -371,12 +380,14 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
             playerInput.actions.FindAction("Move2").Enable();
             playerInput.actions.FindAction("Move").Disable();
             playerstatHandler.isNoramlMove = false;
+            Debug.Log("반전타입1");
         }
         else
         {
             playerInput.actions.FindAction("Move2").Disable();
             playerInput.actions.FindAction("Move").Enable();
             playerstatHandler.isNoramlMove = true;
+            Debug.Log("반전타입2");
         }
         playerstatHandler.HP.coefficient *= 1.5f;
         playerstatHandler.ATK.coefficient *= 1.5f;
@@ -430,7 +441,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         targetPlayer.AddComponent<A0124>();//A0124에서 화면어둡게 하는 프리팹 만들고 스테이지시작에 ON 끝에 OFF
         playerstatHandler.AtkSpeed.added += 15;
-        playerstatHandler.ReloadCoolTime.added += 15;
+        playerstatHandler.ReloadCoolTime.added -= 5;
     }
 
     [PunRPC]
@@ -456,7 +467,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         {
             GameObject prefab = PhotonNetwork.Instantiate("AugmentList/A0128", targetPlayer.transform.localPosition, Quaternion.identity);
             int num = prefab.GetPhotonView().ViewID;
-            photonView.RPC("SetParent", RpcTarget.All, num);
+            photonView.RPC("FindMaster", RpcTarget.All, num);
         }
     }
     #endregion
@@ -585,7 +596,11 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A220(int PlayerNumber)
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        A0220 drainComponent = targetPlayer.GetComponent<A0220>();
+        drainComponent.PercentUp(30);
+        Debug.Log($"{drainComponent.percent}%의 확률로 흡혈 중");
+
     }
     [PunRPC]
     private void A221(int PlayerNumber)
@@ -631,9 +646,17 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         playerstatHandler.AmmoMax.added += 9999 - playerstatHandler.AmmoMax.total;
     }
     [PunRPC]
-    private void A303(int PlayerNumber)
+    private void A303(int PlayerNumber)//분신
     {
         Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        if (targetPlayer.GetPhotonView().IsMine)
+        {
+            GameObject prefab = PhotonNetwork.Instantiate("AugmentList/A0303", targetPlayer.transform.localPosition, Quaternion.identity);
+            prefab.GetComponent<A0303>().Initialize(prefab.transform);
+            int num = prefab.GetPhotonView().ViewID;
+            photonView.RPC("FindMaster", RpcTarget.All, num);
+        }
     }
     [PunRPC]
     private void A304(int PlayerNumber)
@@ -692,6 +715,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         go.transform.SetParent(targetPlayer.transform);
 
     }
+    [PunRPC]
     private void A1107(int PlayerNumber) //영역전개 최초의 대상에게 영구적으로 올려주는 타입 아직 세세한 오류가 있을것으로 예상된
     {
         ChangeOnlyPlayer(PlayerNumber);
@@ -699,17 +723,9 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         {
             GameObject Prefabs = PhotonNetwork.Instantiate("AugmentList/A1107", targetPlayer.transform.localPosition, Quaternion.identity);
             int num = Prefabs.GetPhotonView().ViewID;
-            photonView.RPC("setParent", RpcTarget.All, num);
+            photonView.RPC("FindMaster", RpcTarget.All, num);
             Prefabs.GetComponent<A1107>().Init();
         }
-    }
-    [PunRPC]
-    private void setParent(int num)
-    {
-        PhotonView a = PhotonView.Find(num);
-        a.transform.SetParent(targetPlayer.transform);
-        a.transform.localPosition = Vector3.zero;
-        //Prefabs.transform.SetParent(targetPlayer.transform);
     }
     #endregion
     #region Sniper2
@@ -913,7 +929,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
             GameObject prefab = PhotonNetwork.Instantiate("AugmentList/A3107", targetPlayer.transform.localPosition, Quaternion.identity);
             prefab.GetComponent<A3107>().Init(targetPlayer);
             int num = prefab.GetPhotonView().ViewID;
-            photonView.RPC("SetParent", RpcTarget.All, num);
+            photonView.RPC("FindMaster", RpcTarget.All, num);
         }
 
     }

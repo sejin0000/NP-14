@@ -182,7 +182,7 @@ MonoBehaviour:
     SynchronizeType: 1
     Name: IsRun
   - Type: 4
-    SynchronizeType: 2
+    SynchronizeType: 0
     Name: IsDie
   - Type: 9
     SynchronizeType: 1

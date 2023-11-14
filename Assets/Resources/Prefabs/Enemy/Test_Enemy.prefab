@@ -365,7 +365,7 @@ GameObject:
   - component: {fileID: 5757660685505581427}
   - component: {fileID: 7302048549800893148}
   - component: {fileID: 2011073214277895600}
-  - component: {fileID: 8578663482648120765}
+  - component: {fileID: 2513734620689646563}
   - component: {fileID: 7589394617890055635}
   m_Layer: 7
   m_Name: Test_Enemy
@@ -470,11 +470,11 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 5757660685505581427}
-  - {fileID: 8578663482648120765}
+  - {fileID: 2513734620689646563}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &8578663482648120765
+--- !u!114 &2513734620689646563
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
