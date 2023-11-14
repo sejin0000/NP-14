@@ -56,10 +56,6 @@ public class TestResultManager : MonoBehaviour//vs코드
         {
             gameManager = TestGameManager.Instance;
         }
-        //if (TestGameManager.Instance != null)
-        //{
-        //    gameManager = TestGameManager.Instance;
-        //}
 
     }
     private void Start()
@@ -76,6 +72,7 @@ public class TestResultManager : MonoBehaviour//vs코드
         SpecialAugment3 = MakeAugmentListManager.Instance.SpecialAugment3;
         ProtoList = MakeAugmentListManager.Instance.Prototype;
     }
+
     public void Result()
     {
         CallProtoResult();
@@ -114,10 +111,7 @@ public class TestResultManager : MonoBehaviour//vs코드
     }
     public void testCallStatResult()
     {
-        int tier = gameManager.tier;
-        //int tier = 1;
-        Debug.Log("여기수정해여기수정해여기수정해여기수정해여기수정해");
-        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Debug.Log("여기수정해여기수정해여기수정해여기수정해여기수정해");
+        int tier = gameManager.tier;        
         switch (tier)
         {
             case 1:

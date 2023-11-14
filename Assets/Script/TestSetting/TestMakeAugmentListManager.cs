@@ -24,6 +24,7 @@ public class TestMakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
     public List<SpecialAugment> test = new List<SpecialAugment>();
     public List<SpecialAugment> test2 = new List<SpecialAugment>();
     public List<SpecialAugment> Prototype = new List<SpecialAugment>();
+    
     private GameObject playerObj;
     int playerType;
     public TestMakeAugmentListManager(GameObject player)
@@ -62,6 +63,9 @@ public class TestMakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
         SpecialAugmentSetting(test2, "Test222"); //@만든증강적용테스트용 
         SpecialAugmentSetting(Prototype, "test_Proto");
 
+        SpecialAugmentSetting(SpecialAugment1, "special1");
+        SpecialAugmentSetting(SpecialAugment2, "special2");
+        SpecialAugmentSetting(SpecialAugment3, "special3");
     }
     private void Start()
     {
