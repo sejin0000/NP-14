@@ -439,7 +439,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         targetPlayer.AddComponent<A0124>();//A0124에서 화면어둡게 하는 프리팹 만들고 스테이지시작에 ON 끝에 OFF
         playerstatHandler.AtkSpeed.added += 15;
-        playerstatHandler.ReloadCoolTime.added += 15;
+        playerstatHandler.ReloadCoolTime.added -= 5;
     }
 
     [PunRPC]
@@ -653,7 +653,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
             GameObject prefab = PhotonNetwork.Instantiate("AugmentList/A0303", targetPlayer.transform.localPosition, Quaternion.identity);
             prefab.GetComponent<A0303>().Initialize(prefab.transform);
             int num = prefab.GetPhotonView().ViewID;
-            prefab.GetPhotonView().RPC("FindMaster", RpcTarget.All, num);
+            photonView.RPC("FindMaster", RpcTarget.All, num);
         }
     }
     [PunRPC]
