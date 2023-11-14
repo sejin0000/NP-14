@@ -7,11 +7,11 @@ public class A3301_1 : MonoBehaviour
     public float time = 0f;
     public float shieldHP = 1f;
     public float shieldSurvivalTime =0.5f;
-    public LayerMask 
+    //public LayerMask
     // Start is called before the first frame update
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         time += Time.deltaTime;
         if (time >= shieldSurvivalTime) 
