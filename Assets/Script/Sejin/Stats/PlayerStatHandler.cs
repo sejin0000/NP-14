@@ -163,7 +163,6 @@ public class PlayerStatHandler : MonoBehaviourPun
             isDie = true;
             OnDieEvent?.Invoke();
             this.gameObject.layer = 0;
-            photonView.RPC("SetSyncHP", RpcTarget.OthersBuffered, viewID, CurHP);
         }
 
         damage = damage * defense;
