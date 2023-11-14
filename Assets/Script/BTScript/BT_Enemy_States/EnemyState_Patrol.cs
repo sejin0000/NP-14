@@ -12,7 +12,7 @@
         private Vector2 destination;   // 목적지
 
 
-        private float ActionTime;      // 걷기 시간
+        private float partrolDelay;      // 걷기 시간
         private float currentTime;     // 시간 계산용
 
 
@@ -29,7 +29,7 @@
         enemyAI = owner.GetComponent<EnemyAI>();
         enemySO = enemyAI.enemySO;
 
-        ActionTime = enemySO.actionTime;
+        partrolDelay = enemySO.patrolDelay;
 
 
         //enemyAI.nav.updateRotation = false;
@@ -76,7 +76,7 @@
     private void Reset()
     {
         //anim.SetBool("isRun", true);
-        currentTime = ActionTime; 
+        currentTime = partrolDelay; 
 
 
         if (enemyAI.nav != null && enemyAI.nav.isOnNavMesh) // NavMesh 가 유효한 상태인지 확인
