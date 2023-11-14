@@ -55,7 +55,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     
     public PhotonView PV;                    //µø±‚»≠
 
-
     void Awake()
     {
 
