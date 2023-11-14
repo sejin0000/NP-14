@@ -54,8 +54,6 @@ public class EnemyState_Chase : BTAction
         if (currentTime <= 0.3f)
         {
             enemyAI.isChase = false;
-            enemyAI.targetColl = null;
-            enemyAI.target = null;
             return Status.BT_Failure;
         }
 

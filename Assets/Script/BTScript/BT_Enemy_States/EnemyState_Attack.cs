@@ -28,10 +28,7 @@ public class EnemyState_Attack : BTAction
         currentTime = enemySO.atkdelay;
         SetStateColor();
 
-        target = enemyAI.target;
-
-        SetAim();
-        enemyAI.Shoot();
+        SetAim();       
     }
 
     public override Status Update()
@@ -47,19 +44,6 @@ public class EnemyState_Attack : BTAction
         {
             // 공격 주기에 도달하면 공격 실행
             enemyAI.Shoot();
-
-
-            enemyAI.targetColl = null;
-            enemyAI.targetColl = Physics2D.OverlapCircle(enemyAI.transform.position, enemySO.attackRange, enemyAI.targetMask);
-
-
-            if (enemyAI.targetColl == null)
-            {
-                target = null;
-                return Status.BT_Failure;
-            }
-
-
             currentTime = enemySO.atkdelay;
         }
 
