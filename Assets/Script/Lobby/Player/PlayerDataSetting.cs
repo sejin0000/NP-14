@@ -59,18 +59,15 @@ public class PlayerDataSetting : MonoBehaviourPun
     {
         
         if (GO.GetComponent<Player1Skill>())
-        {
-            GO.GetComponent<Player1Skill>().SkillEnd();            
+        {            
             Destroy(GO.GetComponent<Player1Skill>());
         }
         if (GO.GetComponent<Player2Skill>())
-        {
-            GO.GetComponent<Player2Skill>().SkillEnd();
+        {            
             Destroy(GO.GetComponent<Player2Skill>());
         }
         if (GO.GetComponent<Player3Skill>())
-        {
-            GO.GetComponent<Player3Skill>().SkillEnd();
+        {            
             Destroy(GO.GetComponent<Player3Skill>());
         }
     }
