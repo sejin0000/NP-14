@@ -33,12 +33,15 @@ public class PlayerDataSetting : MonoBehaviourPun
         {
             case (int)LobbyPanel.CharClass.Soldier:
                 statSO.CharacterChange(soldierSO);
+                statSO.gameObject.AddComponent<Player1Skill>();
                 break;
             case (int)LobbyPanel.CharClass.Shotgun:
                 statSO.CharacterChange(shotGunSO);
+                statSO.gameObject.AddComponent<Player2Skill>();
                 break;
             case (int)LobbyPanel.CharClass.Sniper:
                 statSO.CharacterChange(sniperSO);
+                statSO.gameObject.AddComponent<Player3Skill>();
                 break;
         }
     }
