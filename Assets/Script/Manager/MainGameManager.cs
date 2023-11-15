@@ -24,6 +24,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     [Header("ClientPlayer")]
     public GameObject InstantiatedPlayer;
     private bool isPlayerInstantiated;
+    public Dictionary<int, GameObject> playerInfoDictionary;
 
     [Header("PlayerData")]
     public PlayerDataSetting characterSetting;
@@ -123,6 +124,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
             isFarmingRoom = true,
         };
 
+        playerInfoDictionary = new Dictionary<int, GameObject>();
         isPlayerInstantiated = false;
         if (!isPlayerInstantiated)
         {
@@ -315,10 +317,18 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         isDie = playerStatHandler.isDie;
         PartyDeathCount = 0;
         playerStatHandler.OnDieEvent += DiedAfter;
-
+        // 플레이어 데이터 추가
+        playerInfoDictionary.Add(viewID, InstantiatedPlayer);
+        GameObject sendingPlayer = InstantiatedPlayer;
+        photonView.RPC("SendPlayerInfo", RpcTarget.Others, viewID, sendingPlayer);
 
         // ClassIdentifier 데이터 Init()
         InstantiatedPlayer.GetComponent<ClassIdentifier>().playerData = characterSetting;
+    }
+    [PunRPC]
+    private void SendPlayerInfo(int viewID, GameObject clientPlayer)
+    {
+        playerInfoDictionary.Add(viewID, clientPlayer);
     }
 
     [PunRPC]
