@@ -420,7 +420,6 @@ MonoBehaviour:
   currentMoveSpeed: 0
   SpeedCoefficient: 1
   isLive: 0
-  isIdle: 0
   isChase: 0
   isAttaking: 0
   images_Gauge: {fileID: 7702857846665888690}
