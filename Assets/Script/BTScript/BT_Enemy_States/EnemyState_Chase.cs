@@ -95,7 +95,7 @@ public class EnemyState_Chase : BTAction
 
 
         //¡Ú¡Ú¡Ú¼öÁ¤ÇÔ
-        enemyAI.isFilp(owner.transform.position.x, target.transform.position.x);
+        enemyAI.Filp(owner.transform.position.x, target.transform.position.x);
 
         /*
         if (target.transform.position.x < owner.transform.position.x)

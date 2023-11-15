@@ -57,7 +57,7 @@ public class EnemyState_Attack : BTAction
 
 
         //¡Ú¡Ú¡Ú¼öÁ¤ÇÔ
-        enemyAI.isFilp(owner.transform.position.x, target.transform.position.x);
+        enemyAI.Filp(owner.transform.position.x, target.transform.position.x);
 
         return Status.BT_Running;
     }
