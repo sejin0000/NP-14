@@ -591,6 +591,7 @@ MonoBehaviour:
   _PlayerSprite: {fileID: 554290144144741705}
   _WeaponSprite: {fileID: 7639390929974933696}
   isNoramlMove: 0
+  isCanSkill: 0
   isDie: 0
   MaxRegenCoin: 0
   CurRegenCoin: 0
@@ -599,6 +600,7 @@ MonoBehaviour:
   CanSkill: 0
   CanRoll: 0
   Invincibility: 0
+  useSkill: 0
 --- !u!114 &7295784485177987548
 MonoBehaviour:
   m_ObjectHideFlags: 0
