@@ -286,7 +286,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 438759597, guid: 52fa014d607b981418d079725bdcac70, type: 3}
+  m_Sprite: {fileID: -104358824, guid: 76a7479ad241e8d4e80ae6f8f6e8fa64, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -410,7 +410,6 @@ MonoBehaviour:
   spriteRenderer: {fileID: 61385077797086651}
   collider2D: {fileID: 8143056649410404635}
   anim: {fileID: 0}
-  target: {fileID: 0}
   nav: {fileID: 7302048549800893148}
   navTargetPoint: {x: 0, y: 0, z: 0}
   enemyAim: {fileID: 4931010869674023689}
@@ -421,7 +420,6 @@ MonoBehaviour:
   currentMoveSpeed: 0
   SpeedCoefficient: 1
   isLive: 0
-  isIdle: 0
   isChase: 0
   isAttaking: 0
   images_Gauge: {fileID: 7702857846665888690}
@@ -469,7 +467,6 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 5757660685505581427}
-  - {fileID: 0}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

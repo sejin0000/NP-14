@@ -46,9 +46,9 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     public float SpeedCoefficient = 1f;      // 이동속도 계수
    
     public bool isLive;
-    public bool isIdle;
     public bool isChase;
     public bool isAttaking;
+    public bool isFilp;
 
 
     Vector2 nowEnemyPosition;
@@ -74,7 +74,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         viewAngle = enemySO.viewAngle;
         viewDistance = enemySO.viewDistance;
         isLive = true;
-        isIdle = true;
 
         nav.updateRotation = false;
         nav.updateUpAxis = false;
@@ -101,7 +100,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         IsNavAbled();
 
 
-
         if (isAttaking || isChase)
             ChaseView();
         else
@@ -124,17 +122,29 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             }
         }
 
-
-        if(nav.remainingDistance < 0.2f)
-            isIdle = true;
+        if (isFilp)
+            spriteRenderer.flipX = true;
         else
-            isIdle = false;
+            spriteRenderer.flipX = false;
 
 
-        if (IsNavAbled())
-            anim.SetBool("isWalk", true);
-        else
+        if (!IsNavAbled() || nav.remainingDistance < 0.2f)
+        {
             anim.SetBool("isWalk", false);
+            anim.SetBool("isUpWalk", false);
+            return;
+        }          
+
+        if (navTargetPoint.y > transform.position.y)
+        {
+            anim.SetBool("isUpWalk", true);
+            anim.SetBool("isWalk", false);
+        }
+        else
+        {
+            anim.SetBool("isWalk", true);
+            anim.SetBool("isUpWalk", false);
+        }
     }
 
     private bool isKnockback = false;
@@ -357,16 +367,20 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     }
 
 
+
     //이거 동기화
-    public void isFilp(float myX, float otherX)
+    public void Filp(float myX, float otherX)
     {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
         if (otherX < myX)
         {
-            spriteRenderer.flipX = true;
+            isFilp = true;
         }
         else
         {
-            spriteRenderer.flipX = false;
+            isFilp = false;
         }
     }
 
@@ -458,7 +472,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         {
             // 데이터를 전송
             stream.SendNext(navTargetPoint);
-               
+            stream.SendNext(isFilp);
             //stream.SendNext(target.gameObject.transform.position);
             //Debug.Log($"뿌려주는 타겟 포지션 {target.gameObject.transform.position}");
         }
@@ -466,7 +480,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         {
             // 데이터를 수신
             navTargetPoint = (Vector3)stream.ReceiveNext();
-
+            isFilp = (bool)stream.ReceiveNext();
             //target.gameObject.transform.position = (Vector3)stream.ReceiveNext();
             //Debug.Log($"받는 타겟 포지션 {target.gameObject.transform.position}");
         }   
