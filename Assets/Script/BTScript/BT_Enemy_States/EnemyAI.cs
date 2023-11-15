@@ -37,7 +37,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
 
     public GameObject enemyAim;
-    public GameObject enemyBullet;
+    public Bullet enemyBulletPrefab;
 
 
     public LayerMask targetMask;             // 타겟 레이어(Player)
@@ -96,7 +96,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     {
         //AI트리의 노드 상태를 매 프레임 마다 얻어옴
         TreeAIState.Tick();       
-        GaugeUpdate();
 
         if (!isLive)
             return;
@@ -126,11 +125,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             }
         }
 
-        if (isFilp)
-            spriteRenderer.flipX = true;
-        else
-            spriteRenderer.flipX = false;
-
 
         if (!IsNavAbled() || nav.remainingDistance < 0.2f)
         {
@@ -157,7 +151,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     private float knockbackStartTime;
     public float knockbackDuration = 0.2f;
 
-    //★
+    //★맞음 & 죽음
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //호스트에서만 충돌 처리됨
@@ -214,17 +208,19 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
         if (currentHP > enemySO.hp)
             currentHP = enemySO.hp;
+
+        GaugeUpdate();
     }
 
     [PunRPC]
     public void DecreaseHP(float damage)
     {
         SetStateColor();
-        currentHP -= damage;    
-
+        currentHP -= damage;
+        GaugeUpdate();
 
         if (currentHP <= 0)
-            isLive = false;
+            isLive = false;       
     }
 
     [PunRPC]
@@ -233,16 +229,31 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         Destroy(gameObject);
     }
 
+    [PunRPC]
     public void Shoot()
     {
-        GameObject _object = Instantiate(enemyBullet, enemyAim.transform.position, enemyAim.transform.rotation);
-        Bullet _bullet = _object.GetComponent<Bullet>();
+        var _bullet = Instantiate(enemyBulletPrefab, enemyAim.transform.position, enemyAim.transform.rotation);
 
         _bullet.IsDamage = true;
         _bullet.ATK = enemySO.atk;
         _bullet.BulletLifeTime = enemySO.bulletLifeTime;
         _bullet.BulletSpeed = enemySO.bulletSpeed;
-        _bullet.target = BulletTarget.Player;       
+        _bullet.target = BulletTarget.Player;
+
+        /*
+        //수정 : gameObject 에서 Bullet으로 ->변수 형태와 용도를 통일함
+        Bullet _bullet = Instantiate<Bullet>(enemyBulletPrefab, enemyAim.transform.position, enemyAim.transform.rotation);
+
+
+
+        _bullet.IsDamage = true;
+        _bullet.ATK = enemySO.atk;
+        _bullet.BulletLifeTime = enemySO.bulletLifeTime;
+        _bullet.BulletSpeed = enemySO.bulletSpeed;
+        _bullet.target = BulletTarget.Player;
+        */
+
+        //수정 : gameObject 에서 Bullet으로 ->변수 형태와 용도를 통일함            
     }
 
     private Vector2 BoundaryAngle(float angle)
@@ -396,6 +407,11 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         {
             nav.SetDestination(navTargetPoint);
         }
+
+        if (isFilp)
+            spriteRenderer.flipX = true;
+        else
+            spriteRenderer.flipX = false;
     }
 
     public bool IsNavAbled()
