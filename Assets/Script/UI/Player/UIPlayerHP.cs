@@ -19,6 +19,7 @@ public class UIPlayerHP : UIBase, ICommonUI
     void ICommonUI.Behavior()
     {
         UpdateValue();
+        Open();
     }
 
     public override void Initialize()
