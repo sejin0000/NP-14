@@ -32,40 +32,40 @@ public class CoolTimeController : MonoBehaviour
 
     private void Update()
     {
-        if(curRollCool > 0)
+        if (curRollCool > 0)
         {
             curRollCool -= Time.deltaTime;
-            if (controller.playerStatHandler.CanRoll == false && curRollCool <= 0)
-            {
-                EndRollCoolTime();
-            }
+        }
+        if (controller.playerStatHandler.CanRoll == false && curRollCool <= 0)
+        {
+            EndRollCoolTime();
         }
 
         if (curReloadCool > 0)
         {
             curReloadCool -= Time.deltaTime;
-            if (controller.playerStatHandler.CanReload == false && curReloadCool <= 0)
-            {
-                EndReloadCoolTime();
-            }
+        }
+        if (controller.playerStatHandler.CanReload == false && curReloadCool <= 0)
+        {
+            EndReloadCoolTime();
         }
 
         if (curAttackCool > 0)
         {
             curAttackCool -= Time.deltaTime;
-            if (controller.playerStatHandler.CanFire == false && curAttackCool <= 0)
-            {
-                EndAttackCoolTime();
-            }
+        }
+        if (controller.playerStatHandler.CanFire == false && curAttackCool <= 0)
+        {
+            EndAttackCoolTime();
         }
 
         if (curSkillCool > 0)
         {
             curSkillCool -= Time.deltaTime;
-            if (controller.playerStatHandler.CanSkill == false && curSkillCool <= 0)
-            {
-                EndSkillCoolTime();
-            }
+        }
+        if (controller.playerStatHandler.CanSkill == false && curSkillCool <= 0 && controller.playerStatHandler.useSkill == false)
+        {
+            EndSkillCoolTime();
         }
     }
 
@@ -115,7 +115,6 @@ public class CoolTimeController : MonoBehaviour
         controller.playerStatHandler.CanSkill = false;
         curSkillCool = coolTime;
         Debug.Log("스킬 쿨 타임 시작");
-
     }
     
     private void EndSkillCoolTime()

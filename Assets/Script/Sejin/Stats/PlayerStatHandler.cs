@@ -83,6 +83,8 @@ public class PlayerStatHandler : MonoBehaviourPun
     [HideInInspector] public bool CanRoll;                                //구르기 가능한지
     [HideInInspector] public bool Invincibility;                          //무적
 
+    public bool useSkill;
+
     int viewID;
 
 
