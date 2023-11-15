@@ -18,7 +18,7 @@ MonoBehaviour:
   hp: 40
   bulletSpeed: 5
   atkDelay: 1.5
-  patrolDelay: 3
+  patrolDelay: 10
   chaseTime: 4
   bulletLifeTime: 2
   enemyMoveSpeed: 3.5

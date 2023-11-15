@@ -374,20 +374,17 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         playerInput = targetPlayer.GetComponent<PlayerInput>();
-        Debug.Log("현재 좌우 상하 이동이 반전됬는지 연락 바람(엄격 근엄 진지)");
         if (playerstatHandler.isNoramlMove)
         {
             playerInput.actions.FindAction("Move2").Enable();
             playerInput.actions.FindAction("Move").Disable();
             playerstatHandler.isNoramlMove = false;
-            Debug.Log("반전타입1");
         }
         else
         {
             playerInput.actions.FindAction("Move2").Disable();
             playerInput.actions.FindAction("Move").Enable();
             playerstatHandler.isNoramlMove = true;
-            Debug.Log("반전타입2");
         }
         playerstatHandler.HP.coefficient *= 1.5f;
         playerstatHandler.ATK.coefficient *= 1.5f;
@@ -552,6 +549,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         playerInput=targetPlayer.GetComponent<PlayerInput>();
         playerInput.actions.FindAction("Skill").Disable();
+        playerstatHandler.isCanSkill = false;
         Debug.Log("이 증강도 상당히 우려가 됩니다 우클릭 체크 하고 말해주세요");
     }
     [PunRPC]
@@ -784,9 +782,15 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A1304(int PlayerNumber)
+    private void A1304(int PlayerNumber)// 기회비용 힐모드 변경 x 딜모드 딜량증가
     {
-        Debug.Log("미완성");
+        ChangePlayerStatHandler(PlayerNumber);
+        WeaponSystem weaponSystemA = targetPlayer.GetComponent<WeaponSystem>();
+        playerInput = targetPlayer.GetComponent<PlayerInput>();
+        playerInput.actions.FindAction("Skill").Disable();
+        weaponSystemA.isDamage=false;
+        playerstatHandler.ATK.coefficient *= 1.5f;
+
     }
     #endregion
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@솔져 1티어
@@ -820,33 +824,33 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         playerstatHandler.AmmoMax.added -= 5;
-        Player1Skill.applicationAtkSpeed+=2f;
-        Player1Skill.applicationspeed += 2f;
+        if (targetPlayer.GetComponent<Player1Skill>()) 
+        {
+            Player1Skill skill = targetPlayer.GetComponent<Player1Skill>();
+            skill.applicationAtkSpeed += 2f;
+            skill.applicationspeed += 2f;
+        }
+
     }
     [PunRPC]
     private void A2105(int PlayerNumber)// 반전 공격방향 , 이동방향이 반대가되고 공체 대폭 증가 == 현재 이동방향 반대만 구현 A119 A2105는 동일 함수 합치는거 고려
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
-        if (targetPlayer.GetComponent<PlayerInput>() == null)
-        {
-            Debug.Log("널값임 비상비상비상비상비상비상");
-        }
         playerInput = targetPlayer.GetComponent<PlayerInput>();
-        Debug.Log("현재 좌우 상하 이동이 반전됬는지 연락 바람(엄격 근엄 진지)");
         if (playerstatHandler.isNoramlMove)
         {
             playerInput.actions.FindAction("Move2").Enable();
             playerInput.actions.FindAction("Move").Disable();
             playerstatHandler.isNoramlMove = false;
-            Debug.Log($"현재인풋이름{playerInput.currentActionMap.name}");
         }
         else
         {
-            playerInput.SwitchCurrentActionMap("Player");
+            playerInput.actions.FindAction("Move2").Disable();
+            playerInput.actions.FindAction("Move").Enable();
+            playerstatHandler.isNoramlMove = true;
         }
         playerstatHandler.HP.coefficient *= 1.5f;
         playerstatHandler.ATK.coefficient *= 1.5f;
-
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@솔져 2티어
     [PunRPC]
@@ -909,11 +913,16 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A2304(int PlayerNumber)//스팀팩 막히고 일부 상시 적용
     {
-        ChangePlayerStatHandler(PlayerNumber);
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
         playerInput=targetPlayer.GetComponent<PlayerInput>();
         playerInput.actions.FindAction("Skill").Disable();
-        playerstatHandler.AtkSpeed.added += Player1Skill.applicationAtkSpeed * 0.5f;
-        playerstatHandler.Speed.added += Player1Skill.applicationspeed * 0.5f;
+        playerstatHandler.isCanSkill = false;
+        if (targetPlayer.GetComponent<Player1Skill>())
+        {
+            Player1Skill skill = targetPlayer.GetComponent<Player1Skill>();
+            skill.applicationAtkSpeed *= 0.5f;
+            skill.applicationspeed *= 0.5f;
+        }
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@샷건 1티어
     [PunRPC]
@@ -999,24 +1008,43 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A3207(int PlayerNumber)
+    private void A3207(int PlayerNumber)//보호 모드
     {
-        Debug.Log("미완성");
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        if (targetPlayer.GetComponent<Player2Skill>())
+        {
+            Player2Skill player2 = targetPlayer.GetComponent<Player2Skill>();
+            player2.shieldScale += 0.5f;
+        }
+        playerstatHandler.HP.coefficient *= 0.8f;
+        targetPlayer.AddComponent<A3207>();
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@샷건 3티어
     [PunRPC]
-    private void A3301(int PlayerNumber)
+    private void A3301(int PlayerNumber)//총알부분 처리안함 아군 총알에 밀접한 관계가 있음 
     {
-        Debug.Log("미완성");
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        targetPlayer.AddComponent<A3301>();
     }
     [PunRPC]
-    private void A3302(int PlayerNumber)
+    private void A3302(int PlayerNumber)//쉴드 범위 증가, 쉴드량 증가,  평타 약화,  쉴드 안에 아군 버프
     {
-        Debug.Log("미완성");
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        if (targetPlayer.GetComponent<Player2Skill>())
+        {
+            Player2Skill player2 = targetPlayer.GetComponent<Player2Skill>();
+            player2.shieldScale *= 2f;
+            player2.shieldHP += 20f;
+        }
+        playerstatHandler.ATK.coefficient *= 0.8f;
     }
     [PunRPC]
-    private void A3303(int PlayerNumber)
+    private void A3303(int PlayerNumber)//닥치고 돌격
     {
-        Debug.Log("미완성");
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        playerInput = targetPlayer.GetComponent<PlayerInput>();
+        playerstatHandler.AmmoMax.added += 5f;
+        playerstatHandler.AtkSpeed.added += 2f;
+        playerstatHandler.RollCoolTime.added -= 2f;
     }
 }

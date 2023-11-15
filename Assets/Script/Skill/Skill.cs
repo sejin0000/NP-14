@@ -30,6 +30,8 @@ public class Skill : MonoBehaviourPun
         if (photonView.IsMine)
         {
             controller.playerStatHandler.CanSkill = false;
+            controller.playerStatHandler.useSkill = true;
+
             Debug.Log("스킬 발동");
         }
     }
@@ -41,6 +43,7 @@ public class Skill : MonoBehaviourPun
             //스킬이 끝나면 쿨타임을 계산하고 쿨타임이 끝나면  controller.playerStatHandler.CanSkill = 진실; 로 바꿔줌
             Debug.Log("스킬 종료");
             controller.CallEndSkillEvent();
+            controller.playerStatHandler.useSkill = false;
         }
     }
 

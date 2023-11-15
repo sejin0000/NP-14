@@ -37,7 +37,7 @@ public class EnemyState_Chase : BTAction
         SetStateColor();
         enemyAI.ChangeSpeed(enemySO.enemyChaseSpeed);
         currentTime = chaseTime;
-        target = enemyAI.target;
+        target = enemyAI.Target;
         //¼öÁ¤µÊ
         //enemyAI.nav.enabled = true;
     }

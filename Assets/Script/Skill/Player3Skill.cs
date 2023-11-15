@@ -29,6 +29,7 @@ public class Player3Skill : Skill
             _weaponSystem.target = BulletTarget.Enemy;
             _weaponSystem.isDamage = true;
         }
+        SkillEnd();
     }
 
     public override void SkillEnd()

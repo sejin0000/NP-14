@@ -11,17 +11,18 @@ public class PlayerInputController : TopDownCharacterController
     private Camera _camera;
     public PlayerInput playerInput;
     public int atkPercent;
-    
+    PlayerStatHandler playerstatHnadler;
 
     private void Awake()
     {
-        GetComponent<PlayerStatHandler>().OnDieEvent += InputOff;
-        GetComponent<PlayerStatHandler>().OnRegenEvent += InputOn;
+        playerstatHnadler = GetComponent<PlayerStatHandler>();
+        playerstatHnadler.OnDieEvent += InputOff;
+        playerstatHnadler.OnRegenEvent += InputOn;
         atkPercent = 100;
 
 
         playerInput = GetComponent<PlayerInput>();
-        //playerInput.actions.FindAction("Move2").Disable();
+        playerInput.actions.FindAction("Move2").Disable();
         _camera = Camera.main;
 
 
@@ -30,9 +31,36 @@ public class PlayerInputController : TopDownCharacterController
             Destroy(GetComponent<PlayerInputController>());
         }
     }
+    private void OnEnable()
+    {
+        if (playerstatHnadler.isNoramlMove)
+        {
+            playerInput.actions.FindAction("Move2").Disable();
+            playerInput.actions.FindAction("Move").Enable();
+        }
+        else
+        {
+            playerInput.actions.FindAction("Move2").Enable();
+            playerInput.actions.FindAction("Move").Disable();
+        }
+        if (playerstatHnadler.isCanSkill)
+        {
+            playerInput.actions.FindAction("Skill").Enable();
+        }
+        else 
+        {
+            playerInput.actions.FindAction("Skill").Disable();
+        }
+    }
     public void OnMove(InputValue value)
     {
         // Debug.Log("OnMove" + value.ToString());
+        Vector2 moveInput = value.Get<Vector2>().normalized;
+        CallMoveEvent(moveInput);
+    }
+    public void OnMove2(InputValue value)
+    {
+        Debug.Log("무브2작동중" + value.ToString());
         Vector2 moveInput = value.Get<Vector2>().normalized;
         CallMoveEvent(moveInput);
     }

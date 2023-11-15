@@ -12,6 +12,9 @@ public class UIPlayerHUD : UIBase
     {
         hpGauge = GetComponentInChildren<UIPlayerHP>();
         bulletIndicator = GetComponentInChildren<UIBulletIndicator>();
+
+        hpGauge.Initialize();
+        bulletIndicator.Initialize();
     }
 
     // Update is called once per frame

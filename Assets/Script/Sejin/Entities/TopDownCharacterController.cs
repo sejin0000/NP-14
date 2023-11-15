@@ -65,8 +65,13 @@ public class TopDownCharacterController : MonoBehaviour
     {
         if(playerStatHandler.CanSkill)
         {
+            Debug.Log(playerStatHandler.CanSkill);
             OnSkillEvent?.Invoke();
         }
+    }
+    public void SkillReset() 
+    {
+        OnSkillEvent = null;
     }
     public void CallEndSkillEvent()
     {

@@ -32,7 +32,7 @@ public class CoolTimeController : MonoBehaviour
 
     private void Update()
     {
-        if(curRollCool > 0)
+        if (curRollCool > 0)
         {
             curRollCool -= Time.deltaTime;
         }
@@ -63,11 +63,10 @@ public class CoolTimeController : MonoBehaviour
         {
             curSkillCool -= Time.deltaTime;
         }
-        if (controller.playerStatHandler.CanSkill == false && curSkillCool <= 0)
+        if (controller.playerStatHandler.CanSkill == false && curSkillCool <= 0 && controller.playerStatHandler.useSkill == false)
         {
             EndSkillCoolTime();
         }
-
     }
 
     private void RollCoolTime()
@@ -116,8 +115,8 @@ public class CoolTimeController : MonoBehaviour
         controller.playerStatHandler.CanSkill = false;
         curSkillCool = coolTime;
         Debug.Log("스킬 쿨 타임 시작");
-
     }
+    
     private void EndSkillCoolTime()
     {
         controller.playerStatHandler.CanSkill = true;

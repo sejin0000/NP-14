@@ -22,6 +22,12 @@ public class UIPlayerHP : UIBase, ICommonUI
         Open();
     }
 
+    public override void Initialize()
+    {
+        InitializeData();
+        UpdateValue();
+    }
+
     void InitializeData()
     {
         if (SceneManager.GetActiveScene().name == "Test_DoHyun")

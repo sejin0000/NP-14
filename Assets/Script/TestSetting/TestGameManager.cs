@@ -113,6 +113,7 @@ public class TestGameManager : MonoBehaviourPun
 
             EnemySpawn enemySpawn = go.GetComponent<EnemySpawn>();
             enemySpawn.Spawn();
+            Destroy(go);
         }
     }
     

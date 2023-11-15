@@ -166,11 +166,15 @@ public class MainGameManager : MonoBehaviourPunCallbacks
             if (currentMonsterCount == 0)
             {
                 IsStateEnded = true;
+                Debug.Log("몬스터 다 죽임");
                 GameState = GameStates.End;
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    photonView.RPC("SetEndState", RpcTarget.OthersBuffered);
+                }
             }
-        }        
+        }
     }
-
 
 
 
@@ -371,6 +375,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
                         Debug.Log(currentMonsterCount);
                         EnemySpawn enemySpawn = go.GetComponent<EnemySpawn>();
                         enemySpawn.Spawn();
+                        Destroy(go);
                     }
                 }
             }
