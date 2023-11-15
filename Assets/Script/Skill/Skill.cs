@@ -16,11 +16,6 @@ public class Skill : MonoBehaviourPun
         playerStats = GetComponent<PlayerStatHandler>();
     }
 
-    public virtual void Start()
-    {
-    }
-
-
     public virtual void SkillStart()
     {
         if (photonView.IsMine)

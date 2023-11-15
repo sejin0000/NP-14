@@ -21,7 +21,7 @@ public class Player2Skill : Skill
         
     }
 
-    public override void Start()
+    public void Start()
     {
         if (photonView.IsMine)
         {

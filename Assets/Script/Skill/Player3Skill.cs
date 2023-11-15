@@ -7,7 +7,7 @@ public class Player3Skill : Skill
     WeaponSystem _weaponSystem;
     
 
-    public override void Start()
+    public void Start()
     {
         if (photonView.IsMine)
         {
