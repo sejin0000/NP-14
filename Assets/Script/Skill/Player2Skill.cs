@@ -20,6 +20,15 @@ public class Player2Skill : Skill
         base.Awake();
         
     }
+
+    public override void Start()
+    {
+        if (photonView.IsMine)
+        {
+            controller.OnSkillEvent += SkillStart;
+            Cnt = 0;
+        }
+    }
     public override void SkillStart()
     {
         base.SkillStart();

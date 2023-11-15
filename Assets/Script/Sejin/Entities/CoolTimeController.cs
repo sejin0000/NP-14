@@ -63,7 +63,9 @@ public class CoolTimeController : MonoBehaviour
         {
             curSkillCool -= Time.deltaTime;
         }
-        if (curSkillCool <= 0 && controller.playerStatHandler.useSkill == false)
+        if (curSkillCool <= 0 
+            && controller.playerStatHandler.useSkill == false 
+            && (controller.playerStatHandler.CurSkillStack < controller.playerStatHandler.MaxSkillStack || controller.playerStatHandler.CanSkill == false))
         {
             EndSkillCoolTime();
         }

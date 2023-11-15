@@ -20,11 +20,6 @@ public class Skill : MonoBehaviourPun
 
     public virtual void Start()
     {
-        if (photonView.IsMine)
-        {
-            controller.OnSkillEvent += SkillStart;
-            Cnt = 0;
-        }
     }
 
 

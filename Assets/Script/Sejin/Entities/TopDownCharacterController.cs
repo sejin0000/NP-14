@@ -61,10 +61,10 @@ public class TopDownCharacterController : MonoBehaviour
     }
 
     public void CallSkillEvent()
-    {
+    {        
         if(playerStatHandler.CanSkill)
         {
-            Debug.Log(playerStatHandler.CanSkill);
+            Debug.Log("callSkillEvent Ω««‡¡ﬂ");
             OnSkillEvent?.Invoke();
         }
     }
