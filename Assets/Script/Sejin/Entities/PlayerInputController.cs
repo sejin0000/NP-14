@@ -38,7 +38,7 @@ public class PlayerInputController : TopDownCharacterController
     }
     public void OnMove2(InputValue value)
     {
-        // Debug.Log("OnMove" + value.ToString());
+        Debug.Log("무브2작동중" + value.ToString());
         Vector2 moveInput = value.Get<Vector2>().normalized;
         CallMoveEvent(moveInput);
     }
