@@ -7,15 +7,18 @@ public class Player3Skill : Skill
     WeaponSystem _weaponSystem;
     
 
-    public override void Start()
+    public void Start()
     {
-        base.Start();
+        if (photonView.IsMine)
+        {
+            controller.OnSkillEvent += SkillStart;
+        }
         _weaponSystem = GetComponent<WeaponSystem>();
 
     }
     public override void SkillStart()
     {
-        base.SkillStart();
+        //base.SkillStart();
         if (_weaponSystem.target == BulletTarget.Enemy)
         {
             Debug.Log("힐 모드 전환");

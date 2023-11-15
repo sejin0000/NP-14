@@ -614,9 +614,10 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     [PunRPC]
     private void A223(int PlayerNumber)
     {
-        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.MaxSkillStack += 1;
-
+        Debug.Log("스킬 스택 추가");
+        playerstatHandler.CurSkillStack += 1;
     }
     #endregion
     #region All3
