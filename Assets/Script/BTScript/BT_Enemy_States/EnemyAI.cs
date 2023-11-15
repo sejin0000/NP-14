@@ -48,6 +48,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     public bool isLive;
     public bool isChase;
     public bool isAttaking;
+    public bool isFilp;
 
 
     Vector2 nowEnemyPosition;
@@ -120,6 +121,12 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
                 isKnockback = false;
             }
         }
+
+        if (isFilp)
+            spriteRenderer.flipX = true;
+        else
+            spriteRenderer.flipX = false;
+
 
         if (!IsNavAbled() || nav.remainingDistance < 0.2f)
         {
@@ -360,16 +367,17 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     }
 
 
+
     //이거 동기화
-    public void isFilp(float myX, float otherX)
+    public void Filp(float myX, float otherX)
     {
         if (otherX < myX)
         {
-            spriteRenderer.flipX = true;
+            isFilp = true;
         }
         else
         {
-            spriteRenderer.flipX = false;
+            isFilp = false;
         }
     }
 
@@ -461,7 +469,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         {
             // 데이터를 전송
             stream.SendNext(navTargetPoint);
-               
+            stream.SendNext(isFilp);
             //stream.SendNext(target.gameObject.transform.position);
             //Debug.Log($"뿌려주는 타겟 포지션 {target.gameObject.transform.position}");
         }
@@ -469,7 +477,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         {
             // 데이터를 수신
             navTargetPoint = (Vector3)stream.ReceiveNext();
-
+            isFilp = (bool)stream.ReceiveNext();
             //target.gameObject.transform.position = (Vector3)stream.ReceiveNext();
             //Debug.Log($"받는 타겟 포지션 {target.gameObject.transform.position}");
         }   

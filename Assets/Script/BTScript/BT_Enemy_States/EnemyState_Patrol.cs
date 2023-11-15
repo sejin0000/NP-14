@@ -104,7 +104,7 @@ using Photon.Pun;
 
 
         //¡Ú¡Ú¡Ú¼öÁ¤ÇÔ
-        enemyAI.isFilp(beforDestinationX, destinationX);
+        enemyAI.Filp(beforDestinationX, destinationX);
     }
 
 
