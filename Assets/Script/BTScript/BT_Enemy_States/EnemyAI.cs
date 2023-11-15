@@ -46,7 +46,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     public float SpeedCoefficient = 1f;      // 이동속도 계수
    
     public bool isLive;
-    public bool isIdle;
     public bool isChase;
     public bool isAttaking;
 
@@ -74,7 +73,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         viewAngle = enemySO.viewAngle;
         viewDistance = enemySO.viewDistance;
         isLive = true;
-        isIdle = true;
 
         nav.updateRotation = false;
         nav.updateUpAxis = false;
@@ -101,7 +99,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         IsNavAbled();
 
 
-
         if (isAttaking || isChase)
             ChaseView();
         else
@@ -124,17 +121,23 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             }
         }
 
-
-        if(nav.remainingDistance < 0.2f)
-            isIdle = true;
-        else
-            isIdle = false;
-
-
-        if (IsNavAbled())
-            anim.SetBool("isWalk", true);
-        else
+        if (!IsNavAbled() || nav.remainingDistance < 0.2f)
+        {
             anim.SetBool("isWalk", false);
+            anim.SetBool("isUpWalk", false);
+            return;
+        }          
+
+        if (navTargetPoint.y > transform.position.y)
+        {
+            anim.SetBool("isUpWalk", true);
+            anim.SetBool("isWalk", false);
+        }
+        else
+        {
+            anim.SetBool("isWalk", true);
+            anim.SetBool("isUpWalk", false);
+        }
     }
 
     private bool isKnockback = false;
