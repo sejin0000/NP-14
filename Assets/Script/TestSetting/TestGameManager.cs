@@ -20,6 +20,7 @@ public class TestGameManager : MonoBehaviourPun
     [Header("ClientPlayer")]
     public GameObject InstantiatedPlayer;
     [SerializeField] private bool isPlayerInstantiated;
+    public Dictionary<int, GameObject> playerInfoDictionary;
 
     [Header("PlayerData")]
     public PlayerDataSetting characterSetting;
@@ -49,6 +50,7 @@ public class TestGameManager : MonoBehaviourPun
 
     private void Awake()
     {
+        playerInfoDictionary = new Dictionary<int, GameObject>();
         isPlayerInstantiated = false;
         if (!isPlayerInstantiated)
         {
@@ -86,6 +88,12 @@ public class TestGameManager : MonoBehaviourPun
         InstantiatedPlayer = PhotonNetwork.Instantiate(playerPrefabPath, Vector3.zero, Quaternion.identity);
         characterSetting.ownerPlayer = InstantiatedPlayer;
         characterSetting.viewID = InstantiatedPlayer.GetPhotonView().ViewID;
+
+        // 플레이어 데이터 추가
+        int viewID = characterSetting.viewID;
+        playerInfoDictionary.Add(viewID, InstantiatedPlayer);
+        GameObject sendingPlayer = InstantiatedPlayer;
+        photonView.RPC("SendPlayerInfo", RpcTarget.Others, viewID, sendingPlayer);
 
         // ClassIdentifier 데이터 Init()
         InstantiatedPlayer.GetComponent<ClassIdentifier>().playerData = characterSetting;
