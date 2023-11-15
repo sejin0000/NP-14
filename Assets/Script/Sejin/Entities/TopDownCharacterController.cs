@@ -32,7 +32,7 @@ public class TopDownCharacterController : MonoBehaviour
             if (!topDownMovement.isRoll && playerStatHandler.CurAmmo > 0 && playerStatHandler.CanFire&& playerStatHandler.CanReload)
             {
                 OnAttackEvent?.Invoke();
-                playerStatHandler.CurAmmo--;                
+                //playerStatHandler.CurAmmo--;                
             }
             else
             {

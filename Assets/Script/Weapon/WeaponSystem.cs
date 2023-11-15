@@ -42,6 +42,7 @@ public class WeaponSystem : MonoBehaviour
 
 
             pv.RPC("BS", RpcTarget.All, rot, _ATK, _BLT, _target, _isDamage, _viewID);
+            _controller.playerStatHandler.CurAmmo--;
         }
     }
 
