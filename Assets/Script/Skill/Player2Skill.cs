@@ -22,12 +22,12 @@ public class Player2Skill : Skill
     }
     public override void SkillStart()
     {
+        base.SkillStart();
         shieldOBJ = PhotonNetwork.Instantiate("Prefabs/Player/Shield",transform.position,Quaternion.identity);
         Shield shield = shieldOBJ.GetComponent<Shield>();
         shieldOBJ.transform.SetParent(gameObject.transform);
         shield.Initialized(shieldHP, shieldScale, shieldSurvivalTime);
-        Invoke("SkillEnd", shieldSurvivalTime);
-        base.SkillStart();
+        Invoke("SkillEnd", shieldSurvivalTime);        
     }
 
     public override void SkillEnd()//애를 별거 아니라고 봤는데 엄청중요함 현재 스킬이 사용되고 나서 쿨이도는방식

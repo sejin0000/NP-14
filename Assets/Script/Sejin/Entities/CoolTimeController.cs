@@ -63,7 +63,7 @@ public class CoolTimeController : MonoBehaviour
         {
             curSkillCool -= Time.deltaTime;
         }
-        if (controller.playerStatHandler.CanSkill == false && curSkillCool <= 0 && controller.playerStatHandler.useSkill == false)
+        if (curSkillCool <= 0 && controller.playerStatHandler.useSkill == false)
         {
             EndSkillCoolTime();
         }
@@ -112,14 +112,29 @@ public class CoolTimeController : MonoBehaviour
     private void SkillCoolTime()
     {
         float coolTime = controller.playerStatHandler.SkillCoolTime.total;
-        controller.playerStatHandler.CanSkill = false;
+        Debug.Log($"전체 쿨타임 : {coolTime}");
+        if (controller.playerStatHandler.CurSkillStack > 0)
+        {
+            controller.playerStatHandler.CanSkill = true;
+        }
+        else
+        {
+            controller.playerStatHandler.CanSkill = false;
+        }
         curSkillCool = coolTime;
+       
         Debug.Log("스킬 쿨 타임 시작");
     }
     
     private void EndSkillCoolTime()
     {
+        controller.playerStatHandler.CurSkillStack += 1;
         controller.playerStatHandler.CanSkill = true;
+        Debug.Log($"스킬 쿨타임 계산 후, 현재 스킬 스택 수 : {controller.playerStatHandler.CurSkillStack}");
+        if (controller.playerStatHandler.CurSkillStack < controller.playerStatHandler.MaxSkillStack)
+        {
+            SkillCoolTime();
+        }
         Debug.Log("스킬 쿨 타임 종료");
     }
 }

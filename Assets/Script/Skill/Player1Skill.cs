@@ -12,6 +12,8 @@ public class Player1Skill : Skill
     public override void SkillStart()
     {
         base.SkillStart();
+        Debug.Log($"스킬1의 스타트 {Cnt}");
+        Cnt += 1;
         playerStats.Speed.added += applicationspeed;
         playerStats.AtkSpeed.added += applicationAtkSpeed;
         Invoke("SkillEnd", applicationTime);
@@ -20,8 +22,8 @@ public class Player1Skill : Skill
 
     public override void SkillEnd()
     {
-        playerStats.Speed.added -= applicationspeed;
-        playerStats.AtkSpeed.added -= applicationAtkSpeed;
         base.SkillEnd();
+        playerStats.Speed.added -= applicationspeed;
+        playerStats.AtkSpeed.added -= applicationAtkSpeed;        
     }
 }
