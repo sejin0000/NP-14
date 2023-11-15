@@ -17,13 +17,23 @@ public class A1105 : MonoBehaviourPun
         if (photonView.IsMine)
         {
             WeaponSystem=GetComponent<WeaponSystem>();
-            AutoChangeStart();
+            photonView.RPC("RPCAutoChangeStart", RpcTarget.All);
+        }
+    }
+    private void OnEnable()
+    {
+        if (photonView.IsMine) 
+        {
+            photonView.RPC("RPCAutoChangeStart", RpcTarget.All);
         }
     }
     // Update is called once per frame
     void AutoChangeStart() 
     {
-        StartCoroutine("AutoChange");
+        if (photonView.IsMine) 
+        {
+            StartCoroutine("AutoChange");
+        }
     }
     IEnumerator AutoChange() 
     {
