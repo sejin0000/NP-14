@@ -596,6 +596,8 @@ MonoBehaviour:
   isDie: 0
   MaxRegenCoin: 0
   CurRegenCoin: 0
+  MaxSkillStack: 0
+  CurSkillStack: 0
   CanFire: 0
   CanReload: 0
   CanSkill: 0
@@ -718,6 +720,7 @@ MonoBehaviour:
   muzzleOfAGun: {fileID: 6787653164829430967}
   target: 0
   isDamage: 0
+  _viewID: 0
 --- !u!114 &3736999086756257612
 MonoBehaviour:
   m_ObjectHideFlags: 0

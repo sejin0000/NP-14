@@ -27,6 +27,7 @@ public class BreakDownMk : MonoBehaviourPun
         if (percent > random) 
         {
             weaponSystem.Shooting();
+            controller.playerStatHandler.CurAmmo += 1;
         }
     }
 

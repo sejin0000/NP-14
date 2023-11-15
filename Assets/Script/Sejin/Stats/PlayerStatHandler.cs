@@ -49,6 +49,8 @@ public class PlayerStatHandler : MonoBehaviourPun
     public bool isDie;
     public int MaxRegenCoin;
     public int CurRegenCoin;
+    public int MaxSkillStack;
+    public int CurSkillStack;
 
     private float curHP;
     [HideInInspector]
@@ -104,7 +106,7 @@ public class PlayerStatHandler : MonoBehaviourPun
         Critical = new Stats(playerStats.critical);
         AmmoMax = new Stats(playerStats.ammoMax);
         MaxRegenCoin = 0;
-        CurRegenCoin = MaxRegenCoin;        
+        CurRegenCoin = MaxRegenCoin;
 
         PlayerSprite = playerStats.playerSprite;
         WeaponSprite = playerStats.weaponSprite;
@@ -120,6 +122,8 @@ public class PlayerStatHandler : MonoBehaviourPun
 
         isNoramlMove = true;
         isCanSkill=true;
+        MaxSkillStack = 1;
+        CurSkillStack = MaxSkillStack;
 
         PlayerSpriteCase = _PlayerSprite.GetComponent<SpriteLibrary>();
         WeaponSpriteCase = _WeaponSprite.GetComponent<SpriteLibrary>();

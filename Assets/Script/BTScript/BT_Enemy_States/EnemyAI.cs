@@ -37,7 +37,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
 
     public GameObject enemyAim;
-    public GameObject enemyBullet;
+    public Bullet enemyBulletPrefab;
 
 
     public LayerMask targetMask;             // 타겟 레이어(Player)
@@ -50,6 +50,10 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     public bool isAttaking;
     public bool isFilp;
 
+
+    //게임매니저에서(어디든) 관리하는 플레이어들 정보를 요청해서 사용
+
+    //가장많은 피해를 준 플레이어 타겟-> 불렛(쏜사람 정보) 맞은놈만 알면됨 ->플레이 공격력->
 
     Vector2 nowEnemyPosition;
     Quaternion nowEnemyRotation;
@@ -92,7 +96,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     {
         //AI트리의 노드 상태를 매 프레임 마다 얻어옴
         TreeAIState.Tick();       
-        GaugeUpdate();
 
         if (!isLive)
             return;
@@ -122,11 +125,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             }
         }
 
-        if (isFilp)
-            spriteRenderer.flipX = true;
-        else
-            spriteRenderer.flipX = false;
-
 
         if (!IsNavAbled() || nav.remainingDistance < 0.2f)
         {
@@ -153,7 +151,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     private float knockbackStartTime;
     public float knockbackDuration = 0.2f;
 
-    //★
+    //★맞음 & 죽음
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //호스트에서만 충돌 처리됨
@@ -210,17 +208,19 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
         if (currentHP > enemySO.hp)
             currentHP = enemySO.hp;
+
+        GaugeUpdate();
     }
 
     [PunRPC]
     public void DecreaseHP(float damage)
     {
         SetStateColor();
-        currentHP -= damage;    
-
+        currentHP -= damage;
+        GaugeUpdate();
 
         if (currentHP <= 0)
-            isLive = false;
+            isLive = false;       
     }
 
     [PunRPC]
@@ -229,16 +229,31 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         Destroy(gameObject);
     }
 
+    [PunRPC]
     public void Shoot()
     {
-        GameObject _object = Instantiate(enemyBullet, enemyAim.transform.position, enemyAim.transform.rotation);
-        Bullet _bullet = _object.GetComponent<Bullet>();
+        var _bullet = Instantiate(enemyBulletPrefab, enemyAim.transform.position, enemyAim.transform.rotation);
 
         _bullet.IsDamage = true;
         _bullet.ATK = enemySO.atk;
         _bullet.BulletLifeTime = enemySO.bulletLifeTime;
         _bullet.BulletSpeed = enemySO.bulletSpeed;
-        _bullet.target = BulletTarget.Player;       
+        _bullet.target = BulletTarget.Player;
+
+        /*
+        //수정 : gameObject 에서 Bullet으로 ->변수 형태와 용도를 통일함
+        Bullet _bullet = Instantiate<Bullet>(enemyBulletPrefab, enemyAim.transform.position, enemyAim.transform.rotation);
+
+
+
+        _bullet.IsDamage = true;
+        _bullet.ATK = enemySO.atk;
+        _bullet.BulletLifeTime = enemySO.bulletLifeTime;
+        _bullet.BulletSpeed = enemySO.bulletSpeed;
+        _bullet.target = BulletTarget.Player;
+        */
+
+        //수정 : gameObject 에서 Bullet으로 ->변수 형태와 용도를 통일함            
     }
 
     private Vector2 BoundaryAngle(float angle)
@@ -300,10 +315,12 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (PhotonNetwork.IsMasterClient && Target == null)
         {
+
             Target = Physics2D.OverlapCircle(transform.position, viewDistance, targetMask);
             Debug.Log($"타겟 수집{Target}");
         }           
 
+        //플레이어를 관리하는 객체에게 타겟의 위치를 요청하고, 내가 원하는범위안의 플레이어들의 리스트를 요청
 
         if (Target == null)
             return;
@@ -371,6 +388,9 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     //이거 동기화
     public void Filp(float myX, float otherX)
     {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
         if (otherX < myX)
         {
             isFilp = true;
@@ -387,6 +407,11 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         {
             nav.SetDestination(navTargetPoint);
         }
+
+        if (isFilp)
+            spriteRenderer.flipX = true;
+        else
+            spriteRenderer.flipX = false;
     }
 
     public bool IsNavAbled()

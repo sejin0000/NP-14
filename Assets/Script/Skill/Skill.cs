@@ -16,19 +16,12 @@ public class Skill : MonoBehaviourPun
         playerStats = GetComponent<PlayerStatHandler>();
     }
 
-    public virtual void Start()
-    {
-        if (photonView.IsMine)
-        {
-            controller.OnSkillEvent += SkillStart;
-        }
-    }
-
-
     public virtual void SkillStart()
     {
         if (photonView.IsMine)
         {
+            playerStats.CurSkillStack -= 1;
+            Debug.Log($"스킬 사용 직후, 현재 스킬 스택 수 : {controller.playerStatHandler.CurSkillStack}");
             controller.playerStatHandler.CanSkill = false;
             controller.playerStatHandler.useSkill = true;
 
@@ -39,11 +32,15 @@ public class Skill : MonoBehaviourPun
     public virtual void SkillEnd()
     {
         if (photonView.IsMine)
-        {
+        {            
             //스킬이 끝나면 쿨타임을 계산하고 쿨타임이 끝나면  controller.playerStatHandler.CanSkill = 진실; 로 바꿔줌
             Debug.Log("스킬 종료");
-            controller.CallEndSkillEvent();
             controller.playerStatHandler.useSkill = false;
+            if (controller.playerStatHandler.CurSkillStack > 0)
+            {
+                controller.playerStatHandler.CanSkill = true;
+            }
+            controller.CallEndSkillEvent();
         }
     }
 
@@ -52,6 +49,7 @@ public class Skill : MonoBehaviourPun
         if (photonView.IsMine)
         {
             controller.OnSkillEvent -= SkillStart;
+            playerStats.CurSkillStack = playerStats.MaxSkillStack;
         }
     }
 }

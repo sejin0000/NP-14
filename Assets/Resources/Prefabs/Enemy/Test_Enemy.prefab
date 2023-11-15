@@ -413,7 +413,7 @@ MonoBehaviour:
   nav: {fileID: 7302048549800893148}
   navTargetPoint: {x: 0, y: 0, z: 0}
   enemyAim: {fileID: 4931010869674023689}
-  enemyBullet: {fileID: 8703405332802933773, guid: ffaf2c7e3b6a9714398653f89e5593ca, type: 3}
+  enemyBulletPrefab: {fileID: 7691614160748915792, guid: ffaf2c7e3b6a9714398653f89e5593ca, type: 3}
   targetMask:
     serializedVersion: 2
     m_Bits: 256
@@ -422,6 +422,7 @@ MonoBehaviour:
   isLive: 0
   isChase: 0
   isAttaking: 0
+  isFilp: 0
   images_Gauge: {fileID: 7702857846665888690}
   PV: {fileID: 2011073214277895600}
   knockbackDuration: 0.5
@@ -446,7 +447,7 @@ NavMeshAgent:
   m_Height: 1
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 0
 --- !u!114 &2011073214277895600
 MonoBehaviour:
   m_ObjectHideFlags: 0

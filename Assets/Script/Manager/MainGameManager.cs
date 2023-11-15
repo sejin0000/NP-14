@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -24,6 +25,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     [Header("ClientPlayer")]
     public GameObject InstantiatedPlayer;
     private bool isPlayerInstantiated;
+    public Dictionary<int, GameObject> playerInfoDictionary;
 
     [Header("PlayerData")]
     public PlayerDataSetting characterSetting;
@@ -123,6 +125,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
             isFarmingRoom = true,
         };
 
+        playerInfoDictionary = new Dictionary<int, GameObject>();
         isPlayerInstantiated = false;
         if (!isPlayerInstantiated)
         {
@@ -315,10 +318,26 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         isDie = playerStatHandler.isDie;
         PartyDeathCount = 0;
         playerStatHandler.OnDieEvent += DiedAfter;
-
+        // 플레이어 데이터 추가
+        playerInfoDictionary.Add(viewID, InstantiatedPlayer);
+        GameObject sendingPlayer = InstantiatedPlayer;
+        photonView.RPC("SendPlayerInfo", RpcTarget.Others, viewID);
 
         // ClassIdentifier 데이터 Init()
         InstantiatedPlayer.GetComponent<ClassIdentifier>().playerData = characterSetting;
+    }
+    [PunRPC]
+    public void SendPlayerInfo(int viewID)
+    {
+        GameObject clientPlayer = PhotonView.Find(viewID).gameObject;
+        playerInfoDictionary.Add(viewID, clientPlayer);
+        Debug.Log($"{playerInfoDictionary.Count}개가 딕셔너리에 등록됨");
+        int cnt = 0;
+        foreach (var key in playerInfoDictionary.Keys)
+        {
+            cnt += 1;
+            Debug.Log($"{playerInfoDictionary.Count}개의 키 중 {cnt}번째 == {key}");
+        }
     }
 
     [PunRPC]

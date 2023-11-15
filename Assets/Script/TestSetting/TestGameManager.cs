@@ -20,6 +20,7 @@ public class TestGameManager : MonoBehaviourPun
     [Header("ClientPlayer")]
     public GameObject InstantiatedPlayer;
     [SerializeField] private bool isPlayerInstantiated;
+    public Dictionary<int, GameObject> playerInfoDictionary;
 
     [Header("PlayerData")]
     public PlayerDataSetting characterSetting;
@@ -49,6 +50,7 @@ public class TestGameManager : MonoBehaviourPun
 
     private void Awake()
     {
+        playerInfoDictionary = new Dictionary<int, GameObject>();
         isPlayerInstantiated = false;
         if (!isPlayerInstantiated)
         {
@@ -87,8 +89,28 @@ public class TestGameManager : MonoBehaviourPun
         characterSetting.ownerPlayer = InstantiatedPlayer;
         characterSetting.viewID = InstantiatedPlayer.GetPhotonView().ViewID;
 
+        // 플레이어 데이터 추가
+        int viewID = characterSetting.viewID;
+        playerInfoDictionary.Add(viewID, InstantiatedPlayer);
+        GameObject sendingPlayer = InstantiatedPlayer;
+        photonView.RPC("SendPlayerInfo", RpcTarget.Others, viewID);
+
         // ClassIdentifier 데이터 Init()
         InstantiatedPlayer.GetComponent<ClassIdentifier>().playerData = characterSetting;
+    }
+
+    [PunRPC]
+    public void SendPlayerInfo(int viewID)
+    {
+        GameObject clientPlayer = PhotonView.Find(viewID).gameObject;
+        playerInfoDictionary.Add(viewID, clientPlayer);
+        Debug.Log($"{playerInfoDictionary.Count}개가 딕셔너리에 등록됨");
+        int cnt = 0;
+        foreach (var key in playerInfoDictionary.Keys)
+        {
+            cnt += 1;
+            Debug.Log($"{playerInfoDictionary.Count}개의 키 중 {cnt}번째 == {key}");
+        }
     }
 
     private void SyncPlayer()
