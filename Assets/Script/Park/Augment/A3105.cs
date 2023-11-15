@@ -1,9 +1,10 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public class A0205 : MonoBehaviourPun//퍼플방전 첫공업 
+public class A3105 : MonoBehaviourPun
 {
     private TopDownCharacterController controller;
     private PlayerStatHandler playerStat;
@@ -11,6 +12,7 @@ public class A0205 : MonoBehaviourPun//퍼플방전 첫공업
     float oldPower;
     bool Isfirst;
     bool ready;
+    bool isLink;
     private void Awake()
     {
         if (photonView.IsMine)
@@ -21,8 +23,12 @@ public class A0205 : MonoBehaviourPun//퍼플방전 첫공업
             oldPower = 0;
             Isfirst = false;
             ready = true;
-            controller.OnReloadEvent += SetPower;
+            controller.OnSkillEvent += SetPower;
             controller.OnEndAttackEvent += LostPower;
+
+            controller.SkillReset();//여기부터참고
+            controller.SkillMinusEvent += SkillLinkOff;
+            isLink = true;
         }
     }
     // Update is called once per frame
@@ -36,16 +42,28 @@ public class A0205 : MonoBehaviourPun//퍼플방전 첫공업
             ready = false;
             Isfirst = true;
         }
+        controller.CallEndSkillEvent();
 
     }
-    void LostPower() 
+    void LostPower()
     {
-        if (Isfirst) 
+        if (Isfirst)
         {
             playerStat.ATK.added -= oldPower;
             ready = true;
         }
         Isfirst = false;
 
+    }
+    public void SkillLinkOff()
+    {
+        if (photonView.IsMine)
+        {
+            if (isLink)
+            {
+                controller.OnSkillEvent -= SetPower;
+                isLink = false;
+            }
+        }
     }
 }

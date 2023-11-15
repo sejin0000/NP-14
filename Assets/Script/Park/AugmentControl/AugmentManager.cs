@@ -14,7 +14,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     int atk = 5;//여기서부터 아래까지  티어별로 *n으로 사용중
     int hp = 8;
     float speed = 1;
-    float atkspeed = -1f;
+    float atkspeed = 1f;
     float bulletSpread = -1f;
     int cooltime = -1;
     int critical = 5;
@@ -432,13 +432,13 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     }
     //테스트 완료 그러나 이벤트로 작동하여 추가 테스트가 필요
     [PunRPC]
-    private void A124(int PlayerNumber)//눈먼총잡이 : 시야가 대폭 감소 하며 공격 속도, 재장전 속도가 증가합니다.
+    private void A124(int PlayerNumber)//눈먼총잡이 : 시야가 대폭 감소 하며 공격 속도, 재장전 속도가 증가합니다.<<애매모호한듯?
     {
         //PhotonView photonView = PhotonView.Find(PlayerPvNumber);
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         targetPlayer.AddComponent<A0124>();//A0124에서 화면어둡게 하는 프리팹 만들고 스테이지시작에 ON 끝에 OFF
         playerstatHandler.AtkSpeed.added += 15;
-        playerstatHandler.ReloadCoolTime.added -= 5;
+        playerstatHandler.ReloadCoolTime.added += 2;
     }
 
     [PunRPC]
@@ -503,10 +503,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A207(int PlayerNumber)//하이리스크 로우리턴
+    private void A207(int PlayerNumber)//하이리스크 하이리턴
     {
         ChangePlayerStatHandler(PlayerNumber);
-        playerstatHandler.defense = playerstatHandler.defense * 0.5f;
+        playerstatHandler.defense *= 0.5f;
         playerstatHandler.ATK.coefficient *= 2f;
     }
     [PunRPC]
@@ -678,9 +678,13 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A1102(int PlayerNumber)
+    private void A1102(int PlayerNumber)//경량화 << 이름뭔가 이상함 장탄수가 5 증가 하며 데미지 감소, 공격 속도 증가, 이동속도 증가를 얻습니다.
     {
-        Debug.Log("미완성");
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        playerstatHandler.AmmoMax.added += 5;
+        playerstatHandler.ATK.coefficient *= 0.9f;
+        playerstatHandler.AtkSpeed.coefficient *= 1.1f;
+        playerstatHandler.Speed.coefficient *= 1.1f;
     }
     [PunRPC]
     private void A1103(int PlayerNumber)
@@ -693,9 +697,14 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A1105(int PlayerNumber)
+    private void A1105(int PlayerNumber)//오토 쉬프트  //현재 코루틴 버그가 있음;
     {
-        Debug.Log("미완성");
+        ChangePlayerStatHandler(PlayerNumber);
+        targetPlayer.AddComponent<A1105>();
+        playerInput = targetPlayer.GetComponent<PlayerInput>();
+        playerInput.actions.FindAction("Skill").Disable();
+        playerstatHandler.isCanSkill = false;
+        playerstatHandler.ATK.coefficient *= 1.5f;
 
     }
     [PunRPC]
@@ -788,6 +797,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         WeaponSystem weaponSystemA = targetPlayer.GetComponent<WeaponSystem>();
         playerInput = targetPlayer.GetComponent<PlayerInput>();
         playerInput.actions.FindAction("Skill").Disable();
+        playerstatHandler.isCanSkill = false;
         weaponSystemA.isDamage=false;
         playerstatHandler.ATK.coefficient *= 1.5f;
 
@@ -816,7 +826,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
             GameObject prefab = PhotonNetwork.Instantiate("AugmentList/A2103", targetPlayer.transform.localPosition, Quaternion.identity);
             int num = prefab.GetPhotonView().ViewID;
             photonView.RPC("FindMaster", RpcTarget.All, num);
-            prefab.GetComponent<A2204>().Init();
+            prefab.GetComponent<A2103>().Init();
         }
     }
     [PunRPC]
@@ -926,20 +936,22 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@샷건 1티어
     [PunRPC]
-    private void A3101(int PlayerNumber)
+    private void A3101(int PlayerNumber)//쉬는시간
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A3101>();
     }
     [PunRPC]
-    private void A3102(int PlayerNumber)
+    private void A3102(int PlayerNumber)//굳은살 스킬 사용후 체력증가
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A3102>();
     }
     [PunRPC]
-    private void A3103(int PlayerNumber)
+    private void A3103(int PlayerNumber)//시즈모드 구르기를 시즈모드로 변경 
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A3103>();
     }
     [PunRPC]
     private void A3104(int PlayerNumber)
@@ -947,9 +959,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A3105(int PlayerNumber)
+    private void A3105(int PlayerNumber)//공격태세 스킬 사용시 다음 공격을 강화 시키는 스킬로 대체 #스킬대체 #다음공경
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A3105>();
     }
     [PunRPC]
     private void A3106()
@@ -978,9 +991,12 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         targetPlayer.AddComponent<A3201>();
     }
     [PunRPC]
-    private void A3202(int PlayerNumber)
+    private void A3202(int PlayerNumber)//저는 저는 펌프 액션 샷건이 싫어요최대 장탄수가 5 증가 하며 연사속도 를 얻고 공격력을 조금 잃습니다.
     {
-        Debug.Log("미완성");
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        playerstatHandler.AmmoMax.added += 5;
+        playerstatHandler.AtkSpeed.coefficient *= 1.2f;
+        playerstatHandler.ATK.coefficient *= 0.9f;
     }
     [PunRPC]
     private void A3203(int PlayerNumber)//사이즈업 몸2배체력3배
@@ -998,14 +1014,23 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         targetPlayer.AddComponent<A3204>();
     }
     [PunRPC]
-    private void A3205(int PlayerNumber)
+    private void A3205(int PlayerNumber)//기쁨은 나누면 두배 팀도 실드  //2204의 샷건버전
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        if (targetPlayer.GetPhotonView().IsMine)
+        {
+            GameObject prefab = PhotonNetwork.Instantiate("AugmentList/A3205", targetPlayer.transform.localPosition, Quaternion.identity);
+            int num = prefab.GetPhotonView().ViewID;
+            photonView.RPC("FindMaster", RpcTarget.All, num);
+            prefab.GetComponent<A3205>().Init();
+        }
     }
     [PunRPC]
-    private void A3206(int PlayerNumber)
+    private void A3206(int PlayerNumber)//공병 스킬
     {
-        Debug.Log("미완성");
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        targetPlayer.AddComponent<A3206>();
+        playerstatHandler.SkillCoolTime.added += 5f;
     }
     [PunRPC]
     private void A3207(int PlayerNumber)//보호 모드

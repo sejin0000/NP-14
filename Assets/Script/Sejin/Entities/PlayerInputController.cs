@@ -51,6 +51,14 @@ public class PlayerInputController : TopDownCharacterController
         {
             playerInput.actions.FindAction("Skill").Disable();
         }
+        if (playerstatHnadler.isCanAtk)
+        {
+            playerInput.actions.FindAction("Attack").Enable();
+        }
+        else
+        {
+            playerInput.actions.FindAction("Attack").Disable();
+        }
     }
     public void OnMove(InputValue value)
     {

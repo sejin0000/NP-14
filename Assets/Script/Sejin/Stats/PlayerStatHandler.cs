@@ -46,6 +46,7 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     public bool isNoramlMove;
     public bool isCanSkill;
+    public bool isCanAtk;
     public bool isDie;
     public int MaxRegenCoin;
     public int CurRegenCoin;
@@ -118,6 +119,7 @@ public class PlayerStatHandler : MonoBehaviourPun
 
         isNoramlMove = true;
         isCanSkill=true;
+        isCanAtk = true;
 
         PlayerSpriteCase = _PlayerSprite.GetComponent<SpriteLibrary>();
         WeaponSpriteCase = _WeaponSprite.GetComponent<SpriteLibrary>();

@@ -18,6 +18,8 @@ public class TopDownCharacterController : MonoBehaviour
     public event Action OnEndReloadEvent;
     public event Action OnStartSkillEvent;
 
+    public event Action SkillMinusEvent;
+
 
     public PlayerStatHandler playerStatHandler;
     public TopDownMovement topDownMovement;
@@ -70,7 +72,7 @@ public class TopDownCharacterController : MonoBehaviour
     }
     public void SkillReset() 
     {
-        OnSkillEvent = null;
+        SkillMinusEvent?.Invoke();
     }
     public void CallEndSkillEvent()
     {
