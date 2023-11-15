@@ -549,6 +549,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         playerInput=targetPlayer.GetComponent<PlayerInput>();
         playerInput.actions.FindAction("Skill").Disable();
+        playerstatHandler.isCanSkill = false;
         Debug.Log("이 증강도 상당히 우려가 됩니다 우클릭 체크 하고 말해주세요");
     }
     [PunRPC]
@@ -912,9 +913,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A2304(int PlayerNumber)//스팀팩 막히고 일부 상시 적용
     {
-        ChangePlayerStatHandler(PlayerNumber);
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
         playerInput=targetPlayer.GetComponent<PlayerInput>();
         playerInput.actions.FindAction("Skill").Disable();
+        playerstatHandler.isCanSkill = false;
         if (targetPlayer.GetComponent<Player1Skill>())
         {
             Player1Skill skill = targetPlayer.GetComponent<Player1Skill>();
