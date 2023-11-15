@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using myBehaviourTree;
 using Photon.Pun;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 //추적
 public class EnemyState_Chase : BTAction
@@ -11,7 +12,6 @@ public class EnemyState_Chase : BTAction
     private GameObject owner;
     private EnemyAI enemyAI;
     private EnemySO enemySO;
-    private Collider2D target;
     public NavMeshAgent nav;
 
     private float chaseTime;           // 걷기 시간
@@ -37,7 +37,6 @@ public class EnemyState_Chase : BTAction
         SetStateColor();
         enemyAI.ChangeSpeed(enemySO.enemyChaseSpeed);
         currentTime = chaseTime;
-        target = enemyAI.Target;
         //수정됨
         //enemyAI.nav.enabled = true;
     }
@@ -53,7 +52,8 @@ public class EnemyState_Chase : BTAction
         if (currentTime <= 0.3f)
         {
             enemyAI.isChase = false;
-            target = null;
+            enemyAI.Target = null;
+
             return Status.BT_Failure;
         }
 
@@ -73,12 +73,12 @@ public class EnemyState_Chase : BTAction
     private void OnChase()
     {
         if (enemyAI.photonView.AmOwner)
-            enemyAI.navTargetPoint = target.transform.position;
+            enemyAI.navTargetPoint = enemyAI.Target.transform.position;
 
         enemyAI.DestinationSet();
 
 
-        float distanceToTarget = Vector3.Distance(owner.transform.position, target.transform.position);
+        float distanceToTarget = Vector3.Distance(owner.transform.position, enemyAI.Target.transform.position);
 
         if (distanceToTarget < enemySO.attackRange)
         {
@@ -95,7 +95,7 @@ public class EnemyState_Chase : BTAction
 
 
         //★★★수정함
-        enemyAI.Filp(owner.transform.position.x, target.transform.position.x);
+        enemyAI.Filp(owner.transform.position.x, enemyAI.Target.transform.position.x);
 
         /*
         if (target.transform.position.x < owner.transform.position.x)

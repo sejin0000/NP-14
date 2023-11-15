@@ -42,6 +42,7 @@ using Photon.Pun;
     public override void Initialize()
     {
         SetStateColor();
+        enemyAI.Target = null;
 
         if (enemyAI.nav != null)
         {
