@@ -201,6 +201,9 @@ MonoBehaviour:
   - FindMaster
   - LowSteamPackGive
   - DestinationSet
+  - SendTarget
+  - SendTargetNull
+  - SendPlayerInfo
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
