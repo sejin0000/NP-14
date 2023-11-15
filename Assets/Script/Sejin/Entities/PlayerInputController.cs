@@ -11,6 +11,7 @@ public class PlayerInputController : TopDownCharacterController
     private Camera _camera;
     public PlayerInput playerInput;
     public int atkPercent;
+    public bool IsMove = false;
     PlayerStatHandler playerstatHnadler;
 
     private void Awake()
@@ -65,6 +66,17 @@ public class PlayerInputController : TopDownCharacterController
         // Debug.Log("OnMove" + value.ToString());
         Vector2 moveInput = value.Get<Vector2>().normalized;
         CallMoveEvent(moveInput);
+    }
+    public void OnIsMove()
+    {
+        if (playerInput.actions["IsMove"].ReadValue<float>() == 1)
+        {
+            playerStatHandler.MoveStartCall();
+        }
+        else
+        {
+            playerStatHandler.MoveEndCall();
+        }
     }
     public void OnMove2(InputValue value)
     {

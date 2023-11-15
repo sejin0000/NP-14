@@ -137,6 +137,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shieldSurvivalTime: 3
   shieldHP: 0
+  shieldPower: 0
 --- !u!114 &-3312873443788948719
 MonoBehaviour:
   m_ObjectHideFlags: 0

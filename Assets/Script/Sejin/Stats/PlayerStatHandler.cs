@@ -14,6 +14,8 @@ public class PlayerStatHandler : MonoBehaviourPun
     public event Action OnRegenEvent;
     public event Action OnChangeAmmorEvent;
     public event Action OnChangeCurHPEvent;
+    public event Action MoveStartEvent;
+    public event Action MoveEndEvent;
 
 
     [SerializeField] private PlayerSO playerStats;
@@ -217,5 +219,18 @@ public class PlayerStatHandler : MonoBehaviourPun
             OnDieEvent?.Invoke();
             this.gameObject.layer = 0;
         }
+    }
+
+    public void MoveStartCall() 
+    {
+        MoveStartEvent?.Invoke();
+        Debug.Log("움직임시작@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        Debug.Log("움직임시작@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+    }
+    public void MoveEndCall()
+    {
+        MoveEndEvent?.Invoke();
+        Debug.Log("움직임끝@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        Debug.Log("움직임끝@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
     }
 }

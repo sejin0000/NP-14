@@ -32,6 +32,7 @@ public class A1105 : MonoBehaviourPun
     {
         if (photonView.IsMine) 
         {
+            StopCoroutine("AutoChange");
             StartCoroutine("AutoChange");
         }
     }

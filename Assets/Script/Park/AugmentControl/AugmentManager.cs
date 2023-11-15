@@ -282,9 +282,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A107(int PlayerNumber)
+    private void A107(int PlayerNumber)//알맞은 타이밍 //가만히 있는 시간에 비례하여 공업
     {
-        Debug.Log("미완성");
+        ChangePlayerStatHandler(PlayerNumber);
+        targetPlayer.AddComponent<A0107>();
     }
     [PunRPC]
     private void A108(int PlayerNumber)
@@ -510,9 +511,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         playerstatHandler.ATK.coefficient *= 2f;
     }
     [PunRPC]
-    private void A208(int PlayerNumber)
+    private void A208(int PlayerNumber)//회피의달인
     {
-        Debug.Log("미완성");
+        ChangePlayerStatHandler(PlayerNumber);
+        targetPlayer.AddComponent<A0208>();
     }
     [PunRPC]
     private void A209(int PlayerNumber)//재정비 구르기시 재장전 수행
