@@ -17,6 +17,7 @@ public class Bullet : MonoBehaviour
     public bool IsDamage = true;
     public BulletTarget target;
 
+    public int BulletOwner;
     void Start()
     {
         BulletLifeTime = Random.Range(BulletLifeTime * 0.15f, BulletLifeTime * 0.2f);

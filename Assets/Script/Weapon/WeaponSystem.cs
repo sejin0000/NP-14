@@ -12,12 +12,15 @@ public class WeaponSystem : MonoBehaviour
     public BulletTarget target;
     public bool isDamage;
 
+    public int _viewID;
+
     private void Awake()
     {
         isDamage = true;
         bullet         = Resources.Load<GameObject>("Prefabs/Player/Bullet");
         pv             = GetComponent<PhotonView>();
         _controller    = GetComponent<TopDownCharacterController>();
+        _viewID        = pv.ViewID;
         target = BulletTarget.Enemy;
     }
     private void Start()
@@ -38,12 +41,12 @@ public class WeaponSystem : MonoBehaviour
             bool _isDamage = isDamage;
 
 
-            pv.RPC("BS", RpcTarget.All, rot, _ATK, _BLT, _target, _isDamage);
+            pv.RPC("BS", RpcTarget.All, rot, _ATK, _BLT, _target, _isDamage, _viewID);
         }
     }
 
     [PunRPC]
-    public void BS(Quaternion rot, float Atk, float bulletLifeTime,int _target, bool _isDamage)//BulletSpawn
+    public void BS(Quaternion rot, float Atk, float bulletLifeTime,int _target, bool _isDamage, int _viewID)//BulletSpawn
     {
         Debug.Log("Å¸°Ù");
         Debug.Log(_target);
@@ -57,6 +60,7 @@ public class WeaponSystem : MonoBehaviour
         _bullet.BulletLifeTime = bulletLifeTime;
         _bullet.target = (BulletTarget)_target;
         _bullet.IsDamage = _isDamage;
+        _bullet.BulletOwner = _viewID;
         _object.GetComponent<SpriteRenderer>().sprite = _controller.playerStatHandler.BulletSprite;
     }
 }
