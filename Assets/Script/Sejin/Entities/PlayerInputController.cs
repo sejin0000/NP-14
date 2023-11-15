@@ -11,12 +11,13 @@ public class PlayerInputController : TopDownCharacterController
     private Camera _camera;
     public PlayerInput playerInput;
     public int atkPercent;
-    
+    PlayerStatHandler playerstatHnadler;
 
     private void Awake()
     {
-        GetComponent<PlayerStatHandler>().OnDieEvent += InputOff;
-        GetComponent<PlayerStatHandler>().OnRegenEvent += InputOn;
+        playerstatHnadler = GetComponent<PlayerStatHandler>();
+        playerstatHnadler.OnDieEvent += InputOff;
+        playerstatHnadler.OnRegenEvent += InputOn;
         atkPercent = 100;
 
 
@@ -28,6 +29,27 @@ public class PlayerInputController : TopDownCharacterController
         if(!GetComponent<PhotonView>().IsMine)
         {
             Destroy(GetComponent<PlayerInputController>());
+        }
+    }
+    private void OnEnable()
+    {
+        if (playerstatHnadler.isNoramlMove)
+        {
+            playerInput.actions.FindAction("Move2").Disable();
+            playerInput.actions.FindAction("Move").Enable();
+        }
+        else
+        {
+            playerInput.actions.FindAction("Move2").Enable();
+            playerInput.actions.FindAction("Move").Disable();
+        }
+        if (playerstatHnadler.isCanSkill)
+        {
+            playerInput.actions.FindAction("Skill").Enable();
+        }
+        else 
+        {
+            playerInput.actions.FindAction("Skill").Disable();
         }
     }
     public void OnMove(InputValue value)
