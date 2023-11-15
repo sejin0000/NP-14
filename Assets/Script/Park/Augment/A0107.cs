@@ -26,7 +26,9 @@ public class A0107 : MonoBehaviourPun
             playerStat.MoveEndEvent += MoveEndEvent;
             power = 0;
             oldpower = 0;
-            Ismove=true;
+            magnification = 0.1f;
+            powerTime = 0f;
+            Ismove =true;
         }
     }
     private void Update()

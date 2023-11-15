@@ -224,13 +224,9 @@ public class PlayerStatHandler : MonoBehaviourPun
     public void MoveStartCall() 
     {
         MoveStartEvent?.Invoke();
-        Debug.Log("움직임시작@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-        Debug.Log("움직임시작@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
     }
     public void MoveEndCall()
     {
         MoveEndEvent?.Invoke();
-        Debug.Log("움직임끝@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-        Debug.Log("움직임끝@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
     }
 }
