@@ -99,6 +99,20 @@ public class TestGameManager : MonoBehaviourPun
         InstantiatedPlayer.GetComponent<ClassIdentifier>().playerData = characterSetting;
     }
 
+    [PunRPC]
+    public void SendPlayerInfo(int viewID)
+    {
+        GameObject clientPlayer = PhotonView.Find(viewID).gameObject;
+        playerInfoDictionary.Add(viewID, clientPlayer);
+        Debug.Log($"{playerInfoDictionary.Count}개가 딕셔너리에 등록됨");
+        int cnt = 0;
+        foreach (var key in playerInfoDictionary.Keys)
+        {
+            cnt += 1;
+            Debug.Log($"{playerInfoDictionary.Count}개의 키 중 {cnt}번째 == {key}");
+        }
+    }
+
     private void SyncPlayer()
     {
         if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out object classNum))
