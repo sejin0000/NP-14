@@ -422,6 +422,7 @@ MonoBehaviour:
   isLive: 0
   isChase: 0
   isAttaking: 0
+  isFilp: 0
   images_Gauge: {fileID: 7702857846665888690}
   PV: {fileID: 2011073214277895600}
   knockbackDuration: 0.5

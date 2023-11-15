@@ -51,6 +51,10 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     public bool isFilp;
 
 
+    //게임매니저에서(어디든) 관리하는 플레이어들 정보를 요청해서 사용
+
+    //가장많은 피해를 준 플레이어 타겟-> 불렛(쏜사람 정보) 맞은놈만 알면됨 ->플레이 공격력->
+
     Vector2 nowEnemyPosition;
     Quaternion nowEnemyRotation;
     [SerializeField]
@@ -300,10 +304,12 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (PhotonNetwork.IsMasterClient && Target == null)
         {
+
             Target = Physics2D.OverlapCircle(transform.position, viewDistance, targetMask);
             Debug.Log($"타겟 수집{Target}");
         }           
 
+        //플레이어를 관리하는 객체에게 타겟의 위치를 요청하고, 내가 원하는범위안의 플레이어들의 리스트를 요청
 
         if (Target == null)
             return;
