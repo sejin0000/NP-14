@@ -65,6 +65,7 @@ public class TopDownCharacterController : MonoBehaviour
     {
         if(playerStatHandler.CanSkill)
         {
+            Debug.Log(playerStatHandler.CanSkill);
             OnSkillEvent?.Invoke();
         }
     }
