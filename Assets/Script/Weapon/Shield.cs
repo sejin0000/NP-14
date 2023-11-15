@@ -6,7 +6,7 @@ public class Shield : MonoBehaviour
 {
     public float shieldSurvivalTime = 3;
     public float shieldHP= 20;
-    public float shieldPower;
+    //public float shieldPower;//커밋에서 내가 넣었다고 뜨는데 내가 넣은 기억이 없음 일단 주석처리후 나중에 확인해서 지우기
     private float time = 0;
 
     private void Update()
