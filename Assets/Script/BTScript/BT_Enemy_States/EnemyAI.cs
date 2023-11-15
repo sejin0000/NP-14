@@ -371,6 +371,9 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     //이거 동기화
     public void Filp(float myX, float otherX)
     {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
         if (otherX < myX)
         {
             isFilp = true;
