@@ -242,9 +242,7 @@ MonoBehaviour:
   map: {fileID: 1723038138848137441, guid: 2a38beb1f5bc94b4285d32aeb82af2c3, type: 3}
   roomLine: {fileID: 1723038138848137441, guid: 2a38beb1f5bc94b4285d32aeb82af2c3, type: 3}
   maximumDepth: 4
-  parentsNodes: []
-  L_childrenNode: []
-  R_childrenNode: []
+  AllRoomList: []
 --- !u!1 &1888000298
 GameObject:
   m_ObjectHideFlags: 0

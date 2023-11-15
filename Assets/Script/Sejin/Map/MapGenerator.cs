@@ -1,3 +1,4 @@
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -16,27 +17,49 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private GameObject roomLine; //lineRenderer를 사용해서 방의 사이즈를 보여주기 위함
     [SerializeField] private int maximumDepth; //트리의 높이, 높을 수록 방을 더 자세히 나누게 됨
 
-    public List<Node> parentsNodes = new List<Node>();
-    public List<Node> L_childrenNode = new List<Node>();
-    public List<Node> R_childrenNode = new List<Node>();
+    private List<Node> parentsNodes = new List<Node>();
+    private List<Node> L_childrenNode = new List<Node>();
+    private List<Node> R_childrenNode = new List<Node>();
+
+    public List<Node> AllRoomList = new List<Node>();
+
+
     int nodeDepth;
+
+    Node root;
     void Start()
     {
-        Node root = new Node(new RectInt(0, 0, mapSize.x, mapSize.y)); //전체 맵 크기의 루트노드를 만듬
+        root = new Node(new RectInt(0, 0, mapSize.x, mapSize.y)); //전체 맵 크기의 루트노드를 만듬
         //DrawMap(0, 0);
 
         Divide(root, 0);
         GenerateRoom(root, 0);
 
+        MapMake();
 
+        for(int i = 0; i < L_childrenNode.Count; i++)
+        {
+            AllRoomList.Add(L_childrenNode[i]);
+        }
+        for (int i = 0; i < R_childrenNode.Count; i++)
+        {
+            AllRoomList.Add(R_childrenNode[i]);
+        }
+    }
+
+
+    public void MapMake()
+    {
         for (int i = 0; i < maximumDepth; i++)
         {
+            parentsNodes.Clear();
+
             nodeDepth = i;
             NodeSelection(root, 0);
             ConnectAdjacentNodes();
-            parentsNodes.Clear();
         }
     }
+
     private void DrawMap(int x, int y) //x y는 화면의 중앙위치를 뜻함
     {
         //기본적으로 mapSize/2라는 값을 계속해서 빼게 될건데, 화면의 중앙에서 화면의 크기의 반을 빼줘야 좌측 하단좌표를 구할 수 있기 때문이다.
@@ -57,6 +80,7 @@ public class MapGenerator : MonoBehaviour
         //가로와 세로중 더 긴것을 구한후, 가로가 길다면 위 좌, 우로 세로가 더 길다면 위, 아래로 나눠주게 될 것이다.
         int split = Mathf.RoundToInt(Random.Range(maxLength * minimumDevideRate, maxLength * maximumDivideRate));
         //나올 수 있는 최대 길이와 최소 길이중에서 랜덤으로 한 값을 선택
+
         if (tree.nodeRect.width >= tree.nodeRect.height) //가로가 더 길었던 경우에는 좌 우로 나누게 될 것이며, 이 경우에는 세로 길이는 변하지 않는다.
         {
             tree.leftNode = new Node(new RectInt(tree.nodeRect.x, tree.nodeRect.y, split, tree.nodeRect.height));
@@ -153,13 +177,14 @@ public class MapGenerator : MonoBehaviour
     {
         for (int i = 0; i < parentsNodes.Count; i++)
         {
+            R_childrenNode.Clear();
+            L_childrenNode.Clear();
+
             FindNodeChildren(parentsNodes[i].rightNode, maximumDepth - nodeDepth, R_childrenNode);
             FindNodeChildren(parentsNodes[i].leftNode, maximumDepth - nodeDepth, L_childrenNode);
 
 
             GenerateLoad(R_childrenNode, L_childrenNode);
-            R_childrenNode.Clear();
-            L_childrenNode.Clear();
 
             // 추가된 자식 연결하는 함수
         }
@@ -180,8 +205,18 @@ public class MapGenerator : MonoBehaviour
         {
             for (int j = 0; j < L_nodeList.Count; j++)
             {
-                if ((R_nodeList[i].center - L_nodeList[j].center).magnitude < minimumDistance)
+                if (
+                    Mathf.Abs(
+                    R_nodeList[i].center.x - L_nodeList[j].center.x
+                    )
+                    +
+                    Mathf.Abs(
+                    R_nodeList[i].center.y - L_nodeList[j].center.y
+                    )
+                    < minimumDistance
+                    )
                 {
+                    // 수정 해야함
                     minimumDistance = (R_nodeList[i].center - L_nodeList[j].center).magnitude;
 
                     R_node = R_nodeList[i];
@@ -189,12 +224,61 @@ public class MapGenerator : MonoBehaviour
                 }
             }
         }
-        Vector2Int leftNodeCenter = R_node.center;
-        Vector2Int rightNodeCenter = L_node.center;
 
-        DrawLine(new Vector2(leftNodeCenter.x, leftNodeCenter.y), new Vector2(rightNodeCenter.x, leftNodeCenter.y));
+
+        Vector2Int rightNodeCenter = R_node.center;
+        Vector2Int leftNodeCenter = L_node.center;
+
+
+        //DrawLine(new Vector2(rightNodeCenter.x, leftNodeCenter.y), new Vector2(rightNodeCenter.x, rightNodeCenter.y));
+
+        //DrawLine(new Vector2(leftNodeCenter.x, leftNodeCenter.y), new Vector2(rightNodeCenter.x, leftNodeCenter.y));
         //세로 기준을 leftnode에 맞춰서 가로 선으로 연결해줌.
-        DrawLine(new Vector2(rightNodeCenter.x, leftNodeCenter.y), new Vector2(rightNodeCenter.x, rightNodeCenter.y));
+
+
+
+
+        //if (rightNodeCenter.y + R_node.roomRect.height / 2 < leftNodeCenter.y) //위
+        //{
+        //    DrawLine(new Vector2(rightNodeCenter.x, leftNodeCenter.y), new Vector2(rightNodeCenter.x, rightNodeCenter.y));
+        //}
+        //if(rightNodeCenter.y - R_node.roomRect.height / 2 > leftNodeCenter.y) //아래
+        //{
+        //    DrawLine(new Vector2(rightNodeCenter.x, leftNodeCenter.y), new Vector2(rightNodeCenter.x, rightNodeCenter.y));
+        //}
+
+        //if (rightNodeCenter.x + R_node.roomRect.width / 2 < leftNodeCenter.x)//오른
+        //{
+        //    DrawLine(new Vector2(leftNodeCenter.x, leftNodeCenter.y), new Vector2(rightNodeCenter.x, leftNodeCenter.y));
+        //}
+        //if (rightNodeCenter.x - R_node.roomRect.width / 2 > leftNodeCenter.x)//왼
+        //{
+        //    DrawLine(new Vector2(leftNodeCenter.x, leftNodeCenter.y), new Vector2(rightNodeCenter.x, leftNodeCenter.y));
+        //}
+
+
+
+
+
+
+        if (Mathf.Abs(rightNodeCenter.x - leftNodeCenter.x) > Mathf.Abs(rightNodeCenter.y - leftNodeCenter.y))//y축으로 이어야하는 경우
+        {
+            int Center = (rightNodeCenter.y + leftNodeCenter.y) / 2;
+
+            DrawLine(new Vector2(rightNodeCenter.x - (R_node.roomRect.width / 2), Center), new Vector2(leftNodeCenter.x + (L_node.roomRect.width / 2), Center));
+        }
+        else
+        {
+            int Center = (rightNodeCenter.x + leftNodeCenter.x) / 2;
+
+            DrawLine(new Vector2(Center, leftNodeCenter.y + (L_node.roomRect.height / 2)), new Vector2(Center, rightNodeCenter.y - (R_node.roomRect.height / 2)));
+        }
+
+
+
+
+
+        // 세로 가로 순으로 길을 연결함
     }
 
 }
