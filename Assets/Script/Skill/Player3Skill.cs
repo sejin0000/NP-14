@@ -12,7 +12,6 @@ public class Player3Skill : Skill
         if (photonView.IsMine)
         {
             controller.OnSkillEvent += SkillStart;
-            Cnt = 0;
         }
         _weaponSystem = GetComponent<WeaponSystem>();
 

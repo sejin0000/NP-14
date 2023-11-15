@@ -10,8 +10,6 @@ public class Skill : MonoBehaviourPun
     protected TopDownCharacterController controller;
     protected PlayerStatHandler playerStats;
 
-    protected int Cnt;
-
     public virtual void Awake()
     {
         controller = GetComponent<TopDownCharacterController>();
@@ -27,8 +25,6 @@ public class Skill : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            Debug.Log($"스킬0의 스타트 : {Cnt}");
-            Cnt += 1;
             playerStats.CurSkillStack -= 1;
             Debug.Log($"스킬 사용 직후, 현재 스킬 스택 수 : {controller.playerStatHandler.CurSkillStack}");
             controller.playerStatHandler.CanSkill = false;

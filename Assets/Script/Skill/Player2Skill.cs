@@ -26,7 +26,6 @@ public class Player2Skill : Skill
         if (photonView.IsMine)
         {
             controller.OnSkillEvent += SkillStart;
-            Cnt = 0;
         }
     }
     public override void SkillStart()

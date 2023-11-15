@@ -14,13 +14,11 @@ public class Player1Skill : Skill
         if (photonView.IsMine)
         {
             controller.OnSkillEvent += SkillStart;
-            Cnt = 0;
         }
     }
     public override void SkillStart()
     {
         base.SkillStart();        
-        Cnt += 1;
         playerStats.Speed.added += applicationspeed;
         playerStats.AtkSpeed.added += applicationAtkSpeed;
         Invoke("SkillEnd", applicationTime);
