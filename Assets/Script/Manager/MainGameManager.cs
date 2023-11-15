@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -320,15 +321,23 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         // 플레이어 데이터 추가
         playerInfoDictionary.Add(viewID, InstantiatedPlayer);
         GameObject sendingPlayer = InstantiatedPlayer;
-        photonView.RPC("SendPlayerInfo", RpcTarget.Others, viewID, sendingPlayer);
+        photonView.RPC("SendPlayerInfo", RpcTarget.Others, viewID);
 
         // ClassIdentifier 데이터 Init()
         InstantiatedPlayer.GetComponent<ClassIdentifier>().playerData = characterSetting;
     }
     [PunRPC]
-    private void SendPlayerInfo(int viewID, GameObject clientPlayer)
+    public void SendPlayerInfo(int viewID)
     {
+        GameObject clientPlayer = PhotonView.Find(viewID).gameObject;
         playerInfoDictionary.Add(viewID, clientPlayer);
+        Debug.Log($"{playerInfoDictionary.Count}개가 딕셔너리에 등록됨");
+        int cnt = 0;
+        foreach (var key in playerInfoDictionary.Keys)
+        {
+            cnt += 1;
+            Debug.Log($"{playerInfoDictionary.Count}개의 키 중 {cnt}번째 == {key}");
+        }
     }
 
     [PunRPC]

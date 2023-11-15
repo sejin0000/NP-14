@@ -93,7 +93,7 @@ public class TestGameManager : MonoBehaviourPun
         int viewID = characterSetting.viewID;
         playerInfoDictionary.Add(viewID, InstantiatedPlayer);
         GameObject sendingPlayer = InstantiatedPlayer;
-        photonView.RPC("SendPlayerInfo", RpcTarget.Others, viewID, sendingPlayer);
+        photonView.RPC("SendPlayerInfo", RpcTarget.Others, viewID);
 
         // ClassIdentifier ตฅภฬลอ Init()
         InstantiatedPlayer.GetComponent<ClassIdentifier>().playerData = characterSetting;
