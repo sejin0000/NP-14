@@ -25,7 +25,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     [Header("ClientPlayer")]
     public GameObject InstantiatedPlayer;
     private bool isPlayerInstantiated;
-    public Dictionary<int, GameObject> playerInfoDictionary;
+    public Dictionary<int, Transform> playerInfoDictionary;
 
     [Header("PlayerData")]
     public PlayerDataSetting characterSetting;
@@ -125,7 +125,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
             isFarmingRoom = true,
         };
 
-        playerInfoDictionary = new Dictionary<int, GameObject>();
+        playerInfoDictionary = new Dictionary<int, Transform>();
         isPlayerInstantiated = false;
         if (!isPlayerInstantiated)
         {
@@ -319,7 +319,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         PartyDeathCount = 0;
         playerStatHandler.OnDieEvent += DiedAfter;
         // 플레이어 데이터 추가
-        playerInfoDictionary.Add(viewID, InstantiatedPlayer);
+        playerInfoDictionary.Add(viewID, InstantiatedPlayer.transform);
         GameObject sendingPlayer = InstantiatedPlayer;
         photonView.RPC("SendPlayerInfo", RpcTarget.Others, viewID);
 
@@ -330,7 +330,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     public void SendPlayerInfo(int viewID)
     {
         GameObject clientPlayer = PhotonView.Find(viewID).gameObject;
-        playerInfoDictionary.Add(viewID, clientPlayer);
+        playerInfoDictionary.Add(viewID, clientPlayer.transform);
         Debug.Log($"{playerInfoDictionary.Count}개가 딕셔너리에 등록됨");
         int cnt = 0;
         foreach (var key in playerInfoDictionary.Keys)

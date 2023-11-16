@@ -17,14 +17,28 @@ public class BreakDownMk : MonoBehaviourPun
             weaponSystem = GetComponent<WeaponSystem>();
             controller=GetComponent<TopDownCharacterController>();
             controller.OnAttackEvent += MoreAtk;
+            controller.OnChargeAttackEvent += MoreAtk2;
         }
 
     }
     // Update is called once per frame
     void MoreAtk()
     {
+        if (!controller.playerStatHandler.IsChargeAttack)
+        { 
+            int random = Random.Range(0, 100);
+            if (percent > random) 
+            {
+                weaponSystem.Shooting();
+                controller.playerStatHandler.CurAmmo += 1;
+            }
+        }
+    }
+
+    void MoreAtk2()
+    {
         int random = Random.Range(0, 100);
-        if (percent > random) 
+        if (percent > random)
         {
             weaponSystem.Shooting();
             controller.playerStatHandler.CurAmmo += 1;

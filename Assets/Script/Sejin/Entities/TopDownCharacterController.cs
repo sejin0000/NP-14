@@ -18,25 +18,53 @@ public class TopDownCharacterController : MonoBehaviour
     public event Action OnEndReloadEvent;
     public event Action OnStartSkillEvent;
 
+    //추가함
+    public event Action<bool> OnAttackKeepEvent;
+    public event Action OnChargeAttackEvent;
+
 
     public PlayerStatHandler playerStatHandler;
     public TopDownMovement topDownMovement;
+    public CoolTimeController coolTimeController;
 
     private bool AtkKeyhold = false;
 
-
+    private void Awake()
+    {
+        coolTimeController = GetComponent<CoolTimeController>();
+    }
     private void Update()
     {
         if (AtkKeyhold)
-        {
-            if (!topDownMovement.isRoll && playerStatHandler.CurAmmo > 0 && playerStatHandler.CanFire&& playerStatHandler.CanReload)
+        {            
+            if 
+                (
+                !topDownMovement.isRoll 
+                && playerStatHandler.CurAmmo > 0 
+                && playerStatHandler.CanFire
+                && (playerStatHandler.CanReload  // 일반공격 조건부
+                    || (!playerStatHandler.CanReload && GetComponent<CoolTimeController>().isKeepCount)) // 차지샷 조건부
+                )
             {
                 OnAttackEvent?.Invoke();
-                //playerStatHandler.CurAmmo--;                
+                
             }
             else
             {
                 //Debug.Log("공격 할 수 없습니다");
+            }
+        }
+        else
+        {
+            if (
+                !topDownMovement.isRoll 
+                && playerStatHandler.CurAmmo >=0 
+                && playerStatHandler.CanFire 
+                && playerStatHandler.CanReload
+                && coolTimeController.bulletNum > 0
+                )
+            {
+                OnChargeAttackEvent?.Invoke();
             }
         }
     }
@@ -55,6 +83,12 @@ public class TopDownCharacterController : MonoBehaviour
     {
         AtkKeyhold = hold;
     }
+
+    public void CallAttackKeepEvent(bool hold)
+    {
+        OnAttackKeepEvent?.Invoke(hold);
+    }
+
     public void CallAttackEndEvent() 
     {
         OnEndAttackEvent?.Invoke();
