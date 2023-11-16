@@ -503,7 +503,9 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     [PunRPC]
     private void A206(int PlayerNumber)
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0206>();
+        //HERE
     }
     [PunRPC]
     private void A207(int PlayerNumber)//하이리스크 로우리턴
