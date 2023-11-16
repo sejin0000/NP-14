@@ -18,7 +18,7 @@ public class CoolTimeController : MonoBehaviour
     public float curSkillCool = 0;
 
     public float stackedTime = 0;
-    private bool isKeepCount;
+    public bool isKeepCount;
     private bool isCharging;
     public int bulletNum;
 
@@ -33,7 +33,7 @@ public class CoolTimeController : MonoBehaviour
     {
         controller.OnEndRollEvent += RollCoolTime;
         controller.OnReloadEvent += ReloadCoolTime;
-        controller.OnAttackEvent += AttackCoolTime;
+        controller.OnAttackEvent += AttackCoolTime;        
         controller.OnEndSkillEvent += SkillCoolTime;
         // 지금만 추가 (증강 추가시 제거 요망)
         //controller.OnAttackKeepEvent += TimeCount;
@@ -55,7 +55,7 @@ public class CoolTimeController : MonoBehaviour
         {
             curReloadCool -= Time.deltaTime;
         }
-        if (controller.playerStatHandler.CanReload == false && curReloadCool <= 0)
+        if (controller.playerStatHandler.CanReload == false && curReloadCool <= 0 && !isKeepCount)
         {
             EndReloadCoolTime();
         }
@@ -124,6 +124,20 @@ public class CoolTimeController : MonoBehaviour
         controller.playerStatHandler.CanFire = false;
         curAttackCool = coolTime;
     }
+
+    //public void ChargeAttackCoolTime(bool isCharged)
+    //{
+    //    if (isCharged)
+    //    {
+    //        Debug.Log("Returned");
+    //        return;
+    //    }
+    //    float coolTime = 0.1f;
+    //    controller.playerStatHandler.CanFire = false;
+    //    Debug.Log("공격텀 적용중");
+    //    curAttackCool = coolTime;
+    //}
+
     private void EndAttackCoolTime()
     {
         controller.playerStatHandler.CanFire = true;
@@ -166,13 +180,16 @@ public class CoolTimeController : MonoBehaviour
             isKeepCount = true;
             stackedTime = 0;
             bulletNum = 0;
+            controller.playerStatHandler.CanReload = false;
             Debug.Log("시간 세기 시작");
         }
         else
         {
-            isKeepCount = false;            
+            isKeepCount = false;
+            controller.playerStatHandler.CanReload = true;
             Debug.Log($"공격 유지한 시간 : {stackedTime}");
             Debug.Log($"쌓인 불릿 수 : {bulletNum}");
+            Debug.Log($"남은 총알 수 : {controller.playerStatHandler.CurAmmo}");            
             //GetComponent<WeaponSystem>().ChargeCalculate(stackedTime);
             // 여기서 공격 이벤트에 파라미터로써? 숫자 제공해야함.
         }
@@ -181,10 +198,10 @@ public class CoolTimeController : MonoBehaviour
     public IEnumerator CountBullets()
     {
         isCharging = true;
-        float curAmmo = GetComponent<PlayerStatHandler>().CurAmmo;
-        if (curAmmo >= 1)
+        Debug.Log($"남은 장탄 수 : {controller.playerStatHandler.CurAmmo}");
+        if (controller.playerStatHandler.CurAmmo >= 1)
         {
-            GetComponent<PlayerStatHandler>().CurAmmo--;
+            controller.playerStatHandler.CurAmmo--;
             bulletNum++;
             Debug.Log($"불릿 쌓는 중 {bulletNum}");
         }

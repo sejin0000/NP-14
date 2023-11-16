@@ -13,9 +13,6 @@ public class PlayerInputController : TopDownCharacterController
     public int atkPercent;
     PlayerStatHandler playerstatHnadler;
 
-    // 추가함
-    public CoolTimeController coolTimeController;
-
     private void Awake()
     {
         // 추가함

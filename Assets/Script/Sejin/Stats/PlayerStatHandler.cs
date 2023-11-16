@@ -78,8 +78,22 @@ public class PlayerStatHandler : MonoBehaviourPun
         }
     }               //현재   체력
 
-    private float curAmmo;
-    [HideInInspector] public float CurAmmo { get { return curAmmo; } set { if (value > AmmoMax.total) curAmmo = AmmoMax.total; curAmmo = value; OnChangeAmmorEvent?.Invoke(); } } //현재   잔탄
+    [SerializeField] private float curAmmo;
+    //[HideInInspector]
+    public float CurAmmo //현재 잔탄
+    { 
+        get 
+        { 
+                return curAmmo; 
+        }
+        set 
+        { 
+            if (value > AmmoMax.total) 
+                curAmmo = AmmoMax.total; 
+            curAmmo = value; 
+            OnChangeAmmorEvent?.Invoke(); 
+        } 
+    } 
     [HideInInspector] public bool CanFire;                                //발사   가능한지
     [HideInInspector] public bool CanReload;                              //장전   가능한지
     [HideInInspector] public bool CanSkill;                               //스킬   가능한지
@@ -89,7 +103,7 @@ public class PlayerStatHandler : MonoBehaviourPun
     public bool useSkill;
 
     int viewID;
-
+    [HideInInspector] public bool IsChargeAttack;
 
     private void Awake()
     {
@@ -131,6 +145,8 @@ public class PlayerStatHandler : MonoBehaviourPun
         PlayerSpriteCase.spriteLibraryAsset = PlayerSprite;
         WeaponSpriteCase.spriteLibraryAsset = WeaponSprite;
         defense = 1;
+
+        IsChargeAttack = false;
     }
 
     private void Start()

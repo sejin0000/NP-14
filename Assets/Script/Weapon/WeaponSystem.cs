@@ -70,7 +70,7 @@ public class WeaponSystem : MonoBehaviour
             bool _isDamage = isDamage;
 
             pv.RPC("BS", RpcTarget.All, rot, _ATK, _BLT, _target, _isDamage, _viewID);
-            _controller.playerStatHandler.CurAmmo--;
+            //_controller.playerStatHandler.CurAmmo--;
         }
         _cool.bulletNum = 0;
     }

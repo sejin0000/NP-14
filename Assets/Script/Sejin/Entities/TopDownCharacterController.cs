@@ -20,20 +20,34 @@ public class TopDownCharacterController : MonoBehaviour
 
     //추가함
     public event Action<bool> OnAttackKeepEvent;
+    public event Action OnChargeAttackEvent;
 
 
     public PlayerStatHandler playerStatHandler;
-    public TopDownMovement topDownMovement;    
+    public TopDownMovement topDownMovement;
+    public CoolTimeController coolTimeController;
 
     private bool AtkKeyhold = false;
 
+    private void Awake()
+    {
+        coolTimeController = GetComponent<CoolTimeController>();
+    }
     private void Update()
     {
         if (AtkKeyhold)
         {            
-            if (!topDownMovement.isRoll && playerStatHandler.CurAmmo > 0 && playerStatHandler.CanFire&& playerStatHandler.CanReload)
+            if 
+                (
+                !topDownMovement.isRoll 
+                && playerStatHandler.CurAmmo > 0 
+                && playerStatHandler.CanFire
+                && (playerStatHandler.CanReload  // 일반공격 조건부
+                    || (!playerStatHandler.CanReload && GetComponent<CoolTimeController>().isKeepCount)) // 차지샷 조건부
+                )
             {
-                OnAttackEvent?.Invoke();                
+                OnAttackEvent?.Invoke();
+                
             }
             else
             {
@@ -42,9 +56,15 @@ public class TopDownCharacterController : MonoBehaviour
         }
         else
         {
-            if (!topDownMovement.isRoll && playerStatHandler.CurAmmo >=0 && playerStatHandler.CanFire && playerStatHandler.CanReload)
+            if (
+                !topDownMovement.isRoll 
+                && playerStatHandler.CurAmmo >=0 
+                && playerStatHandler.CanFire 
+                && playerStatHandler.CanReload
+                && coolTimeController.bulletNum > 0
+                )
             {
-                OnAttackKeepEvent?.Invoke(AtkKeyhold);
+                OnChargeAttackEvent?.Invoke();
             }
         }
     }
