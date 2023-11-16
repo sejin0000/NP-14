@@ -522,9 +522,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02e1a1eed1f2e164fa6b67b608be6e86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapSize: {x: 30, y: 30}
-  minimumDevideRate: 0.4
-  maximumDivideRate: 0.6
+  mapSize: {x: 40, y: 40}
+  minimumDevideRate: 0.5
+  maximumDivideRate: 0.7
   line: {fileID: 7886415922574827740, guid: 2ff5b6d90c2a87044a8341a02688e64d, type: 3}
   map: {fileID: 1723038138848137441, guid: 2a38beb1f5bc94b4285d32aeb82af2c3, type: 3}
   roomLine: {fileID: 1723038138848137441, guid: 2a38beb1f5bc94b4285d32aeb82af2c3, type: 3}

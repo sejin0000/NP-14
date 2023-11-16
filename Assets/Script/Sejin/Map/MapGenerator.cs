@@ -234,65 +234,43 @@ public class MapGenerator : MonoBehaviour
         Vector2Int leftNodeCenter = L_node.center;
 
 
-        DrawLine(new Vector2(rightNodeCenter.x, leftNodeCenter.y), new Vector2(rightNodeCenter.x, rightNodeCenter.y));
-        setTile.RemoveLineTile(setTile.wallTileMap, rightNodeCenter, (rightNodeCenter.x - leftNodeCenter.x), new Vector2(rightNodeCenter.x - leftNodeCenter.x, rightNodeCenter.y - leftNodeCenter.y).normalized, mapSize / 2);
+        DrawLine(new Vector2(rightNodeCenter.x, leftNodeCenter.y), new Vector2(rightNodeCenter.x, rightNodeCenter.y));//코너부분,시작부분
+
+        Vector2Int startPos = new Vector2Int(rightNodeCenter.x, rightNodeCenter.y);
+        Vector2Int endPos = new Vector2Int(rightNodeCenter.x, leftNodeCenter.y);
+
+        setTile.RemoveLineTile(setTile.wallTileMap, startPos,Mathf.Abs(startPos.y - endPos.y), new Vector2(startPos.x - endPos.x, startPos.y - endPos.y).normalized, mapSize / 2);
 
 
 
-        DrawLine(new Vector2(leftNodeCenter.x, leftNodeCenter.y), new Vector2(rightNodeCenter.x, leftNodeCenter.y));
-        setTile.RemoveLineTile(setTile.wallTileMap, leftNodeCenter, (leftNodeCenter.y - leftNodeCenter.y), new Vector2(leftNodeCenter.x - leftNodeCenter.x, leftNodeCenter.y - leftNodeCenter.y).normalized, mapSize / 2);
+        DrawLine(new Vector2(leftNodeCenter.x, leftNodeCenter.y), new Vector2(rightNodeCenter.x, leftNodeCenter.y));//시작부분,코너부분
+
+        startPos = new Vector2Int(leftNodeCenter.x, leftNodeCenter.y);
+        endPos = new Vector2Int(rightNodeCenter.x, leftNodeCenter.y);
+
+        setTile.RemoveLineTile(setTile.wallTileMap, startPos, Mathf.Abs(startPos.x - endPos.x), new Vector2(startPos.x - endPos.x, startPos.y - endPos.y).normalized, mapSize / 2);
 
 
-        //세로 기준을 leftnode에 맞춰서 가로 선으로 연결해줌.
-
-
-
-
-        //if (rightNodeCenter.y + R_node.roomRect.height / 2 < leftNodeCenter.y) //위
+        //if (Mathf.Abs(rightNodeCenter.x - leftNodeCenter.x) > Mathf.Abs(rightNodeCenter.y - leftNodeCenter.y))//y축으로 이어야하는 경우
         //{
-        //    DrawLine(new Vector2(rightNodeCenter.x, leftNodeCenter.y), new Vector2(rightNodeCenter.x, rightNodeCenter.y));
+        //    int Center = (rightNodeCenter.y + leftNodeCenter.y) / 2;
+
+        //    Vector2Int startPos = new Vector2Int(rightNodeCenter.x - (R_node.roomRect.width / 2), Center);
+        //    Vector2Int endPos = new Vector2Int(leftNodeCenter.x + (L_node.roomRect.width / 2), Center);
+
+
+        //    DrawLine(startPos, endPos);
+        //    setTile.RemoveLineTile(setTile.wallTileMap, startPos, (startPos.x - endPos.x), new Vector2(startPos.x - endPos.x, startPos.y - endPos.y).normalized, mapSize / 2);
         //}
-        //if(rightNodeCenter.y - R_node.roomRect.height / 2 > leftNodeCenter.y) //아래
+        //else
         //{
-        //    DrawLine(new Vector2(rightNodeCenter.x, leftNodeCenter.y), new Vector2(rightNodeCenter.x, rightNodeCenter.y));
+        //    int Center = (rightNodeCenter.x + leftNodeCenter.x) / 2;
+
+        //    Vector2Int startPos = new Vector2Int(Center, rightNodeCenter.y - (R_node.roomRect.height / 2));
+        //    Vector2Int endPos = new Vector2Int(Center, leftNodeCenter.y + (L_node.roomRect.height / 2));
+
+        //    DrawLine(startPos, endPos);
+        //    setTile.RemoveLineTile(setTile.wallTileMap, startPos, (startPos.y - endPos.y), new Vector2(startPos.x - endPos.x, startPos.y - endPos.y).normalized, mapSize / 2);
         //}
-
-        //if (rightNodeCenter.x + R_node.roomRect.width / 2 < leftNodeCenter.x)//오른
-        //{
-        //    DrawLine(new Vector2(leftNodeCenter.x, leftNodeCenter.y), new Vector2(rightNodeCenter.x, leftNodeCenter.y));
-        //}
-        //if (rightNodeCenter.x - R_node.roomRect.width / 2 > leftNodeCenter.x)//왼
-        //{
-        //    DrawLine(new Vector2(leftNodeCenter.x, leftNodeCenter.y), new Vector2(rightNodeCenter.x, leftNodeCenter.y));
-        //}
-
-
-
-
-
-
-        if (Mathf.Abs(rightNodeCenter.x - leftNodeCenter.x) > Mathf.Abs(rightNodeCenter.y - leftNodeCenter.y))//y축으로 이어야하는 경우
-        {
-            int Center = (rightNodeCenter.y + leftNodeCenter.y) / 2;
-
-            Vector2Int startPos = new Vector2Int(rightNodeCenter.x - (R_node.roomRect.width / 2), Center);
-            Vector2Int endPos = new Vector2Int(leftNodeCenter.x + (L_node.roomRect.width / 2), Center);
-
-
-            DrawLine(startPos, endPos);
-            setTile.RemoveLineTile(setTile.wallTileMap, startPos, (startPos.x - endPos.x), new Vector2(startPos.x - endPos.x, startPos.y - endPos.y).normalized, mapSize / 2);
-        }
-        else
-        {
-            int Center = (rightNodeCenter.x + leftNodeCenter.x) / 2;
-
-            Vector2Int startPos = new Vector2Int(Center, rightNodeCenter.y - (R_node.roomRect.height / 2));
-            Vector2Int endPos = new Vector2Int(Center, leftNodeCenter.y + (L_node.roomRect.height / 2));
-
-            DrawLine(startPos, endPos);
-            setTile.RemoveLineTile(setTile.wallTileMap, startPos, (startPos.y - endPos.y), new Vector2(startPos.x - endPos.x, startPos.y - endPos.y).normalized, mapSize / 2);
-        }
-
     }
-
 }
