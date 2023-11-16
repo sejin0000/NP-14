@@ -16,6 +16,7 @@ public class PlayerStatHandler : MonoBehaviourPun
     public event Action OnChangeCurHPEvent;
     public event Action MoveStartEvent;
     public event Action MoveEndEvent;
+    public event Action<float> GetDamege;
 
 
     [SerializeField] private PlayerSO playerStats;
@@ -52,6 +53,8 @@ public class PlayerStatHandler : MonoBehaviourPun
     public bool isDie;
     public int MaxRegenCoin;
     public int CurRegenCoin;
+    public int evasionPersent;
+    public float DamegeTemp;
 
     private float curHP;
     [HideInInspector]
@@ -123,6 +126,10 @@ public class PlayerStatHandler : MonoBehaviourPun
         isCanSkill=true;
         isCanAtk = true;
 
+        
+
+        evasionPersent = 0;
+
         PlayerSpriteCase = _PlayerSprite.GetComponent<SpriteLibrary>();
         WeaponSpriteCase = _WeaponSprite.GetComponent<SpriteLibrary>();
 
@@ -156,26 +163,32 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     public void Damage(float damage)
     {
-        
-        if(CurHP - damage <= 0)
+        DamegeTemp = damage;
+        GetDamege?.Invoke(DamegeTemp);
+        int a = UnityEngine.Random.Range(0, 100);
+        if (evasionPersent <= a) 
         {
-            if (CurRegenCoin > 0)
-            {                
-                CurRegenCoin -= 1;
-                Regen(HP.total);
-                return;
+            if (CurHP - DamegeTemp <= 0)
+            {
+                if (CurRegenCoin > 0)
+                {
+                    CurRegenCoin -= 1;
+                    Regen(HP.total);
+                    return;
+                }
+
+                isDie = true;
+                OnDieEvent?.Invoke();
+                this.gameObject.layer = 0;
             }
 
-            isDie = true;
-            OnDieEvent?.Invoke();
-            this.gameObject.layer = 0;
+            DamegeTemp = DamegeTemp * defense;
+            CurHP -= DamegeTemp;
+            HitEvent?.Invoke();
+            HitEvent2?.Invoke(DamegeTemp);//이게 값이 필요한경우와 필요 없는경우가 있는데 한개로 할수가 있는지 모르겠음 일단 이렇게함
+            Debug.Log("[PlayerStatHandler] " + "Damage Done");
         }
 
-        damage = damage * defense;
-        CurHP -= damage;
-        HitEvent?.Invoke();
-        HitEvent2?.Invoke(damage);//이게 값이 필요한경우와 필요 없는경우가 있는데 한개로 할수가 있는지 모르겠음 일단 이렇게함
-        Debug.Log("[PlayerStatHandler] " + "Damage Done");
     }
 
     public void HPadd(float addhp)

@@ -313,9 +313,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         playerstatHandler.Speed.coefficient *= 0.8f;
     }
     [PunRPC]
-    private void A111(int PlayerNumber)
+    private void A111(int PlayerNumber)//r
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0111>();
     }
     [PunRPC]
     private void A112(int PlayerNumber)//빠른장전
@@ -443,9 +444,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     }
 
     [PunRPC]
-    private void A125(int PlayerNumber)
+    private void A125(int PlayerNumber)//참기 a0125 클래스 삭제 후 수치 조정으로 변경 회피율 추가 a0125 스크립트 남겨두긴 했는데 삭제고려
     {
-        player.AddComponent<A0125>();
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        playerstatHandler.evasionPersent = 20;
     }
     [PunRPC]
     private void A126(int PlayerNumber)
@@ -712,7 +714,14 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A1106(int PlayerNumber)
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        if (targetPlayer.GetPhotonView().IsMine)
+        {
+            GameObject prefab = PhotonNetwork.Instantiate("AugmentList/A1106", targetPlayer.transform.localPosition, Quaternion.identity);
+            int num = prefab.GetPhotonView().ViewID;
+            photonView.RPC("FindMaster", RpcTarget.All, num);
+            prefab.GetComponent<A1106>().Init();
+        }
     }
 
     [PunRPC]

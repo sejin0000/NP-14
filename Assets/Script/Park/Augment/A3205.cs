@@ -39,7 +39,7 @@ public class A3205 : MonoBehaviourPun//설계시 2204참고
     public void Init()
     {
         me = transform.parent.gameObject.GetComponent<PlayerStatHandler>();
-        controller = GetComponent<TopDownCharacterController>();
+        controller = me.gameObject.GetComponent<TopDownCharacterController>();
         controller.OnSkillEvent += TogetherParty; 
     }
     private void OnTriggerEnter2D(Collider2D collision)
