@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using myBehaviourTree;
-//using static UnityEditor.PlayerSettings;
-//using UnityEditor.Rendering.LookDev;
 using Photon.Pun;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.DebugUI.Table;
+using static UnityEngine.Rendering.DebugUI;
+using TMPro;
+using Unity.Mathematics;
 
 //[Root 노드] => 왜 액션과 다르게 상속 안받음?
 //==>특정 AI 동작과 상태에 맞게 유연하게 조정하기 위해서
@@ -28,33 +28,51 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     public EnemySO enemySO;                  // Enemy 정보 [모든 Action Node에 owner로 획득시킴]
     public SpriteRenderer spriteRenderer;
     public CircleCollider2D collider2D;
-    public Animator anim;  
-    public Collider2D target;                //추적 타겟[Palyer]
+    public Animator anim;
+
+    private Collider2D target;
+    public Collider2D Target { get { return target; } 
+                               set { if (target != value) { OnTargetChaged(value); target = value; } } }//추적 타겟[Palyer]
+    //public Collider2D target;
     public NavMeshAgent nav;
+    public Vector3 navTargetPoint;              //nav 목적지
+
 
     public GameObject enemyAim;
-    public GameObject enemyBullet;
+    public Bullet enemyBulletPrefab;
 
 
     public LayerMask targetMask;             // 타겟 레이어(Player)
 
-    public float currentMoveSpeed;           // 현재 이동속도
     public float SpeedCoefficient = 1f;      // 이동속도 계수
    
     public bool isLive;
-    public bool isIdle;
     public bool isChase;
     public bool isAttaking;
 
+
+    //게임매니저에서(어디든) 관리하는 플레이어들 정보를 요청해서 사용
+
+    //가장많은 피해를 준 플레이어 타겟-> 불렛(쏜사람 정보) 맞은놈만 알면됨 ->플레이 공격력->
 
     Vector2 nowEnemyPosition;
     Quaternion nowEnemyRotation;
     [SerializeField]
     private Image images_Gauge;              //몬스터 UI : Status
 
-    
-    public PhotonView PV;                    //동기화
 
+    //동기화
+    public PhotonView PV;                    
+    private Vector3 hostPosition;
+    public float lerpSpeed = 10f; // 보간시 필요한 수치(조정 필요)
+
+
+    //넉백
+    private bool isKnockback = false;
+    private Vector2 knockbackStartPosition;
+    private Vector2 knockbackTargetPosition;
+    private float knockbackStartTime;
+    public float knockbackDuration = 0.2f;
 
     void Awake()
     {
@@ -71,7 +89,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         viewAngle = enemySO.viewAngle;
         viewDistance = enemySO.viewDistance;
         isLive = true;
-        isIdle = true;
 
         nav.updateRotation = false;
         nav.updateUpAxis = false;
@@ -81,25 +98,42 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
         nowEnemyPosition = this.gameObject.transform.position;
 
-        currentMoveSpeed = enemySO.enemyMoveSpeed;
 
-        nav.speed = currentMoveSpeed;
+        nav.speed = enemySO.enemyMoveSpeed;
+        navTargetPoint = transform.position;
+
+
+        //호스트만 nav활성화 하도록 설정
+        if (!PhotonNetwork.IsMasterClient)
+            nav.enabled = false;
+        else
+            nav.enabled = true;
     }
     void Update()
     {
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            //$추가됨 : 동기화된 위치에 대한 보간 처리
+            transform.position = Vector3.Lerp(transform.position, hostPosition, Time.deltaTime * lerpSpeed);
+            return;
+        }
+
+        hostPosition = transform.position;
+
+
         //AI트리의 노드 상태를 매 프레임 마다 얻어옴
-        TreeAIState.Tick();       
-        GaugeUpdate();
+        TreeAIState.Tick();
 
         if (!isLive)
             return;
 
         IsNavAbled();
 
-
-
         if (isAttaking || isChase)
-            ChaseView();
+        {
+           //PV.RPC("Filp", RpcTarget.All);
+           ChaseView();
+        }           
         else
             NomalView();
 
@@ -121,25 +155,36 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         }
 
 
-        if(nav.remainingDistance < 0.2f)
-            isIdle = true;
-        else
-            isIdle = false;
-
-
-        if (IsNavAbled())
-            anim.SetBool("isWalk", true);
-        else
+        if (!IsNavAbled() || nav.remainingDistance < 0.2f)
+        {
             anim.SetBool("isWalk", false);
+            anim.SetBool("isUpWalk", false);
+            return;
+        }          
+
+        if (navTargetPoint.y > transform.position.y)
+        {
+            anim.SetBool("isUpWalk", true);
+            anim.SetBool("isWalk", false);
+        }
+        else
+        {
+            anim.SetBool("isWalk", true);
+            anim.SetBool("isUpWalk", false);
+        }
     }
 
-    private bool isKnockback = false;
-    private Vector2 knockbackStartPosition;
-    private Vector2 knockbackTargetPosition;
-    private float knockbackStartTime;
-    public float knockbackDuration = 0.2f;
 
-    //★
+    //#####Enemy 이동 속도변경 관련######
+    public void ChangeSpeed(float statSpeed)
+    {
+        nav.speed = statSpeed * SpeedCoefficient;
+    }
+
+
+    //#####Enemy 피격, 사망, 넉백 관련######
+
+    //★맞음 & 죽음
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //호스트에서만 충돌 처리됨
@@ -154,7 +199,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             isChase = true;
 
             //모든 플레이어에게 현재 적의 체력 동기화
-            PV.RPC("DecreaseHP", RpcTarget.AllBuffered, collision.transform.GetComponent<Bullet>().ATK);
+            PV.RPC("DecreaseHP", RpcTarget.All, collision.transform.GetComponent<Bullet>().ATK);
 
 
             //넉백
@@ -177,13 +222,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
-    public void ChangeSpeed(float statSpeed)
-    {
-        nav.speed = statSpeed * SpeedCoefficient;
-    }
-
-
-
     private void GaugeUpdate()
     {
         images_Gauge.fillAmount = (float)currentHP / enemySO.hp; //체력
@@ -196,17 +234,19 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
         if (currentHP > enemySO.hp)
             currentHP = enemySO.hp;
+
+        GaugeUpdate();
     }
 
     [PunRPC]
     public void DecreaseHP(float damage)
     {
         SetStateColor();
-        currentHP -= damage;    
-
+        currentHP -= damage;
+        GaugeUpdate();
 
         if (currentHP <= 0)
-            isLive = false;
+            isLive = false;       
     }
 
     [PunRPC]
@@ -215,18 +255,36 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         Destroy(gameObject);
     }
 
-    public void Shoot()
+    //#####공격 관련######
+    [PunRPC]
+    public void Fire()
     {
-        GameObject _object = Instantiate(enemyBullet, enemyAim.transform.position, enemyAim.transform.rotation);
-        Bullet _bullet = _object.GetComponent<Bullet>();
+        var _bullet = Instantiate(enemyBulletPrefab, enemyAim.transform.position, enemyAim.transform.rotation);
 
         _bullet.IsDamage = true;
         _bullet.ATK = enemySO.atk;
         _bullet.BulletLifeTime = enemySO.bulletLifeTime;
         _bullet.BulletSpeed = enemySO.bulletSpeed;
-        _bullet.target = BulletTarget.Player;       
+        _bullet.target = BulletTarget.Player;
+
+        /*
+        //수정 : gameObject 에서 Bullet으로 ->변수 형태와 용도를 통일함
+        Bullet _bullet = Instantiate<Bullet>(enemyBulletPrefab, enemyAim.transform.position, enemyAim.transform.rotation);
+
+
+
+        _bullet.IsDamage = true;
+        _bullet.ATK = enemySO.atk;
+        _bullet.BulletLifeTime = enemySO.bulletLifeTime;
+        _bullet.BulletSpeed = enemySO.bulletSpeed;
+        _bullet.target = BulletTarget.Player;
+        */
+
+        //수정 : gameObject 에서 Bullet으로 ->변수 형태와 용도를 통일함            
     }
 
+
+    //#####시야각(타겟 서치) 관련######
     private Vector2 BoundaryAngle(float angle)
     {
         // 현재 오브젝트의 회전값을 고려하여 방향 벡터를 계산
@@ -239,14 +297,12 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     }
 
 
-    //플레이어 탐지★ 여기서 추적시&공격시 시야각도 지정하자
-
     private void NomalView()
     {
         Vector2 rightBoundary = BoundaryAngle(-viewAngle * 0.5f);
         Vector2 leftBoundary = BoundaryAngle(viewAngle * 0.5f);
 
-        // 스프라이트 랜더러가 flipX 상태이면 레이 방향을 반대로 설정
+        // 스프라이트 랜더러 flipX 상태에 따라 레이 방향을 반대로 설정
         if (spriteRenderer.flipX)
         {
             rightBoundary = -rightBoundary;
@@ -262,15 +318,15 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     //추적, 공격시 플레이어를 바라보는 시야각으로 전환
     private void ChaseView()
     {
-        if (target == null)
-        {
+        if (Target == null)
+        {           
             isAttaking = false;
             isChase = false;
             return;
         }
 
 
-        Vector2 directionToTarget = (target.transform.position - transform.position).normalized;
+        Vector2 directionToTarget = (Target.transform.position - transform.position).normalized;
 
 
         Vector2 rightBoundary = Quaternion.Euler(0, 0,-viewAngle * 0.5f) * directionToTarget;
@@ -284,14 +340,20 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
     private void FindPlayer(Vector2 _rightBoundary, Vector2 _leftBoundary)
     {
-        target = Physics2D.OverlapCircle(transform.position, viewDistance, targetMask);
+        if (PhotonNetwork.IsMasterClient && Target == null)
+        {
 
+            Target = Physics2D.OverlapCircle(transform.position, viewDistance, targetMask);
+            Debug.Log($"타겟 수집{Target}");
+        }           
 
-        if (target == null)
+        //플레이어를 관리하는 객체에게 타겟의 위치를 요청하고, 내가 원하는범위안의 플레이어들의 리스트를 요청
+
+        if (Target == null)
             return;
 
 
-        if (target.tag == "Player")
+        if (Target.tag == "Player")
         {
 
             //시야각 방향의 직선 Direction
@@ -300,7 +362,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             //Debug.DrawRay(transform.position, middleDirection * viewDistance, Color.green);
 
             //Enemy와 Player 사이의 방향
-            Vector2 directionToPlayer = (target.transform.position - transform.position).normalized;
+            Vector2 directionToPlayer = (Target.transform.position - transform.position).normalized;
 
             //플레이어 시야 중앙~타겟위치 사이의 각도
             float angle = Vector3.Angle(directionToPlayer, middleDirection);
@@ -314,6 +376,36 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
+    //#####타겟 관련######
+    private void OnTargetChaged(Collider2D _target)
+    {
+        //마스터 클라이언트가 몬스터를 소환하고, 해당 몬스터들이
+        if(PhotonNetwork.IsMasterClient)
+        {
+            if (_target == null)
+                photonView.RPC("SendTargetNull", RpcTarget.Others);
+            else
+            {
+                int viewID = _target.gameObject.GetPhotonView().ViewID; //변하는 viewID
+                photonView.RPC("SendTarget", RpcTarget.Others, viewID);
+            }            
+        }
+    }
+
+   
+    [PunRPC]
+    private void SendTarget(int viewID)
+    {
+        PhotonView targetPV = PhotonView.Find(viewID);
+        Target = targetPV.gameObject.GetComponent<Collider2D>();
+    }
+
+    [PunRPC]
+    private void SendTargetNull()
+    {
+        Target = null;
+    }
+
 
     private void SetStateColor()
     {
@@ -321,29 +413,45 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     }
 
 
-    //이거 동기화
-    public void isFilp(float myX, float otherX)
+
+    //#####플레이어 애니메이션 관련######
+    
+    /*
+    private void SetAnim(string animName, bool set)
     {
-        if (otherX < myX)
+        if (PV.IsMine == false)
+            return;
+
+        anim.SetBool(animName, set);
+        PV.RPC(nameof(SyncAnimation), RpcTarget.All, animName, set);
+    }
+
+    public void SyncAnimation(string animName, bool set)
+    {
+        anim.SetBool(animName, set);
+    }
+    */
+
+
+    //#####NAV관련######
+    public void DestinationSet()
+    {
+        if (!isAttaking || isLive)
+        {
+            nav.SetDestination(navTargetPoint);
+        }
+
+        if (navTargetPoint.x <= transform.position.x)
         {
             spriteRenderer.flipX = true;
         }
+            
         else
         {
             spriteRenderer.flipX = false;
         }
-    }
-
-    [PunRPC]
-    public void DestinationSet(Vector3 targetPoint)
-    {
-        if (!PhotonNetwork.IsMasterClient)
-            return;
-
-        if (!isAttaking || isLive)
-        {
-            nav.SetDestination(targetPoint);
-        }
+            
+        //MoveToHostPosition();
     }
 
     public bool IsNavAbled()
@@ -361,7 +469,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     }
 
 
-    //행동 트리 실제 생성
+    //#####BT######
     void CreateTreeAIState()
     {
         //초기화&루트 노드로 설정
@@ -419,23 +527,34 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         TreeAIState.AddChild(BTMainSelector);
     }
 
+
+    private void MoveToHostPosition()
+    {
+        // 현재 위치에서 네트워크로부터 받은 목표 위치로 부드럽게 이동
+        transform.position = Vector3.Lerp(transform.position, navTargetPoint, Time.deltaTime * lerpSpeed);
+    }
     
+
+    //#####동기화######
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
             // 데이터를 전송
-            stream.SendNext(nowEnemyPosition);
-            stream.SendNext(nowEnemyRotation);
-            stream.SendNext(target);
+            stream.SendNext(hostPosition);
+            //stream.SendNext(navTargetPoint);
+            stream.SendNext(spriteRenderer.flipX); // 이게 맞나?
+            stream.SendNext(enemyAim.transform.rotation);
+
         }
         else if (stream.IsReading)
         {
             // 데이터를 수신
-            nowEnemyPosition = (Vector2)stream.ReceiveNext();
-            nowEnemyRotation = (Quaternion)stream.ReceiveNext();
-            target = (Collider2D)stream.ReceiveNext();
-        }
+            hostPosition = (Vector3)stream.ReceiveNext();
+            //navTargetPoint = (Vector3)stream.ReceiveNext();
+            spriteRenderer.flipX = (bool)stream.ReceiveNext();
+            enemyAim.transform.rotation = (Quaternion)stream.ReceiveNext();
+        }   
     }
  
 }

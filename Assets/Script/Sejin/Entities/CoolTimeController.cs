@@ -17,6 +17,14 @@ public class CoolTimeController : MonoBehaviour
 
     public float curSkillCool = 0;
 
+    public float stackedTime = 0;
+    public bool isKeepCount;
+    private bool isCharging;
+    public int bulletNum;
+
+    // 추가
+    //public event Action CallTimeCountEvent;
+
     private void Awake()
     {
         controller = GetComponent<TopDownCharacterController>();
@@ -25,14 +33,16 @@ public class CoolTimeController : MonoBehaviour
     {
         controller.OnEndRollEvent += RollCoolTime;
         controller.OnReloadEvent += ReloadCoolTime;
-        controller.OnAttackEvent += AttackCoolTime;
+        controller.OnAttackEvent += AttackCoolTime;        
         controller.OnEndSkillEvent += SkillCoolTime;
+        // 지금만 추가 (증강 추가시 제거 요망)
+        //controller.OnAttackKeepEvent += TimeCount;
     }
 
 
     private void Update()
     {
-        if(curRollCool > 0)
+        if (curRollCool > 0)
         {
             curRollCool -= Time.deltaTime;
         }
@@ -45,7 +55,7 @@ public class CoolTimeController : MonoBehaviour
         {
             curReloadCool -= Time.deltaTime;
         }
-        if (controller.playerStatHandler.CanReload == false && curReloadCool <= 0)
+        if (controller.playerStatHandler.CanReload == false && curReloadCool <= 0 && !isKeepCount)
         {
             EndReloadCoolTime();
         }
@@ -63,11 +73,21 @@ public class CoolTimeController : MonoBehaviour
         {
             curSkillCool -= Time.deltaTime;
         }
-        if (controller.playerStatHandler.CanSkill == false && curSkillCool <= 0)
+        if (curSkillCool <= 0 
+            && controller.playerStatHandler.useSkill == false 
+            && (controller.playerStatHandler.CurSkillStack < controller.playerStatHandler.MaxSkillStack || controller.playerStatHandler.CanSkill == false))
         {
             EndSkillCoolTime();
         }
 
+        if (isKeepCount)
+        {
+            stackedTime += Time.deltaTime;
+            if (!isCharging)
+            {
+                StartCoroutine(CountBullets());            
+            }    
+        }
     }
 
     private void RollCoolTime()
@@ -98,12 +118,26 @@ public class CoolTimeController : MonoBehaviour
         controller.CallEndReloadEvent();
     }
 
-    private void AttackCoolTime()
+    public void AttackCoolTime()
     {
         float coolTime = 1 / controller.playerStatHandler.AtkSpeed.total;
         controller.playerStatHandler.CanFire = false;
         curAttackCool = coolTime;
     }
+
+    //public void ChargeAttackCoolTime(bool isCharged)
+    //{
+    //    if (isCharged)
+    //    {
+    //        Debug.Log("Returned");
+    //        return;
+    //    }
+    //    float coolTime = 0.1f;
+    //    controller.playerStatHandler.CanFire = false;
+    //    Debug.Log("공격텀 적용중");
+    //    curAttackCool = coolTime;
+    //}
+
     private void EndAttackCoolTime()
     {
         controller.playerStatHandler.CanFire = true;
@@ -113,15 +147,65 @@ public class CoolTimeController : MonoBehaviour
     private void SkillCoolTime()
     {
         float coolTime = controller.playerStatHandler.SkillCoolTime.total;
-        controller.playerStatHandler.CanSkill = false;
+        Debug.Log($"전체 쿨타임 : {coolTime}");
+        if (controller.playerStatHandler.CurSkillStack > 0)
+        {
+            controller.playerStatHandler.CanSkill = true;
+        }
+        else
+        {
+            controller.playerStatHandler.CanSkill = false;
+        }
         curSkillCool = coolTime;
+       
         Debug.Log("스킬 쿨 타임 시작");
-
     }
     
     private void EndSkillCoolTime()
     {
+        controller.playerStatHandler.CurSkillStack += 1;
         controller.playerStatHandler.CanSkill = true;
+        Debug.Log($"스킬 쿨타임 계산 후, 현재 스킬 스택 수 : {controller.playerStatHandler.CurSkillStack}");
+        if (controller.playerStatHandler.CurSkillStack < controller.playerStatHandler.MaxSkillStack)
+        {
+            SkillCoolTime();
+        }
         Debug.Log("스킬 쿨 타임 종료");
+    }
+
+    public void TimeCount(bool isCount)
+    {
+        if (isCount)
+        {
+            isKeepCount = true;
+            stackedTime = 0;
+            bulletNum = 0;
+            controller.playerStatHandler.CanReload = false;
+            Debug.Log("시간 세기 시작");
+        }
+        else
+        {
+            isKeepCount = false;
+            controller.playerStatHandler.CanReload = true;
+            Debug.Log($"공격 유지한 시간 : {stackedTime}");
+            Debug.Log($"쌓인 불릿 수 : {bulletNum}");
+            Debug.Log($"남은 총알 수 : {controller.playerStatHandler.CurAmmo}");            
+            //GetComponent<WeaponSystem>().ChargeCalculate(stackedTime);
+            // 여기서 공격 이벤트에 파라미터로써? 숫자 제공해야함.
+        }
+    }
+
+    public IEnumerator CountBullets()
+    {
+        isCharging = true;
+        Debug.Log($"남은 장탄 수 : {controller.playerStatHandler.CurAmmo}");
+        if (controller.playerStatHandler.CurAmmo >= 1)
+        {
+            controller.playerStatHandler.CurAmmo--;
+            bulletNum++;
+            Debug.Log($"불릿 쌓는 중 {bulletNum}");
+        }
+        yield return new WaitForSeconds(0.15f); 
+        isCharging = false;
     }
 }

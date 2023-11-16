@@ -17,7 +17,7 @@ public class EnemyState_Attack_AttackCondition : BTCondition
     //오너의 상태를 받아오고, 그에따른 Status 업데이트를 실행
     public override Status Update()
     {
-        if (enemyAI.isAttaking && enemyAI.target != null)
+        if (enemyAI.isAttaking && enemyAI.Target != null)
             return Status.BT_Success;
         else
             return Status.BT_Failure;

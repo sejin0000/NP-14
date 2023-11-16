@@ -203,7 +203,8 @@ MonoBehaviour:
   - DestinationSet
   - SendTarget
   - SendTargetNull
-  - TogetherSoDelicious
+  - SendPlayerInfo
+  - Shoot
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

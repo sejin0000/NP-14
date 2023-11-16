@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using System;
 using static UnityEngine.RuleTile.TilingRuleOutput;
+using Photon.Pun;
 
 public class EnemyState_Attack : BTAction
 {
@@ -28,7 +29,7 @@ public class EnemyState_Attack : BTAction
         currentTime = enemySO.atkDelay;
         SetStateColor();
 
-        target = enemyAI.target;
+        target = enemyAI.Target;
     }
 
     public override Status Update()
@@ -40,7 +41,7 @@ public class EnemyState_Attack : BTAction
         if (currentTime <= 0)
         {
             // 공격 주기에 도달하면 공격 실행
-            enemyAI.Shoot();
+            enemyAI.PV.RPC("Fire", RpcTarget.All);
             currentTime = enemySO.atkDelay;
         }
 
@@ -57,16 +58,11 @@ public class EnemyState_Attack : BTAction
 
 
         //★★★수정함
-        enemyAI.isFilp(owner.transform.position.x, target.transform.position.x);
+        //enemyAI.PV.RPC("Filp", RpcTarget.All);;
+        //enemyAI.Filp(owner.transform.position.x, target.transform.position.x);
 
         return Status.BT_Running;
     }
-
-    public override void Terminate()
-    {
-    }
-
-
     public void SetAim() // 피해량, 플레이어 위치 받아옴
     {
         //플레이어를 바라보도록 설정
@@ -78,13 +74,16 @@ public class EnemyState_Attack : BTAction
 
 
 
-        RotateArm(direction);        
+        RotateArm(direction);
     }
     private void RotateArm(Vector2 newAim)
     {
         float rotZ = Mathf.Atan2(newAim.y, newAim.x) * Mathf.Rad2Deg;
 
         enemyAI.enemyAim.transform.rotation = Quaternion.Euler(0, 0, rotZ);
+    }
+    public override void Terminate()
+    {
     }
 
     private void SetStateColor()

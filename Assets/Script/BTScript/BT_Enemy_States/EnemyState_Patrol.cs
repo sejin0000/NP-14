@@ -20,9 +20,6 @@ using Photon.Pun;
         float destinationX = 0f;
         float destinationY = 0f;
 
-        float beforDestinationX = 0f;
-        float beforDestinationY = 0f;
-
     public EnemyState_Patrol(GameObject _owner)
     {
         owner = _owner;
@@ -88,9 +85,6 @@ using Photon.Pun;
         //애니메이션 초기화
         //anim.SetBool("isRun", false); //anim.SetBool("Running", isRunning);
 
-        beforDestinationX = destinationX;
-        beforDestinationY = destinationY;
-
 
 
         destinationX = Random.Range(-6f, 6f);
@@ -104,19 +98,19 @@ using Photon.Pun;
 
 
         //★★★수정함
-        enemyAI.isFilp(beforDestinationX, destinationX);
+        //enemyAI.PV.RPC("Filp", RpcTarget.All);
+        //enemyAI.Filp(beforDestinationX, destinationX);
     }
 
 
 
     private void Patrol()
     {
-        //수정됨
+        if (enemyAI.photonView.AmOwner)
+            enemyAI.navTargetPoint = destination;
+
         if (!enemyAI.isAttaking)
-        {
-            enemyAI.PV.RPC("DestinationSet", RpcTarget.AllBuffered, destination);
-            //enemyAI.DestinationSet(destination);
-        }          
+            enemyAI.DestinationSet();
 
         //rigid.MovePosition(transform.position + (transform.forward * applySpeed * Time.deltaTime));
         //리지드바디 이동(현재 위치에서 전방으로, 1초당 walkSpeed 수치만큼 이동;

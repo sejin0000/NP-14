@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XR;
 using static UnityEngine.UI.CanvasScaler;
 
 public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 불러오는곳 AugmentManager.Instance.Invoke(code,0); 을통해 해당 증강불러옴
@@ -607,7 +608,11 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A221(int PlayerNumber)
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        var pv = targetPlayer.GetPhotonView();
+        var controller = targetPlayer.GetComponent<TopDownCharacterController>();
+        //HERE
+        
     }
     [PunRPC]
     private void A222(int PlayerNumber)//재정비 구르기후 회복
@@ -618,7 +623,9 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A223(int PlayerNumber)
     {
-        Debug.Log("미완성");
+        ChangePlayerStatHandler(PlayerNumber);
+        playerstatHandler.MaxSkillStack += 1;        
+        playerstatHandler.CurSkillStack += 1;
     }
     #endregion
     #region All3

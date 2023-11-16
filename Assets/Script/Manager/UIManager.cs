@@ -26,7 +26,6 @@ public class UIManager : LocalSingleton<UIManager>
 
     private void Initialize()
     {
-        GameObject obj = GameObject.Find("UI_Root");
         foreach (var layer in layer)
         {
             layer.Initialize();

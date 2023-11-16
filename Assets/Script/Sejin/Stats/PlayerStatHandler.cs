@@ -55,6 +55,9 @@ public class PlayerStatHandler : MonoBehaviourPun
     public int CurRegenCoin;
     public int evasionPersent;
     public float DamegeTemp;
+    public int MaxSkillStack;
+    public int CurSkillStack;
+
 
     private float curHP;
     [HideInInspector]
@@ -82,16 +85,32 @@ public class PlayerStatHandler : MonoBehaviourPun
         }
     }               //현재   체력
 
-    private float curAmmo;
-    [HideInInspector] public float CurAmmo { get { return curAmmo; } set { if (value > AmmoMax.total) curAmmo = AmmoMax.total; curAmmo = value; OnChangeAmmorEvent?.Invoke(); } } //현재   잔탄
+    [SerializeField] private float curAmmo;
+    //[HideInInspector]
+    public float CurAmmo //현재 잔탄
+    { 
+        get 
+        { 
+                return curAmmo; 
+        }
+        set 
+        { 
+            if (value > AmmoMax.total) 
+                curAmmo = AmmoMax.total; 
+            curAmmo = value; 
+            OnChangeAmmorEvent?.Invoke(); 
+        } 
+    } 
     [HideInInspector] public bool CanFire;                                //발사   가능한지
     [HideInInspector] public bool CanReload;                              //장전   가능한지
     [HideInInspector] public bool CanSkill;                               //스킬   가능한지
     [HideInInspector] public bool CanRoll;                                //구르기 가능한지
     [HideInInspector] public bool Invincibility;                          //무적
 
-    int viewID;
+    public bool useSkill;
 
+    int viewID;
+    [HideInInspector] public bool IsChargeAttack;
 
     private void Awake()
     {
@@ -108,7 +127,7 @@ public class PlayerStatHandler : MonoBehaviourPun
         Critical = new Stats(playerStats.critical);
         AmmoMax = new Stats(playerStats.ammoMax);
         MaxRegenCoin = 0;
-        CurRegenCoin = MaxRegenCoin;        
+        CurRegenCoin = MaxRegenCoin;
 
         PlayerSprite = playerStats.playerSprite;
         WeaponSprite = playerStats.weaponSprite;
@@ -125,10 +144,10 @@ public class PlayerStatHandler : MonoBehaviourPun
         isNoramlMove = true;
         isCanSkill=true;
         isCanAtk = true;
-
-        
-
         evasionPersent = 0;
+
+        MaxSkillStack = 1;
+        CurSkillStack = MaxSkillStack;
 
         PlayerSpriteCase = _PlayerSprite.GetComponent<SpriteLibrary>();
         WeaponSpriteCase = _WeaponSprite.GetComponent<SpriteLibrary>();
@@ -136,6 +155,8 @@ public class PlayerStatHandler : MonoBehaviourPun
         PlayerSpriteCase.spriteLibraryAsset = PlayerSprite;
         WeaponSpriteCase.spriteLibraryAsset = WeaponSprite;
         defense = 1;
+
+        IsChargeAttack = false;
     }
 
     private void Start()
