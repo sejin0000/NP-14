@@ -50,6 +50,9 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     public bool isChase;
     public bool isAttaking;
 
+    //플레이어 정보
+
+    int lastAttackPlayer;
 
     //게임매니저에서(어디든) 관리하는 플레이어들 정보를 요청해서 사용
 
@@ -155,22 +158,24 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         }
 
 
+
+        //목적지와 내 거리가 일정거리 이하거나 / nav가 멈춘 상태(그냥 정지) 가 아닌경우
         if (!IsNavAbled() || nav.remainingDistance < 0.2f)
-        {
-            anim.SetBool("isWalk", false);
-            anim.SetBool("isUpWalk", false);
+        {          
+            SetAnim("isWalk", false);
+            SetAnim("isUpWalk", false);
             return;
         }          
 
         if (navTargetPoint.y > transform.position.y)
         {
-            anim.SetBool("isUpWalk", true);
-            anim.SetBool("isWalk", false);
+            SetAnim("isUpWalk", true);
+            SetAnim("isWalk", false);
         }
         else
         {
-            anim.SetBool("isWalk", true);
-            anim.SetBool("isUpWalk", false);
+            SetAnim("isWalk", true);
+            SetAnim("isUpWalk", false);
         }
     }
 
@@ -200,6 +205,10 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
             //모든 플레이어에게 현재 적의 체력 동기화
             PV.RPC("DecreaseHP", RpcTarget.All, collision.transform.GetComponent<Bullet>().ATK);
+
+
+            //여기다 불렛 모시깽이 얻기
+            lastAttackPlayer = playerBullet.BulletOwner;
 
 
             //넉백
@@ -246,7 +255,11 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         GaugeUpdate();
 
         if (currentHP <= 0)
-            isLive = false;       
+        {
+            //플레이어의 뷰 아이디 여깄어요
+            //lastAttackPlayer
+            isLive = false;
+        }                   
     }
 
     [PunRPC]
@@ -342,7 +355,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (PhotonNetwork.IsMasterClient && Target == null)
         {
-
+            //대충 타겟? 정확한 타겟?
             Target = Physics2D.OverlapCircle(transform.position, viewDistance, targetMask);
             Debug.Log($"타겟 수집{Target}");
         }           
@@ -415,22 +428,31 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
 
     //#####플레이어 애니메이션 관련######
-    
-    /*
+    #region player애니메이션 관련    
+
     private void SetAnim(string animName, bool set)
     {
         if (PV.IsMine == false)
+            return;
+
+        //이전 상태
+        bool prev = anim.GetBool(animName);
+
+        if (prev == set)
             return;
 
         anim.SetBool(animName, set);
         PV.RPC(nameof(SyncAnimation), RpcTarget.All, animName, set);
     }
 
+    [PunRPC]
     public void SyncAnimation(string animName, bool set)
     {
+        Debug.Log($"{animName}이 {set} 상태로 호출됨");
         anim.SetBool(animName, set);
     }
-    */
+
+    #endregion
 
 
     //#####NAV관련######
