@@ -13,6 +13,9 @@ public class WeaponSystem : MonoBehaviour
     public bool isDamage;
 
     public int _viewID;
+    // 추가
+    public int bulletNum;
+    private CoolTimeController _cool;
 
     private void Awake()
     {
@@ -22,6 +25,8 @@ public class WeaponSystem : MonoBehaviour
         _controller    = GetComponent<TopDownCharacterController>();
         _viewID        = pv.ViewID;
         target = BulletTarget.Enemy;
+        // 추가
+        _cool = GetComponent<CoolTimeController>();
     }
     private void Start()
     {
@@ -44,6 +49,30 @@ public class WeaponSystem : MonoBehaviour
             pv.RPC("BS", RpcTarget.All, rot, _ATK, _BLT, _target, _isDamage, _viewID);
             _controller.playerStatHandler.CurAmmo--;
         }
+    }
+
+    public void Charging(bool isCharging)
+    {
+        if (isCharging)
+            return;
+
+        int bullets = _cool.bulletNum;
+        if (bullets == 0)
+            return;
+        for (int i = 0; i < bullets; i++) 
+        {
+            Quaternion rot = muzzleOfAGun.transform.rotation;
+            rot.eulerAngles += new Vector3(0, 0, Random.Range(-1 * _controller.playerStatHandler.BulletSpread.total, _controller.playerStatHandler.BulletSpread.total));// 중요함
+
+            float _ATK = _controller.playerStatHandler.ATK.total;
+            float _BLT = _controller.playerStatHandler.BulletLifeTime.total;
+            int _target = (int)target;
+            bool _isDamage = isDamage;
+
+            pv.RPC("BS", RpcTarget.All, rot, _ATK, _BLT, _target, _isDamage, _viewID);
+            _controller.playerStatHandler.CurAmmo--;
+        }
+        _cool.bulletNum = 0;
     }
 
     [PunRPC]

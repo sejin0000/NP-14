@@ -18,25 +18,33 @@ public class TopDownCharacterController : MonoBehaviour
     public event Action OnEndReloadEvent;
     public event Action OnStartSkillEvent;
 
+    //추가함
+    public event Action<bool> OnAttackKeepEvent;
+
 
     public PlayerStatHandler playerStatHandler;
-    public TopDownMovement topDownMovement;
+    public TopDownMovement topDownMovement;    
 
     private bool AtkKeyhold = false;
-
 
     private void Update()
     {
         if (AtkKeyhold)
-        {
+        {            
             if (!topDownMovement.isRoll && playerStatHandler.CurAmmo > 0 && playerStatHandler.CanFire&& playerStatHandler.CanReload)
             {
-                OnAttackEvent?.Invoke();
-                //playerStatHandler.CurAmmo--;                
+                OnAttackEvent?.Invoke();                
             }
             else
             {
                 //Debug.Log("공격 할 수 없습니다");
+            }
+        }
+        else
+        {
+            if (!topDownMovement.isRoll && playerStatHandler.CurAmmo >=0 && playerStatHandler.CanFire && playerStatHandler.CanReload)
+            {
+                OnAttackKeepEvent?.Invoke(AtkKeyhold);
             }
         }
     }
@@ -55,6 +63,12 @@ public class TopDownCharacterController : MonoBehaviour
     {
         AtkKeyhold = hold;
     }
+
+    public void CallAttackKeepEvent(bool hold)
+    {
+        OnAttackKeepEvent?.Invoke(hold);
+    }
+
     public void CallAttackEndEvent() 
     {
         OnEndAttackEvent?.Invoke();

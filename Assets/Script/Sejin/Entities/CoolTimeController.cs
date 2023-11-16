@@ -17,6 +17,14 @@ public class CoolTimeController : MonoBehaviour
 
     public float curSkillCool = 0;
 
+    public float stackedTime = 0;
+    private bool isKeepCount;
+    private bool isCharging;
+    public int bulletNum;
+
+    // 추가
+    //public event Action CallTimeCountEvent;
+
     private void Awake()
     {
         controller = GetComponent<TopDownCharacterController>();
@@ -27,6 +35,8 @@ public class CoolTimeController : MonoBehaviour
         controller.OnReloadEvent += ReloadCoolTime;
         controller.OnAttackEvent += AttackCoolTime;
         controller.OnEndSkillEvent += SkillCoolTime;
+        // 지금만 추가 (증강 추가시 제거 요망)
+        //controller.OnAttackKeepEvent += TimeCount;
     }
 
 
@@ -69,6 +79,15 @@ public class CoolTimeController : MonoBehaviour
         {
             EndSkillCoolTime();
         }
+
+        if (isKeepCount)
+        {
+            stackedTime += Time.deltaTime;
+            if (!isCharging)
+            {
+                StartCoroutine(CountBullets());            
+            }    
+        }
     }
 
     private void RollCoolTime()
@@ -99,7 +118,7 @@ public class CoolTimeController : MonoBehaviour
         controller.CallEndReloadEvent();
     }
 
-    private void AttackCoolTime()
+    public void AttackCoolTime()
     {
         float coolTime = 1 / controller.playerStatHandler.AtkSpeed.total;
         controller.playerStatHandler.CanFire = false;
@@ -138,5 +157,38 @@ public class CoolTimeController : MonoBehaviour
             SkillCoolTime();
         }
         Debug.Log("스킬 쿨 타임 종료");
+    }
+
+    public void TimeCount(bool isCount)
+    {
+        if (isCount)
+        {
+            isKeepCount = true;
+            stackedTime = 0;
+            bulletNum = 0;
+            Debug.Log("시간 세기 시작");
+        }
+        else
+        {
+            isKeepCount = false;            
+            Debug.Log($"공격 유지한 시간 : {stackedTime}");
+            Debug.Log($"쌓인 불릿 수 : {bulletNum}");
+            //GetComponent<WeaponSystem>().ChargeCalculate(stackedTime);
+            // 여기서 공격 이벤트에 파라미터로써? 숫자 제공해야함.
+        }
+    }
+
+    public IEnumerator CountBullets()
+    {
+        isCharging = true;
+        float curAmmo = GetComponent<PlayerStatHandler>().CurAmmo;
+        if (curAmmo >= 1)
+        {
+            GetComponent<PlayerStatHandler>().CurAmmo--;
+            bulletNum++;
+            Debug.Log($"불릿 쌓는 중 {bulletNum}");
+        }
+        yield return new WaitForSeconds(0.15f); 
+        isCharging = false;
     }
 }

@@ -13,8 +13,14 @@ public class PlayerInputController : TopDownCharacterController
     public int atkPercent;
     PlayerStatHandler playerstatHnadler;
 
+    // 추가함
+    public CoolTimeController coolTimeController;
+
     private void Awake()
     {
+        // 추가함
+        coolTimeController = GetComponent<CoolTimeController>();
+
         playerstatHnadler = GetComponent<PlayerStatHandler>();
         playerstatHnadler.OnDieEvent += InputOff;
         playerstatHnadler.OnRegenEvent += InputOn;
@@ -86,10 +92,14 @@ public class PlayerInputController : TopDownCharacterController
                 if (!IsAtking && !EventSystem.current.IsPointerOverGameObject() && playerInput.actions["Attack"].ReadValue<float>() == 1)//playerInput.actions["Attack"].ReadValue<float>()마우스 눌리는거 확인하는 변수
                 {
                     CallAttackEvent(true);
+                    //추가함
+                    CallAttackKeepEvent(true);
                 }
                 else
                 {
                     CallAttackEvent(false);
+                    //추가함
+                    CallAttackKeepEvent(false);
                 }
             }
         }

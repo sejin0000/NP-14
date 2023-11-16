@@ -604,6 +604,10 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     private void A221(int PlayerNumber)
     {
         Debug.Log("미완성");
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        targetPlayer.AddComponent<A0221>();
+        A0221 chargingComponent = targetPlayer.GetComponent<A0221>();
+        //HERE
     }
     [PunRPC]
     private void A222(int PlayerNumber)//재정비 구르기후 회복
