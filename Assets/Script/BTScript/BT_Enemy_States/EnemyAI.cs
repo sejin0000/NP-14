@@ -42,7 +42,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
     public LayerMask targetMask;             // 타겟 레이어(Player)
 
-    public float currentMoveSpeed;           // 현재 이동속도
     public float SpeedCoefficient = 1f;      // 이동속도 계수
    
     public bool isLive;
@@ -62,6 +61,13 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
     
     public PhotonView PV;                    //동기화
+
+    //넉백
+    private bool isKnockback = false;
+    private Vector2 knockbackStartPosition;
+    private Vector2 knockbackTargetPosition;
+    private float knockbackStartTime;
+    public float knockbackDuration = 0.2f;
 
     void Awake()
     {
@@ -87,9 +93,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
         nowEnemyPosition = this.gameObject.transform.position;
 
-        currentMoveSpeed = enemySO.enemyMoveSpeed;
 
-        nav.speed = currentMoveSpeed;
+        nav.speed = enemySO.enemyMoveSpeed;
         navTargetPoint = transform.position;
     }
     void Update()
@@ -145,11 +150,15 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
-    private bool isKnockback = false;
-    private Vector2 knockbackStartPosition;
-    private Vector2 knockbackTargetPosition;
-    private float knockbackStartTime;
-    public float knockbackDuration = 0.2f;
+
+    //#####Enemy 이동 속도변경 관련######
+    public void ChangeSpeed(float statSpeed)
+    {
+        nav.speed = statSpeed * SpeedCoefficient;
+    }
+
+
+    //#####Enemy 피격, 사망, 넉백 관련######
 
     //★맞음 & 죽음
     private void OnTriggerEnter2D(Collider2D collision)
@@ -189,13 +198,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
-    public void ChangeSpeed(float statSpeed)
-    {
-        nav.speed = statSpeed * SpeedCoefficient;
-    }
-
-
-
     private void GaugeUpdate()
     {
         images_Gauge.fillAmount = (float)currentHP / enemySO.hp; //체력
@@ -229,6 +231,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         Destroy(gameObject);
     }
 
+    //#####공격 관련######
     [PunRPC]
     public void Shoot()
     {
@@ -256,6 +259,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         //수정 : gameObject 에서 Bullet으로 ->변수 형태와 용도를 통일함            
     }
 
+
+    //#####시야각(타겟 서치) 관련######
     private Vector2 BoundaryAngle(float angle)
     {
         // 현재 오브젝트의 회전값을 고려하여 방향 벡터를 계산
@@ -267,8 +272,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         return new Vector2(Mathf.Cos(radAngle), Mathf.Sin(radAngle));
     }
 
-
-    //플레이어 탐지★ 여기서 추적시&공격시 시야각도 지정하자
 
     private void NomalView()
     {
@@ -349,6 +352,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
+    //#####타겟 관련######
     private void OnTargetChaged(Collider2D _target)
     {
         //마스터 클라이언트가 몬스터를 소환하고, 해당 몬스터들이
@@ -364,6 +368,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
+   
     [PunRPC]
     private void SendTarget(int viewID)
     {
@@ -386,6 +391,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
 
     //이거 동기화
+    //#####플레이어 스프라이트 관련######
     public void Filp(float myX, float otherX)
     {
         if (!PhotonNetwork.IsMasterClient)
@@ -401,6 +407,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
+
+    //#####NAV관련######
     public void DestinationSet()
     {
         if (!isAttaking || isLive)
@@ -429,7 +437,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     }
 
 
-    //행동 트리 실제 생성
+    //#####BT######
     void CreateTreeAIState()
     {
         //초기화&루트 노드로 설정
@@ -488,6 +496,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     
+
+    //#####동기화######
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
