@@ -27,7 +27,7 @@ public class EnemyState_Dead : BTAction
         {
             MainGameManager.Instance.currentMonsterCount -= 1;
         }
-        enemyAI.PV.RPC("DestroyEnemy", RpcTarget.AllBuffered);
+        enemyAI.PV.RPC("DestroyEnemy", RpcTarget.All);
     }
 
     public override Status Update()
