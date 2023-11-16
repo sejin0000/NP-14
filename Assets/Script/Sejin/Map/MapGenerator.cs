@@ -23,14 +23,23 @@ public class MapGenerator : MonoBehaviour
 
     public List<Node> AllRoomList = new List<Node>();
 
-
     int nodeDepth;
 
+    private SetTile setTile;
+
     Node root;
+    private void Awake()
+    {
+        setTile = GetComponent<SetTile>();
+    }
+
     void Start()
     {
         root = new Node(new RectInt(0, 0, mapSize.x, mapSize.y)); //전체 맵 크기의 루트노드를 만듬
-        //DrawMap(0, 0);
+        DrawMap(0, 0);
+
+        setTile.SetRectTile(root.nodeRect, setTile.groundTile, setTile.groundTileMap);
+        setTile.SetRectTile(new RectInt(0, 0, mapSize.x + 20, mapSize.y + 10), setTile.wallTile, setTile.wallTileMap);
 
         Divide(root, 0);
         GenerateRoom(root, 0);
@@ -60,6 +69,15 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
+
+    private void DrawRectangle(RectInt rect)
+    {
+        LineRenderer lineRenderer = Instantiate(roomLine).GetComponent<LineRenderer>();
+        lineRenderer.SetPosition(0, new Vector2(rect.x, rect.y) - mapSize / 2); //좌측 하단
+        lineRenderer.SetPosition(1, new Vector2(rect.x + rect.width, rect.y) - mapSize / 2); //우측 하단
+        lineRenderer.SetPosition(2, new Vector2(rect.x + rect.width, rect.y + rect.height) - mapSize / 2);//우측 상단
+        lineRenderer.SetPosition(3, new Vector2(rect.x, rect.y + rect.height) - mapSize / 2); //좌측 상단
+    }
     private void DrawMap(int x, int y) //x y는 화면의 중앙위치를 뜻함
     {
         //기본적으로 mapSize/2라는 값을 계속해서 빼게 될건데, 화면의 중앙에서 화면의 크기의 반을 빼줘야 좌측 하단좌표를 구할 수 있기 때문이다.
@@ -68,7 +86,6 @@ public class MapGenerator : MonoBehaviour
         lineRenderer.SetPosition(1, new Vector2(x + mapSize.x, y) - mapSize / 2); //우측 하단
         lineRenderer.SetPosition(2, new Vector2(x + mapSize.x, y + mapSize.y) - mapSize / 2);//우측 상단
         lineRenderer.SetPosition(3, new Vector2(x, y + mapSize.y) - mapSize / 2); //좌측 상단
-
     }
     void Divide(Node tree, int n)
     {
@@ -126,23 +143,16 @@ public class MapGenerator : MonoBehaviour
             //y좌표도 위와 같다.
             rect = new RectInt(x, y, width, height);
             DrawRectangle(rect);
+
+            setTile.RemoveRectTile(rect, setTile.wallTileMap, new Vector2(rect.x, rect.y) - mapSize / 2);
         }
-        else
+        else 
         {
             tree.leftNode.roomRect = GenerateRoom(tree.leftNode, n + 1);
             tree.rightNode.roomRect = GenerateRoom(tree.rightNode, n + 1);
             rect = tree.leftNode.roomRect;
         }
         return rect;
-    }
-
-    private void DrawRectangle(RectInt rect)
-    {
-        LineRenderer lineRenderer = Instantiate(roomLine).GetComponent<LineRenderer>();
-        lineRenderer.SetPosition(0, new Vector2(rect.x, rect.y) - mapSize / 2); //좌측 하단
-        lineRenderer.SetPosition(1, new Vector2(rect.x + rect.width, rect.y) - mapSize / 2); //우측 하단
-        lineRenderer.SetPosition(2, new Vector2(rect.x + rect.width, rect.y + rect.height) - mapSize / 2);//우측 상단
-        lineRenderer.SetPosition(3, new Vector2(rect.x, rect.y + rect.height) - mapSize / 2); //좌측 상단
     }
 
     private void NodeSelection(Node tree, int n)
@@ -155,7 +165,6 @@ public class MapGenerator : MonoBehaviour
         else
         {
             parentsNodes.Add(tree);
-            Debug.Log("부모 추가");
         }
     }
 
@@ -169,7 +178,6 @@ public class MapGenerator : MonoBehaviour
         else
         {
             nodeList.Add(tree);
-            Debug.Log("자식 추가");
         }
     }
 
@@ -193,7 +201,6 @@ public class MapGenerator : MonoBehaviour
 
     private void GenerateLoad(List<Node> R_nodeList, List<Node> L_nodeList)
     {
-        Debug.Log("길 그리기");
         float minimumDistance = int.MaxValue;
         Node R_node = R_nodeList[0];
         Node L_node = L_nodeList[0];
@@ -227,9 +234,15 @@ public class MapGenerator : MonoBehaviour
         Vector2Int leftNodeCenter = L_node.center;
 
 
-        //DrawLine(new Vector2(rightNodeCenter.x, leftNodeCenter.y), new Vector2(rightNodeCenter.x, rightNodeCenter.y));
+        DrawLine(new Vector2(rightNodeCenter.x, leftNodeCenter.y), new Vector2(rightNodeCenter.x, rightNodeCenter.y));
+        setTile.RemoveLineTile(setTile.wallTileMap, rightNodeCenter, (rightNodeCenter.x - leftNodeCenter.x), new Vector2(rightNodeCenter.x - leftNodeCenter.x, rightNodeCenter.y - leftNodeCenter.y).normalized, mapSize / 2);
 
-        //DrawLine(new Vector2(leftNodeCenter.x, leftNodeCenter.y), new Vector2(rightNodeCenter.x, leftNodeCenter.y));
+
+
+        DrawLine(new Vector2(leftNodeCenter.x, leftNodeCenter.y), new Vector2(rightNodeCenter.x, leftNodeCenter.y));
+        setTile.RemoveLineTile(setTile.wallTileMap, leftNodeCenter, (leftNodeCenter.y - leftNodeCenter.y), new Vector2(leftNodeCenter.x - leftNodeCenter.x, leftNodeCenter.y - leftNodeCenter.y).normalized, mapSize / 2);
+
+
         //세로 기준을 leftnode에 맞춰서 가로 선으로 연결해줌.
 
 
@@ -262,20 +275,24 @@ public class MapGenerator : MonoBehaviour
         {
             int Center = (rightNodeCenter.y + leftNodeCenter.y) / 2;
 
-            DrawLine(new Vector2(rightNodeCenter.x - (R_node.roomRect.width / 2), Center), new Vector2(leftNodeCenter.x + (L_node.roomRect.width / 2), Center));
+            Vector2Int startPos = new Vector2Int(rightNodeCenter.x - (R_node.roomRect.width / 2), Center);
+            Vector2Int endPos = new Vector2Int(leftNodeCenter.x + (L_node.roomRect.width / 2), Center);
+
+
+            DrawLine(startPos, endPos);
+            setTile.RemoveLineTile(setTile.wallTileMap, startPos, (startPos.x - endPos.x), new Vector2(startPos.x - endPos.x, startPos.y - endPos.y).normalized, mapSize / 2);
         }
         else
         {
             int Center = (rightNodeCenter.x + leftNodeCenter.x) / 2;
 
-            DrawLine(new Vector2(Center, leftNodeCenter.y + (L_node.roomRect.height / 2)), new Vector2(Center, rightNodeCenter.y - (R_node.roomRect.height / 2)));
+            Vector2Int startPos = new Vector2Int(Center, rightNodeCenter.y - (R_node.roomRect.height / 2));
+            Vector2Int endPos = new Vector2Int(Center, leftNodeCenter.y + (L_node.roomRect.height / 2));
+
+            DrawLine(startPos, endPos);
+            setTile.RemoveLineTile(setTile.wallTileMap, startPos, (startPos.y - endPos.y), new Vector2(startPos.x - endPos.x, startPos.y - endPos.y).normalized, mapSize / 2);
         }
 
-
-
-
-
-        // 세로 가로 순으로 길을 연결함
     }
 
 }
