@@ -418,7 +418,9 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A121(int PlayerNumber)
     {
-        Debug.Log("미완성");
+        ChangePlayerStatHandler(PlayerNumber);
+        playerstatHandler.MaxRollStack += 1;
+        playerstatHandler.CurRollStack += 1;
     }
     [PunRPC]
     private void A122(int PlayerNumber)//화다닥 120의 불버전//122없음
