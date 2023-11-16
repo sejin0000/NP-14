@@ -185,8 +185,6 @@ public class MapGenerator : MonoBehaviour
 
 
             GenerateLoad(R_childrenNode, L_childrenNode);
-
-            // 추가된 자식 연결하는 함수
         }
 
     }
@@ -216,7 +214,6 @@ public class MapGenerator : MonoBehaviour
                     < minimumDistance
                     )
                 {
-                    // 수정 해야함
                     minimumDistance = (R_nodeList[i].center - L_nodeList[j].center).magnitude;
 
                     R_node = R_nodeList[i];
