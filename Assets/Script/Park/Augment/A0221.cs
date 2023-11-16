@@ -28,7 +28,7 @@ public class A0221 : MonoBehaviourPun
         controller.OnAttackKeepEvent += coolTimeController.TimeCount;
         controller.OnAttackEvent -= coolTimeController.AttackCoolTime;
         controller.OnAttackEvent -= _ws.Shooting;
-        controller.OnAttackKeepEvent += _ws.Charging;
+        controller.OnChargeAttackEvent += _ws.Charging;
         controller.playerStatHandler.IsChargeAttack = true;
         Debug.Log("A0221 세팅 완료");
     }

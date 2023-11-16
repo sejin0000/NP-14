@@ -51,11 +51,8 @@ public class WeaponSystem : MonoBehaviour
         }
     }
 
-    public void Charging(bool isCharging)
+    public void Charging()
     {
-        if (isCharging)
-            return;
-
         int bullets = _cool.bulletNum;
         if (bullets == 0)
             return;
