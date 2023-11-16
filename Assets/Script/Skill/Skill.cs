@@ -32,6 +32,7 @@ public class Skill : MonoBehaviourPun
         {
             if (isLink) 
             {
+                Debug.Log("안전하게 제거됬다고 생각됨");
                 controller.OnSkillEvent -= SkillStart;
                 isLink = false;
             }
