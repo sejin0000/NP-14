@@ -42,56 +42,11 @@ public class CoolTimeController : MonoBehaviour
 
     private void Update()
     {
-        if (curRollCool > 0)
-        {
-            curRollCool -= Time.deltaTime;
-        }
-        if (
-            curRollCool <= 0 
-            && controller.playerStatHandler.UseRoll == false
-            && (controller.playerStatHandler.CurRollStack < controller.playerStatHandler.MaxRollStack || controller.playerStatHandler.CanRoll == false)
-            )
-        {
-            EndRollCoolTime();
-        }
-
-        if (curReloadCool > 0)
-        {
-            curReloadCool -= Time.deltaTime;
-        }
-        if (controller.playerStatHandler.CanReload == false && curReloadCool <= 0 && !isKeepCount)
-        {
-            EndReloadCoolTime();
-        }
-
-        if (curAttackCool > 0)
-        {
-            curAttackCool -= Time.deltaTime;
-        }
-        if (controller.playerStatHandler.CanFire == false && curAttackCool <= 0)
-        {
-            EndAttackCoolTime();
-        }
-
-        if (curSkillCool > 0)
-        {
-            curSkillCool -= Time.deltaTime;
-        }
-        if (curSkillCool <= 0 
-            && controller.playerStatHandler.useSkill == false 
-            && (controller.playerStatHandler.CurSkillStack < controller.playerStatHandler.MaxSkillStack || controller.playerStatHandler.CanSkill == false))
-        {
-            EndSkillCoolTime();
-        }
-
-        if (isKeepCount)
-        {
-            stackedTime += Time.deltaTime;
-            if (!isCharging)
-            {
-                StartCoroutine(CountBullets());            
-            }    
-        }
+        CountRollCoolTime();
+        CountReloadCoolTime();
+        CountAttackCoolTime();
+        CountSkillCoolTime();
+        CountTimeNBullets();
     }
 
     private void RollCoolTime()
@@ -122,6 +77,21 @@ public class CoolTimeController : MonoBehaviour
         }
     }
 
+    private void CountRollCoolTime()
+    {
+        if (curRollCool > 0)
+        {
+            curRollCool -= Time.deltaTime;
+        }
+        if (
+            curRollCool <= 0
+            && controller.playerStatHandler.UseRoll == false
+            && (controller.playerStatHandler.CurRollStack < controller.playerStatHandler.MaxRollStack || controller.playerStatHandler.CanRoll == false)
+            )
+        {
+            EndRollCoolTime();
+        }
+    }
 
     private void ReloadCoolTime()
     {
@@ -136,6 +106,17 @@ public class CoolTimeController : MonoBehaviour
         controller.CallEndReloadEvent();
     }
 
+    private void CountReloadCoolTime()
+    {
+        if (curReloadCool > 0)
+        {
+            curReloadCool -= Time.deltaTime;
+        }
+        if (controller.playerStatHandler.CanReload == false && curReloadCool <= 0 && !isKeepCount)
+        {
+            EndReloadCoolTime();
+        }
+    }
     public void AttackCoolTime()
     {
         float coolTime = 1 / controller.playerStatHandler.AtkSpeed.total;
@@ -143,18 +124,17 @@ public class CoolTimeController : MonoBehaviour
         curAttackCool = coolTime;
     }
 
-    //public void ChargeAttackCoolTime(bool isCharged)
-    //{
-    //    if (isCharged)
-    //    {
-    //        Debug.Log("Returned");
-    //        return;
-    //    }
-    //    float coolTime = 0.1f;
-    //    controller.playerStatHandler.CanFire = false;
-    //    Debug.Log("공격텀 적용중");
-    //    curAttackCool = coolTime;
-    //}
+    private void CountAttackCoolTime()
+    {
+        if (curAttackCool > 0)
+        {
+            curAttackCool -= Time.deltaTime;
+        }
+        if (controller.playerStatHandler.CanFire == false && curAttackCool <= 0)
+        {
+            EndAttackCoolTime();
+        }
+    }
 
     private void EndAttackCoolTime()
     {
@@ -191,6 +171,20 @@ public class CoolTimeController : MonoBehaviour
         Debug.Log("스킬 쿨 타임 종료");
     }
 
+    private void CountSkillCoolTime()
+    {
+        if (curSkillCool > 0)
+        {
+            curSkillCool -= Time.deltaTime;
+        }
+        if (curSkillCool <= 0
+            && controller.playerStatHandler.useSkill == false
+            && (controller.playerStatHandler.CurSkillStack < controller.playerStatHandler.MaxSkillStack || controller.playerStatHandler.CanSkill == false))
+        {
+            EndSkillCoolTime();
+        }
+    }
+
     public void TimeCount(bool isCount)
     {
         if (isCount)
@@ -225,5 +219,17 @@ public class CoolTimeController : MonoBehaviour
         }
         yield return new WaitForSeconds(0.15f); 
         isCharging = false;
+    }
+
+    private void CountTimeNBullets()
+    {
+        if (isKeepCount)
+        {
+            stackedTime += Time.deltaTime;
+            if (!isCharging)
+            {
+                StartCoroutine(CountBullets());
+            }
+        }
     }
 }
