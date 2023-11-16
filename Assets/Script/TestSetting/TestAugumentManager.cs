@@ -524,7 +524,9 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     [PunRPC]
     private void A210(int PlayerNumber)
     {
-        Debug.Log("미완성");
+        ChangePlayerStatHandler(PlayerNumber);
+        playerstatHandler.MaxRegenCoin += 1;
+        playerstatHandler.RegenHP += 1;
     }
     [PunRPC]
     private void A211(int PlayerNumber)//피해복구 일정확률로 일정 체력 회복
@@ -602,12 +604,9 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     }
     [PunRPC]
     private void A221(int PlayerNumber)
-    {
-        Debug.Log("미완성");
+    {        
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
-        targetPlayer.AddComponent<A0221>();
-        A0221 chargingComponent = targetPlayer.GetComponent<A0221>();
-        //HERE
+        targetPlayer.AddComponent<A0221>();               
     }
     [PunRPC]
     private void A222(int PlayerNumber)//재정비 구르기후 회복

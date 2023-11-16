@@ -12,6 +12,7 @@ public class PlayerStatHandler : MonoBehaviourPun
     public event Action HitEvent;
     public event Action OnDieEvent;
     public event Action OnRegenEvent;
+    public event Action<int> OnRegenCalculateEvent;
     public event Action OnChangeAmmorEvent;
     public event Action OnChangeCurHPEvent;
 
@@ -47,8 +48,24 @@ public class PlayerStatHandler : MonoBehaviourPun
     public bool isNoramlMove;
     public bool isCanSkill;
     public bool isDie;
+    public int RegenHP;
     public int MaxRegenCoin;
-    public int CurRegenCoin;
+    private int curRegenCoin;
+    public int CurRegenCoin
+    {
+        get { return curRegenCoin; }
+        set
+        {
+            if (curRegenCoin != value)
+            {
+                curRegenCoin = value;
+            }
+            if (curRegenCoin == 0)
+            {
+                OnRegenCalculateEvent += RegenHPCalculator;
+            }
+        }
+    }
     public int MaxSkillStack;
     public int CurSkillStack;
 
@@ -206,6 +223,7 @@ public class PlayerStatHandler : MonoBehaviourPun
         CurHP = HP;
         Debug.Log("부활하였습니다. 부활 파티클 추가해야함");
         OnRegenEvent?.Invoke();
+        OnRegenCalculateEvent?.Invoke(RegenHP);
         isDie = false;
     }
 
@@ -236,6 +254,18 @@ public class PlayerStatHandler : MonoBehaviourPun
             isDie = true;
             OnDieEvent?.Invoke();
             this.gameObject.layer = 0;
+        }
+    }
+
+    public void RegenHPCalculator(int calHP = 0)
+    {
+        if (calHP == 0)
+        {
+            return;
+        }
+        else
+        {
+            curHP = calHP;
         }
     }
 }

@@ -524,8 +524,12 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A210(int PlayerNumber)
     {
-        Debug.Log("미완성");
+        ChangePlayerStatHandler(PlayerNumber);
+        playerstatHandler.MaxRegenCoin += 1;
+        playerstatHandler.RegenHP += 1;
     }
+
+    
     [PunRPC]
     private void A211(int PlayerNumber)//피해복구 일정확률로 일정 체력 회복
     {
@@ -604,11 +608,8 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A221(int PlayerNumber)
     {
-        ChangeOnlyPlayer(PlayerNumber);
-        var pv = targetPlayer.GetPhotonView();
-        var controller = targetPlayer.GetComponent<TopDownCharacterController>();
-        //HERE
-        
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        targetPlayer.AddComponent<A0221>();
     }
     [PunRPC]
     private void A222(int PlayerNumber)//재정비 구르기후 회복
