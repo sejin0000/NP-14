@@ -130,7 +130,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.3}
+  m_Size: {x: 0.56, y: 0.3}
   m_EdgeRadius: 0
 --- !u!114 &7691614160748915792
 MonoBehaviour:
@@ -149,6 +149,7 @@ MonoBehaviour:
   BulletSpeed: 20
   IsDamage: 0
   target: 0
+  BulletOwner: 0
 --- !u!50 &-8600854552173727201
 Rigidbody2D:
   serializedVersion: 4
