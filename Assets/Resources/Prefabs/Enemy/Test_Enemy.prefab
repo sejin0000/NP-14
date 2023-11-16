@@ -465,6 +465,7 @@ MonoBehaviour:
   anim: {fileID: 0}
   nav: {fileID: 7302048549800893148}
   navTargetPoint: {x: 0, y: 0, z: 0}
+  PlayersTransform: []
   enemyAim: {fileID: 4931010869674023689}
   enemyBulletPrefab: {fileID: 7691614160748915792, guid: ffaf2c7e3b6a9714398653f89e5593ca, type: 3}
   targetMask:

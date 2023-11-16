@@ -30,13 +30,13 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     public CircleCollider2D collider2D;
     public Animator anim;
 
-    private Collider2D target;
-    public Collider2D Target { get { return target; } 
+    private Transform target;
+    public Transform Target { get { return target; } 
                                set { if (target != value) { OnTargetChaged(value); target = value; } } }//추적 타겟[Palyer]
     //public Collider2D target;
     public NavMeshAgent nav;
     public Vector3 navTargetPoint;              //nav 목적지
-
+    public List<Transform> PlayersTransform;
 
     public GameObject enemyAim;
     public Bullet enemyBulletPrefab;
@@ -77,9 +77,13 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     private float knockbackStartTime;
     public float knockbackDuration = 0.2f;
 
+    private float ViewDistanceThreshold = 0.2f;
+    private float KnockbackRatioThreshold = 0.3f;
+    private float BulletKnockbackDistance = 2.0f;
+
+
     void Awake()
     {
-
         nav = GetComponent<NavMeshAgent>();
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
@@ -111,6 +115,12 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             nav.enabled = false;
         else
             nav.enabled = true;
+
+        //생성할 때, 모든 플레이어 Transform 정보를 담는다.
+        foreach (var _value in TestGameManager.Instance.playerInfoDictionary.Values)
+        {
+            PlayersTransform.Add(_value);
+        }
     }
     void Update()
     {
@@ -122,7 +132,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         }
 
         hostPosition = transform.position;
-
+        
 
         //AI트리의 노드 상태를 매 프레임 마다 얻어옴
         TreeAIState.Tick();
@@ -138,23 +148,15 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
            ChaseView();
         }           
         else
-            NomalView();
+        {
+           NomalView();
+        }
 
 
         // 넉백 중인 경우
         if (isKnockback)
         {
-            // 넉백 시간 비율 계산
-            float knockbackRatio = (Time.time - knockbackStartTime) / knockbackDuration;
-
-            // Lerp를 사용하여 현재 위치를 부드럽게 이동
-            transform.position = Vector2.Lerp(knockbackStartPosition, knockbackTargetPosition, knockbackRatio);
-
-            // 넉백이 끝났는지 확인
-            if (knockbackRatio >= 0.3f)
-            {
-                isKnockback = false;
-            }
+            HandleKnockback();
         }
 
 
@@ -165,18 +167,9 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             SetAnim("isWalk", false);
             SetAnim("isUpWalk", false);
             return;
-        }          
+        }
 
-        if (navTargetPoint.y > transform.position.y)
-        {
-            SetAnim("isUpWalk", true);
-            SetAnim("isWalk", false);
-        }
-        else
-        {
-            SetAnim("isWalk", true);
-            SetAnim("isUpWalk", false);
-        }
+        UpdateAnimation();
     }
 
 
@@ -201,8 +194,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
         if (collision.gameObject.tag == "Bullet" && playerBullet.target == BulletTarget.Enemy && playerBullet.IsDamage)
         {
-            isChase = true;
-
+            isChase = true;            
             //모든 플레이어에게 현재 적의 체력 동기화
             PV.RPC("DecreaseHP", RpcTarget.All, collision.transform.GetComponent<Bullet>().ATK);
 
@@ -210,6 +202,15 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             //여기다 불렛 모시깽이 얻기
             lastAttackPlayer = playerBullet.BulletOwner;
 
+            // 뷰ID를 사용하여 포톤 플레이어 찾기
+            PhotonView photonView = PhotonView.Find(playerBullet.BulletOwner);
+            if (photonView != null)
+            {
+                // 포톤 플레이어의 트랜스폼을 얻기
+                Transform playerTransform = photonView.transform;
+
+                Target = playerTransform;
+            }
 
             //넉백
             Vector2 directionToBullet = (collision.transform.position - transform.position).normalized;
@@ -228,6 +229,17 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             isKnockback = true;
 
             Destroy(collision.gameObject);
+        }
+    }
+
+    private void HandleKnockback()
+    {
+        float knockbackRatio = (Time.time - knockbackStartTime) / knockbackDuration;
+        transform.position = Vector2.Lerp(knockbackStartPosition, knockbackTargetPosition, knockbackRatio);
+
+        if (knockbackRatio >= KnockbackRatioThreshold)
+        {
+            isKnockback = false;
         }
     }
 
@@ -339,7 +351,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         }
 
 
-        Vector2 directionToTarget = (Target.transform.position - transform.position).normalized;
+        Vector2 directionToTarget = (Target.position - transform.position).normalized;
 
 
         Vector2 rightBoundary = Quaternion.Euler(0, 0,-viewAngle * 0.5f) * directionToTarget;
@@ -351,6 +363,46 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         FindPlayer(rightBoundary, leftBoundary);
     }
 
+
+    private void FindPlayer(Vector2 _rightBoundary, Vector2 _leftBoundary)
+    {
+        if (!PhotonNetwork.IsMasterClient || Target != null || isChase)
+            return;
+        //viewDistance > Vector2.Distance(playerTransform.position, transform.position
+
+
+        //Debug.DrawRay(transform.position, middleDirection * viewDistance, Color.green);
+
+
+        //받아온 모든 플레이어 트랜스폼을 받아온다.
+        for (int i = 0; i < PlayersTransform.Count; i++)
+        {
+            if (viewDistance >= Vector2.Distance(PlayersTransform[i].position, transform.position))
+            {
+                //시야각 방향의 직선 Direction
+                Vector2 middleDirection = (_rightBoundary + _leftBoundary).normalized;
+
+                //Enemy와 Player 사이의 방향
+                Vector2 directionToPlayer = (PlayersTransform[i].position - transform.position).normalized;
+
+                float angle = Vector3.Angle(directionToPlayer, middleDirection);
+                if (angle < viewAngle * 0.5f)
+                {
+                    isChase = true;
+                    Target = PlayersTransform[i]; // 시야각 안에 있는 플레이어로 currentTargetPlayer 설정
+                    Debug.DrawRay(transform.position, directionToPlayer * viewDistance, Color.red);
+
+                    Debug.Log($"타겟 수집{Target}");
+                    break;
+                }
+            }
+
+        }
+    }
+
+
+
+    /*
     private void FindPlayer(Vector2 _rightBoundary, Vector2 _leftBoundary)
     {
         if (PhotonNetwork.IsMasterClient && Target == null)
@@ -388,9 +440,9 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             }
         }
     }
-
+    */
     //#####타겟 관련######
-    private void OnTargetChaged(Collider2D _target)
+    private void OnTargetChaged(Transform _target)
     {
         //마스터 클라이언트가 몬스터를 소환하고, 해당 몬스터들이
         if(PhotonNetwork.IsMasterClient)
@@ -410,7 +462,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     private void SendTarget(int viewID)
     {
         PhotonView targetPV = PhotonView.Find(viewID);
-        Target = targetPV.gameObject.GetComponent<Collider2D>();
+        Target = targetPV.transform;
     }
 
     [PunRPC]
@@ -430,6 +482,19 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     //#####플레이어 애니메이션 관련######
     #region player애니메이션 관련    
 
+    private void UpdateAnimation()
+    {
+        if (navTargetPoint.y > transform.position.y)
+        {
+            SetAnim("isUpWalk", true);
+            SetAnim("isWalk", false);
+        }
+        else
+        {
+            SetAnim("isWalk", true);
+            SetAnim("isUpWalk", false);
+        }
+    }
     private void SetAnim(string animName, bool set)
     {
         if (PV.IsMine == false)
@@ -463,15 +528,16 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             nav.SetDestination(navTargetPoint);
         }
 
-        if (navTargetPoint.x <= transform.position.x)
+        if (navTargetPoint.x < transform.position.x)
         {
             spriteRenderer.flipX = true;
         }
-            
-        else
+        else if (navTargetPoint.x > transform.position.x)
         {
             spriteRenderer.flipX = false;
         }
+        else
+            return;
             
         //MoveToHostPosition();
     }
