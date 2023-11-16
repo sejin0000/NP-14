@@ -56,7 +56,7 @@ public class Bullet1 : MonoBehaviour
 
     public void DirectionSetting(Vector2 direction, float bulletSpeed, float TotalDamege, float bulletTime,TopDownCharacterController Controller) //
     {//받는게 너무 많은거 같은데 플레이어 받는게 좋을지도
-        _direction = direction;
+        _direction = Vector2.right;
         _currentDuration = 0;
         transform.right = _direction; //3d에서의 포워드 즉 앞 ==총알이날라가는방향
         MoveSpeed = bulletSpeed;
@@ -91,10 +91,6 @@ public class Bullet1 : MonoBehaviour
                 Vector3 income = _direction; // 입사벡터
                 Vector3 normal = collision.contacts[0].normal; // 법선벡터
                 _direction = Vector3.Reflect(income, normal).normalized; // 반사벡터
-            }
-            else
-            {
-                gameObject.SetActive(false);//or 디스트로이
             }
         }
     }

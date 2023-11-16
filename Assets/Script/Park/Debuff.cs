@@ -37,15 +37,14 @@ public class Debuff : MonoBehaviourPun
             yield return endtime;
         }
     }
-    public static void GiveIce(GameObject gameObject, float totalpower)
+    public static void GiveIce(GameObject gameObject)
     {
-        float power = totalpower * 0.2f;
 
         if (gameObject.tag == "Enemy")
         {
             PhotonView pv = gameObject.GetComponent<PhotonView>();
             int viewID = pv.ViewID;
-            pv.RPC("IceGive", RpcTarget.All, power, viewID);
+            pv.RPC("IceGive", RpcTarget.All, viewID);
         }
     }
 

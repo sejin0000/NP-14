@@ -456,9 +456,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A127(int PlayerNumber)
+    private void A127(int PlayerNumber)//재생력 코루틴 돌리기
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0127>();
     }
     [PunRPC]
     private void A128(int PlayerNumber)//프렌드 실드 현재 속도 140
@@ -716,7 +717,6 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         playerInput.actions.FindAction("Skill").Disable();
         playerstatHandler.isCanSkill = false;
         playerstatHandler.ATK.coefficient *= 1.5f;
-
     }
     [PunRPC]
     private void A1106(int PlayerNumber)
