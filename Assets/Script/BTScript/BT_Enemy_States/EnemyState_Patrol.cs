@@ -20,9 +20,6 @@ using Photon.Pun;
         float destinationX = 0f;
         float destinationY = 0f;
 
-        float beforDestinationX = 0f;
-        float beforDestinationY = 0f;
-
     public EnemyState_Patrol(GameObject _owner)
     {
         owner = _owner;
@@ -42,7 +39,6 @@ using Photon.Pun;
     public override void Initialize()
     {
         SetStateColor();
-        enemyAI.Target = null;
 
         if (enemyAI.nav != null)
         {
@@ -89,9 +85,6 @@ using Photon.Pun;
         //애니메이션 초기화
         //anim.SetBool("isRun", false); //anim.SetBool("Running", isRunning);
 
-        beforDestinationX = destinationX;
-        beforDestinationY = destinationY;
-
 
 
         destinationX = Random.Range(-6f, 6f);
@@ -105,7 +98,8 @@ using Photon.Pun;
 
 
         //★★★수정함
-        enemyAI.Filp(beforDestinationX, destinationX);
+        //enemyAI.PV.RPC("Filp", RpcTarget.All);
+        //enemyAI.Filp(beforDestinationX, destinationX);
     }
 
 

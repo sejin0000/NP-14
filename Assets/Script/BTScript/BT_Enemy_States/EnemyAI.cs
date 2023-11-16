@@ -6,6 +6,8 @@ using myBehaviourTree;
 using Photon.Pun;
 using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
+using TMPro;
+using Unity.Mathematics;
 
 //[Root 노드] => 왜 액션과 다르게 상속 안받음?
 //==>특정 AI 동작과 상태에 맞게 유연하게 조정하기 위해서
@@ -42,13 +44,11 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
     public LayerMask targetMask;             // 타겟 레이어(Player)
 
-    public float currentMoveSpeed;           // 현재 이동속도
     public float SpeedCoefficient = 1f;      // 이동속도 계수
    
     public bool isLive;
     public bool isChase;
     public bool isAttaking;
-    public bool isFilp;
 
 
     //게임매니저에서(어디든) 관리하는 플레이어들 정보를 요청해서 사용
@@ -60,8 +60,19 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField]
     private Image images_Gauge;              //몬스터 UI : Status
 
-    
-    public PhotonView PV;                    //동기화
+
+    //동기화
+    public PhotonView PV;                    
+    private Vector3 hostPosition;
+    public float lerpSpeed = 10f; // 보간시 필요한 수치(조정 필요)
+
+
+    //넉백
+    private bool isKnockback = false;
+    private Vector2 knockbackStartPosition;
+    private Vector2 knockbackTargetPosition;
+    private float knockbackStartTime;
+    public float knockbackDuration = 0.2f;
 
     void Awake()
     {
@@ -87,24 +98,42 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
         nowEnemyPosition = this.gameObject.transform.position;
 
-        currentMoveSpeed = enemySO.enemyMoveSpeed;
 
-        nav.speed = currentMoveSpeed;
+        nav.speed = enemySO.enemyMoveSpeed;
         navTargetPoint = transform.position;
+
+
+        //호스트만 nav활성화 하도록 설정
+        if (!PhotonNetwork.IsMasterClient)
+            nav.enabled = false;
+        else
+            nav.enabled = true;
     }
     void Update()
     {
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            //$추가됨 : 동기화된 위치에 대한 보간 처리
+            transform.position = Vector3.Lerp(transform.position, hostPosition, Time.deltaTime * lerpSpeed);
+            return;
+        }
+
+        hostPosition = transform.position;
+
+
         //AI트리의 노드 상태를 매 프레임 마다 얻어옴
-        TreeAIState.Tick();       
+        TreeAIState.Tick();
 
         if (!isLive)
             return;
 
         IsNavAbled();
 
-
         if (isAttaking || isChase)
-            ChaseView();
+        {
+           //PV.RPC("Filp", RpcTarget.All);
+           ChaseView();
+        }           
         else
             NomalView();
 
@@ -145,11 +174,15 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
-    private bool isKnockback = false;
-    private Vector2 knockbackStartPosition;
-    private Vector2 knockbackTargetPosition;
-    private float knockbackStartTime;
-    public float knockbackDuration = 0.2f;
+
+    //#####Enemy 이동 속도변경 관련######
+    public void ChangeSpeed(float statSpeed)
+    {
+        nav.speed = statSpeed * SpeedCoefficient;
+    }
+
+
+    //#####Enemy 피격, 사망, 넉백 관련######
 
     //★맞음 & 죽음
     private void OnTriggerEnter2D(Collider2D collision)
@@ -166,7 +199,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             isChase = true;
 
             //모든 플레이어에게 현재 적의 체력 동기화
-            PV.RPC("DecreaseHP", RpcTarget.AllBuffered, collision.transform.GetComponent<Bullet>().ATK);
+            PV.RPC("DecreaseHP", RpcTarget.All, collision.transform.GetComponent<Bullet>().ATK);
 
 
             //넉백
@@ -188,13 +221,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             Destroy(collision.gameObject);
         }
     }
-
-    public void ChangeSpeed(float statSpeed)
-    {
-        nav.speed = statSpeed * SpeedCoefficient;
-    }
-
-
 
     private void GaugeUpdate()
     {
@@ -229,8 +255,9 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         Destroy(gameObject);
     }
 
+    //#####공격 관련######
     [PunRPC]
-    public void Shoot()
+    public void Fire()
     {
         var _bullet = Instantiate(enemyBulletPrefab, enemyAim.transform.position, enemyAim.transform.rotation);
 
@@ -256,6 +283,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         //수정 : gameObject 에서 Bullet으로 ->변수 형태와 용도를 통일함            
     }
 
+
+    //#####시야각(타겟 서치) 관련######
     private Vector2 BoundaryAngle(float angle)
     {
         // 현재 오브젝트의 회전값을 고려하여 방향 벡터를 계산
@@ -268,14 +297,12 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     }
 
 
-    //플레이어 탐지★ 여기서 추적시&공격시 시야각도 지정하자
-
     private void NomalView()
     {
         Vector2 rightBoundary = BoundaryAngle(-viewAngle * 0.5f);
         Vector2 leftBoundary = BoundaryAngle(viewAngle * 0.5f);
 
-        // 스프라이트 랜더러가 flipX 상태이면 레이 방향을 반대로 설정
+        // 스프라이트 랜더러 flipX 상태에 따라 레이 방향을 반대로 설정
         if (spriteRenderer.flipX)
         {
             rightBoundary = -rightBoundary;
@@ -349,6 +376,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
+    //#####타겟 관련######
     private void OnTargetChaged(Collider2D _target)
     {
         //마스터 클라이언트가 몬스터를 소환하고, 해당 몬스터들이
@@ -364,6 +392,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
+   
     [PunRPC]
     private void SendTarget(int viewID)
     {
@@ -385,22 +414,26 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
 
 
-    //이거 동기화
-    public void Filp(float myX, float otherX)
+    //#####플레이어 애니메이션 관련######
+    
+    /*
+    private void SetAnim(string animName, bool set)
     {
-        if (!PhotonNetwork.IsMasterClient)
+        if (PV.IsMine == false)
             return;
 
-        if (otherX < myX)
-        {
-            isFilp = true;
-        }
-        else
-        {
-            isFilp = false;
-        }
+        anim.SetBool(animName, set);
+        PV.RPC(nameof(SyncAnimation), RpcTarget.All, animName, set);
     }
 
+    public void SyncAnimation(string animName, bool set)
+    {
+        anim.SetBool(animName, set);
+    }
+    */
+
+
+    //#####NAV관련######
     public void DestinationSet()
     {
         if (!isAttaking || isLive)
@@ -408,10 +441,17 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             nav.SetDestination(navTargetPoint);
         }
 
-        if (isFilp)
+        if (navTargetPoint.x <= transform.position.x)
+        {
             spriteRenderer.flipX = true;
+        }
+            
         else
+        {
             spriteRenderer.flipX = false;
+        }
+            
+        //MoveToHostPosition();
     }
 
     public bool IsNavAbled()
@@ -429,7 +469,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     }
 
 
-    //행동 트리 실제 생성
+    //#####BT######
     void CreateTreeAIState()
     {
         //초기화&루트 노드로 설정
@@ -487,24 +527,33 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         TreeAIState.AddChild(BTMainSelector);
     }
 
+
+    private void MoveToHostPosition()
+    {
+        // 현재 위치에서 네트워크로부터 받은 목표 위치로 부드럽게 이동
+        transform.position = Vector3.Lerp(transform.position, navTargetPoint, Time.deltaTime * lerpSpeed);
+    }
     
+
+    //#####동기화######
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
             // 데이터를 전송
-            stream.SendNext(navTargetPoint);
-            stream.SendNext(isFilp);
-            //stream.SendNext(target.gameObject.transform.position);
-            //Debug.Log($"뿌려주는 타겟 포지션 {target.gameObject.transform.position}");
+            stream.SendNext(hostPosition);
+            //stream.SendNext(navTargetPoint);
+            stream.SendNext(spriteRenderer.flipX); // 이게 맞나?
+            stream.SendNext(enemyAim.transform.rotation);
+
         }
         else if (stream.IsReading)
         {
             // 데이터를 수신
-            navTargetPoint = (Vector3)stream.ReceiveNext();
-            isFilp = (bool)stream.ReceiveNext();
-            //target.gameObject.transform.position = (Vector3)stream.ReceiveNext();
-            //Debug.Log($"받는 타겟 포지션 {target.gameObject.transform.position}");
+            hostPosition = (Vector3)stream.ReceiveNext();
+            //navTargetPoint = (Vector3)stream.ReceiveNext();
+            spriteRenderer.flipX = (bool)stream.ReceiveNext();
+            enemyAim.transform.rotation = (Quaternion)stream.ReceiveNext();
         }   
     }
  
