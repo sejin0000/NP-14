@@ -116,6 +116,8 @@ public class TopDownCharacterController : MonoBehaviour
         if (playerStatHandler.CanRoll)
         {
             OnRollEvent?.Invoke();
+            playerStatHandler.CurRollStack -= 1;
+            Debug.Log($"구르기 스택 까임 : {playerStatHandler.CurRollStack} 남음");            
             playerStatHandler.CanRoll = false;
             playerStatHandler.Invincibility = true;
             Invoke("CallEndRollEvent", 0.6f);
@@ -128,7 +130,8 @@ public class TopDownCharacterController : MonoBehaviour
     public void CallEndRollEvent()
     {
         Debug.Log("구르기 끝 이벤트");
-
+        playerStatHandler.CanRoll = true;
+        playerStatHandler.Invincibility = false;
         OnEndRollEvent?.Invoke();
     }
 

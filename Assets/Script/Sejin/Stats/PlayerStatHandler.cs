@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.U2D.Animation;
 
@@ -69,6 +70,9 @@ public class PlayerStatHandler : MonoBehaviourPun
     public int MaxSkillStack;
     public int CurSkillStack;
 
+    public int MaxRollStack;
+    public int CurRollStack;
+
     private float curHP;
     [HideInInspector]
     public float CurHP
@@ -118,6 +122,7 @@ public class PlayerStatHandler : MonoBehaviourPun
     [HideInInspector] public bool Invincibility;                          //무적
 
     public bool useSkill;
+    public bool UseRoll;
 
     int viewID;
     [HideInInspector] public bool IsChargeAttack;
@@ -149,12 +154,15 @@ public class PlayerStatHandler : MonoBehaviourPun
         CanReload = true;
         CanSkill = true;
         CanRoll = true;
+        UseRoll = true;
         Invincibility = false;
 
         isNoramlMove = true;
         isCanSkill=true;
         MaxSkillStack = 1;
         CurSkillStack = MaxSkillStack;
+        MaxRollStack = 1;
+        CurRollStack = MaxRollStack;
 
         PlayerSpriteCase = _PlayerSprite.GetComponent<SpriteLibrary>();
         WeaponSpriteCase = _WeaponSprite.GetComponent<SpriteLibrary>();
@@ -224,6 +232,7 @@ public class PlayerStatHandler : MonoBehaviourPun
         Debug.Log("부활하였습니다. 부활 파티클 추가해야함");
         OnRegenEvent?.Invoke();
         OnRegenCalculateEvent?.Invoke(RegenHP);
+        GetComponent<PlayerInput>().actions.FindAction("Move2").Disable();
         isDie = false;
     }
 

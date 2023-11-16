@@ -46,7 +46,11 @@ public class CoolTimeController : MonoBehaviour
         {
             curRollCool -= Time.deltaTime;
         }
-        if (controller.playerStatHandler.CanRoll == false && curRollCool <= 0)
+        if (
+            curRollCool <= 0 
+            && controller.playerStatHandler.UseRoll == false
+            && (controller.playerStatHandler.CurRollStack < controller.playerStatHandler.MaxRollStack || controller.playerStatHandler.CanRoll == false)
+            )
         {
             EndRollCoolTime();
         }
@@ -92,16 +96,30 @@ public class CoolTimeController : MonoBehaviour
 
     private void RollCoolTime()
     {
-        float coolTime = controller.playerStatHandler.RollCoolTime.total;
-        controller.playerStatHandler.CanRoll = false;
+        float coolTime = controller.playerStatHandler.RollCoolTime.total;        
+        if (controller.playerStatHandler.CurRollStack > 0)
+        {
+            controller.playerStatHandler.CanRoll = true;
+        }
+        else
+        {
+            controller.playerStatHandler.CanRoll = false;
+        }
         controller.playerStatHandler.Invincibility = true;
         curRollCool = coolTime;
+        controller.playerStatHandler.UseRoll = false;
     }
     private void EndRollCoolTime()
     {
         Debug.Log("구르기 쿨타임 종료 이벤트");
+        controller.playerStatHandler.CurRollStack += 1;
         controller.playerStatHandler.CanRoll = true;
+        controller.playerStatHandler.UseRoll = true;
         controller.playerStatHandler.Invincibility = false;
+        if (controller.playerStatHandler.CurRollStack < controller.playerStatHandler.MaxRollStack)
+        {
+            SkillCoolTime();
+        }
     }
 
 

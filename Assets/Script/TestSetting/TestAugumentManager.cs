@@ -418,7 +418,9 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     [PunRPC]
     private void A121(int PlayerNumber)
     {
-        Debug.Log("미완성");
+        ChangePlayerStatHandler(PlayerNumber);
+        playerstatHandler.MaxRollStack += 1;
+        playerstatHandler.CurRollStack += 1;
     }
     [PunRPC]
     private void A122(int PlayerNumber)//화다닥 120의 불버전//122없음
@@ -526,6 +528,7 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.MaxRegenCoin += 1;
+        playerstatHandler.CurRegenCoin += 1;
         playerstatHandler.RegenHP += 1;
     }
     [PunRPC]
@@ -618,8 +621,7 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     private void A223(int PlayerNumber)
     {
         ChangePlayerStatHandler(PlayerNumber);
-        playerstatHandler.MaxSkillStack += 1;
-        Debug.Log("스킬 스택 추가");
+        playerstatHandler.MaxSkillStack += 1;        
         playerstatHandler.CurSkillStack += 1;
     }
     #endregion
@@ -667,6 +669,8 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.MaxRegenCoin += 1;
+        playerstatHandler.CurRegenCoin += 1;
+        Debug.Log($"현재 코인 : {playerstatHandler.MaxRegenCoin}");
         playerstatHandler.HP.coefficient *= 0.5f;
     }
     [PunRPC]
