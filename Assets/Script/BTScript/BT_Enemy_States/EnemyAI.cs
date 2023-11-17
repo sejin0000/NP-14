@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
 using TMPro;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 
 //[Root 노드] => 왜 액션과 다르게 상속 안받음?
 //==>특정 AI 동작과 상태에 맞게 유연하게 조정하기 위해서
@@ -19,6 +20,9 @@ using Unity.Mathematics;
 public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 {
     private BTRoot TreeAIState;
+
+    public bool CanFire;
+    public bool CanIce;
 
     public float currentHP;                  // 현재 체력 계산
     public float viewAngle;                  // 시야각 (기본120도)
@@ -100,6 +104,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         collider2D = GetComponent<CircleCollider2D>();
         PV = GetComponent<PhotonView>();
+        CanIce = true;
+        CanFire = true;
 
         //게임 오브젝트 활성화 시, 행동 트리 생성
         CreateTreeAIState();
@@ -219,6 +225,10 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             if (playerBullet.water)
             {
                 Debuff.GiveIce(this.gameObject);
+            }
+            if (playerBullet.ice) 
+            {
+                
             }
             if (playerBullet.burn)
             {

@@ -19,6 +19,7 @@ public class PlayerStatHandler : MonoBehaviourPun
     public event Action MoveStartEvent;
     public event Action MoveEndEvent;
     public event Action EnemyHitEvent;
+    public event Action KillCatchEvent;
     public event Action<float> GetDamege;
 
 
@@ -57,6 +58,8 @@ public class PlayerStatHandler : MonoBehaviourPun
     public int RegenHP;
     public int MaxRegenCoin;
     private int curRegenCoin;
+    private int kill;
+    [HideInInspector] public bool CanSpeedBuff;
     public int CurRegenCoin
     {
         get { return curRegenCoin; }
@@ -106,7 +109,7 @@ public class PlayerStatHandler : MonoBehaviourPun
                 Debug.Log($"HPHPHPHPHPHHP  {CurHP}");
             }
         }
-    }               //����   ü��
+    }
 
     [SerializeField] private float curAmmo;
     //[HideInInspector]
@@ -165,12 +168,14 @@ public class PlayerStatHandler : MonoBehaviourPun
         CanRoll = true;
         UseRoll = true;
         Invincibility = false;
+        CanSpeedBuff = true;
 
         isNoramlMove = true;
         isCanSkill=true;
         isCanAtk = true;
         evasionPersent = 0;
 
+        kill = 0;
         MaxSkillStack = 1;
         CurSkillStack = MaxSkillStack;
         MaxRollStack = 1;
@@ -247,7 +252,6 @@ public class PlayerStatHandler : MonoBehaviourPun
     public void Regen(float HP)
     {
         CurHP = HP;
-        Debug.Log("��Ȱ�Ͽ����ϴ�. ��Ȱ ��ƼŬ �߰��ؾ���");
         OnRegenEvent?.Invoke();
         OnRegenCalculateEvent?.Invoke(RegenHP);
         GetComponent<PlayerInput>().actions.FindAction("Move2").Disable();
@@ -295,6 +299,14 @@ public class PlayerStatHandler : MonoBehaviourPun
     public void EnemyHitCall() 
     {
         EnemyHitEvent?.Invoke();
+    }
+    public void KillEvent()
+    {
+        if (photonView.IsMine) 
+        {
+            kill++;
+            KillCatchEvent?.Invoke();
+        }
     }
     public void RegenHPCalculator(int calHP = 0)
     {

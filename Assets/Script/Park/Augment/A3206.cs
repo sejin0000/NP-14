@@ -28,7 +28,7 @@ public class A3206 : MonoBehaviourPun // 공병 생성형
         Vector2 player =  transform.position;
         Vector2 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        Vector2 dir = (mouse - player) * 0.3f;
+        Vector2 dir = (mouse - player).normalized * 2.5f;
 
         //Vector2 spawnPosition = new Vector2(mouse.y - player.y + 2.5f, mouse.x - player.x +2.5f);
         float angle = Mathf.Atan2(mouse.y - player.y, mouse.x - player.x) * Mathf.Rad2Deg;

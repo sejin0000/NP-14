@@ -278,9 +278,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         playerstatHandler.ATK.added += up * 0.5f;
     }
     [PunRPC]
-    private void A106(int PlayerNumber)
+    private void A106(int PlayerNumber)//처치시 영구적 공증
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0106>();
     }
     [PunRPC]
     private void A107(int PlayerNumber)//알맞은 타이밍 //가만히 있는 시간에 비례하여 공업
