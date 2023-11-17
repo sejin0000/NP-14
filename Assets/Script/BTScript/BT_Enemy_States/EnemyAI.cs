@@ -349,7 +349,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         _bullet.ATK = enemySO.atk;
         _bullet.BulletLifeTime = enemySO.bulletLifeTime;
         _bullet.BulletSpeed = enemySO.bulletSpeed;
-        _bullet.target = BulletTarget.Player;
+        _bullet.targets.Add(BulletTarget.Player);
 
         /*
         //수정 : gameObject 에서 Bullet으로 ->변수 형태와 용도를 통일함

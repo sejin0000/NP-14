@@ -19,17 +19,19 @@ public class Player3Skill : Skill
     public override void SkillStart()
     {
         //base.SkillStart();
-        if (_weaponSystem.target == BulletTarget.Enemy)
+        if (_weaponSystem.targets.Contains(BulletTarget.Enemy))
         {
             Debug.Log("힐 모드 전환");
-            _weaponSystem.target = BulletTarget.Player;
+            _weaponSystem.targets.Remove(BulletTarget.Enemy);
+            _weaponSystem.targets.Add(BulletTarget.Player);
             _weaponSystem.isDamage = false;
         }
-        else if (_weaponSystem.target == BulletTarget.Player)
+        else if (_weaponSystem.targets.Contains( BulletTarget.Player))
         {
             Debug.Log("딜 모드 전환");
 
-            _weaponSystem.target = BulletTarget.Enemy;
+            _weaponSystem.targets.Remove(BulletTarget.Player);
+            _weaponSystem.targets.Add(BulletTarget.Enemy);
             _weaponSystem.isDamage = true;
         }
         SkillEnd();

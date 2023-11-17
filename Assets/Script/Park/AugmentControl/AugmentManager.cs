@@ -443,8 +443,16 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         playerstatHandler.ATK.coefficient *= 1.3f;
         WeaponSystem a = targetPlayer.GetComponent<WeaponSystem>();
-        a.target = BulletTarget.All;
-
+        targetPlayer.GetPhotonView().Owner.CustomProperties.TryGetValue("Char_Class", out object classNum);
+        if ((int)classNum != 2)
+        {
+            a.targets.Add(BulletTarget.Player);
+        }
+        else
+        {
+            playerstatHandler.ATK.coefficient *= 1.1f;
+            // 일단 무덤 : 업적 느낌으로 UI로 띄워주면 좋을 것 같은데,,,? : 도현님이 비명을 지르시겠지?
+        }
     }
     //테스트 완료 그러나 이벤트로 작동하여 추가 테스트가 필요
     [PunRPC]
