@@ -23,12 +23,7 @@ public class A0126 : MonoBehaviourPun
             Debug.Log("몬스터와 충돌중");
             var collObject = coll.transform.parent;
             var collEnemy = collObject.GetComponent<EnemyAI>();
-            collObject.GetComponent<PhotonView>().RPC("DecreaseHP", RpcTarget.All, GetComponent<PlayerStatHandler>().ATK.total);
-            collEnemy.knockbackStartPosition = collObject.transform.position;
-            Vector2 knockbackVector = ((gameObject.transform.position - collObject.transform.position).normalized * 3f);
-            collEnemy.knockbackTargetPosition = collEnemy.knockbackStartPosition - knockbackVector;
-            collEnemy.knockbackStartTime = Time.time;
-            collEnemy.isKnockback = true;
+            collEnemy.knockbackDistance = 3f;
         }
     }
 }

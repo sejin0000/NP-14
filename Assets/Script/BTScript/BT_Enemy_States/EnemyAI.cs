@@ -81,13 +81,12 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     public float knockbackStartTime;
     public float knockbackDuration = 0.2f;
 
-    //
-    public float ViewDistanceThreshold = 0.2f; //?
+    public float ViewDistanceThreshold = 0.2f; 
     public float KnockbackLimitTime = 0.3f;
 
 
-    //각 객체별 넉백 거리
-    public float BulletKnockbackDistance = 2.0f;
+    //객체별 넉백거리
+    public float knockbackDistance;
 
 
     void Awake()
@@ -112,7 +111,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         //쫓는 플레이어도 호스트가 판별?
 
         nowEnemyPosition = this.gameObject.transform.position;
-
+        knockbackDistance = 0f;
 
         nav.speed = enemySO.enemyMoveSpeed;
         navTargetPoint = transform.position;
@@ -204,6 +203,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             //모든 플레이어에게 현재 적의 체력 동기화
             PV.RPC("DecreaseHP", RpcTarget.All, collision.transform.GetComponent<Bullet>().ATK);
 
+            float BulletknockbackDistance = 2.0f;
+
 
             //여기다 불렛 모시깽이 얻기
             lastAttackPlayer = playerBullet.BulletOwner;
@@ -220,12 +221,9 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             //넉백(충돌 대상과&Enemy 방향 정규화)
             Vector2 directionToBullet = (collision.transform.position - transform.position).normalized;
 
-            // 넉백을 위한 거리 조절
-            float knockbackDistance = 2.0f;
-
             // 넉백 시작 위치와 목표 위치 계산
             knockbackStartPosition = transform.position;
-            knockbackTargetPosition = knockbackStartPosition - directionToBullet * knockbackDistance;
+            knockbackTargetPosition = knockbackStartPosition - directionToBullet * BulletknockbackDistance;
 
             // 넉백 시작 시간 저장
             knockbackStartTime = Time.time;
@@ -235,6 +233,30 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
             Destroy(collision.gameObject);
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (knockbackDistance == 0 || collision.gameObject.tag != "player")
+            return;
+
+        //TODO : 계수 수정 - 0.15f
+        PV.RPC("DecreaseHP", RpcTarget.All, collision.transform.GetComponent<PlayerStatHandler>().HP.total * 0.15f);
+
+        Transform PlayersTransform = collision.gameObject.transform;
+
+        //넉백(충돌 대상과&Enemy 방향 정규화)
+        Vector2 directionToPlayer = (collision.transform.position - transform.position).normalized;
+
+        // 넉백 시작 위치와 목표 위치 계산
+        knockbackStartPosition = transform.position;
+        knockbackTargetPosition = knockbackStartPosition - directionToPlayer;
+
+        // 넉백 시작 시간 저장
+        knockbackStartTime = Time.time;
+
+        // 업데이트 넉백 실행
+        isKnockback = true;
     }
     private void HandleKnockback()
     {
