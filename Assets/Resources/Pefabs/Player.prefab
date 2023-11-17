@@ -594,16 +594,21 @@ MonoBehaviour:
   isNoramlMove: 0
   isCanSkill: 0
   isDie: 0
+  RegenHP: 0
   MaxRegenCoin: 0
-  CurRegenCoin: 0
   MaxSkillStack: 0
   CurSkillStack: 0
+  MaxRollStack: 0
+  CurRollStack: 0
+  curAmmo: 0
   CanFire: 0
   CanReload: 0
   CanSkill: 0
   CanRoll: 0
   Invincibility: 0
   useSkill: 0
+  UseRoll: 0
+  IsChargeAttack: 0
 --- !u!114 &7295784485177987548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -645,6 +650,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerStatHandler: {fileID: 3012830528697824806}
   topDownMovement: {fileID: 8906668803129869717}
+  coolTimeController: {fileID: 0}
   playerInput: {fileID: 0}
   atkPercent: 0
 --- !u!114 &8906668803129869717
@@ -691,6 +697,9 @@ MonoBehaviour:
   curReloadCool: 0
   curAttackCool: 0
   curSkillCool: 0
+  stackedTime: 0
+  isKeepCount: 0
+  bulletNum: 0
 --- !u!114 &7401487861401087207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -721,6 +730,7 @@ MonoBehaviour:
   target: 0
   isDamage: 0
   _viewID: 0
+  bulletNum: 0
 --- !u!114 &3736999086756257612
 MonoBehaviour:
   m_ObjectHideFlags: 0
