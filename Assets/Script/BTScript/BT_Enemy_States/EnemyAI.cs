@@ -51,6 +51,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     public bool isLive;
     public bool isChase;
     public bool isAttaking;
+    public bool isGroggy;
 
     //플레이어 정보
 
@@ -366,6 +367,18 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
         //수정 : gameObject 에서 Bullet으로 ->변수 형태와 용도를 통일함      
     }
+
+    //상태이상
+    [PunRPC]
+    public void Groggy()
+    {
+        //행동 제한(이거 총알 맞는 부분에 넣으셈)
+        isGroggy = true;
+        nav.isStopped = false;
+
+        //동기화 해야할 부분
+        //기절에 관한animSet이나 기타 파티클, 효과 등등...
+    }
     #endregion
 
     #region 시야각(타겟 서치) 관련
@@ -594,6 +607,12 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         EnemyState_Dead state_Dead = new EnemyState_Dead(gameObject);
         BTDead.AddChild(state_Dead);
 
+        //상태이상 체크 [스턴....]
+        BTSquence BTAbnormal = new BTSquence();
+        EnemyState_GroggyCondition groggyConditon = new EnemyState_GroggyCondition(gameObject);
+        BTAbnormal.AddChild(groggyConditon);
+
+        BTMainSelector.AddChild(BTAbnormal);
 
         //추적+공격
         //컨디션 체크 -> 플레이어 추적 & 플레이어가 공격 범위 내 -> 공격(성공 반환 후 최초로)
@@ -626,6 +645,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         //메인 셀렉터 : Squence를 Selector의 자식으로 추가(자식 순서 중요함) 
 
         BTMainSelector.AddChild(BTDead);
+        BTMainSelector.AddChild(BTAbnormal);
         BTMainSelector.AddChild(BTChase);
         BTMainSelector.AddChild(BTPatrol);
 
