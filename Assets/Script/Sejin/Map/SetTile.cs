@@ -64,7 +64,6 @@ public class SetTile : MonoBehaviour
             startPos.x -= (int)direction.x;
             startPos.y -= (int)direction.y;
         }
-            Debug.Log("길 만들기");
     }
 
     public void SetLineTile(Tilemap tilemap, RuleTile tile, Vector2Int startPos, int length, Vector2 direction, Vector2 Startpos)
@@ -75,6 +74,5 @@ public class SetTile : MonoBehaviour
             startPos.x -= (int)direction.x;
             startPos.y -= (int)direction.y;
         }
-        Debug.Log("길 만들기");
     }
 }
