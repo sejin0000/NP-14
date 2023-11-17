@@ -20,7 +20,7 @@ public class TestGameManager : MonoBehaviourPun
     [Header("ClientPlayer")]
     public GameObject InstantiatedPlayer;
     [SerializeField] private bool isPlayerInstantiated;
-    public Dictionary<int, GameObject> playerInfoDictionary;
+    public Dictionary<int, Transform> playerInfoDictionary;
 
     [Header("PlayerData")]
     public PlayerDataSetting characterSetting;
@@ -50,7 +50,7 @@ public class TestGameManager : MonoBehaviourPun
 
     private void Awake()
     {
-        playerInfoDictionary = new Dictionary<int, GameObject>();
+        playerInfoDictionary = new Dictionary<int, Transform>();
         isPlayerInstantiated = false;
         if (!isPlayerInstantiated)
         {
@@ -91,7 +91,7 @@ public class TestGameManager : MonoBehaviourPun
 
         // 플레이어 데이터 추가
         int viewID = characterSetting.viewID;
-        playerInfoDictionary.Add(viewID, InstantiatedPlayer);
+        playerInfoDictionary.Add(viewID, InstantiatedPlayer.transform);
         GameObject sendingPlayer = InstantiatedPlayer;
         photonView.RPC("SendPlayerInfo", RpcTarget.Others, viewID);
 
@@ -103,7 +103,7 @@ public class TestGameManager : MonoBehaviourPun
     public void SendPlayerInfo(int viewID)
     {
         GameObject clientPlayer = PhotonView.Find(viewID).gameObject;
-        playerInfoDictionary.Add(viewID, clientPlayer);
+        playerInfoDictionary.Add(viewID, clientPlayer.transform);
         Debug.Log($"{playerInfoDictionary.Count}개가 딕셔너리에 등록됨");
         int cnt = 0;
         foreach (var key in playerInfoDictionary.Keys)

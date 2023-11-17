@@ -9,81 +9,95 @@ using static UnityEngine.Rendering.DebugUI;
 using TMPro;
 using Unity.Mathematics;
 
-//[Root ³ëµå] => ¿Ö ¾×¼Ç°ú ´Ù¸£°Ô »ó¼Ó ¾È¹ÞÀ½?
-//==>Æ¯Á¤ AI µ¿ÀÛ°ú »óÅÂ¿¡ ¸Â°Ô À¯¿¬ÇÏ°Ô Á¶Á¤ÇÏ±â À§ÇØ¼­
-//´ë½Å BTRoot °´Ã¼¸¦ »ý¼ºÇÏ°í, ±× ¾Æ·¡¿¡ º¹ÇÕ ³ëµå¿Í ¾×¼Ç ³ëµå¸¦ Ãß°¡ÇØ¼­ Æ®¸®¸¦ ±¸¼ºÇÔ
-//EnemyAI : AIÀÇ »óÅÂ¿Í µ¿ÀÛÀÇ ±¸Á¶¸¦ Á¤ÀÇÇÏ°í, ½ÃÀÛÇÔ
+//[Root ï¿½ï¿½ï¿½] => ï¿½ï¿½ ï¿½×¼Ç°ï¿½ ï¿½Ù¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½È¹ï¿½ï¿½ï¿½?
+//==>Æ¯ï¿½ï¿½ AI ï¿½ï¿½ï¿½Û°ï¿½ ï¿½ï¿½ï¿½Â¿ï¿½ ï¿½Â°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½
+//ï¿½ï¿½ï¿½ BTRoot ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½, ï¿½ï¿½ ï¿½Æ·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½×¼ï¿½ ï¿½ï¿½å¸¦ ï¿½ß°ï¿½ï¿½Ø¼ï¿½ Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//EnemyAI : AIï¿½ï¿½ ï¿½ï¿½ï¿½Â¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 
-//Enemy¿¡ ÇÊ¿äÇÑ ÄÄÆ÷³ÍÆ®µé + ±âÅ¸ ¿ä¼Òµé ¿©±â¿¡ ´Ù Ãß°¡
+//Enemyï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ + ï¿½ï¿½Å¸ ï¿½ï¿½Òµï¿½ ï¿½ï¿½ï¿½â¿¡ ï¿½ï¿½ ï¿½ß°ï¿½
 public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 {
     private BTRoot TreeAIState;
 
-    public float currentHP;                  // ÇöÀç Ã¼·Â °è»ê
-    public float viewAngle;                  // ½Ã¾ß°¢ (±âº»120µµ)
-    public float viewDistance;               // ½Ã¾ß °Å¸® (±âº» 10)
+    public float currentHP;                  // ï¿½ï¿½ï¿½ï¿½ Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½
+    public float viewAngle;                  // ï¿½Ã¾ß°ï¿½ (ï¿½âº»120ï¿½ï¿½)
+    public float viewDistance;               // ï¿½Ã¾ï¿½ ï¿½Å¸ï¿½ (ï¿½âº» 10)
 
-    //ÄÄÆ÷³ÍÆ® ¹× ±âÅ¸ ¿ÜºÎ¿ä¼Ò(ÀÏºÎ ÇÒ´çÀº ÇÏÀ§ ³ëµå¿¡¼­ ÁøÇà)
-    public EnemySO enemySO;                  // Enemy Á¤º¸ [¸ðµç Action Node¿¡ owner·Î È¹µæ½ÃÅ´]
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ ï¿½ï¿½Å¸ ï¿½ÜºÎ¿ï¿½ï¿½(ï¿½Ïºï¿½ ï¿½Ò´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½å¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
+    public EnemySO enemySO;                  // Enemy ï¿½ï¿½ï¿½ï¿½ [ï¿½ï¿½ï¿½ Action Nodeï¿½ï¿½ ownerï¿½ï¿½ È¹ï¿½ï¿½ï¿½Å´]
     public SpriteRenderer spriteRenderer;
     public CircleCollider2D collider2D;
     public Animator anim;
 
-    private Collider2D target;
-    public Collider2D Target { get { return target; } 
-                               set { if (target != value) { OnTargetChaged(value); target = value; } } }//ÃßÀû Å¸°Ù[Palyer]
+    private Transform target;
+    public Transform Target { get { return target; } 
+                               set { if (target != value) { OnTargetChaged(value); target = value; } } }//ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½[Palyer]
     //public Collider2D target;
     public NavMeshAgent nav;
-    public Vector3 navTargetPoint;              //nav ¸ñÀûÁö
-
+    public Vector3 navTargetPoint;              //nav ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    public List<Transform> PlayersTransform;
 
     public GameObject enemyAim;
     public Bullet enemyBulletPrefab;
 
 
-    public LayerMask targetMask;             // Å¸°Ù ·¹ÀÌ¾î(Player)
+    public LayerMask targetMask;             // Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½(Player)
 
-    public float SpeedCoefficient = 1f;      // ÀÌµ¿¼Óµµ °è¼ö
+    public float SpeedCoefficient = 1f;      // ï¿½Ìµï¿½ï¿½Óµï¿½ ï¿½ï¿½ï¿½
    
     public bool isLive;
     public bool isChase;
     public bool isAttaking;
 
+    //ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-    //°ÔÀÓ¸Å´ÏÀú¿¡¼­(¾îµðµç) °ü¸®ÇÏ´Â ÇÃ·¹ÀÌ¾îµé Á¤º¸¸¦ ¿äÃ»ÇØ¼­ »ç¿ë
+    int lastAttackPlayer;
 
-    //°¡Àå¸¹Àº ÇÇÇØ¸¦ ÁØ ÇÃ·¹ÀÌ¾î Å¸°Ù-> ºÒ·¿(½ð»ç¶÷ Á¤º¸) ¸ÂÀº³ð¸¸ ¾Ë¸éµÊ ->ÇÃ·¹ÀÌ °ø°Ý·Â->
+    //ï¿½ï¿½ï¿½Ó¸Å´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½) ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã»ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½
+
+    //ï¿½ï¿½ï¿½å¸¹ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¸ï¿½ ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ Å¸ï¿½ï¿½-> ï¿½Ò·ï¿½(ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½) ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë¸ï¿½ï¿½ ->ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ý·ï¿½->
 
     Vector2 nowEnemyPosition;
     Quaternion nowEnemyRotation;
     [SerializeField]
-    private Image images_Gauge;              //¸ó½ºÅÍ UI : Status
+    private Image images_Gauge;              //ï¿½ï¿½ï¿½ï¿½ UI : Status
 
 
-    //µ¿±âÈ­
+    //ï¿½ï¿½ï¿½ï¿½È­
     public PhotonView PV;                    
     private Vector3 hostPosition;
-    public float lerpSpeed = 10f; // º¸°£½Ã ÇÊ¿äÇÑ ¼öÄ¡(Á¶Á¤ ÇÊ¿ä)
+    public float lerpSpeed = 10f; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡(ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½)
 
 
-    //³Ë¹é
-    private bool isKnockback = false;
-    private Vector2 knockbackStartPosition;
-    private Vector2 knockbackTargetPosition;
-    private float knockbackStartTime;
+    //ï¿½Ë¹ï¿½
+    public bool isKnockback = false;
+
+    //ï¿½Ë¹ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ & ï¿½Ë¹ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ Å¸ï¿½ï¿½
+    public Vector2 knockbackStartPosition;
+    public Vector2 knockbackTargetPosition;
+
+    //ï¿½Ë¹ï¿½ ï¿½ï¿½ï¿½Û½Ã°ï¿½ & ï¿½Ë¹ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½
+    public float knockbackStartTime;
     public float knockbackDuration = 0.2f;
+
+    public float ViewDistanceThreshold = 0.2f; 
+    public float KnockbackLimitTime = 0.3f;
+
+
+    //ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½Ë¹ï¿½Å¸ï¿½
+    public float knockbackDistance;
+
 
     void Awake()
     {
-
         nav = GetComponent<NavMeshAgent>();
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         collider2D = GetComponent<CircleCollider2D>();
         PV = GetComponent<PhotonView>();
 
-        //°ÔÀÓ ¿ÀºêÁ§Æ® È°¼ºÈ­ ½Ã, Çàµ¿ Æ®¸® »ý¼º
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® È°ï¿½ï¿½È­ ï¿½ï¿½, ï¿½àµ¿ Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         CreateTreeAIState();
         currentHP = enemySO.hp;
         viewAngle = enemySO.viewAngle;
@@ -93,35 +107,41 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         nav.updateRotation = false;
         nav.updateUpAxis = false;
 
-        //¡Ú½Ì±Û Å×½ºÆ® ½Ã if else ÁÖ¼®Ã³¸® ÇÒ°Í
-        //ÂÑ´Â ÇÃ·¹ÀÌ¾îµµ È£½ºÆ®°¡ ÆÇº°?
+        //ï¿½Ú½Ì±ï¿½ ï¿½×½ï¿½Æ® ï¿½ï¿½ if else ï¿½Ö¼ï¿½Ã³ï¿½ï¿½ ï¿½Ò°ï¿½
+        //ï¿½Ñ´ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾îµµ È£ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Çºï¿½?
 
         nowEnemyPosition = this.gameObject.transform.position;
-
+        knockbackDistance = 0f;
 
         nav.speed = enemySO.enemyMoveSpeed;
         navTargetPoint = transform.position;
 
 
-        //È£½ºÆ®¸¸ navÈ°¼ºÈ­ ÇÏµµ·Ï ¼³Á¤
+        //È£ï¿½ï¿½Æ®ï¿½ï¿½ navÈ°ï¿½ï¿½È­ ï¿½Ïµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (!PhotonNetwork.IsMasterClient)
             nav.enabled = false;
         else
             nav.enabled = true;
+
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½, ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ Transform ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Â´ï¿½.
+        foreach (var _value in TestGameManager.Instance.playerInfoDictionary.Values)
+        {
+            PlayersTransform.Add(_value);
+        }
     }
     void Update()
     {
         if (!PhotonNetwork.IsMasterClient)
         {
-            //$Ãß°¡µÊ : µ¿±âÈ­µÈ À§Ä¡¿¡ ´ëÇÑ º¸°£ Ã³¸®
+            //$ï¿½ß°ï¿½ï¿½ï¿½ : ï¿½ï¿½ï¿½ï¿½È­ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½
             transform.position = Vector3.Lerp(transform.position, hostPosition, Time.deltaTime * lerpSpeed);
             return;
         }
 
         hostPosition = transform.position;
+        
 
-
-        //AIÆ®¸®ÀÇ ³ëµå »óÅÂ¸¦ ¸Å ÇÁ·¹ÀÓ ¸¶´Ù ¾ò¾î¿È
+        //AIÆ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¸ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         TreeAIState.Tick();
 
         if (!isLive)
@@ -135,59 +155,42 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
            ChaseView();
         }           
         else
-            NomalView();
+        {
+           NomalView();
+        }
 
 
-        // ³Ë¹é ÁßÀÎ °æ¿ì
+        // ï¿½Ë¹ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
         if (isKnockback)
         {
-            // ³Ë¹é ½Ã°£ ºñÀ² °è»ê
-            float knockbackRatio = (Time.time - knockbackStartTime) / knockbackDuration;
-
-            // Lerp¸¦ »ç¿ëÇÏ¿© ÇöÀç À§Ä¡¸¦ ºÎµå·´°Ô ÀÌµ¿
-            transform.position = Vector2.Lerp(knockbackStartPosition, knockbackTargetPosition, knockbackRatio);
-
-            // ³Ë¹éÀÌ ³¡³µ´ÂÁö È®ÀÎ
-            if (knockbackRatio >= 0.3f)
-            {
-                isKnockback = false;
-            }
+            HandleKnockback();
         }
 
 
+
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Å¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½Ï°Å³ï¿½ / navï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½×³ï¿½ ï¿½ï¿½ï¿½ï¿½) ï¿½ï¿½ ï¿½Æ´Ñ°ï¿½ï¿½
         if (!IsNavAbled() || nav.remainingDistance < 0.2f)
-        {
-            anim.SetBool("isWalk", false);
-            anim.SetBool("isUpWalk", false);
+        {          
+            SetAnim("isWalk", false);
+            SetAnim("isUpWalk", false);
             return;
-        }          
+        }
 
-        if (navTargetPoint.y > transform.position.y)
-        {
-            anim.SetBool("isUpWalk", true);
-            anim.SetBool("isWalk", false);
-        }
-        else
-        {
-            anim.SetBool("isWalk", true);
-            anim.SetBool("isUpWalk", false);
-        }
+        UpdateAnimation();
     }
 
 
-    //#####Enemy ÀÌµ¿ ¼Óµµº¯°æ °ü·Ã######
+    //Enemy ï¿½Ìµï¿½ ï¿½Óµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public void ChangeSpeed(float statSpeed)
     {
         nav.speed = statSpeed * SpeedCoefficient;
     }
 
-
-    //#####Enemy ÇÇ°Ý, »ç¸Á, ³Ë¹é °ü·Ã######
-
-    //¡Ú¸ÂÀ½ & Á×À½
+    #region Enemy ï¿½Ç°ï¿½, ï¿½ï¿½ï¿½, ï¿½Ë¹ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    //ï¿½Ú¸ï¿½ï¿½ï¿½ & ï¿½ï¿½ï¿½ï¿½
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //È£½ºÆ®¿¡¼­¸¸ Ãæµ¹ Ã³¸®µÊ
+        //È£ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½æµ¹ Ã³ï¿½ï¿½ï¿½ï¿½
         if (!PhotonNetwork.IsMasterClient)
             return;
 
@@ -224,24 +227,35 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
                     PhotonNetwork.Instantiate("AugmentList/A0218", transform.localPosition, quaternion.identity);
                 }
             }
-            //¸ðµç ÇÃ·¹ÀÌ¾î¿¡°Ô ÇöÀç ÀûÀÇ Ã¼·Â µ¿±âÈ­
+            //ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È­
             PV.RPC("DecreaseHP", RpcTarget.All, atk);
 
+            float BulletknockbackDistance = 2.0f;
 
-            //³Ë¹é
+
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ ï¿½ï¿½Ã²ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+            lastAttackPlayer = playerBullet.BulletOwner;
+
+            // ï¿½ï¿½IDï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ Ã£ï¿½ï¿½&ï¿½Ø´ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            PhotonView photonView = PhotonView.Find(playerBullet.BulletOwner);
+            if (photonView != null)
+            {
+                Transform playerTransform = photonView.transform;
+
+                Target = playerTransform;
+            }
+
+            //ï¿½Ë¹ï¿½(ï¿½æµ¹ ï¿½ï¿½ï¿½ï¿½&Enemy ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È­)
             Vector2 directionToBullet = (collision.transform.position - transform.position).normalized;
 
-            // ³Ë¹éÀ» À§ÇÑ °Å¸® Á¶Àý
-            float knockbackDistance = 2.0f;
-
-            // ³Ë¹é ½ÃÀÛ À§Ä¡¿Í ¸ñÇ¥ À§Ä¡ °è»ê
+            // ï¿½Ë¹ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½Ç¥ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½
             knockbackStartPosition = transform.position;
-            knockbackTargetPosition = knockbackStartPosition - directionToBullet * knockbackDistance;
+            knockbackTargetPosition = knockbackStartPosition - directionToBullet * BulletknockbackDistance;
 
-            // ³Ë¹é ½ÃÀÛ ½Ã°£ ÀúÀå
+            // ï¿½Ë¹ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½
             knockbackStartTime = Time.time;
 
-            // ³Ë¹é ÇÃ·¡±× ¼³Á¤
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ë¹ï¿½ ï¿½ï¿½ï¿½ï¿½
             isKnockback = true;
             if (!playerBullet.Penetrate) 
             {
@@ -250,9 +264,43 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (knockbackDistance == 0 || collision.gameObject.tag != "player")
+            return;
+
+        //TODO : ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ - 0.15f
+        PV.RPC("DecreaseHP", RpcTarget.All, collision.transform.GetComponent<PlayerStatHandler>().HP.total * 0.15f);
+
+        Transform PlayersTransform = collision.gameObject.transform;
+
+        //ï¿½Ë¹ï¿½(ï¿½æµ¹ ï¿½ï¿½ï¿½ï¿½&Enemy ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È­)
+        Vector2 directionToPlayer = (collision.transform.position - transform.position).normalized;
+
+        // ï¿½Ë¹ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½Ç¥ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½
+        knockbackStartPosition = transform.position;
+        knockbackTargetPosition = knockbackStartPosition - directionToPlayer;
+
+        // ï¿½Ë¹ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½
+        knockbackStartTime = Time.time;
+
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ë¹ï¿½ ï¿½ï¿½ï¿½ï¿½
+        isKnockback = true;
+    }
+    private void HandleKnockback()
+    {
+        //ï¿½Ë¹ï¿½ ï¿½ï¿½ï¿½Ó½Ã°ï¿½
+        float knockbackRatio = (Time.time - knockbackStartTime) / knockbackDuration;
+        transform.position = Vector2.Lerp(knockbackStartPosition, knockbackTargetPosition, knockbackRatio);
+
+        if (knockbackRatio >= KnockbackLimitTime)
+        {
+            isKnockback = false;
+        }
+    }
     private void GaugeUpdate()
     {
-        images_Gauge.fillAmount = (float)currentHP / enemySO.hp; //Ã¼·Â
+        images_Gauge.fillAmount = (float)currentHP / enemySO.hp; //Ã¼ï¿½ï¿½
     }
 
     [PunRPC]
@@ -272,16 +320,12 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         SetStateColor();
         currentHP -= damage;
         GaugeUpdate();
-        if (currentHP <= 0) 
+        if (currentHP <= 0)
         {
-
-        }
-            DieCheck(playerid);
-    }
-    public void DieCheck(int playerid) 
-    {
-
+            //ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            //lastAttackPlayer
             isLive = false;
+        }
     }
 
     [PunRPC]
@@ -290,7 +334,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         Destroy(gameObject);
     }
 
-    //#####°ø°Ý °ü·Ã######
     [PunRPC]
     public void Fire()
     {
@@ -303,7 +346,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         _bullet.target = BulletTarget.Player;
 
         /*
-        //¼öÁ¤ : gameObject ¿¡¼­ BulletÀ¸·Î ->º¯¼ö ÇüÅÂ¿Í ¿ëµµ¸¦ ÅëÀÏÇÔ
+        //ï¿½ï¿½ï¿½ï¿½ : gameObject ï¿½ï¿½ï¿½ï¿½ Bulletï¿½ï¿½ï¿½ï¿½ ->ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¿ï¿½ ï¿½ëµµï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         Bullet _bullet = Instantiate<Bullet>(enemyBulletPrefab, enemyAim.transform.position, enemyAim.transform.rotation);
 
 
@@ -315,19 +358,19 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         _bullet.target = BulletTarget.Player;
         */
 
-        //¼öÁ¤ : gameObject ¿¡¼­ BulletÀ¸·Î ->º¯¼ö ÇüÅÂ¿Í ¿ëµµ¸¦ ÅëÀÏÇÔ            
+        //ï¿½ï¿½ï¿½ï¿½ : gameObject ï¿½ï¿½ï¿½ï¿½ Bulletï¿½ï¿½ï¿½ï¿½ ->ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¿ï¿½ ï¿½ëµµï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½            
     }
+    #endregion
 
-
-    //#####½Ã¾ß°¢(Å¸°Ù ¼­Ä¡) °ü·Ã######
+    #region ï¿½Ã¾ß°ï¿½(Å¸ï¿½ï¿½ ï¿½ï¿½Ä¡) ï¿½ï¿½ï¿½ï¿½
     private Vector2 BoundaryAngle(float angle)
     {
-        // ÇöÀç ¿ÀºêÁ§Æ®ÀÇ È¸Àü°ªÀ» °í·ÁÇÏ¿© ¹æÇâ º¤ÅÍ¸¦ °è»ê
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½
 
-        // ÇöÀç ¿ÀºêÁ§Æ®ÀÇ È¸Àü°ª + ÁöÁ¤ °¢µµ°ª => ÀÌ °ªÀ» ¶óµð¾ÈÀ¸·Î º¯È¯
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ È¸ï¿½ï¿½ï¿½ï¿½ + ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ => ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
         float radAngle = (transform.eulerAngles.z + angle) * Mathf.Deg2Rad;
 
-        // º¤ÅÍ¸¦ radAngle°ªÀ» x,y ¹æÇâÀ¸·Î °è»êÇÏ¿© 2D º¤ÅÍ·Î ¹ÝÈ¯
+        // ï¿½ï¿½ï¿½Í¸ï¿½ radAngleï¿½ï¿½ï¿½ï¿½ x,y ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ 2D ï¿½ï¿½ï¿½Í·ï¿½ ï¿½ï¿½È¯
         return new Vector2(Mathf.Cos(radAngle), Mathf.Sin(radAngle));
     }
 
@@ -337,7 +380,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         Vector2 rightBoundary = BoundaryAngle(-viewAngle * 0.5f);
         Vector2 leftBoundary = BoundaryAngle(viewAngle * 0.5f);
 
-        // ½ºÇÁ¶óÀÌÆ® ·£´õ·¯ flipX »óÅÂ¿¡ µû¶ó ·¹ÀÌ ¹æÇâÀ» ¹Ý´ë·Î ¼³Á¤
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ flipX ï¿½ï¿½ï¿½Â¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ý´ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (spriteRenderer.flipX)
         {
             rightBoundary = -rightBoundary;
@@ -350,7 +393,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         FindPlayer(rightBoundary, leftBoundary);
     }
 
-    //ÃßÀû, °ø°Ý½Ã ÇÃ·¹ÀÌ¾î¸¦ ¹Ù¶óº¸´Â ½Ã¾ß°¢À¸·Î ÀüÈ¯
+    //ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½Ý½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ ï¿½Ù¶óº¸´ï¿½ ï¿½Ã¾ß°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
     private void ChaseView()
     {
         if (Target == null)
@@ -361,7 +404,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         }
 
 
-        Vector2 directionToTarget = (Target.transform.position - transform.position).normalized;
+        Vector2 directionToTarget = (Target.position - transform.position).normalized;
 
 
         Vector2 rightBoundary = Quaternion.Euler(0, 0,-viewAngle * 0.5f) * directionToTarget;
@@ -373,55 +416,55 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         FindPlayer(rightBoundary, leftBoundary);
     }
 
+
     private void FindPlayer(Vector2 _rightBoundary, Vector2 _leftBoundary)
     {
-        if (PhotonNetwork.IsMasterClient && Target == null)
-        {
-
-            Target = Physics2D.OverlapCircle(transform.position, viewDistance, targetMask);
-            Debug.Log($"Å¸°Ù ¼öÁý{Target}");
-        }           
-
-        //ÇÃ·¹ÀÌ¾î¸¦ °ü¸®ÇÏ´Â °´Ã¼¿¡°Ô Å¸°ÙÀÇ À§Ä¡¸¦ ¿äÃ»ÇÏ°í, ³»°¡ ¿øÇÏ´Â¹üÀ§¾ÈÀÇ ÇÃ·¹ÀÌ¾îµéÀÇ ¸®½ºÆ®¸¦ ¿äÃ»
-
-        if (Target == null)
+        if (!PhotonNetwork.IsMasterClient || Target != null || isChase)
             return;
+        //viewDistance > Vector2.Distance(playerTransform.position, transform.position
 
 
-        if (Target.tag == "Player")
+        //Debug.DrawRay(transform.position, middleDirection * viewDistance, Color.green);
+
+
+        //ï¿½Þ¾Æ¿ï¿½ ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ Æ®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¾Æ¿Â´ï¿½.
+        for (int i = 0; i < PlayersTransform.Count; i++)
         {
-
-            //½Ã¾ß°¢ ¹æÇâÀÇ Á÷¼± Direction
-            Vector2 middleDirection = (_rightBoundary + _leftBoundary).normalized;
-
-            //Debug.DrawRay(transform.position, middleDirection * viewDistance, Color.green);
-
-            //Enemy¿Í Player »çÀÌÀÇ ¹æÇâ
-            Vector2 directionToPlayer = (Target.transform.position - transform.position).normalized;
-
-            //ÇÃ·¹ÀÌ¾î ½Ã¾ß Áß¾Ó~Å¸°ÙÀ§Ä¡ »çÀÌÀÇ °¢µµ
-            float angle = Vector3.Angle(directionToPlayer, middleDirection);
-
-            if (angle < viewAngle * 0.5f)
+            if (viewDistance >= Vector2.Distance(PlayersTransform[i].position, transform.position))
             {
-                isChase = true;
+                //ï¿½Ã¾ß°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Direction
+                Vector2 middleDirection = (_rightBoundary + _leftBoundary).normalized;
 
-                Debug.DrawRay(transform.position, directionToPlayer * viewDistance, Color.red);
+                //Enemyï¿½ï¿½ Player ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+                Vector2 directionToPlayer = (PlayersTransform[i].position - transform.position).normalized;
+
+                float angle = Vector3.Angle(directionToPlayer, middleDirection);
+                if (angle < viewAngle * 0.5f)
+                {
+                    isChase = true;
+                    Target = PlayersTransform[i]; // ï¿½Ã¾ß°ï¿½ ï¿½È¿ï¿½ ï¿½Ö´ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ currentTargetPlayer ï¿½ï¿½ï¿½ï¿½
+                    Debug.DrawRay(transform.position, directionToPlayer * viewDistance, Color.red);
+
+                    Debug.Log($"Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½{Target}");
+                    break;
+                }
             }
+
         }
     }
+#endregion
 
-    //#####Å¸°Ù °ü·Ã######
-    private void OnTargetChaged(Collider2D _target)
+    #region Å¸ï¿½ï¿½(Player) ï¿½ï¿½ï¿½ï¿½ 
+    private void OnTargetChaged(Transform _target)
     {
-        //¸¶½ºÅÍ Å¬¶óÀÌ¾ðÆ®°¡ ¸ó½ºÅÍ¸¦ ¼ÒÈ¯ÇÏ°í, ÇØ´ç ¸ó½ºÅÍµéÀÌ
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½È¯ï¿½Ï°ï¿½, ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½
         if(PhotonNetwork.IsMasterClient)
         {
             if (_target == null)
                 photonView.RPC("SendTargetNull", RpcTarget.Others);
             else
             {
-                int viewID = _target.gameObject.GetPhotonView().ViewID; //º¯ÇÏ´Â viewID
+                int viewID = _target.gameObject.GetPhotonView().ViewID; //ï¿½ï¿½ï¿½Ï´ï¿½ viewID
                 photonView.RPC("SendTarget", RpcTarget.Others, viewID);
             }            
         }
@@ -432,7 +475,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     private void SendTarget(int viewID)
     {
         PhotonView targetPV = PhotonView.Find(viewID);
-        Target = targetPV.gameObject.GetComponent<Collider2D>();
+        Target = targetPV.transform;
     }
 
     [PunRPC]
@@ -446,29 +489,48 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     {
         spriteRenderer.color = Color.red;
     }
+    #endregion
 
+    #region playerï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½    
 
-
-    //#####ÇÃ·¹ÀÌ¾î ¾Ö´Ï¸ÞÀÌ¼Ç °ü·Ã######
-    
-    /*
+    private void UpdateAnimation()
+    {
+        if (navTargetPoint.y > transform.position.y)
+        {
+            SetAnim("isUpWalk", true);
+            SetAnim("isWalk", false);
+        }
+        else
+        {
+            SetAnim("isWalk", true);
+            SetAnim("isUpWalk", false);
+        }
+    }
     private void SetAnim(string animName, bool set)
     {
         if (PV.IsMine == false)
+            return;
+
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        bool prev = anim.GetBool(animName);
+
+        if (prev == set)
             return;
 
         anim.SetBool(animName, set);
         PV.RPC(nameof(SyncAnimation), RpcTarget.All, animName, set);
     }
 
+    [PunRPC]
     public void SyncAnimation(string animName, bool set)
     {
+        Debug.Log($"{animName}ï¿½ï¿½ {set} ï¿½ï¿½ï¿½Â·ï¿½ È£ï¿½ï¿½ï¿½");
         anim.SetBool(animName, set);
     }
-    */
 
+    #endregion
 
-    //#####NAV°ü·Ã######
+    #region NavAgent ï¿½ï¿½ï¿½ï¿½    
     public void DestinationSet()
     {
         if (!isAttaking || isLive)
@@ -476,15 +538,16 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             nav.SetDestination(navTargetPoint);
         }
 
-        if (navTargetPoint.x <= transform.position.x)
+        if (navTargetPoint.x < transform.position.x)
         {
             spriteRenderer.flipX = true;
         }
-            
-        else
+        else if (navTargetPoint.x > transform.position.x)
         {
             spriteRenderer.flipX = false;
         }
+        else
+            return;
             
         //MoveToHostPosition();
     }
@@ -498,25 +561,25 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         }            
         else
         {
-            nav.isStopped = false; // È°¼ºÈ­
+            nav.isStopped = false; // È°ï¿½ï¿½È­
             return true;
         }           
     }
+    #endregion
 
-
-    //#####BT######
+    #region BehaviourTree ï¿½ï¿½ï¿½ï¿½ 
     void CreateTreeAIState()
     {
-        //ÃÊ±âÈ­&·çÆ® ³ëµå·Î ¼³Á¤
+        //ï¿½Ê±ï¿½È­&ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         TreeAIState = new BTRoot();
 
-        //BTSelector¿Í BTSquence »ý¼º : Æ®¸® ±¸Á¶ Á¤ÀÇ
+        //BTSelectorï¿½ï¿½ BTSquence ï¿½ï¿½ï¿½ï¿½ : Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         BTSelector BTMainSelector = new BTSelector();
 
 
 
-        //Enemy »ýÁ¸ Ã¼Å©
-        //ÄÁµð¼Ç Ã¼Å© -> »ç¸Á ½Ã ÇÊ¿äÇÑ ¾×¼Çµé(¿ÀºêÁ§Æ® Á¦°Å....)
+        //Enemy ï¿½ï¿½ï¿½ï¿½ Ã¼Å©
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ Ã¼Å© -> ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½×¼Çµï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½....)
         BTSquence BTDead = new BTSquence();
         EnemyState_Dead_DeadCondition deadCondition = new EnemyState_Dead_DeadCondition(gameObject);
         BTDead.AddChild(deadCondition);
@@ -524,8 +587,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         BTDead.AddChild(state_Dead);
 
 
-        //ÃßÀû+°ø°Ý
-        //ÄÁµð¼Ç Ã¼Å© -> ÇÃ·¹ÀÌ¾î ÃßÀû & ÇÃ·¹ÀÌ¾î°¡ °ø°Ý ¹üÀ§ ³» -> °ø°Ý(¼º°ø ¹ÝÈ¯ ÈÄ ÃÖÃÊ·Î)
+        //ï¿½ï¿½ï¿½ï¿½+ï¿½ï¿½ï¿½ï¿½
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ Ã¼Å© -> ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ & ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ -> ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ ï¿½ï¿½ ï¿½ï¿½ï¿½Ê·ï¿½)
         BTSquence BTChase = new BTSquence();
 
         EnemyState_Chase_ChaseCondition chaseCondition = new EnemyState_Chase_ChaseCondition(gameObject);
@@ -542,8 +605,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         
 
 
-        //¼øÂû(½ÃÄö½º : ÇÏ³ª¶óµµ ½ÇÆÐÇÏ¸é ½ÇÆÐ¹ÝÈ¯)
-        //ÇÒ°Å ¾øÀ¸¸é ÀÌµ¿
+        //ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ : ï¿½Ï³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½Ð¹ï¿½È¯)
+        //ï¿½Ò°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
         BTSquence BTPatrol = new BTSquence();
 
         EnemyState_Patrol state_Patrol = new EnemyState_Patrol(gameObject);
@@ -551,45 +614,44 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
 
 
-        //¼¿·ºÅÍ´Â ¿ì¼±¼øÀ§ ³ôÀº ¼ø¼­·Î ¹èÄ¡ : »ýÁ¸ ¿©ºÎ -> Æ¯¼ö ÆÐÅÏ -> ÇÃ·¹ÀÌ¾î Ã¼Å©(°ø°Ý ¿©ºÎ) -> ÀÌµ¿ ¿©ºÎ ¼ø¼­·Î ¼¿·ºÅÍ ¹èÄ¡ 
-        //¸ÞÀÎ ¼¿·ºÅÍ : Squence¸¦ SelectorÀÇ ÀÚ½ÄÀ¸·Î Ãß°¡(ÀÚ½Ä ¼ø¼­ Áß¿äÇÔ) 
+        //ï¿½ï¿½ï¿½ï¿½ï¿½Í´ï¿½ ï¿½ì¼±ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ : ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ -> Æ¯ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ -> ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ Ã¼Å©(ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½) -> ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ 
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ : Squenceï¿½ï¿½ Selectorï¿½ï¿½ ï¿½Ú½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½(ï¿½Ú½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß¿ï¿½ï¿½ï¿½) 
 
         BTMainSelector.AddChild(BTDead);
         BTMainSelector.AddChild(BTChase);
         BTMainSelector.AddChild(BTPatrol);
 
-        //ÀÛ¾÷ÀÌ ³¡³­ Selector¸¦ ·çÆ® ³ëµå¿¡ ºÙÀÌ±â
+        //ï¿½Û¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Selectorï¿½ï¿½ ï¿½ï¿½Æ® ï¿½ï¿½å¿¡ ï¿½ï¿½ï¿½Ì±ï¿½
         TreeAIState.AddChild(BTMainSelector);
     }
 
 
     private void MoveToHostPosition()
     {
-        // ÇöÀç À§Ä¡¿¡¼­ ³×Æ®¿öÅ©·ÎºÎÅÍ ¹ÞÀº ¸ñÇ¥ À§Ä¡·Î ºÎµå·´°Ô ÀÌµ¿
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½ï¿½Å©ï¿½Îºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Îµå·´ï¿½ï¿½ ï¿½Ìµï¿½
         transform.position = Vector3.Lerp(transform.position, navTargetPoint, Time.deltaTime * lerpSpeed);
     }
-    
+    #endregion
 
-    //#####µ¿±âÈ­######
+    //ï¿½ï¿½ï¿½ï¿½È­ ï¿½ï¿½ï¿½ï¿½ 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
-            // µ¥ÀÌÅÍ¸¦ Àü¼Û
+            // ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½
             stream.SendNext(hostPosition);
             //stream.SendNext(navTargetPoint);
-            stream.SendNext(spriteRenderer.flipX); // ÀÌ°Ô ¸Â³ª?
+            stream.SendNext(spriteRenderer.flipX); // ï¿½Ì°ï¿½ ï¿½Â³ï¿½?
             stream.SendNext(enemyAim.transform.rotation);
 
         }
         else if (stream.IsReading)
         {
-            // µ¥ÀÌÅÍ¸¦ ¼ö½Å
+            // ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½
             hostPosition = (Vector3)stream.ReceiveNext();
             //navTargetPoint = (Vector3)stream.ReceiveNext();
             spriteRenderer.flipX = (bool)stream.ReceiveNext();
             enemyAim.transform.rotation = (Quaternion)stream.ReceiveNext();
         }   
     }
- 
 }

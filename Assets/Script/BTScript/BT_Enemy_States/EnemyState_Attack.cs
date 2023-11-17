@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using System;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 using Photon.Pun;
 
 public class EnemyState_Attack : BTAction
@@ -12,7 +11,7 @@ public class EnemyState_Attack : BTAction
     private GameObject owner;
     private EnemyAI enemyAI;
     private EnemySO enemySO; //총알 공격력 받아야함
-    private Collider2D target;
+    private Transform target;
 
     private float currentTime;         // 시간 계산용
 

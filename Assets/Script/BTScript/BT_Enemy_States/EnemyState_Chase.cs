@@ -73,12 +73,12 @@ public class EnemyState_Chase : BTAction
     private void OnChase()
     {
         if (enemyAI.photonView.AmOwner)
-            enemyAI.navTargetPoint = enemyAI.Target.transform.position;
+            enemyAI.navTargetPoint = enemyAI.Target.position;
 
         enemyAI.DestinationSet();
 
 
-        float distanceToTarget = Vector3.Distance(owner.transform.position, enemyAI.Target.transform.position);
+        float distanceToTarget = Vector3.Distance(owner.transform.position, enemyAI.Target.position);
 
         if (distanceToTarget < enemySO.attackRange)
         {
