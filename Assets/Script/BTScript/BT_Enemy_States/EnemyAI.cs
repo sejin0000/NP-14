@@ -54,7 +54,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
     //플레이어 정보
 
-    int lastAttackPlayer;
+    public int lastAttackPlayer;
 
     //게임매니저에서(어디든) 관리하는 플레이어들 정보를 요청해서 사용
 
@@ -320,7 +320,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     [PunRPC]
-    public void DecreaseHP(float damage,int playerid)
+    public void DecreaseHP(float damage)
     {
         SetStateColor();
         currentHP -= damage;
