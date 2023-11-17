@@ -271,16 +271,14 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (knockbackDistance == 0 || collision.gameObject.tag != "player")
+        if ((knockbackDistance == 0 || collision.gameObject.tag != "player")
+            && collision.gameObject.GetComponent<A0126>() == null)
             return;
-
-        //TODO : 계수 수정 - 0.15f
-        PV.RPC("DecreaseHP", RpcTarget.All, collision.transform.GetComponent<PlayerStatHandler>().HP.total * 0.15f);
 
         Transform PlayersTransform = collision.gameObject.transform;
 
         //넉백(충돌 대상과&Enemy 방향 정규화)
-        Vector2 directionToPlayer = (collision.transform.position - transform.position).normalized;
+        Vector2 directionToPlayer = (collision.transform.position - transform.position).normalized * knockbackDistance;
 
         // 넉백 시작 위치와 목표 위치 계산
         knockbackStartPosition = transform.position;
@@ -291,6 +289,9 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
         // 업데이트 넉백 실행
         isKnockback = true;
+
+        //TODO : 계수 수정 - 0.15f
+        PV.RPC("DecreaseHP", RpcTarget.All, collision.transform.GetComponent<PlayerStatHandler>().HP.total * 0.15f);
     }
     private void HandleKnockback()
     {
