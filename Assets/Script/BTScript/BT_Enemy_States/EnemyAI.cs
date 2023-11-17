@@ -232,7 +232,20 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
+
     private void HandleKnockback()
+    {
+        float knockbackRatio = (Time.time - knockbackStartTime) / knockbackDuration;
+        transform.position = Vector2.Lerp(knockbackStartPosition, knockbackTargetPosition, knockbackRatio);
+
+        if (knockbackRatio >= KnockbackRatioThreshold)
+        {
+            isKnockback = false;
+        }
+    }
+
+    [PunRPC]
+    private void HandleKnockback2()
     {
         float knockbackRatio = (Time.time - knockbackStartTime) / knockbackDuration;
         transform.position = Vector2.Lerp(knockbackStartPosition, knockbackTargetPosition, knockbackRatio);
