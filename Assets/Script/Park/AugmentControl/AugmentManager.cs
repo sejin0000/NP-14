@@ -446,7 +446,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         targetPlayer.GetPhotonView().Owner.CustomProperties.TryGetValue("Char_Class", out object classNum);
         if ((int)classNum != 2)
         {
-            a.targets.Add(BulletTarget.Player);
+            a.targets["Player"] = (int)BulletTarget.Player;
         }
         else
         {

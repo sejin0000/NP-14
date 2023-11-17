@@ -731,7 +731,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   muzzleOfAGun: {fileID: 6787653164829430967}
-  target: 0
   isDamage: 0
   sizeUp: 0
   sizeBody: 0

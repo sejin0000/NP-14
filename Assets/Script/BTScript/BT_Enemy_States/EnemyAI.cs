@@ -163,7 +163,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         {
            NomalView();
         }
-
+            
 
         // 넉백 중인 경우
         if (isKnockback)
@@ -202,7 +202,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         Bullet playerBullet = collision.gameObject.GetComponent<Bullet>();
 
 
-        if (collision.gameObject.tag == "Bullet" && playerBullet.targets.Contains(BulletTarget.Enemy) && playerBullet.IsDamage)
+        if (collision.gameObject.tag == "Bullet" && playerBullet.targets.ContainsValue((int)BulletTarget.Enemy) && playerBullet.IsDamage)
         {
             float atk = collision.transform.GetComponent<Bullet>().ATK;
             isChase = true;
@@ -349,7 +349,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         _bullet.ATK = enemySO.atk;
         _bullet.BulletLifeTime = enemySO.bulletLifeTime;
         _bullet.BulletSpeed = enemySO.bulletSpeed;
-        _bullet.targets.Add(BulletTarget.Player);
+        _bullet.targets["Player"] = (int)BulletTarget.Player;
 
         /*
         //수정 : gameObject 에서 Bullet으로 ->변수 형태와 용도를 통일함

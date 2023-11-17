@@ -9,7 +9,7 @@ public class WeaponSystem : MonoBehaviour
     private PhotonView pv;
     public Transform muzzleOfAGun;
     private GameObject bullet;
-    public List<BulletTarget> targets;
+    public Dictionary<string, int> targets;
     public bool isDamage;
     public bool sizeUp;
     public bool sizeBody;
@@ -37,7 +37,8 @@ public class WeaponSystem : MonoBehaviour
         _controller    = GetComponent<TopDownCharacterController>();
         _viewID        = pv.ViewID;
         //target = BulletTarget.Enemy;
-        targets = new List<BulletTarget>() { BulletTarget.Enemy };        
+        targets = new Dictionary<string, int>();
+        targets["Enemy"] = (int)BulletTarget.Enemy;
         // Ãß°¡
         sizeUp = false;
         sizeBody = false;
@@ -97,7 +98,7 @@ public class WeaponSystem : MonoBehaviour
     }
 
     [PunRPC]
-    public void BS(Quaternion rot, float Atk, float bulletLifeTime,List<BulletTarget> _targets, bool _isDamage, int _viewID)//BulletSpawn
+    public void BS(Quaternion rot, float Atk, float bulletLifeTime,Dictionary<string, int> _targets, bool _isDamage, int _viewID)//BulletSpawn
     {
         Debug.Log("Å¸°Ù");
         foreach (var target in _targets)
