@@ -1,23 +1,46 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
-public class A3301 : Skill
+public class A3301 : MonoBehaviourPun
 {
     public float shieldSurvivalTime = 0.5f;
     private GameObject shieldOBJ;
-
-    public override void SkillStart()
+    private TopDownCharacterController controller;
+    bool isLink;
+    private void Awake()
     {
-        shieldOBJ = PhotonNetwork.Instantiate("AugmentList/A3301", transform.position, Quaternion.identity);
-        A3301_1 shield = shieldOBJ.GetComponent<A3301_1>();
-        shieldOBJ.transform.SetParent(gameObject.transform);
-        Invoke("SkillEnd", shieldSurvivalTime+0.5f);
-        base.SkillStart();
+        if (photonView.IsMine)
+        {
+            controller = GetComponent<TopDownCharacterController>();
+            controller.OnSkillEvent += SkillStart;
+            controller.SkillReset();//여기부터참고
+            controller.SkillMinusEvent += SkillLinkOff;
+            isLink = true;
+        }
     }
-    public override void SkillEnd()
+    public void SkillStart()
     {
-        base.SkillEnd();
+        if (photonView.IsMine) 
+        {
+            shieldOBJ = PhotonNetwork.Instantiate("AugmentList/A3301", transform.position, Quaternion.identity);
+            shieldOBJ.transform.SetParent(gameObject.transform);
+            Invoke("SkillEnd", shieldSurvivalTime + 0.5f);
+            controller.CallEndSkillEvent();
+        }
+    }
+    public void SkillLinkOff()
+    {
+        if (photonView.IsMine)
+        {
+            if (isLink)
+            {
+                controller.OnSkillEvent -= SkillStart;
+                isLink = false;
+            }
+        }
     }
 }

@@ -18,7 +18,8 @@ public class TopDownCharacterController : MonoBehaviour
     public event Action OnEndReloadEvent;
     public event Action OnStartSkillEvent;
 
-    //Ãß°¡ÇÔ
+
+    public event Action SkillMinusEvent;
     public event Action<bool> OnAttackKeepEvent;
     public event Action OnChargeAttackEvent;
 
@@ -104,7 +105,7 @@ public class TopDownCharacterController : MonoBehaviour
     }
     public void SkillReset() 
     {
-        OnSkillEvent = null;
+        SkillMinusEvent?.Invoke();
     }
     public void CallEndSkillEvent()
     {

@@ -16,31 +16,35 @@ public class PlayerStatHandler : MonoBehaviourPun
     public event Action<int> OnRegenCalculateEvent;
     public event Action OnChangeAmmorEvent;
     public event Action OnChangeCurHPEvent;
+    public event Action MoveStartEvent;
+    public event Action MoveEndEvent;
+    public event Action EnemyHitEvent;
+    public event Action<float> GetDamege;
 
 
     [SerializeField] private PlayerSO playerStats;
 
-    public Stats ATK;                 // °ø°Ý·Â
-    public Stats HP;                  // Ã¼·Â
-    public Stats Speed;               // ÀÌµ¿ ¼Óµµ
-    public Stats AtkSpeed;            // °ø°Ý ¼Óµµ
-    public Stats ReloadCoolTime;      // ÀåÀü   Äð Å¸ÀÓ
-    public Stats SkillCoolTime;       // ½ºÅ³   Äð Å¸ÀÓ
-    public Stats RollCoolTime;        // ±¸¸£±â Äð Å¸ÀÓ
-    public Stats BulletSpread;        // ÅºÆÛÁü
-    public Stats BulletLifeTime;      // ÃÑ¾Ë »ç°Å¸®
-    public Stats LaunchVolume;        // ÇÑ¹øÀÇ ¹ß»çÀÇ ¹ß»ç·®
-    public Stats Critical;            // Å©¸®Æ¼ÄÃ
-    public Stats AmmoMax;             // ÀåÅº¼ö
+    public Stats ATK;                 // ï¿½ï¿½ï¿½Ý·ï¿½
+    public Stats HP;                  // Ã¼ï¿½ï¿½
+    public Stats Speed;               // ï¿½Ìµï¿½ ï¿½Óµï¿½
+    public Stats AtkSpeed;            // ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½
+    public Stats ReloadCoolTime;      // ï¿½ï¿½ï¿½ï¿½   ï¿½ï¿½ Å¸ï¿½ï¿½
+    public Stats SkillCoolTime;       // ï¿½ï¿½Å³   ï¿½ï¿½ Å¸ï¿½ï¿½
+    public Stats RollCoolTime;        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Å¸ï¿½ï¿½
+    public Stats BulletSpread;        // Åºï¿½ï¿½ï¿½ï¿½
+    public Stats BulletLifeTime;      // ï¿½Ñ¾ï¿½ ï¿½ï¿½Å¸ï¿½
+    public Stats LaunchVolume;        // ï¿½Ñ¹ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ï¿½ï¿½ ï¿½ß»ç·®
+    public Stats Critical;            // Å©ï¿½ï¿½Æ¼ï¿½ï¿½
+    public Stats AmmoMax;             // ï¿½ï¿½Åºï¿½ï¿½
     public float defense;
 
 
-    [HideInInspector] public SpriteLibraryAsset PlayerSprite; // ½ºÇÁ¶óÀÌÆ®
-    [HideInInspector] public SpriteLibraryAsset WeaponSprite; // ½ºÇÁ¶óÀÌÆ®
-    [HideInInspector] public Sprite BulletSprite; // ½ºÇÁ¶óÀÌÆ®
+    [HideInInspector] public SpriteLibraryAsset PlayerSprite; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
+    [HideInInspector] public SpriteLibraryAsset WeaponSprite; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
+    [HideInInspector] public Sprite BulletSprite; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 
-    [HideInInspector] public SpriteLibrary PlayerSpriteCase; // ½ºÇÁ¶óÀÌÆ®
-    [HideInInspector] public SpriteLibrary WeaponSpriteCase; // ½ºÇÁ¶óÀÌÆ®
+    [HideInInspector] public SpriteLibrary PlayerSpriteCase; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
+    [HideInInspector] public SpriteLibrary WeaponSpriteCase; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 
 
     public GameObject _PlayerSprite;
@@ -48,6 +52,7 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     public bool isNoramlMove;
     public bool isCanSkill;
+    public bool isCanAtk;
     public bool isDie;
     public int RegenHP;
     public int MaxRegenCoin;
@@ -73,6 +78,10 @@ public class PlayerStatHandler : MonoBehaviourPun
     public int MaxRollStack;
     public int CurRollStack;
 
+    public int evasionPersent;
+    public float DamegeTemp;
+
+
     private float curHP;
     [HideInInspector]
     public float CurHP
@@ -97,11 +106,11 @@ public class PlayerStatHandler : MonoBehaviourPun
                 Debug.Log($"HPHPHPHPHPHHP  {CurHP}");
             }
         }
-    }               //ÇöÀç   Ã¼·Â
+    }               //ï¿½ï¿½ï¿½ï¿½   Ã¼ï¿½ï¿½
 
     [SerializeField] private float curAmmo;
     //[HideInInspector]
-    public float CurAmmo //ÇöÀç ÀÜÅº
+    public float CurAmmo //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Åº
     { 
         get 
         { 
@@ -115,11 +124,11 @@ public class PlayerStatHandler : MonoBehaviourPun
             OnChangeAmmorEvent?.Invoke(); 
         } 
     } 
-    [HideInInspector] public bool CanFire;                                //¹ß»ç   °¡´ÉÇÑÁö
-    [HideInInspector] public bool CanReload;                              //ÀåÀü   °¡´ÉÇÑÁö
-    [HideInInspector] public bool CanSkill;                               //½ºÅ³   °¡´ÉÇÑÁö
-    [HideInInspector] public bool CanRoll;                                //±¸¸£±â °¡´ÉÇÑÁö
-    [HideInInspector] public bool Invincibility;                          //¹«Àû
+    [HideInInspector] public bool CanFire;                                //ï¿½ß»ï¿½   ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    [HideInInspector] public bool CanReload;                              //ï¿½ï¿½ï¿½ï¿½   ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    [HideInInspector] public bool CanSkill;                               //ï¿½ï¿½Å³   ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    [HideInInspector] public bool CanRoll;                                //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    [HideInInspector] public bool Invincibility;                          //ï¿½ï¿½ï¿½ï¿½
 
     public bool useSkill;
     public bool UseRoll;
@@ -159,6 +168,9 @@ public class PlayerStatHandler : MonoBehaviourPun
 
         isNoramlMove = true;
         isCanSkill=true;
+        isCanAtk = true;
+        evasionPersent = 0;
+
         MaxSkillStack = 1;
         CurSkillStack = MaxSkillStack;
         MaxRollStack = 1;
@@ -199,26 +211,32 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     public void Damage(float damage)
     {
-        
-        if(CurHP - damage <= 0)
+        DamegeTemp = damage;
+        GetDamege?.Invoke(DamegeTemp);
+        int a = UnityEngine.Random.Range(0, 100);
+        if (evasionPersent <= a) 
         {
-            if (CurRegenCoin > 0)
-            {                
-                CurRegenCoin -= 1;
-                Regen(HP.total);
-                return;
+            if (CurHP - DamegeTemp <= 0)
+            {
+                if (CurRegenCoin > 0)
+                {
+                    CurRegenCoin -= 1;
+                    Regen(HP.total);
+                    return;
+                }
+
+                isDie = true;
+                OnDieEvent?.Invoke();
+                this.gameObject.layer = 0;
             }
 
-            isDie = true;
-            OnDieEvent?.Invoke();
-            this.gameObject.layer = 0;
+            DamegeTemp = DamegeTemp * defense;
+            CurHP -= DamegeTemp;
+            HitEvent?.Invoke();
+            HitEvent2?.Invoke(DamegeTemp);//ï¿½Ì°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½Ñ°ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ ï¿½ï¿½ï¿½Â°ï¿½ì°¡ ï¿½Ö´Âµï¿½ ï¿½Ñ°ï¿½ï¿½ï¿½ ï¿½Ò¼ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½ð¸£°ï¿½ï¿½ï¿½ ï¿½Ï´ï¿½ ï¿½Ì·ï¿½ï¿½ï¿½ï¿½ï¿½
+            Debug.Log("[PlayerStatHandler] " + "Damage Done");
         }
 
-        damage = damage * defense;
-        CurHP -= damage;
-        HitEvent?.Invoke();
-        HitEvent2?.Invoke(damage);//ÀÌ°Ô °ªÀÌ ÇÊ¿äÇÑ°æ¿ì¿Í ÇÊ¿ä ¾ø´Â°æ¿ì°¡ ÀÖ´Âµ¥ ÇÑ°³·Î ÇÒ¼ö°¡ ÀÖ´ÂÁö ¸ð¸£°ÚÀ½ ÀÏ´Ü ÀÌ·¸°ÔÇÔ
-        Debug.Log("[PlayerStatHandler] " + "Damage Done");
     }
 
     public void HPadd(float addhp)
@@ -229,7 +247,7 @@ public class PlayerStatHandler : MonoBehaviourPun
     public void Regen(float HP)
     {
         CurHP = HP;
-        Debug.Log("ºÎÈ°ÇÏ¿´½À´Ï´Ù. ºÎÈ° ÆÄÆ¼Å¬ Ãß°¡ÇØ¾ßÇÔ");
+        Debug.Log("ï¿½ï¿½È°ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½. ï¿½ï¿½È° ï¿½ï¿½Æ¼Å¬ ï¿½ß°ï¿½ï¿½Ø¾ï¿½ï¿½ï¿½");
         OnRegenEvent?.Invoke();
         OnRegenCalculateEvent?.Invoke(RegenHP);
         GetComponent<PlayerInput>().actions.FindAction("Move2").Disable();
@@ -265,7 +283,19 @@ public class PlayerStatHandler : MonoBehaviourPun
             this.gameObject.layer = 0;
         }
     }
+    public void MoveStartCall() 
+    {
+        MoveStartEvent?.Invoke();
+    }
+    public void MoveEndCall()
+    {
+        MoveEndEvent?.Invoke();
+    }
 
+    public void EnemyHitCall() 
+    {
+        EnemyHitEvent?.Invoke();
+    }
     public void RegenHPCalculator(int calHP = 0)
     {
         if (calHP == 0)
@@ -277,4 +307,5 @@ public class PlayerStatHandler : MonoBehaviourPun
             curHP = calHP;
         }
     }
+
 }
