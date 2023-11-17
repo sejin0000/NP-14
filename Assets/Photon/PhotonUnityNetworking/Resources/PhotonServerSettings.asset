@@ -205,8 +205,9 @@ MonoBehaviour:
   - SendTargetNull
   - SendPlayerInfo
   - Shoot
+  - TogetherSoDelicious
   - SyncAnimation
-  - HandleKnockback2
+  - GiveSpeed
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

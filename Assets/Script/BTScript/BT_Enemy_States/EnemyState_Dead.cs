@@ -23,6 +23,9 @@ public class EnemyState_Dead : BTAction
     {
         //골드 여기에
         //사망 시 파티클이나 기타 효과 여기에
+        //enemyAI.lastAttackPlayer
+
+
         if (MainGameManager.Instance != null)
         {
             MainGameManager.Instance.currentMonsterCount -= 1;

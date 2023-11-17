@@ -14,7 +14,7 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     int atk = 5;
     int hp = 8;
     float speed = 1;
-    float atkspeed = -1f;
+    float atkspeed = 1f;
     float bulletSpread = -1f;
     int cooltime = -1;
     int critical = 5;
@@ -418,7 +418,9 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     [PunRPC]
     private void A121(int PlayerNumber)
     {
-        Debug.Log("미완성");
+        ChangePlayerStatHandler(PlayerNumber);
+        playerstatHandler.MaxRollStack += 1;
+        playerstatHandler.CurRollStack += 1;
     }
     [PunRPC]
     private void A122(int PlayerNumber)//화다닥 120의 불버전//122없음
@@ -450,7 +452,8 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     [PunRPC]
     private void A126(int PlayerNumber)
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0126>();        
     }
     [PunRPC]
     private void A127(int PlayerNumber)
@@ -501,7 +504,9 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     [PunRPC]
     private void A206(int PlayerNumber)
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0206>();
+        //HERE
     }
     [PunRPC]
     private void A207(int PlayerNumber)//하이리스크 로우리턴
@@ -524,7 +529,10 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     [PunRPC]
     private void A210(int PlayerNumber)
     {
-        Debug.Log("미완성");
+        ChangePlayerStatHandler(PlayerNumber);
+        playerstatHandler.MaxRegenCoin += 1;
+        playerstatHandler.CurRegenCoin += 1;
+        playerstatHandler.RegenHP += 1;
     }
     [PunRPC]
     private void A211(int PlayerNumber)//피해복구 일정확률로 일정 체력 회복
@@ -602,12 +610,9 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     }
     [PunRPC]
     private void A221(int PlayerNumber)
-    {
-        Debug.Log("미완성");
+    {        
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
-        targetPlayer.AddComponent<A0221>();
-        A0221 chargingComponent = targetPlayer.GetComponent<A0221>();
-        //HERE
+        targetPlayer.AddComponent<A0221>();               
     }
     [PunRPC]
     private void A222(int PlayerNumber)//재정비 구르기후 회복
@@ -619,8 +624,7 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     private void A223(int PlayerNumber)
     {
         ChangePlayerStatHandler(PlayerNumber);
-        playerstatHandler.MaxSkillStack += 1;
-        Debug.Log("스킬 스택 추가");
+        playerstatHandler.MaxSkillStack += 1;        
         playerstatHandler.CurSkillStack += 1;
     }
     #endregion
@@ -668,6 +672,8 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.MaxRegenCoin += 1;
+        playerstatHandler.CurRegenCoin += 1;
+        Debug.Log($"현재 코인 : {playerstatHandler.MaxRegenCoin}");
         playerstatHandler.HP.coefficient *= 0.5f;
     }
     [PunRPC]

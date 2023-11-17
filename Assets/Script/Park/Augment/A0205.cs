@@ -11,7 +11,7 @@ public class A0205 : MonoBehaviourPun//퍼플방전 첫공업
     float oldPower;
     bool Isfirst;
     bool ready;
-    private void Awake()//난사 탄퍼짐 ++ = 장전시간감소
+    private void Awake()
     {
         if (photonView.IsMine)
         {
@@ -21,19 +21,22 @@ public class A0205 : MonoBehaviourPun//퍼플방전 첫공업
             oldPower = 0;
             Isfirst = false;
             ready = true;
-            controller.OnReloadEvent += SetPower;//이걸 돈획득 이벤트에검 
+            controller.OnReloadEvent += SetPower;
             controller.OnEndAttackEvent += LostPower;
         }
     }
     // Update is called once per frame
     void SetPower()
     {
-        if(ready)
-        nowPower = playerStat.ATK.total;
-        playerStat.ATK.added += nowPower;
-        oldPower = nowPower;
-        ready = false;
-        Isfirst = true;
+        if (ready) 
+        {
+            nowPower = playerStat.ATK.total;
+            playerStat.ATK.added += nowPower;
+            oldPower = nowPower;
+            ready = false;
+            Isfirst = true;
+        }
+
     }
     void LostPower() 
     {

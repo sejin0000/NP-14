@@ -21,7 +21,7 @@ public class A2204 : MonoBehaviourPun
     public void Init()
     {
         me = transform.parent.gameObject.GetComponent<PlayerStatHandler>();
-        controller = GetComponent<TopDownCharacterController>();
+        controller = me.gameObject.GetComponent<TopDownCharacterController>();
         controller.OnSkillEvent += TogetherParty; // 중요한부분
     }
     private void OnTriggerEnter2D(Collider2D collision)
