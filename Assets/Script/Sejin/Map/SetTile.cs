@@ -14,36 +14,65 @@ public class SetTile : MonoBehaviour
     public RuleTile wallTile;
     public RuleTile groundTile;
 
-    public void SetRectTile(RectInt rect, RuleTile tile, Tilemap tilemap )
-    {
-        for(int i = 0; i < rect.width; i++)
-        {
-            for (int j = 0; j < rect.height; j++)
-            {
-                tilemap.SetTile(new Vector3Int(i - (rect.width / 2) , j - (rect.height / 2)), tile);
-            }
-        }
-    }
 
-    public void RemoveRectTile(RectInt rect, Tilemap tilemap,Vector2 Startpos)
+    public void SetRectTile(RectInt rect, Tilemap tilemap, Vector2 Startpos)
     {
         for (int i = 0; i < rect.width; i++)
         {
             for (int j = 0; j < rect.height; j++)
             {
-                wallTileMap.SetTile(new Vector3Int(i + ((int)Startpos.x), j + ((int)Startpos.y)), null);
+                tilemap.SetTile(new Vector3Int(i + ((int)Startpos.x), j + ((int)Startpos.y)), null);
+            }
+        }
+    }
+    public void SetRectTile(RectInt rect, Tilemap tilemap)
+    {
+        for (int i = 0; i < rect.width; i++)
+        {
+            for (int j = 0; j < rect.height; j++)
+            {
+                tilemap.SetTile(new Vector3Int(i - (rect.width / 2), j - (rect.height / 2)), null);
+            }
+        }
+    }
+    public void SetRectTile(RectInt rect, Tilemap tilemap, RuleTile tile, Vector2 Startpos)
+    {
+        for (int i = 0; i < rect.width; i++)
+        {
+            for (int j = 0; j < rect.height; j++)
+            {
+                tilemap.SetTile(new Vector3Int(i + ((int)Startpos.x), j + ((int)Startpos.y)), tile);
+            }
+        }
+    }
+    public void SetRectTile(RectInt rect, Tilemap tilemap, RuleTile tile)
+    {
+        for (int i = 0; i < rect.width; i++)
+        {
+            for (int j = 0; j < rect.height; j++)
+            {
+                tilemap.SetTile(new Vector3Int(i - (rect.width / 2), j - (rect.height / 2)), tile);
             }
         }
     }
 
-    public void RemoveLineTile(Tilemap tilemap, Vector2Int startPos,int length, Vector2 direction,Vector2 Startpos)
+    public void SetLineTile(Tilemap tilemap, Vector2Int startPos,int length, Vector2 direction,Vector2 Startpos)
     {
         for (int j = 0; j < length + 1; j++)
         {
-            wallTileMap.SetTile(new Vector3Int(startPos.x - ((int)Startpos.x), startPos.y - ((int)Startpos.y)), null);
+            tilemap.SetTile(new Vector3Int(startPos.x - ((int)Startpos.x), startPos.y - ((int)Startpos.y)), null);
             startPos.x -= (int)direction.x;
             startPos.y -= (int)direction.y;
         }
-            Debug.Log("길 만들기");
+    }
+
+    public void SetLineTile(Tilemap tilemap, RuleTile tile, Vector2Int startPos, int length, Vector2 direction, Vector2 Startpos)
+    {
+        for (int j = 0; j < length + 1; j++)
+        {
+            tilemap.SetTile(new Vector3Int(startPos.x - ((int)Startpos.x), startPos.y - ((int)Startpos.y)), tile);
+            startPos.x -= (int)direction.x;
+            startPos.y -= (int)direction.y;
+        }
     }
 }
