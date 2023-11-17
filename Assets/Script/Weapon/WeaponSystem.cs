@@ -11,6 +11,18 @@ public class WeaponSystem : MonoBehaviour
     private GameObject bullet;
     public BulletTarget target;
     public bool isDamage;
+    public bool sizeUp;
+    public bool sizeBody;
+    public bool locator;
+    public bool sniping;
+    public bool canAngle;
+
+    public bool fire;
+    public bool water;
+    public bool ice;
+    public bool burn;
+    public bool gravity;
+    public bool Penetrate;
 
     public int _viewID;
     // 추가
@@ -26,7 +38,18 @@ public class WeaponSystem : MonoBehaviour
         _viewID        = pv.ViewID;
         target = BulletTarget.Enemy;
         // 추가
-        _cool = GetComponent<CoolTimeController>();
+        sizeUp = false;
+        sizeBody = false;
+        locator = false;
+        sniping = false;
+        canAngle = false;
+        fire = false;
+        water = false;
+        ice = false;
+        burn = false;
+        gravity = false;
+        Penetrate = false;
+    _cool = GetComponent<CoolTimeController>();
     }
     private void Start()
     {
@@ -82,15 +105,44 @@ public class WeaponSystem : MonoBehaviour
         Debug.Log(_target);
         Debug.Log("데미지를 주는가?");
         Debug.Log(_isDamage);
+        float size=1f;
+
+        if (sizeBody) 
+        {
+            size = transform.localScale.x;
+        }
+        if (sizeUp) 
+        {
+            size *= 1.3f;
+        }
 
         GameObject _object =  Instantiate(bullet, muzzleOfAGun.transform.position, rot);
         Bullet _bullet = _object.GetComponent<Bullet>();
 
+        
+        _object.transform.localScale = new Vector2(size, size);
+        if (locator)
+        {
+            _bullet.locator = true;
+            Atk = Atk * 0.3f;
+        }
+        if (sniping)
+        {
+            _bullet.sniping = true;
+            Atk -= Atk * 0.3f;
+        }
         _bullet.ATK = Atk;
         _bullet.BulletLifeTime = bulletLifeTime;
         _bullet.target = (BulletTarget)_target;
         _bullet.IsDamage = _isDamage;
         _bullet.BulletOwner = _viewID;
+        _bullet.canAngle = canAngle;
         _object.GetComponent<SpriteRenderer>().sprite = _controller.playerStatHandler.BulletSprite;
+        _bullet.fire = fire;
+        _bullet.water = water;
+        _bullet.ice = ice;
+        _bullet.burn = burn;
+        _bullet.gravity = gravity;
+        _bullet.Penetrate = Penetrate;
     }
 }

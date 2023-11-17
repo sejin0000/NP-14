@@ -15,6 +15,9 @@ public class Bullet1 : MonoBehaviour
     private Vector2 _direction;
     TopDownCharacterController TDCController;
 
+    public bool locator;
+    public bool sniping;
+
     private Rigidbody2D _rigidbody;
     private Vector3 lastVelocity;
     private SpriteRenderer _spriteRenderer;//이미지 어캐 넣을지 생각해두기

@@ -15,17 +15,27 @@ public class Bullet : MonoBehaviour
     public float ATK;
     public float BulletLifeTime;
     public float BulletSpeed = 15;
-    public bool IsDamage = true;
-    public bool canAngle = true;
+    public bool IsDamage = false;
+    public bool canAngle = false;
+    public bool fire;
+    public bool water;
+    public bool ice;
+    public bool burn;
+    public bool gravity;
+    public bool Penetrate;
     public BulletTarget target;
     Vector2 _direction;
     float time = 0f;
+
+
+    public bool locator;
+    public bool sniping;
 
     public int BulletOwner;
     void Start()
     {
         BulletLifeTime = Random.Range(BulletLifeTime * 0.15f, BulletLifeTime * 0.2f);
-        Invoke("Destroy", BulletLifeTime);
+        //Invoke("Destroy", BulletLifeTime);
         _direction = Vector2.right;
     }
 
@@ -37,6 +47,16 @@ public class Bullet : MonoBehaviour
         if (time>= BulletLifeTime) 
         {
             Destroy();
+        }
+        if (locator) 
+        {
+            ATK -= ATK*0.1f * Time.deltaTime;
+            Debug.Log($"강해지는중 현재 {ATK}");
+        }
+        if (sniping) 
+        {
+            ATK += ATK * 0.1f * Time.deltaTime;
+            Debug.Log($"약해지는중 현재 {ATK}");
         }
     }
 

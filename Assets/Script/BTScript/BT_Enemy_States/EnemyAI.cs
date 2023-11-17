@@ -196,10 +196,36 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
         if (collision.gameObject.tag == "Bullet" && playerBullet.target == BulletTarget.Enemy && playerBullet.IsDamage)
         {
+            float atk = collision.transform.GetComponent<Bullet>().ATK;
             isChase = true;
+            int ViewID = playerBullet.BulletOwner;
+            PhotonView PlayerPv = PhotonView.Find(ViewID);
+            PlayerStatHandler player = PlayerPv.gameObject.GetComponent<PlayerStatHandler>();
+            player.EnemyHitCall();
 
+
+            if (playerBullet.fire) 
+            {
+                Debuff.GiveFire(this.gameObject, atk);
+            }
+            if (playerBullet.water)
+            {
+                Debuff.GiveIce(this.gameObject);
+            }
+            if (playerBullet.burn)
+            {
+                PhotonNetwork.Instantiate("AugmentList/A0122", transform.localPosition,quaternion.identity);
+            }
+            if (playerBullet.gravity)
+            {
+                int a = UnityEngine.Random.Range(0, 10);
+                if (a >= 8) 
+                {
+                    PhotonNetwork.Instantiate("AugmentList/A0218", transform.localPosition, quaternion.identity);
+                }
+            }
             //모든 플레이어에게 현재 적의 체력 동기화
-            PV.RPC("DecreaseHP", RpcTarget.All, collision.transform.GetComponent<Bullet>().ATK);
+            PV.RPC("DecreaseHP", RpcTarget.All, atk);
 
 
             //넉백
@@ -217,8 +243,10 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
             // 넉백 플래그 설정
             isKnockback = true;
-
-            Destroy(collision.gameObject);
+            if (!playerBullet.Penetrate) 
+            {
+                Destroy(collision.gameObject);
+            }
         }
     }
 
@@ -239,14 +267,21 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     [PunRPC]
-    public void DecreaseHP(float damage)
+    public void DecreaseHP(float damage,int playerid)
     {
         SetStateColor();
         currentHP -= damage;
         GaugeUpdate();
+        if (currentHP <= 0) 
+        {
 
-        if (currentHP <= 0)
-            isLive = false;       
+        }
+            DieCheck(playerid);
+    }
+    public void DieCheck(int playerid) 
+    {
+
+            isLive = false;
     }
 
     [PunRPC]

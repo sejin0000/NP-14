@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-
+using UnityEngine.AI;
 
 public class Debuff : MonoBehaviourPun
 {
@@ -60,7 +60,8 @@ public class Debuff : MonoBehaviourPun
         PhotonView photonView = PhotonView.Find(viewID);
         GameObject targetPlayer = photonView.gameObject;
         EnemyAI a = targetPlayer.GetComponent<EnemyAI>();
-
+        NavMeshAgent nav = targetPlayer.GetComponent<NavMeshAgent>();
+        nav.speed = nav.speed * 0.8f;
         a.SpeedCoefficient = 0.8f;
         yield return endtime;
         a.SpeedCoefficient = 1f;
@@ -69,7 +70,7 @@ public class Debuff : MonoBehaviourPun
 
     public static void GiveLowSteamPack(GameObject gameObject)
     {
-        if (gameObject.tag == "Enemy")
+        if (gameObject.tag == "Player")
         {
             PhotonView pv = gameObject.GetComponent<PhotonView>();
             int viewID = pv.ViewID;
@@ -87,14 +88,39 @@ public class Debuff : MonoBehaviourPun
     {
         int endtime = 5;
         PhotonView photonView = PhotonView.Find(viewID);
-        GameObject targetPlayer = photonView.gameObject;
-        PlayerStatHandler a = targetPlayer.GetComponent<PlayerStatHandler>();
-
-        a.AtkSpeed.added += 0.5f;
-        a.Speed.added += 0.5f;
+        PlayerStatHandler targetPlayer = photonView.gameObject.GetComponent<PlayerStatHandler>();
+        targetPlayer.AtkSpeed.added += 0.5f;
+        targetPlayer.Speed.added += 0.5f;
         yield return endtime;
-        a.AtkSpeed.added -= 0.5f;
-        a.Speed.added -= 0.5f;
+        targetPlayer.AtkSpeed.added -= 0.5f;
+        targetPlayer.Speed.added -= 0.5f;
+
+    }
+    public static void GiveTouchSpeed(GameObject gameObject)
+    {
+        if (gameObject.tag == "Player")
+        {
+            PhotonView pv = gameObject.GetComponent<PhotonView>();
+            int viewID = pv.ViewID;
+            pv.RPC("GiveSpeed", RpcTarget.All, viewID);
+        }
+    }
+
+    [PunRPC]
+    public void GiveSpeed(int viewID)
+    {
+        StartCoroutine("LowSpeed", viewID);
+    }
+
+    static IEnumerator LowSpeed(int viewID)
+    {
+        int endtime = 2;
+        PhotonView photonView = PhotonView.Find(viewID);
+        PlayerStatHandler targetPlayer = photonView.gameObject.GetComponent<PlayerStatHandler>();
+
+        targetPlayer.Speed.added += 0.5f;
+        yield return endtime;
+        targetPlayer.Speed.added -= 0.5f;
 
     }
 

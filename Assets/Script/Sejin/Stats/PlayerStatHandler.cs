@@ -16,6 +16,7 @@ public class PlayerStatHandler : MonoBehaviourPun
     public event Action OnChangeCurHPEvent;
     public event Action MoveStartEvent;
     public event Action MoveEndEvent;
+    public event Action EnemyHitEvent;
     public event Action<float> GetDamege;
 
 
@@ -262,5 +263,10 @@ public class PlayerStatHandler : MonoBehaviourPun
     public void MoveEndCall()
     {
         MoveEndEvent?.Invoke();
+    }
+
+    public void EnemyHitCall() 
+    {
+        EnemyHitEvent?.Invoke();
     }
 }

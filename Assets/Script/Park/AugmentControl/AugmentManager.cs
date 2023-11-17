@@ -289,9 +289,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         targetPlayer.AddComponent<A0107>();
     }
     [PunRPC]
-    private void A108(int PlayerNumber)
+    private void A108(int PlayerNumber)//타격시 일시적 이속 증가 A0108이 ..타격시 인줄 알고 스크립트만들고보니아니라서 손안댐
     {
-        Debug.Log("미완성");
+        ChangePlayerStatHandler(PlayerNumber);
+        targetPlayer.AddComponent<A0108>();
     }
     [PunRPC]
     private void A109(int PlayerNumber)// 소형화 //테스트안해봄
@@ -332,19 +333,25 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         targetPlayer.AddComponent<A0113>();
     }
     [PunRPC]
-    private void A114(int PlayerNumber)
+    private void A114(int PlayerNumber)//불
     {
-        Debug.Log("미완성");
+        ChangePlayerStatHandler(PlayerNumber);
+        WeaponSystem a = targetPlayer.GetComponent<WeaponSystem>();
+        a.fire = true;
     }
     [PunRPC]
-    private void A115(int PlayerNumber)
+    private void A115(int PlayerNumber)//물
     {
-        Debug.Log("미완성");
+        ChangePlayerStatHandler(PlayerNumber);
+        WeaponSystem a = targetPlayer.GetComponent<WeaponSystem>();
+        a.water = true;
     }
     [PunRPC]
-    private void A116(int PlayerNumber)
+    private void A116(int PlayerNumber)//사이즈샷 몸크기 비례 총알크기업
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        WeaponSystem a = targetPlayer.GetComponent<WeaponSystem>();
+        a.sizeBody = true;
     }
     [PunRPC]
     private void A117(int PlayerNumber)//777 공격 확률 조정 추후 공격 성공 확률 비슷한 개념으로 도입될가능성이 있음
@@ -429,9 +436,13 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         targetPlayer.AddComponent<A0122>();
     }
     [PunRPC]
-    private void A123(int PlayerNumber)
+    private void A123(int PlayerNumber)//큰힘큰책임 //총알 피아구분 x
     {
-        Debug.Log("미완성");
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        playerstatHandler.ATK.coefficient *= 1.3f;
+        WeaponSystem a = targetPlayer.GetComponent<WeaponSystem>();
+        a.target = BulletTarget.All;
+
     }
     //테스트 완료 그러나 이벤트로 작동하여 추가 테스트가 필요
     [PunRPC]
@@ -476,14 +487,19 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     #region All2
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 공용2티어
     [PunRPC]
-    private void A201(int PlayerNumber)
+    private void A201(int PlayerNumber)//탱탱볼
     {
-        Debug.Log("미완성");
+        ChangePlayerStatHandler(PlayerNumber);
+        playerstatHandler.BulletLifeTime.coefficient *= 2f;
+        WeaponSystem a = targetPlayer.GetComponent<WeaponSystem>();
+        a.canAngle = true;
     }
     [PunRPC]
-    private void A202(int PlayerNumber)
+    private void A202(int PlayerNumber)//베스트프렌드불렛 총알이거대해집니다 //현재 1.3배
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        WeaponSystem a = targetPlayer.GetComponent<WeaponSystem>();
+        a.sizeUp = true;
     }
     [PunRPC]
     private void A203(int PlayerNumber)//버서커 최대체력 / 현재 체력비례 뎀증
@@ -492,9 +508,11 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         targetPlayer.AddComponent<A0203>();
     }
     [PunRPC]
-    private void A204(int PlayerNumber)
+    private void A204(int PlayerNumber)//로케이터 거리비례약해짐
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        WeaponSystem a = targetPlayer.GetComponent<WeaponSystem>();
+        a.locator = true;
     }
     [PunRPC]
     private void A205(int PlayerNumber)//퍼스트 블러드 장전후 첫총알 데미지 증가
@@ -559,14 +577,18 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("이 증강도 상당히 우려가 됩니다 우클릭 체크 하고 말해주세요");
     }
     [PunRPC]
-    private void A215(int PlayerNumber)
+    private void A215(int PlayerNumber)//화염
     {
-        Debug.Log("미완성");
+        ChangePlayerStatHandler(PlayerNumber);
+        WeaponSystem a = targetPlayer.GetComponent<WeaponSystem>();
+        a.burn = true;
     }
     [PunRPC]
-    private void A216(int PlayerNumber)
+    private void A216(int PlayerNumber)//아이스
     {
-        Debug.Log("미완성");
+        ChangePlayerStatHandler(PlayerNumber);
+        WeaponSystem a = targetPlayer.GetComponent<WeaponSystem>();
+        a.ice = true;
     }
     [PunRPC]
     private void A217(int PlayerNumber)//용기의 깃발 범위내 이속 공속증가
@@ -575,9 +597,11 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         targetPlayer.AddComponent<A0217>();
     }
     [PunRPC]
-    private void A218(int PlayerNumber)
+    private void A218(int PlayerNumber)//과질량 장치
     {
-        Debug.Log("미완성");
+        ChangePlayerStatHandler(PlayerNumber);
+        WeaponSystem a = targetPlayer.GetComponent<WeaponSystem>();
+        a.gravity = true;
     }
     [PunRPC]
     private void A219(int PlayerNumber) //고장내기mk2 1,2,3 공용 증강 이기에 좀 남다른 코드임 30
@@ -685,9 +709,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     #region Sniper1
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@스나이퍼 1티어
     [PunRPC]
-    private void A1101(int PlayerNumber)
+    private void A1101(int PlayerNumber) //대기만성 적 타격시 공증
     {
-        Debug.Log("미완성");
+        ChangePlayerStatHandler(PlayerNumber);
+        targetPlayer.AddComponent<A1101>();
     }
     [PunRPC]
     private void A1102(int PlayerNumber)//경량화 << 이름뭔가 이상함 장탄수가 5 증가 하며 데미지 감소, 공격 속도 증가, 이동속도 증가를 얻습니다.
@@ -761,9 +786,11 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A1202(int PlayerNumber)
+    private void A1202(int PlayerNumber)//최장거리 저격 로케이터의 반대버전
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        WeaponSystem a = targetPlayer.GetComponent<WeaponSystem>();
+        a.sniping = true;
     }
     [PunRPC]
     private void A1203(int PlayerNumber)
