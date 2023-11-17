@@ -9,7 +9,7 @@ public class WeaponSystem : MonoBehaviour
     private PhotonView pv;
     public Transform muzzleOfAGun;
     private GameObject bullet;
-    public BulletTarget target;
+    public List<BulletTarget> targets;
     public bool isDamage;
     public bool sizeUp;
     public bool sizeBody;
@@ -36,7 +36,8 @@ public class WeaponSystem : MonoBehaviour
         pv             = GetComponent<PhotonView>();
         _controller    = GetComponent<TopDownCharacterController>();
         _viewID        = pv.ViewID;
-        target = BulletTarget.Enemy;
+        //target = BulletTarget.Enemy;
+        targets = new List<BulletTarget>() { BulletTarget.Enemy };        
         // 추가
         sizeUp = false;
         sizeBody = false;
@@ -65,11 +66,11 @@ public class WeaponSystem : MonoBehaviour
 
             float _ATK = _controller.playerStatHandler.ATK.total;
             float _BLT = _controller.playerStatHandler.BulletLifeTime.total;
-            int _target = (int)target;
+            var _targets = targets;
             bool _isDamage = isDamage;
 
 
-            pv.RPC("BS", RpcTarget.All, rot, _ATK, _BLT, _target, _isDamage, _viewID);
+            pv.RPC("BS", RpcTarget.All, rot, _ATK, _BLT, _targets, _isDamage, _viewID);
             _controller.playerStatHandler.CurAmmo--;
         }
     }
@@ -86,20 +87,23 @@ public class WeaponSystem : MonoBehaviour
 
             float _ATK = _controller.playerStatHandler.ATK.total;
             float _BLT = _controller.playerStatHandler.BulletLifeTime.total;
-            int _target = (int)target;
+            var _targets = targets;
             bool _isDamage = isDamage;
 
-            pv.RPC("BS", RpcTarget.All, rot, _ATK, _BLT, _target, _isDamage, _viewID);
+            pv.RPC("BS", RpcTarget.All, rot, _ATK, _BLT, _targets, _isDamage, _viewID);
             //_controller.playerStatHandler.CurAmmo--;
         }
         _cool.bulletNum = 0;
     }
 
     [PunRPC]
-    public void BS(Quaternion rot, float Atk, float bulletLifeTime,int _target, bool _isDamage, int _viewID)//BulletSpawn
+    public void BS(Quaternion rot, float Atk, float bulletLifeTime,List<BulletTarget> _targets, bool _isDamage, int _viewID)//BulletSpawn
     {
         Debug.Log("타겟");
-        Debug.Log(_target);
+        foreach (var target in _targets)
+        {
+            Debug.Log(target);
+        }
         Debug.Log("데미지를 주는가?");
         Debug.Log(_isDamage);
         float size=1f;
@@ -130,7 +134,7 @@ public class WeaponSystem : MonoBehaviour
         }
         _bullet.ATK = Atk;
         _bullet.BulletLifeTime = bulletLifeTime;
-        _bullet.target = (BulletTarget)_target;
+        _bullet.targets = _targets;
         _bullet.IsDamage = _isDamage;
         _bullet.BulletOwner = _viewID;
         _bullet.canAngle = canAngle;

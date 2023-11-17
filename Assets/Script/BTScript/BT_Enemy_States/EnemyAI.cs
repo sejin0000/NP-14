@@ -202,7 +202,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         Bullet playerBullet = collision.gameObject.GetComponent<Bullet>();
 
 
-        if (collision.gameObject.tag == "Bullet" && playerBullet.target == BulletTarget.Enemy && playerBullet.IsDamage)
+        if (collision.gameObject.tag == "Bullet" && playerBullet.targets.Contains(BulletTarget.Enemy) && playerBullet.IsDamage)
         {
             float atk = collision.transform.GetComponent<Bullet>().ATK;
             isChase = true;

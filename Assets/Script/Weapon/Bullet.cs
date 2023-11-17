@@ -23,7 +23,8 @@ public class Bullet : MonoBehaviour
     public bool burn;
     public bool gravity;
     public bool Penetrate;
-    public BulletTarget target;
+    public List<BulletTarget> targets;
+    //targets.Contains(BulletTarget.Enemy)
     Vector2 _direction;
     float time = 0f;
 

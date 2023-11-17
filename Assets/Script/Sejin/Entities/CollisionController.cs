@@ -21,7 +21,10 @@ public class CollisionController : MonoBehaviour
 
 
 
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet") && !playerStat.Invincibility && !playerStat.isDie && collision.gameObject.GetComponent<Bullet>().target == BulletTarget.Player)
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet") 
+            && !playerStat.Invincibility 
+            && !playerStat.isDie 
+            && collision.gameObject.GetComponent<Bullet>().targets.Contains(BulletTarget.Player))
         {
             if (PV.IsMine)
             {

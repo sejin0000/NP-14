@@ -36,7 +36,8 @@ public class A3301_1 : MonoBehaviour
             Bullet _bullet = collision.GetComponent<Bullet>();
 
             _bullet.BulletLifeTime = 10f;//시간 받아와야겠는데 모르겠으니까 걍 10초때린다 불만없제
-            _bullet.target = BulletTarget.Enemy;
+            _bullet.targets.Remove(BulletTarget.Player);
+            _bullet.targets.Add(BulletTarget.Enemy);
             //아래는 반사
             collision.gameObject.transform.right = -collision.gameObject.transform.right;
         }
