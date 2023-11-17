@@ -13,7 +13,7 @@ public class A0122 : MonoBehaviourPun
         {
             controller = GetComponent<TopDownCharacterController>();
             playerStatHandler= GetComponent<PlayerStatHandler>();
-            controller.OnSkillEvent += CreateFire; // 중요한부분
+            controller.OnRollEvent += CreateFire; // 중요한부분
         }
     }
     // Update is called once per frame
