@@ -11,6 +11,9 @@ public class Node
     public RectInt nodeRect; //분리된 공간의 rect정보
     public RectInt roomRect; //분리된 공간 속 방의 rect정보
     public bool isConnect = false;
+
+    public int roadCount = 0;
+
     public Vector2Int center
     {
         get
@@ -24,4 +27,5 @@ public class Node
     {
         this.nodeRect = rect;
     }
+
 }
