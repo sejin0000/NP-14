@@ -24,27 +24,27 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     [SerializeField] private PlayerSO playerStats;
 
-    public Stats ATK;                 // ���ݷ�
-    public Stats HP;                  // ü��
-    public Stats Speed;               // �̵� �ӵ�
-    public Stats AtkSpeed;            // ���� �ӵ�
-    public Stats ReloadCoolTime;      // ����   �� Ÿ��
-    public Stats SkillCoolTime;       // ��ų   �� Ÿ��
-    public Stats RollCoolTime;        // ������ �� Ÿ��
-    public Stats BulletSpread;        // ź����
-    public Stats BulletLifeTime;      // �Ѿ� ��Ÿ�
-    public Stats LaunchVolume;        // �ѹ��� �߻��� �߻緮
-    public Stats Critical;            // ũ��Ƽ��
-    public Stats AmmoMax;             // ��ź��
+    public Stats ATK;                 // 공격력
+    public Stats HP;                  // 체력
+    public Stats Speed;               // 이동 속도
+    public Stats AtkSpeed;            // 공격 속도
+    public Stats ReloadCoolTime;      // 장전   쿨 타임
+    public Stats SkillCoolTime;       // 스킬   쿨 타임
+    public Stats RollCoolTime;        // 구르기 쿨 타임
+    public Stats BulletSpread;        // 탄퍼짐
+    public Stats BulletLifeTime;      // 총알 사거리
+    public Stats LaunchVolume;        // 한번의 발사의 발사량
+    public Stats Critical;            // 크리티컬
+    public Stats AmmoMax;             // 장탄수
     public float defense;
 
 
-    [HideInInspector] public SpriteLibraryAsset PlayerSprite; // ��������Ʈ
-    [HideInInspector] public SpriteLibraryAsset WeaponSprite; // ��������Ʈ
-    [HideInInspector] public Sprite BulletSprite; // ��������Ʈ
+    [HideInInspector] public SpriteLibraryAsset PlayerSprite; // 스프라이트
+    [HideInInspector] public SpriteLibraryAsset WeaponSprite; // 스프라이트
+    [HideInInspector] public Sprite BulletSprite; // 스프라이트
 
-    [HideInInspector] public SpriteLibrary PlayerSpriteCase; // ��������Ʈ
-    [HideInInspector] public SpriteLibrary WeaponSpriteCase; // ��������Ʈ
+    [HideInInspector] public SpriteLibrary PlayerSpriteCase; // 스프라이트
+    [HideInInspector] public SpriteLibrary WeaponSpriteCase; // 스프라이트
 
 
     public GameObject _PlayerSprite;
@@ -110,25 +110,25 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     [SerializeField] private float curAmmo;
     //[HideInInspector]
-    public float CurAmmo //���� ��ź
-    { 
-        get 
-        { 
-                return curAmmo; 
+    public float CurAmmo //현재 잔탄
+    {
+        get
+        {
+            return curAmmo;
         }
-        set 
-        { 
-            if (value > AmmoMax.total) 
-                curAmmo = AmmoMax.total; 
-            curAmmo = value; 
-            OnChangeAmmorEvent?.Invoke(); 
-        } 
-    } 
-    [HideInInspector] public bool CanFire;                                //�߻�   ��������
-    [HideInInspector] public bool CanReload;                              //����   ��������
-    [HideInInspector] public bool CanSkill;                               //��ų   ��������
-    [HideInInspector] public bool CanRoll;                                //������ ��������
-    [HideInInspector] public bool Invincibility;                          //����
+        set
+        {
+            if (value > AmmoMax.total)
+                curAmmo = AmmoMax.total;
+            curAmmo = value;
+            OnChangeAmmorEvent?.Invoke();
+        }
+    }
+    [HideInInspector] public bool CanFire;                                //발사   가능한지
+    [HideInInspector] public bool CanReload;                              //장전   가능한지
+    [HideInInspector] public bool CanSkill;                               //스킬   가능한지
+    [HideInInspector] public bool CanRoll;                                //구르기 가능한지
+    [HideInInspector] public bool Invincibility;                          //무적
 
     public bool useSkill;
     public bool UseRoll;
@@ -233,7 +233,7 @@ public class PlayerStatHandler : MonoBehaviourPun
             DamegeTemp = DamegeTemp * defense;
             CurHP -= DamegeTemp;
             HitEvent?.Invoke();
-            HitEvent2?.Invoke(DamegeTemp);//�̰� ���� �ʿ��Ѱ��� �ʿ� ���°�찡 �ִµ� �Ѱ��� �Ҽ��� �ִ��� �𸣰��� �ϴ� �̷�����
+            HitEvent2?.Invoke(DamegeTemp);//이게 값이 필요한경우와 필요 없는경우가 있는데 한개로 할수가 있는지 모르겠음 일단 이렇게함
             Debug.Log("[PlayerStatHandler] " + "Damage Done");
         }
 
