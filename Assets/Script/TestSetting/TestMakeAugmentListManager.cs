@@ -50,7 +50,7 @@ public class TestMakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
     public void startset(GameObject gameobj)
     {
         playerObj = gameobj;
-        makeLisk();
+        //makeLisk();
     }
 
     private void Awake()
@@ -104,25 +104,25 @@ public class TestMakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
         SpecialAugmentSetting(SoldierAugment2, "Soldier2");
         SpecialAugmentSetting(SoldierAugment3, "Soldier3");
 
-        SpecialDictionary.Add("Soldier1", SoldierAugment1);
-        SpecialDictionary.Add("Soldier2", SoldierAugment2);
-        SpecialDictionary.Add("Soldier3", SoldierAugment3);
+        SoldierDictionary.Add("Soldier1", SoldierAugment1);
+        SoldierDictionary.Add("Soldier2", SoldierAugment2);
+        SoldierDictionary.Add("Soldier3", SoldierAugment3);
 
         SpecialAugmentSetting(ShotGunAugment1, "ShotGun1");
         SpecialAugmentSetting(ShotGunAugment2, "ShotGun2");
         SpecialAugmentSetting(ShotGunAugment3, "ShotGun3");
 
-        SpecialDictionary.Add("ShotGun1", ShotGunAugment1);
-        SpecialDictionary.Add("ShotGun2", ShotGunAugment2);
-        SpecialDictionary.Add("ShotGun3", ShotGunAugment3);
+        ShotGunDictionary.Add("ShotGun1", ShotGunAugment1);
+        ShotGunDictionary.Add("ShotGun2", ShotGunAugment2);
+        ShotGunDictionary.Add("ShotGun3", ShotGunAugment3);
 
         SpecialAugmentSetting(SniperAugment1, "Sniper1");
         SpecialAugmentSetting(SniperAugment2, "Sniper2");
         SpecialAugmentSetting(SniperAugment3, "Sniper3");
 
-        SpecialDictionary.Add("Sniper1", SniperAugment1);
-        SpecialDictionary.Add("Sniper2", SniperAugment2);
-        SpecialDictionary.Add("Sniper3", SniperAugment3);
+        SniperDictionary.Add("Sniper1", SniperAugment1);
+        SniperDictionary.Add("Sniper2", SniperAugment2);
+        SniperDictionary.Add("Sniper3", SniperAugment3);
     }
     private void Start()
     {
