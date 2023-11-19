@@ -37,7 +37,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
     private Transform target;
     public Transform Target { get { return target; } 
-                               set { if (target != value) { OnTargetChaged(value); target = value; } } }//���� Ÿ��[Palyer]
+                               set { if (target != value) { OnTargetChaged(value); target = value; } } }//추적 타겟[Palyer]
     //public Collider2D target;
     public NavMeshAgent nav;
     public Vector3 navTargetPoint;              //nav 목적지
@@ -317,7 +317,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     }
     private void GaugeUpdate()
     {
-        images_Gauge.fillAmount = (float)currentHP / enemySO.hp; //ü��
+        images_Gauge.fillAmount = (float)currentHP / enemySO.hp; //체력
     }
 
     [PunRPC]
@@ -472,10 +472,9 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
                 if (angle < viewAngle * 0.5f)
                 {
                     isChase = true;
-                    Target = PlayersTransform[i]; // �þ߰� �ȿ� �ִ� �÷��̾�� currentTargetPlayer ����
+                    Target = PlayersTransform[i];  // 시야각 안에 있는 플레이어로 currentTargetPlayer 설정
                     Debug.DrawRay(transform.position, directionToPlayer * viewDistance, Color.red);
-
-                    Debug.Log($"Ÿ�� ����{Target}");
+                    Debug.Log($"타겟 수집{Target}");
                     break;
                 }
             }
@@ -592,7 +591,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         }            
         else
         {
-            nav.isStopped = false; // Ȱ��ȭ
+            nav.isStopped = false; // 활성화
             return true;
         }           
     }
@@ -679,7 +678,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             // 데이터를 전송
             stream.SendNext(hostPosition);
             //stream.SendNext(navTargetPoint);
-            stream.SendNext(spriteRenderer.flipX); // �̰� �³�?
+            stream.SendNext(spriteRenderer.flipX); // 이게 맞나?
             stream.SendNext(enemyAim.transform.rotation);
 
         }

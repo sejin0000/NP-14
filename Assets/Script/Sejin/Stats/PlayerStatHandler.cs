@@ -251,8 +251,9 @@ public class PlayerStatHandler : MonoBehaviourPun
                 OnDieEvent?.Invoke();
                 this.gameObject.layer = 0;
             }
-
+            Debug.Log($"데미지 {DamegeTemp}");
             DamegeTemp = DamegeTemp * defense;
+            Debug.Log($"방어력 계수 적용 실제 데미지 {DamegeTemp}");
             CurHP -= DamegeTemp;
             HitEvent?.Invoke();
             HitEvent2?.Invoke(DamegeTemp);//이게 값이 필요한경우와 필요 없는경우가 있는데 한개로 할수가 있는지 모르겠음 일단 이렇게함
