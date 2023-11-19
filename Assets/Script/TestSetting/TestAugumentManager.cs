@@ -286,7 +286,7 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     [PunRPC]
     private void A107(int PlayerNumber)//알맞은 타이밍 //가만히 있는 시간에 비례하여 공업
     {
-        ChangePlayerStatHandler(PlayerNumber);
+        ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A0107>();
     }
     [PunRPC]
