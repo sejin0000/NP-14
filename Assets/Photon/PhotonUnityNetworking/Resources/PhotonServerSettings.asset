@@ -210,6 +210,7 @@ MonoBehaviour:
   - GiveSpeed
   - Groggy
   - KillEvent
+  - DecreaseHPByObject
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
