@@ -1,7 +1,5 @@
 using Photon.Pun;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -99,12 +97,16 @@ public class Debuff : MonoBehaviourPun
         int endtime = 3;
         PhotonView photonView = PhotonView.Find(viewID);
         PlayerStatHandler targetPlayer = photonView.gameObject.GetComponent<PlayerStatHandler>();
-        //애도 조건 처리하나
-        targetPlayer.AtkSpeed.added += 0.5f;
-        targetPlayer.Speed.added += 0.5f;
-        yield return endtime;
-        targetPlayer.AtkSpeed.added -= 0.5f;
-        targetPlayer.Speed.added -= 0.5f;
+        if (targetPlayer.CanLowSteam) 
+        {
+            targetPlayer.CanLowSteam = false;
+            targetPlayer.AtkSpeed.added += 0.5f;
+            targetPlayer.Speed.added += 0.5f;
+            yield return endtime;
+            targetPlayer.AtkSpeed.added -= 0.5f;
+            targetPlayer.Speed.added -= 0.5f;
+            targetPlayer.CanLowSteam = true;
+        }
     }
     public static void GiveTouchSpeed(GameObject gameObject)
     {

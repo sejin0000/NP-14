@@ -2,6 +2,7 @@ using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XR;
@@ -60,6 +61,7 @@ public class PlayerStatHandler : MonoBehaviourPun
     private int curRegenCoin;
     private int kill;
     [HideInInspector] public bool CanSpeedBuff;
+    [HideInInspector] public bool CanLowSteam;
     public int CurRegenCoin
     {
         get { return curRegenCoin; }
@@ -169,6 +171,7 @@ public class PlayerStatHandler : MonoBehaviourPun
         UseRoll = true;
         Invincibility = false;
         CanSpeedBuff = true;
+        CanLowSteam = true;
 
         isNoramlMove = true;
         isCanSkill=true;
@@ -189,6 +192,20 @@ public class PlayerStatHandler : MonoBehaviourPun
         defense = 1;
 
         IsChargeAttack = false;
+    }
+    private void OnEnable()
+    {
+        if (!CanSpeedBuff) 
+        {
+            Speed.added -= 3f;
+            CanSpeedBuff = true;
+        }
+        if (!CanLowSteam) 
+        {
+            CanSpeedBuff = true;
+            AtkSpeed.added -= 0.5f;
+            Speed.added -= 0.5f;
+        }
     }
 
     private void Start()
