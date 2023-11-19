@@ -11605,9 +11605,9 @@ GameObject:
   - component: {fileID: 362061583}
   - component: {fileID: 362061582}
   - component: {fileID: 362061581}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TempTile_Wall
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
