@@ -33,7 +33,7 @@ public class Debuff : MonoBehaviourPun
         StartCoroutine(Fire(power, viewID));
     }
 
-    static IEnumerator Fire(float damege, int viewID)
+    private IEnumerator Fire(float damege, int viewID)
     {
         int endtime = 1;
         PhotonView photonView = PhotonView.Find(viewID);
@@ -69,7 +69,7 @@ public class Debuff : MonoBehaviourPun
         StartCoroutine("Ice",viewID);
     }
 
-    static IEnumerator Ice(int viewID)
+    private IEnumerator Ice(int viewID)
     {
         int endtime = 5;
         PhotonView photonView = PhotonView.Find(viewID);
@@ -103,7 +103,7 @@ public class Debuff : MonoBehaviourPun
         StartCoroutine("LowSteamPack", viewID);
     }
 
-    static IEnumerator LowSteamPack(int viewID)
+    private IEnumerator LowSteamPack(int viewID)
     {
         int endtime = 3;
         PhotonView photonView = PhotonView.Find(viewID);
