@@ -28,7 +28,7 @@ public class A0107 : MonoBehaviourPun
             oldpower = 0;
             magnification = 0.1f;
             powerTime = 0f;
-            Ismove =true;
+            Ismove =false;
         }
     }
     private void Update()
