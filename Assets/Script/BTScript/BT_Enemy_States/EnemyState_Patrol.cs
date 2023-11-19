@@ -3,7 +3,7 @@
     using UnityEngine;
     using myBehaviourTree;
     using static UnityEngine.RuleTile.TilingRuleOutput;
-using Photon.Pun;
+    using Photon.Pun;
 
     public class EnemyState_Patrol : BTAction
     {

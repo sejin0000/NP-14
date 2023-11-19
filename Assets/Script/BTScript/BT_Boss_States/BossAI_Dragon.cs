@@ -2,7 +2,6 @@ using myBehaviourTree;
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
@@ -98,6 +97,11 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         {
             PlayersTransform.Add(_value);
         }
+
+        //생성 시 랜덤 타겟 지정
+        int randomTarget = Random.Range(0, PlayersTransform.Count);
+
+        currentTarget = PlayersTransform[randomTarget]; 
     }
     void Update()
     {
@@ -175,20 +179,19 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
             }
             if (playerBullet.burn)
             {
-                PhotonNetwork.Instantiate("AugmentList/A0122", transform.localPosition, quaternion.identity);
+                PhotonNetwork.Instantiate("AugmentList/A0122", transform.localPosition, Quaternion.identity);
             }
             if (playerBullet.gravity)
             {
                 int a = UnityEngine.Random.Range(0, 10);
                 if (a >= 8)
                 {
-                    PhotonNetwork.Instantiate("AugmentList/A0218", transform.localPosition, quaternion.identity);
+                    PhotonNetwork.Instantiate("AugmentList/A0218", transform.localPosition, Quaternion.identity);
                 }
             }
             //모든 플레이어에게 현재 적의 체력 동기화
             PV.RPC("DecreaseHP", RpcTarget.All, atk);
 
-            float BulletknockbackDistance = 2.0f;
 
 
             //여기다 불렛 모시깽이 얻기
