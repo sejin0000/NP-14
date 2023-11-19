@@ -26,6 +26,7 @@ public class A0127 : MonoBehaviourPun
         }
     }
     // Update is called once per frame
+    [PunRPC]
     void AutoHealingStart()
     {
         if (photonView.IsMine)
