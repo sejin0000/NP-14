@@ -73,11 +73,15 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Wall") && canAngle)
+        if (canAngle)
         {
             Vector3 income = _direction; // ภิป็บคลอ
             Vector3 normal = collision.contacts[0].normal; // นýผฑบคลอ
             _direction = Vector3.Reflect(income, normal).normalized; // นÝป็บคลอ
+        }
+        else if (collision.gameObject.layer == LayerMask.NameToLayer("Wall")) 
+        {
+            Destroy();
         }
     }
 }
