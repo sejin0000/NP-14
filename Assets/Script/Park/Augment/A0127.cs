@@ -1,6 +1,7 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 public class A0127 : MonoBehaviourPun
@@ -40,6 +41,10 @@ public class A0127 : MonoBehaviourPun
         while (true)
         {
             //if(gameObject.SetActive() == true)
+            if (playerStat.CurHP <= 0) 
+            {
+                yield return null;
+            }
             playerStat.CurHP += regenhp;
             yield return new WaitForSeconds(autoTime);
             Debug.Log("코루틴 돌리는중 new 문제있으면 패치");
