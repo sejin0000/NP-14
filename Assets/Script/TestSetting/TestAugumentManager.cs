@@ -336,14 +336,14 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     [PunRPC]
     private void A114(int PlayerNumber)//불
     {
-        ChangePlayerStatHandler(PlayerNumber);
+        ChangeOnlyPlayer(PlayerNumber);
         WeaponSystem a = targetPlayer.GetComponent<WeaponSystem>();
         a.fire = true;
     }
     [PunRPC]
     private void A115(int PlayerNumber)//물
     {
-        ChangePlayerStatHandler(PlayerNumber);
+        ChangeOnlyPlayer(PlayerNumber);
         WeaponSystem a = targetPlayer.GetComponent<WeaponSystem>();
         a.water = true;
     }
