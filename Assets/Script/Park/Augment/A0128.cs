@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,14 +39,15 @@ public class A0128 : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet"))
-        //{
-        //    Bullet a = collision.GetComponent<Bullet>();
-        //    if (collision.gameObject.GetComponent<Bullet>().targets.ContainsValue((int)BulletTarget.Player))
-        //    {
-        //        Destroy(collision.gameObject);
-        //    }
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet"))
+        {
+            Bullet a = collision.GetComponent<Bullet>();
+            if (a.targets.ContainsValue((int)BulletTarget.Player))
+            {
+                PhotonNetwork.Destroy(collision.gameObject);
+                Destroy(collision.gameObject);
+            }
 
-        //}
+        }
     }
 }

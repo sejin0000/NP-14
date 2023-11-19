@@ -81,6 +81,7 @@ public class Bullet : MonoBehaviour
         }
         else if (collision.gameObject.layer == LayerMask.NameToLayer("Wall")) 
         {
+            PhotonNetwork.Destroy(gameObject);
             Destroy();
         }
     }
