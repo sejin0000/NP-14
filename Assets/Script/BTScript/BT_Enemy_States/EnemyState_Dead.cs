@@ -25,6 +25,10 @@ public class EnemyState_Dead : BTAction
         //골드 여기에
         //사망 시 파티클이나 기타 효과 여기에
         PhotonView photonView = PhotonView.Find(enemyAI.lastAttackPlayer);
+        if (!photonView.gameObject.GetComponent<PlayerStatHandler>()) 
+        {
+            return;
+        }
         PlayerStatHandler targetPlayer = photonView.gameObject.GetComponent<PlayerStatHandler>(); ;
         targetPlayer.photonView.RPC("KillEvent", RpcTarget.All);
 
