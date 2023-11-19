@@ -31,7 +31,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     //컴포넌트 및 기타 외부요소(일부 할당은 하위 노드에서 진행)
     public EnemySO enemySO;                  // Enemy 정보 [모든 Action Node에 owner로 획득시킴]
     public SpriteRenderer spriteRenderer;
-    public CircleCollider2D collider2D;
     public Animator anim;
 
 
@@ -103,7 +102,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         nav = GetComponent<NavMeshAgent>();
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        collider2D = GetComponent<CircleCollider2D>();
         PV = GetComponent<PhotonView>();
         CanIce = true;
         CanFire = true;
