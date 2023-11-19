@@ -15,7 +15,7 @@ public class Debuff : MonoBehaviourPun
             Instance = this;
         }
     }
-    public void GiveFire(GameObject gameObject , float totalpower) 
+    public void GiveFire(GameObject gameObject , float totalpower , int myPVID) 
     {
         float power = totalpower * 0.2f;
 
@@ -23,17 +23,17 @@ public class Debuff : MonoBehaviourPun
         {
             PhotonView pv = gameObject.GetComponent<PhotonView>();
             int viewID = pv.ViewID;
-            photonView.RPC("FireGive", RpcTarget.All, power, viewID);
+            photonView.RPC("FireGive", RpcTarget.All, power, viewID,myPVID);
         }
     }
 
     [PunRPC]
-    public void FireGive(float power,int viewID)
+    public void FireGive(float power,int viewID, int myPVID)
     {
-        StartCoroutine(Fire(power, viewID));
+        StartCoroutine(Fire(power, viewID, myPVID));
     }
 
-    private IEnumerator Fire(float damege, int viewID)
+    private IEnumerator Fire(float damege, int viewID, int myPVID)
     {
         int endtime = 1;
         PhotonView photonView = PhotonView.Find(viewID);
@@ -47,7 +47,7 @@ public class Debuff : MonoBehaviourPun
             for (int i = 0; i < 5; ++i)
             {
                 a.DecreaseHP(finalDamege);
-                photonView.RPC("DecreaseHP", RpcTarget.Others, finalDamege);
+                photonView.RPC("DecreaseHP", RpcTarget.Others, finalDamege, myPVID);
                 yield return new WaitForSeconds(endtime);
             }
             a.CanFire = true;
