@@ -73,15 +73,23 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        Debug.Log("접촉테스트콜라이더");
+        Debug.Log($"앵글테스트 {canAngle}");
         if (canAngle)
         {
+            Debug.Log("111111111111");
             Vector3 income = _direction; // 입사벡터
             Vector3 normal = collision.contacts[0].normal; // 법선벡터
             _direction = Vector3.Reflect(income, normal).normalized; // 반사벡터
         }
-        else if (collision.gameObject.layer == LayerMask.NameToLayer("Wall")) 
+        else if (collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
         {
+            Debug.Log("2222222222222");
             Destroy();
         }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log("접촉테스트트리거");
     }
 }
