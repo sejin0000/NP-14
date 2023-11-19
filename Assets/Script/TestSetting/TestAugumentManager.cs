@@ -358,9 +358,13 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     private void A117(int PlayerNumber)//777 공격 확률 조정 추후 공격 성공 확률 비슷한 개념으로 도입될가능성이 있음
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
-        PlayerInputController inputControl = targetPlayer.GetComponent<PlayerInputController>();
-        inputControl.atkPercent -= 30;
-        playerstatHandler.ATK.coefficient *= 1.3f;
+        PhotonView a = targetPlayer.GetPhotonView();
+        if (a.IsMine)
+        {
+            PlayerInputController inputControl = targetPlayer.GetComponent<PlayerInputController>();
+            inputControl.atkPercent -= 30;
+            playerstatHandler.ATK.coefficient *= 1.3f;
+        }
     }
     [PunRPC]
     private void A118(int PlayerNumber)        //고장내기 mk3 1,2,3 공용 증강 이기에 좀 남다른 코드임  현재 10 /30 /60 총합 100확률을 가지고 있습죠
