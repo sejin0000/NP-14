@@ -41,6 +41,8 @@ public class A0111 : MonoBehaviourPun//공격을 하지 않은 시간에 비례하여 다음 공�
         if (!stop && photonView.IsMine) 
         {
             playerStat.ATK.added -= power;//영구 증가면 이부분 주석 처리 하고 파워를 삭제 그런데 그럼 너무사기같음
+            power = 0f;
+            Debug.Log($"현재 공격력 {playerStat.ATK.added}");
             stop = true;
         }
     }
