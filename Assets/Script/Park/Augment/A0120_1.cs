@@ -11,17 +11,15 @@ public class A0120_1 : MonoBehaviourPun
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-        {
-            Debug.Log("몬스터 스프라이트 변경시 코드 변경");
-            Debuff.Instance.GiveIce(collision.gameObject.transform.parent.gameObject);
+        {            
+            Debuff.Instance.GiveIce(collision.gameObject);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
-        {
-            Debug.Log("몬스터 스프라이트 변경시 코드 변경");
-            Debuff.Instance.GiveIce(collision.gameObject.transform.parent.gameObject);
+        {            
+            Debuff.Instance.GiveIce(collision.gameObject);
         }
     }
     private void Update()
