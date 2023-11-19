@@ -361,8 +361,8 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
         PhotonView a = targetPlayer.GetPhotonView();
         if (a.IsMine)
         {
-            PlayerInputController inputControl = targetPlayer.GetComponent<PlayerInputController>();
-            inputControl.atkPercent -= 30;
+            PlayerInputController inputControl = targetPlayer.GetComponent<PlayerInputController>();    
+            inputControl.atkPercent -= 10;
             playerstatHandler.ATK.coefficient *= 1.3f;
         }
     }
