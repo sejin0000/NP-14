@@ -637,6 +637,10 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
     public void SetPartyPlayerInfo()
     {
+        PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue("IsTest", out object IsTest);
+        if ((bool)IsTest)
+            return;
+
         playerInfoListEntries.Clear();
 
         for (int i = 0; i < PartyBox.transform.childCount; i++)
