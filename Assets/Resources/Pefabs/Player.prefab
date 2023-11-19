@@ -597,6 +597,8 @@ MonoBehaviour:
   isDie: 0
   RegenHP: 0
   MaxRegenCoin: 0
+  CanSpeedBuff: 0
+  CanLowSteam: 0
   MaxSkillStack: 0
   CurSkillStack: 0
   MaxRollStack: 0
