@@ -317,7 +317,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         playerstatHandler.Speed.coefficient *= 0.8f;
     }
     [PunRPC]
-    private void A111(int PlayerNumber)//r
+    private void A111(int PlayerNumber)//침착한 일격
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A0111>();
@@ -326,7 +326,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     private void A112(int PlayerNumber)//빠른장전
     {
         ChangePlayerStatHandler(PlayerNumber);
-        playerstatHandler.ReloadCoolTime.added -= 0.3f;
+        playerstatHandler.ReloadCoolTime.coefficient *= 0.7f;
     }
     [PunRPC]
     private void A113(int PlayerNumber)// 머니=파워

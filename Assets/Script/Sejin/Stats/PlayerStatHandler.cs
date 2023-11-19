@@ -236,7 +236,7 @@ public class PlayerStatHandler : MonoBehaviourPun
         DamegeTemp = damage;
         GetDamege?.Invoke(DamegeTemp);
         int a = UnityEngine.Random.Range(0, 100);
-        if (evasionPersent <= a) 
+        if (evasionPersent <= a)
         {
             if (CurHP - DamegeTemp <= 0)
             {
@@ -258,6 +258,10 @@ public class PlayerStatHandler : MonoBehaviourPun
             HitEvent?.Invoke();
             HitEvent2?.Invoke(DamegeTemp);//이게 값이 필요한경우와 필요 없는경우가 있는데 한개로 할수가 있는지 모르겠음 일단 이렇게함
             Debug.Log("[PlayerStatHandler] " + "Damage Done");
+        }
+        else 
+        {
+            Debug.Log("피함 피함 피함");
         }
 
     }

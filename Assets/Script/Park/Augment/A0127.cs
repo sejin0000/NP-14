@@ -40,7 +40,8 @@ public class A0127 : MonoBehaviourPun
         {
             //if(gameObject.SetActive() == true)
             playerStat.CurHP += regenhp;
-            yield return autoTime;
+            yield return new WaitForSeconds(autoTime);
+            Debug.Log("코루틴 돌리는중 new 문제있으면 패치");
         }
     }
 }
