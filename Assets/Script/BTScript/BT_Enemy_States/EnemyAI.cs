@@ -331,7 +331,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     [PunRPC]
-    public void DecreaseHP(float damage, int viewID = 0)
+    public void DecreaseHP(float damage)
     {
         if (!isLive) 
         {
@@ -342,26 +342,27 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         currentHP -= damage;
         GaugeUpdate();
         if (currentHP <= 0)
-        {
-            if (viewID != 0)
-            {
-                lastAttackPlayer = viewID;
-            }
-            //플레이어의 뷰 아이디 여깄어요         
+        {      
             isLive = false;
         }
     }
+
 
     //정확히
     [PunRPC]
     public void DecreaseHPByObject(float damage, int viewID)
     {
+        if (!isLive)
+        {
+            return;
+        }
+
+        SetStateColor();
         currentHP -= damage;
         GaugeUpdate();
         if (currentHP <= 0)
         {
-            //플레이어의 뷰 아이디 여깄어요
-            //lastAttackPlayer
+            lastAttackPlayer = viewID;     
             isLive = false;
         }
     }
