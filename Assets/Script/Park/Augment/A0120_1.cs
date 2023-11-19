@@ -11,7 +11,7 @@ public class A0120_1 : MonoBehaviourPun
             if (collision.gameObject.tag == "Enemy")
             {
                 GameObject target = collision.gameObject;
-                Debuff.GiveIce(target);
+                Debuff.Instance.GiveIce(target);
             }
     }
     private void Update()

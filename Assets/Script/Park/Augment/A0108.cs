@@ -24,7 +24,7 @@ public class A0108 : MonoBehaviourPun
     {
         if (playerStat.CanSpeedBuff) 
         {
-            Debuff.GiveTouchSpeed(this.gameObject);
+            Debuff.Instance.GiveTouchSpeed(this.gameObject);
         }
     }
 }

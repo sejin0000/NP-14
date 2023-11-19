@@ -11,7 +11,7 @@ public class A0122_1 : MonoBehaviour
         if (collision.gameObject.tag == "Enemy")
         {
             GameObject target = collision.gameObject;
-            Debuff.GiveFire(target, damege);
+            Debuff.Instance.GiveFire(target, damege);
         }
     }
     private void Update()
