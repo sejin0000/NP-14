@@ -308,7 +308,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     {
         //넉백 지속시간
         float knockbackRatio = (Time.time - knockbackStartTime) / knockbackDuration;
-        transform.position = Vector2.Lerp(knockbackStartPosition, knockbackTargetPosition, knockbackRatio);
+        transform.position = knockbackTargetPosition;
+        //transform.position = Vector2.Lerp(knockbackStartPosition, knockbackTargetPosition, knockbackRatio);
 
         if (knockbackRatio >= KnockbackLimitTime)
         {
