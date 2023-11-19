@@ -274,6 +274,7 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
         ChangePlayerStatHandler(PlayerNumber);
         float up = ((int)playerstatHandler.HP.total - 1);
         playerstatHandler.HP.added -= up;
+        playerstatHandler.CurHP = 1;
         playerstatHandler.ATK.added += up * 0.5f;
     }
     [PunRPC]
