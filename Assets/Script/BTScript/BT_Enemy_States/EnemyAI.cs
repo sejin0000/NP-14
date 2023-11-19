@@ -300,7 +300,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         isKnockback = true;
 
         //TODO : 계수 수정 - 0.15f
-        PV.RPC("DecreaseHP", RpcTarget.All, collision.transform.GetComponent<PlayerStatHandler>().HP.total * 0.15f);
+        int viewID = collision.gameObject.GetPhotonView().ViewID;
+        PV.RPC("DecreaseHPByObject", RpcTarget.All, collision.transform.GetComponent<PlayerStatHandler>().HP.total * 0.15f, viewID);
     }
     private void HandleKnockback()
     {
