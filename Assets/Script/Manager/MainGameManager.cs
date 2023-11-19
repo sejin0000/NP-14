@@ -118,6 +118,11 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         GameState = GameStates.Init;
         IsStateEnded = false;
 
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.Instantiate("Prefabs/Player/Debuff", Vector3.zero, Quaternion.identity);
+        }
+
         stageData = new StageData
         {
             currentArea = 1,
