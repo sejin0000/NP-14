@@ -333,12 +333,17 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void DecreaseHP(float damage, int viewID = 0)
     {
+        if (!isLive) 
+        {
+            return;
+        }
+
         SetStateColor();
         currentHP -= damage;
         GaugeUpdate();
         if (currentHP <= 0)
         {
-            if(viewID != 0)
+            if (viewID != 0)
             {
                 lastAttackPlayer = viewID;
             }
@@ -532,10 +537,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
     private void SetStateColor()
     {
-        if (spriteRenderer != null) 
-        {
-            spriteRenderer.color = Color.red;
-        }
+        spriteRenderer.color = Color.red;
     }
     #endregion
 
