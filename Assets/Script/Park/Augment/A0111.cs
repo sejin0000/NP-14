@@ -20,7 +20,7 @@ public class A0111 : MonoBehaviourPun//공격을 하지 않은 시간에 비례하여 다음 공�
             power = 0f;
             controller.OnAttackEvent += StartAtk;//이걸 돈획득 이벤트에검 
             controller.OnEndAttackEvent += StopAtk;
-            stop = false;
+            stop = true;
         }
     }
     private void Update()
