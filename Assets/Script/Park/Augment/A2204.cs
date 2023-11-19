@@ -14,7 +14,7 @@ public class A2204 : MonoBehaviourPun
     {
         for (int i = 0; i < target.Count; ++i) 
         {
-            Debuff.GiveLowSteamPack(target[i].gameObject);
+            Debuff.Instance.GiveLowSteamPack(target[i].gameObject);
         }
     }
     
