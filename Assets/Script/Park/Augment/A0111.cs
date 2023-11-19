@@ -25,10 +25,10 @@ public class A0111 : MonoBehaviourPun//공격을 하지 않은 시간에 비례하여 다음 공�
     }
     private void Update()
     {
-        if (stop) 
+        if (stop && photonView.IsMine) 
         {
-            playerStat.ATK.added += (Time.deltaTime) * 0.1f;
-            power += Time.deltaTime * 0.1f;
+            playerStat.ATK.added += (Time.deltaTime) * 0.5f;
+            power += Time.deltaTime * 0.5f;
         }
     }
     // Update is called once per frame
@@ -38,7 +38,10 @@ public class A0111 : MonoBehaviourPun//공격을 하지 않은 시간에 비례하여 다음 공�
     }
     void StopAtk()
     {
-        playerStat.ATK.added -= power;//영구 증가면 이부분 주석 처리 하고 파워를 삭제 그런데 그럼 너무사기같음
-        stop = true;
+        if (!stop && photonView.IsMine) 
+        {
+            playerStat.ATK.added -= power;//영구 증가면 이부분 주석 처리 하고 파워를 삭제 그런데 그럼 너무사기같음
+            stop = true;
+        }
     }
 }
