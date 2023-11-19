@@ -39,13 +39,15 @@ public class Debuff : MonoBehaviourPun
         PhotonView photonView = PhotonView.Find(viewID);
         GameObject targetPlayer = photonView.gameObject;
         EnemyAI a = targetPlayer.GetComponent<EnemyAI>();
+        float finalDamege = (damege < a.enemySO.hp * 0.01f)? a.enemySO.hp * 0.005f : damege;
+
         if (a.CanFire) 
         {
             a.CanFire = false;
             for (int i = 0; i < 5; ++i)
             {
-                a.DecreaseHP(damege);
-                photonView.RPC("DecreaseHP", RpcTarget.Others, damege);
+                a.DecreaseHP(finalDamege);
+                photonView.RPC("DecreaseHP", RpcTarget.Others, finalDamege);
                 yield return new WaitForSeconds(endtime);
             }
             a.CanFire = true;
@@ -76,11 +78,11 @@ public class Debuff : MonoBehaviourPun
         GameObject targetPlayer = photonView.gameObject;
         EnemyAI a = targetPlayer.GetComponent<EnemyAI>();
         NavMeshAgent nav = targetPlayer.GetComponent<NavMeshAgent>();
-        nav.speed = nav.speed * 0.8f;
+        nav.speed = nav.speed * 0.7f;
         if (a.CanIce) 
         {
             a.CanIce=false;
-            a.SpeedCoefficient = 0.8f;
+            a.SpeedCoefficient = 0.7f;
             yield return new WaitForSeconds(endtime);
             a.SpeedCoefficient = 1f;
             a.CanIce = true;

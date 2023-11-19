@@ -106,7 +106,8 @@ public class PlayerInputController : TopDownCharacterController
             Debug.Log("OnAttack" + value.ToString());
             if (EventSystem.current != null)
             {
-                if (!IsAtking && !EventSystem.current.IsPointerOverGameObject() && playerInput.actions["Attack"].ReadValue<float>() == 1)//playerInput.actions["Attack"].ReadValue<float>()마우스 눌리는거 확인하는 변수
+                //playerInput.actions["Attack"].ReadValue<float>()마우스 눌리는거 확인하는 변수
+                if (!IsAtking && !EventSystem.current.IsPointerOverGameObject() && playerInput.actions["Attack"].ReadValue<float>() == 1)
                 {
                     CallAttackEvent(true);
                     //추가함
@@ -120,7 +121,10 @@ public class PlayerInputController : TopDownCharacterController
                 }
             }
         }
-
+        else
+        {
+            CallAttackEvent(false);
+        }
     }
 
     public void OnSkill(InputValue value)
