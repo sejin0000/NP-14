@@ -325,7 +325,7 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     private void A112(int PlayerNumber)//빠른장전
     {
         ChangePlayerStatHandler(PlayerNumber);
-        playerstatHandler.ReloadCoolTime.added -= 0.3f;
+        playerstatHandler.ReloadCoolTime.coefficient *= 0.7f;
     }
     [PunRPC]
     private void A113(int PlayerNumber)// 머니=파워
