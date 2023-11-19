@@ -10,7 +10,7 @@ using UnityEngine.Tilemaps;
 
 public class MapGenerator : MonoBehaviour
 {
-    [SerializeField] Vector2Int mapSize; //원하는 맵의 크기
+    [SerializeField] public Vector2Int mapSize; //원하는 맵의 크기
     [SerializeField] float minimumDevideRate; //공간이 나눠지는 최소 비율
     [SerializeField] float maximumDivideRate; //공간이 나눠지는 최대 비율
     [SerializeField] private GameObject line; //lineRenderer를 사용해서 공간이 나눠진걸 시작적으로 보여주기 위함
@@ -22,7 +22,10 @@ public class MapGenerator : MonoBehaviour
     private List<Node> L_childrenNode = new List<Node>();
     private List<Node> R_childrenNode = new List<Node>();
 
-    public List<Node> AllRoomList = new List<Node>();
+    public List<Node> allRoomList = new List<Node>();
+    public List<Node> loadRoomList = new List<Node>();
+    public List<Node> lastRoomList = new List<Node>();
+
 
     int nodeDepth;
 
@@ -49,12 +52,22 @@ public class MapGenerator : MonoBehaviour
 
         for(int i = 0; i < L_childrenNode.Count; i++)
         {
-            AllRoomList.Add(L_childrenNode[i]);
+            allRoomList.Add(L_childrenNode[i]);
         }
         for (int i = 0; i < R_childrenNode.Count; i++)
         {
-            AllRoomList.Add(R_childrenNode[i]);
+            allRoomList.Add(R_childrenNode[i]);
         }
+
+        for(int i = 0; i < allRoomList.Count; i++)
+        {
+            if (allRoomList[i].roadCount == 1)
+            {
+                lastRoomList.Add(allRoomList[i]);
+            }
+        }
+
+        GetComponent<TestRoom>().ChooseRoom();
     }
 
 
@@ -227,6 +240,9 @@ public class MapGenerator : MonoBehaviour
             }
         }
 
+        R_node.roadCount += 1;
+        L_node.roadCount += 1;
+
         RectInt R_roomRect = R_node.roomRect;
         RectInt L_roomRect = L_node.roomRect;
 
@@ -250,6 +266,12 @@ public class MapGenerator : MonoBehaviour
             setTile.SetLineTile(setTile.wallTileMap, startPos, Mathf.Abs(startPos.y - endPos.y), new Vector2(startPos.x - endPos.x, startPos.y - endPos.y).normalized, mapSize / 2);
             setTile.SetLineTile(setTile.groundTileMap, setTile.groundTile, startPos, Mathf.Abs(startPos.y - endPos.y), new Vector2(startPos.x - endPos.x, startPos.y - endPos.y).normalized, mapSize / 2);
 
+            startPos = new Vector2Int(X - 1, (int)R_roomRect.center.y);
+            endPos = new Vector2Int(X - 1, (int)L_roomRect.center.y);
+
+            setTile.SetLineTile(setTile.wallTileMap, startPos, Mathf.Abs(startPos.y - endPos.y), new Vector2(startPos.x - endPos.x, startPos.y - endPos.y).normalized, mapSize / 2);
+            setTile.SetLineTile(setTile.groundTileMap, setTile.groundTile, startPos, Mathf.Abs(startPos.y - endPos.y), new Vector2(startPos.x - endPos.x, startPos.y - endPos.y).normalized, mapSize / 2);
+
         }
         else if(minY < maxY)//x축 그리기
         {
@@ -261,6 +283,13 @@ public class MapGenerator : MonoBehaviour
             DrawLine(new Vector2(R_roomRect.center.x, Y), new Vector2(L_roomRect.center.x, Y));//시작부분,코너부분
             setTile.SetLineTile(setTile.wallTileMap, startPos, Mathf.Abs(startPos.x - endPos.x), new Vector2(startPos.x - endPos.x, startPos.y - endPos.y).normalized, mapSize / 2);
             setTile.SetLineTile(setTile.groundTileMap, setTile.groundTile, startPos, Mathf.Abs(startPos.x - endPos.x), new Vector2(startPos.x - endPos.x, startPos.y - endPos.y).normalized, mapSize / 2);
+
+            startPos = new Vector2Int((int)R_roomRect.center.x, Y - 1);
+            endPos = new Vector2Int((int)L_roomRect.center.x, Y - 1);
+
+            setTile.SetLineTile(setTile.wallTileMap, startPos, Mathf.Abs(startPos.x - endPos.x), new Vector2(startPos.x - endPos.x, startPos.y - endPos.y).normalized, mapSize / 2);
+            setTile.SetLineTile(setTile.groundTileMap, setTile.groundTile, startPos, Mathf.Abs(startPos.x - endPos.x), new Vector2(startPos.x - endPos.x, startPos.y - endPos.y).normalized, mapSize / 2);
+
         }
         else
         {

@@ -21,7 +21,10 @@ public class CollisionController : MonoBehaviour
 
 
 
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet") && !playerStat.Invincibility && !playerStat.isDie && collision.gameObject.GetComponent<Bullet>().target == BulletTarget.Player)
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet") 
+            && !playerStat.Invincibility 
+            && !playerStat.isDie 
+            && collision.gameObject.GetComponent<Bullet>().targets.ContainsValue((int)BulletTarget.Player))
         {
             if (PV.IsMine)
             {
@@ -43,6 +46,14 @@ public class CollisionController : MonoBehaviour
                 {
                     Debug.Log("체력 회복 ");
                     playerStat.HPadd(damage);
+                    //if ( bool 값 받고 )
+                    //{
+                    //    playerStat.HPadd(damage);
+                    //}
+                    //else
+                    //{
+                    //    playerStat.ATK.Add(damage);
+                    //}
                 }
             }
             Destroy(collision.gameObject);

@@ -15,6 +15,15 @@ public class TestAugmentPanel : MonoBehaviourPun
     [SerializeField] private Button special1Button;
     [SerializeField] private Button special2Button;
     [SerializeField] private Button special3Button;
+    [SerializeField] private Button soldier1Button;
+    [SerializeField] private Button soldier2Button;
+    [SerializeField] private Button soldier3Button;
+    [SerializeField] private Button shotGun1Button;
+    [SerializeField] private Button shotGun2Button;
+    [SerializeField] private Button shotGun3Button;
+    [SerializeField] private Button sniper1Button;
+    [SerializeField] private Button sniper2Button;
+    [SerializeField] private Button sniper3Button;
     [SerializeField] private Button closePanelButton;
 
     public GameObject AugmentScrollViewContent;
@@ -31,7 +40,16 @@ public class TestAugmentPanel : MonoBehaviourPun
             buttonDictionary.Add("Stat3", stat3Button);
             buttonDictionary.Add("Special1", special1Button);
             buttonDictionary.Add("Special2", special2Button);
-            buttonDictionary.Add("Special3", special3Button);        
+            buttonDictionary.Add("Special3", special3Button);
+            buttonDictionary.Add("Soldier1", soldier1Button);
+            buttonDictionary.Add("Soldier2", soldier2Button);
+            buttonDictionary.Add("Soldier3", soldier3Button);
+            buttonDictionary.Add("ShotGun1", shotGun1Button);
+            buttonDictionary.Add("ShotGun2", shotGun2Button);
+            buttonDictionary.Add("ShotGun3", shotGun3Button);
+            buttonDictionary.Add("Sniper1", sniper1Button);
+            buttonDictionary.Add("Sniper2", sniper2Button);
+            buttonDictionary.Add("Sniper3", sniper3Button);
         }
 
         augmentButtonPath = "Prefabs/TestScene/TestAugment";
@@ -42,6 +60,18 @@ public class TestAugmentPanel : MonoBehaviourPun
         special1Button.onClick.AddListener(() => ShowAugmentListOfButton(special1Button));
         special2Button.onClick.AddListener(() => ShowAugmentListOfButton(special2Button));
         special3Button.onClick.AddListener(() => ShowAugmentListOfButton(special3Button));
+
+        soldier1Button.onClick.AddListener(() => ShowAugmentListOfButton(soldier1Button));
+        soldier2Button.onClick.AddListener(() => ShowAugmentListOfButton(soldier2Button));
+        soldier3Button.onClick.AddListener(() => ShowAugmentListOfButton(soldier3Button));
+
+        shotGun1Button.onClick.AddListener(() => ShowAugmentListOfButton(shotGun1Button));
+        shotGun2Button.onClick.AddListener(() => ShowAugmentListOfButton(shotGun2Button));
+        shotGun3Button.onClick.AddListener(() => ShowAugmentListOfButton(shotGun3Button));
+        
+        sniper1Button.onClick.AddListener(() => ShowAugmentListOfButton(sniper1Button));
+        sniper2Button.onClick.AddListener(() => ShowAugmentListOfButton(sniper2Button));
+        sniper3Button.onClick.AddListener(() => ShowAugmentListOfButton(sniper3Button));
 
         closePanelButton.onClick.AddListener(CloseAugmentPanel);
     }

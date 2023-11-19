@@ -55,6 +55,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     public bool isLive;
     public bool isChase;
     public bool isAttaking;
+    public bool isGroggy;
 
     //플레이어 정보
 
@@ -169,7 +170,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         {
            NomalView();
         }
-
+            
 
         // 넉백 중인 경우
         if (isKnockback)
@@ -208,7 +209,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         Bullet playerBullet = collision.gameObject.GetComponent<Bullet>();
 
 
-        if (collision.gameObject.tag == "Bullet" && playerBullet.target == BulletTarget.Enemy && playerBullet.IsDamage)
+        if (collision.gameObject.tag == "Bullet" && playerBullet.targets.ContainsValue((int)BulletTarget.Enemy) && playerBullet.IsDamage)
         {
             float atk = collision.transform.GetComponent<Bullet>().ATK;
             isChase = true;
@@ -281,16 +282,14 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (knockbackDistance == 0 || collision.gameObject.tag != "player")
+        if ((knockbackDistance == 0 || collision.gameObject.tag != "player")
+            && collision.gameObject.GetComponent<A0126>() == null)
             return;
-
-        //TODO : 계수 수정 - 0.15f
-        PV.RPC("DecreaseHP", RpcTarget.All, collision.transform.GetComponent<PlayerStatHandler>().HP.total * 0.15f);
 
         Transform PlayersTransform = collision.gameObject.transform;
 
         //넉백(충돌 대상과&Enemy 방향 정규화)
-        Vector2 directionToPlayer = (collision.transform.position - transform.position).normalized;
+        Vector2 directionToPlayer = (collision.transform.position - transform.position).normalized * knockbackDistance;
 
         // 넉백 시작 위치와 목표 위치 계산
         knockbackStartPosition = transform.position;
@@ -301,6 +300,9 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
         // 업데이트 넉백 실행
         isKnockback = true;
+
+        //TODO : 계수 수정 - 0.15f
+        PV.RPC("DecreaseHP", RpcTarget.All, collision.transform.GetComponent<PlayerStatHandler>().HP.total * 0.15f);
     }
     private void HandleKnockback()
     {
@@ -358,7 +360,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         _bullet.ATK = enemySO.atk;
         _bullet.BulletLifeTime = enemySO.bulletLifeTime;
         _bullet.BulletSpeed = enemySO.bulletSpeed;
-        _bullet.target = BulletTarget.Player;
+        _bullet.targets["Player"] = (int)BulletTarget.Player;
 
         /*
         //수정 : gameObject 에서 Bullet으로 ->변수 형태와 용도를 통일함
@@ -374,6 +376,18 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         */
 
         //수정 : gameObject 에서 Bullet으로 ->변수 형태와 용도를 통일함      
+    }
+
+    //상태이상
+    [PunRPC]
+    public void Groggy()
+    {
+        //행동 제한(이거 총알 맞는 부분에 넣으셈)
+        isGroggy = true;
+        nav.isStopped = false;
+
+        //동기화 해야할 부분
+        //기절에 관한animSet이나 기타 파티클, 효과 등등...
     }
     #endregion
 
@@ -603,6 +617,12 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         EnemyState_Dead state_Dead = new EnemyState_Dead(gameObject);
         BTDead.AddChild(state_Dead);
 
+        //상태이상 체크 [스턴....]
+        BTSquence BTAbnormal = new BTSquence();
+        EnemyState_GroggyCondition groggyConditon = new EnemyState_GroggyCondition(gameObject);
+        BTAbnormal.AddChild(groggyConditon);
+
+        BTMainSelector.AddChild(BTAbnormal);
 
         //추적+공격
         //컨디션 체크 -> 플레이어 추적 & 플레이어가 공격 범위 내 -> 공격(성공 반환 후 최초로)
@@ -635,6 +655,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         //메인 셀렉터 : Squence를 Selector의 자식으로 추가(자식 순서 중요함) 
 
         BTMainSelector.AddChild(BTDead);
+        BTMainSelector.AddChild(BTAbnormal);
         BTMainSelector.AddChild(BTChase);
         BTMainSelector.AddChild(BTPatrol);
 

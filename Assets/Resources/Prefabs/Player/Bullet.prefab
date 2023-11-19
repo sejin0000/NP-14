@@ -155,7 +155,6 @@ MonoBehaviour:
   burn: 0
   gravity: 0
   Penetrate: 0
-  target: 0
   locator: 0
   sniping: 0
   BulletOwner: 0

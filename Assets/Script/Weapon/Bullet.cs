@@ -23,7 +23,8 @@ public class Bullet : MonoBehaviour
     public bool burn;
     public bool gravity;
     public bool Penetrate;
-    public BulletTarget target;
+    public Dictionary<string, int> targets;
+    //targets.Contains(BulletTarget.Enemy)
     Vector2 _direction;
     float time = 0f;
 
@@ -32,8 +33,13 @@ public class Bullet : MonoBehaviour
     public bool sniping;
 
     public int BulletOwner;
-    void Start()
+
+    private void Awake()
     {
+        targets = new Dictionary<string, int>(); 
+    }
+    void Start()
+    {        
         BulletLifeTime = Random.Range(BulletLifeTime * 0.15f, BulletLifeTime * 0.2f);
         //Invoke("Destroy", BulletLifeTime);
         _direction = Vector2.right;
