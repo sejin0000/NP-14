@@ -8,9 +8,7 @@ public class A0111 : MonoBehaviourPun//°ø°ÝÀ» ÇÏÁö ¾ÊÀº ½Ã°£¿¡ ºñ·ÊÇÏ¿© ´ÙÀ½ °ø°
 {
     private TopDownCharacterController controller;
     private PlayerStatHandler playerStat;
-
     private float power;
-    private float oldpower;
 
     bool stop;
     private void Awake()
@@ -20,18 +18,17 @@ public class A0111 : MonoBehaviourPun//°ø°ÝÀ» ÇÏÁö ¾ÊÀº ½Ã°£¿¡ ºñ·ÊÇÏ¿© ´ÙÀ½ °ø°
             controller = GetComponent<TopDownCharacterController>();
             playerStat = GetComponent<PlayerStatHandler>();
             power = 0f;
-            oldpower = 0;
             controller.OnAttackEvent += StartAtk;//ÀÌ°É µ·È¹µæ ÀÌº¥Æ®¿¡°Ë 
             controller.OnEndAttackEvent += StopAtk;
-            stop = false;
+            stop = true;
         }
     }
     private void Update()
     {
-        if (stop) 
+        if (stop && photonView.IsMine) 
         {
-            playerStat.ATK.added += (Time.deltaTime) * 0.1f;
-            power += Time.deltaTime * 0.1f;
+            playerStat.ATK.added += (Time.deltaTime) * 0.5f;
+            power += Time.deltaTime * 0.5f;
         }
     }
     // Update is called once per frame
@@ -41,7 +38,12 @@ public class A0111 : MonoBehaviourPun//°ø°ÝÀ» ÇÏÁö ¾ÊÀº ½Ã°£¿¡ ºñ·ÊÇÏ¿© ´ÙÀ½ °ø°
     }
     void StopAtk()
     {
-        playerStat.ATK.added -= power;//¿µ±¸ Áõ°¡¸é ÀÌºÎºÐ ÁÖ¼® Ã³¸® ÇÏ°í ÆÄ¿ö¸¦ »èÁ¦ ±×·±µ¥ ±×·³ ³Ê¹«»ç±â°°À½
-        stop = true;
+        if (!stop && photonView.IsMine) 
+        {
+            playerStat.ATK.added -= power;//¿µ±¸ Áõ°¡¸é ÀÌºÎºÐ ÁÖ¼® Ã³¸® ÇÏ°í ÆÄ¿ö¸¦ »èÁ¦ ±×·±µ¥ ±×·³ ³Ê¹«»ç±â°°À½
+            power = 0f;
+            Debug.Log($"ÇöÀç °ø°Ý·Â {playerStat.ATK.added}");
+            stop = true;
+        }
     }
 }

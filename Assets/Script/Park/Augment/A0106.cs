@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class A0108 : MonoBehaviourPun
+public class A0106 : MonoBehaviourPun
 {
     private TopDownCharacterController controller;
     private PlayerStatHandler playerStat;
@@ -22,9 +22,6 @@ public class A0108 : MonoBehaviourPun
     // Update is called once per frame
     void DrainPower()
     {
-        if (playerStat.CanSpeedBuff) 
-        {
-            Debuff.Instance.GiveTouchSpeed(this.gameObject);
-        }
+        playerStat.ATK.added += 0.01f; // 중요한 부분2
     }
 }

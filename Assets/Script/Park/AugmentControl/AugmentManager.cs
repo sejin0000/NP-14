@@ -275,23 +275,25 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         ChangePlayerStatHandler(PlayerNumber);
         float up = ((int)playerstatHandler.HP.total - 1);
         playerstatHandler.HP.added -= up;
+        playerstatHandler.CurHP = 1;
         playerstatHandler.ATK.added += up * 0.5f;
     }
     [PunRPC]
-    private void A106(int PlayerNumber)
+    private void A106(int PlayerNumber)//처치시 영구적 공증
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0106>();
     }
     [PunRPC]
     private void A107(int PlayerNumber)//알맞은 타이밍 //가만히 있는 시간에 비례하여 공업
     {
-        ChangePlayerStatHandler(PlayerNumber);
+        ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A0107>();
     }
     [PunRPC]
     private void A108(int PlayerNumber)//타격시 일시적 이속 증가 A0108이 ..타격시 인줄 알고 스크립트만들고보니아니라서 손안댐
     {
-        ChangePlayerStatHandler(PlayerNumber);
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
         targetPlayer.AddComponent<A0108>();
     }
     [PunRPC]
@@ -315,7 +317,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         playerstatHandler.Speed.coefficient *= 0.8f;
     }
     [PunRPC]
-    private void A111(int PlayerNumber)//r
+    private void A111(int PlayerNumber)//침착한 일격
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A0111>();
@@ -324,7 +326,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     private void A112(int PlayerNumber)//빠른장전
     {
         ChangePlayerStatHandler(PlayerNumber);
-        playerstatHandler.ReloadCoolTime.added -= 0.3f;
+        playerstatHandler.ReloadCoolTime.coefficient *= 0.7f;
     }
     [PunRPC]
     private void A113(int PlayerNumber)// 머니=파워
@@ -335,14 +337,14 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A114(int PlayerNumber)//불
     {
-        ChangePlayerStatHandler(PlayerNumber);
+        ChangeOnlyPlayer(PlayerNumber);
         WeaponSystem a = targetPlayer.GetComponent<WeaponSystem>();
         a.fire = true;
     }
     [PunRPC]
     private void A115(int PlayerNumber)//물
     {
-        ChangePlayerStatHandler(PlayerNumber);
+        ChangeOnlyPlayer(PlayerNumber);
         WeaponSystem a = targetPlayer.GetComponent<WeaponSystem>();
         a.water = true;
     }

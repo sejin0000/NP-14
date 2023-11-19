@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8788344046874121387}
   - component: {fileID: -1585215898870850307}
   - component: {fileID: -4553412569716229479}
+  - component: {fileID: 7976244594542749247}
   m_Layer: 0
   m_Name: A0303
   m_TagString: Untagged
@@ -74,3 +75,25 @@ MonoBehaviour:
   sniperSO: {fileID: 11400000, guid: 276572f99ad3b6b499dea3dffa918ff3, type: 2}
   viewID: 0
   PartnerLayerName: Partner
+--- !u!114 &7976244594542749247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1949014849915531622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 0
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0

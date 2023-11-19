@@ -67,6 +67,11 @@ public class TestGameManager : MonoBehaviourPun
 
         MonsterSpawnButton.onClick.AddListener(OnMonsterSpawnButtonClicked);
         AugmentPanelOpenButton.onClick.AddListener(OnAugmentPanelOpenButtonClicked);
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.Instantiate("Prefabs/Player/Debuff", Vector3.zero, Quaternion.identity);
+        }
     }
 
     private void Start()

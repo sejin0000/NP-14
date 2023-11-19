@@ -2,6 +2,7 @@ using myBehaviourTree;
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyState_Dead : BTAction
@@ -23,8 +24,9 @@ public class EnemyState_Dead : BTAction
     {
         //골드 여기에
         //사망 시 파티클이나 기타 효과 여기에
-        //enemyAI.lastAttackPlayer
-
+        PhotonView photonView = PhotonView.Find(enemyAI.lastAttackPlayer);
+        PlayerStatHandler targetPlayer = photonView.gameObject.GetComponent<PlayerStatHandler>(); ;
+        targetPlayer.photonView.RPC("KillEvent", RpcTarget.All);
 
         if (MainGameManager.Instance != null)
         {

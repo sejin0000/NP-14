@@ -5,12 +5,21 @@ using UnityEngine;
 
 public class A0120_1 : MonoBehaviourPun
 {
+    public float time = 0;
     private void OnTriggerEnter2D(Collider2D collision)
     {
             if (collision.gameObject.tag == "Enemy")
             {
                 GameObject target = collision.gameObject;
-                Debuff.GiveIce(target);
+                Debuff.Instance.GiveIce(target);
             }
+    }
+    private void Update()
+    {
+        time += Time.deltaTime;
+        if (time >= 5f)
+        {
+            Destroy(gameObject);
+        }
     }
 }

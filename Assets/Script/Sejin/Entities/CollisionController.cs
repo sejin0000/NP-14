@@ -46,6 +46,14 @@ public class CollisionController : MonoBehaviour
                 {
                     Debug.Log("체력 회복 ");
                     playerStat.HPadd(damage);
+                    //if ( bool 값 받고 )
+                    //{
+                    //    playerStat.HPadd(damage);
+                    //}
+                    //else
+                    //{
+                    //    playerStat.ATK.Add(damage);
+                    //}
                 }
             }
             Destroy(collision.gameObject);

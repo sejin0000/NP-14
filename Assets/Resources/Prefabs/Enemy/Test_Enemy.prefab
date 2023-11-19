@@ -456,6 +456,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fb0c8934edf51d4a8c3ad30b8a916ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CanFire: 0
+  CanIce: 0
   currentHP: 0
   viewAngle: 57
   viewDistance: 5
@@ -475,6 +477,7 @@ MonoBehaviour:
   isLive: 0
   isChase: 0
   isAttaking: 0
+  isGroggy: 0
   lastAttackPlayer: 0
   images_Gauge: {fileID: 7702857846665888690}
   PV: {fileID: 2011073214277895600}

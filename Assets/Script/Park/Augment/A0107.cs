@@ -28,12 +28,12 @@ public class A0107 : MonoBehaviourPun
             oldpower = 0;
             magnification = 0.1f;
             powerTime = 0f;
-            Ismove =true;
+            Ismove =false;
         }
     }
     private void Update()
     {
-        if (!Ismove) 
+        if (!Ismove && photonView.IsMine) 
         {
             playerStat.ATK.added += (Time.deltaTime) * 0.1f;
             power += Time.deltaTime * 0.1f;

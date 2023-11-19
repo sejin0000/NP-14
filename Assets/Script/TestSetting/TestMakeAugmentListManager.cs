@@ -21,12 +21,23 @@ public class TestMakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
     public List<SpecialAugment> SpecialAugment2 = new List<SpecialAugment>();
     public List<SpecialAugment> SpecialAugment3 = new List<SpecialAugment>();
 
-    public List<SpecialAugment> test = new List<SpecialAugment>();
-    public List<SpecialAugment> test2 = new List<SpecialAugment>();
-    public List<SpecialAugment> Prototype = new List<SpecialAugment>();
+    public List<SpecialAugment> SoldierAugment1 = new List<SpecialAugment>();
+    public List<SpecialAugment> SoldierAugment2 = new List<SpecialAugment>();
+    public List<SpecialAugment> SoldierAugment3 = new List<SpecialAugment>();
+
+    public List<SpecialAugment> ShotGunAugment1 = new List<SpecialAugment>();
+    public List<SpecialAugment> ShotGunAugment2 = new List<SpecialAugment>();
+    public List<SpecialAugment> ShotGunAugment3 = new List<SpecialAugment>();
+
+    public List<SpecialAugment> SniperAugment1 = new List<SpecialAugment>();
+    public List<SpecialAugment> SniperAugment2 = new List<SpecialAugment>();
+    public List<SpecialAugment> SniperAugment3 = new List<SpecialAugment>();
 
     public Dictionary<string, List<IAugment>> StatDictionary;
     public Dictionary<string, List<SpecialAugment>> SpecialDictionary;
+    public Dictionary<string, List<SpecialAugment>> SoldierDictionary;
+    public Dictionary<string, List<SpecialAugment>> ShotGunDictionary;
+    public Dictionary<string, List<SpecialAugment>> SniperDictionary;
 
     private GameObject playerObj;
     int playerType;
@@ -45,8 +56,13 @@ public class TestMakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
     private void Awake()
     {
         StatDictionary = new Dictionary<string, List<IAugment>>();
-        SpecialDictionary = new Dictionary<string, List<SpecialAugment>>(); 
+        SpecialDictionary = new Dictionary<string, List<SpecialAugment>>();
+        SoldierDictionary = new Dictionary<string, List<SpecialAugment>>();
+        ShotGunDictionary = new Dictionary<string, List<SpecialAugment>>();
+        SniperDictionary = new Dictionary<string, List<SpecialAugment>>();
 
+        Instance = this;
+        DontDestroyOnLoad(this);
 
         stat1 = new List<IAugment>();
         stat2 = new List<IAugment>();
@@ -56,11 +72,18 @@ public class TestMakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
         SpecialAugment2 = new List<SpecialAugment>();
         SpecialAugment3 = new List<SpecialAugment>();
 
-        test = new List<SpecialAugment>();
-        test2 = new List<SpecialAugment>();
-        Prototype = new List<SpecialAugment>();
-        Instance = this;
-        DontDestroyOnLoad(this);
+        SoldierAugment1 = new List<SpecialAugment>();
+        SoldierAugment2 = new List<SpecialAugment>();
+        SoldierAugment3 = new List<SpecialAugment>();
+
+        ShotGunAugment1 = new List<SpecialAugment>();
+        ShotGunAugment2 = new List<SpecialAugment>();
+        ShotGunAugment3 = new List<SpecialAugment>();
+
+        SniperAugment1 = new List<SpecialAugment>();
+        SniperAugment2 = new List<SpecialAugment>();
+        SniperAugment3 = new List<SpecialAugment>();
+
         StatAugmentSetting(stat1, "stat1");
         StatAugmentSetting(stat2, "stat2");
         StatAugmentSetting(stat3, "stat3");
@@ -68,16 +91,6 @@ public class TestMakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
         StatDictionary.Add("Stat1", stat1);
         StatDictionary.Add("Stat2", stat2);
         StatDictionary.Add("Stat3", stat3);
-        //playerType = playerStatHandler.CharacterType;
-
-        SpecialAugmentSetting(test, "Test111"); //@만든증강적용테스트용 
-        SpecialAugmentSetting(test2, "Test222"); //@만든증강적용테스트용 
-        SpecialAugmentSetting(Prototype, "test_Proto");
-
-        // *** special 이름의 증강이 현재 없는 상태임
-        //SpecialAugmentSetting(SpecialAugment1, "special1");
-        //SpecialAugmentSetting(SpecialAugment2, "special2");
-        //SpecialAugmentSetting(SpecialAugment3, "special3");
 
         SpecialAugmentSetting(SpecialAugment1, "All1");
         SpecialAugmentSetting(SpecialAugment2, "All2");
@@ -86,6 +99,30 @@ public class TestMakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
         SpecialDictionary.Add("Special1", SpecialAugment1);
         SpecialDictionary.Add("Special2", SpecialAugment2);
         SpecialDictionary.Add("Special3", SpecialAugment3);
+
+        SpecialAugmentSetting(SoldierAugment1, "Soldier1");
+        SpecialAugmentSetting(SoldierAugment2, "Soldier2");
+        SpecialAugmentSetting(SoldierAugment3, "Soldier3");
+
+        SpecialDictionary.Add("Soldier1", SoldierAugment1);
+        SpecialDictionary.Add("Soldier2", SoldierAugment2);
+        SpecialDictionary.Add("Soldier3", SoldierAugment3);
+
+        SpecialAugmentSetting(ShotGunAugment1, "ShotGun1");
+        SpecialAugmentSetting(ShotGunAugment2, "ShotGun2");
+        SpecialAugmentSetting(ShotGunAugment3, "ShotGun3");
+
+        SpecialDictionary.Add("ShotGun1", ShotGunAugment1);
+        SpecialDictionary.Add("ShotGun2", ShotGunAugment2);
+        SpecialDictionary.Add("ShotGun3", ShotGunAugment3);
+
+        SpecialAugmentSetting(SniperAugment1, "Sniper1");
+        SpecialAugmentSetting(SniperAugment2, "Sniper2");
+        SpecialAugmentSetting(SniperAugment3, "Sniper3");
+
+        SpecialDictionary.Add("Sniper1", SniperAugment1);
+        SpecialDictionary.Add("Sniper2", SniperAugment2);
+        SpecialDictionary.Add("Sniper3", SniperAugment3);
     }
     private void Start()
     {
