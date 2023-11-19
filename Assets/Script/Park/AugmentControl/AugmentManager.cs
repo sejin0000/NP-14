@@ -480,7 +480,8 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A126(int PlayerNumber)
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0126>();
     }
     [PunRPC]
     private void A127(int PlayerNumber)//재생력 코루틴 돌리기
