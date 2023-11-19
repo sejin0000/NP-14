@@ -532,7 +532,10 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
     private void SetStateColor()
     {
-        spriteRenderer.color = Color.red;
+        if (spriteRenderer != null) 
+        {
+            spriteRenderer.color = Color.red;
+        }
     }
     #endregion
 
