@@ -14,6 +14,14 @@ public class A0122_1 : MonoBehaviour
             Debuff.Instance.GiveFire(target, damege);
         }
     }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Enemy")
+        {
+            GameObject target = collision.gameObject;
+            Debuff.Instance.GiveFire(target, damege);
+        }
+    }
     private void Update()
     {
         time += Time.deltaTime;
