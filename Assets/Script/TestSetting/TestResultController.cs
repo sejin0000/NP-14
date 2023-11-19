@@ -7,7 +7,6 @@ public class TestResultController : MonoBehaviour
     public void MakeManager()
     {
         TestAugmentManager.Instance.startset(this.gameObject);
-        TestResultManager.Instance.startset(this.gameObject);
         TestMakeAugmentListManager.Instance.startset(this.gameObject);
     }
 }

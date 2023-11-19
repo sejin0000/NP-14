@@ -44,6 +44,7 @@ public class TestGameManager : MonoBehaviourPun
     [Header("Button")]
     public Button MonsterSpawnButton;
     public Button AugmentPanelOpenButton;
+    public Button RespawnButton;
 
     [Header("Panel")]
     [SerializeField] private GameObject AugmentPanel;
@@ -67,6 +68,7 @@ public class TestGameManager : MonoBehaviourPun
 
         MonsterSpawnButton.onClick.AddListener(OnMonsterSpawnButtonClicked);
         AugmentPanelOpenButton.onClick.AddListener(OnAugmentPanelOpenButtonClicked);
+        RespawnButton.onClick.AddListener(OnRespawnButtonClicked);
 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -87,6 +89,7 @@ public class TestGameManager : MonoBehaviourPun
         string characterSettingPath = "Prefabs/CharacterData/PlayerCharacterSetting";
         GameObject characterSettingGO = Instantiate(Resources.Load<GameObject>(characterSettingPath));
         characterSetting = characterSettingGO.GetComponent<PlayerDataSetting>();
+
 
         // PhotonNetwork.Instantiate()
         string playerPrefabPath = "Pefabs/TestPlayer";
@@ -169,6 +172,28 @@ public class TestGameManager : MonoBehaviourPun
     {
         AugmentPanel.SetActive(true);
     }
+
+    public void OnRespawnButtonClicked()
+    {
+        int viewID = characterSetting.viewID;
+        Destroy(characterSetting);
+        Destroy(InstantiatedPlayer);
+        photonView.RPC("DestroyPlayer", RpcTarget.Others, viewID);
+
+        SpawnPlayer();
+        SyncPlayer();
+
+        TestResultController MakeSetting = InstantiatedPlayer.GetComponent<TestResultController>();
+        MakeSetting.MakeManager();
+    }
+
+    [PunRPC]
+    public void DestroyPlayer(int viewID)
+    {
+        PhotonView pv = PhotonView.Find(viewID);
+        Destroy(pv.gameObject);      
+    }
+
 
     public void AllReady()
     {

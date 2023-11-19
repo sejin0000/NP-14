@@ -21,6 +21,11 @@ public class TestGameCamera : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (Target == null)
+        {
+            Target = TestGameManager.Instance.InstantiatedPlayer;
+        }
+
         TargetPos = new Vector3(
             Target.transform.position.x + offsetX,
             Target.transform.position.y + offsetY,
