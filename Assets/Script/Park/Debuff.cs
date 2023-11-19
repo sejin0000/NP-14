@@ -41,7 +41,7 @@ public class Debuff : MonoBehaviourPun
         EnemyAI a = targetPlayer.GetComponent<EnemyAI>();
         float finalDamege = (damege < a.enemySO.hp * 0.01f)? a.enemySO.hp * 0.005f : damege;
 
-        if (a.CanFire) 
+        if (a.CanFire && a.isLive) 
         {
             a.CanFire = false;
             for (int i = 0; i < 5; ++i)
