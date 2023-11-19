@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
 using TMPro;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 
 //[Root 노드] => 왜 액션과 다르게 상속 안받음?
 //==>특정 AI 동작과 상태에 맞게 유연하게 조정하기 위해서
@@ -19,6 +20,9 @@ using Unity.Mathematics;
 public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 {
     private BTRoot TreeAIState;
+
+    public bool CanFire;
+    public bool CanIce;
 
     public float currentHP;                  // 현재 체력 계산
     public float viewAngle;                  // 시야각 (기본120도)
@@ -33,7 +37,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
     private Transform target;
     public Transform Target { get { return target; } 
-                               set { if (target != value) { OnTargetChaged(value); target = value; } } }//���� Ÿ��[Palyer]
+                               set { if (target != value) { OnTargetChaged(value); target = value; } } }//추적 타겟[Palyer]
     //public Collider2D target;
     public NavMeshAgent nav;
     public Vector3 navTargetPoint;              //nav 목적지
@@ -101,6 +105,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         collider2D = GetComponent<CircleCollider2D>();
         PV = GetComponent<PhotonView>();
+        CanIce = true;
+        CanFire = true;
 
         //게임 오브젝트 활성화 시, 행동 트리 생성
         CreateTreeAIState();
@@ -221,6 +227,10 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             {
                 Debuff.GiveIce(this.gameObject);
             }
+            if (playerBullet.ice) 
+            {
+                
+            }
             if (playerBullet.burn)
             {
                 PhotonNetwork.Instantiate("AugmentList/A0122", transform.localPosition,quaternion.identity);
@@ -307,7 +317,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     }
     private void GaugeUpdate()
     {
-        images_Gauge.fillAmount = (float)currentHP / enemySO.hp; //ü��
+        images_Gauge.fillAmount = (float)currentHP / enemySO.hp; //체력
     }
 
     [PunRPC]
@@ -462,10 +472,9 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
                 if (angle < viewAngle * 0.5f)
                 {
                     isChase = true;
-                    Target = PlayersTransform[i]; // �þ߰� �ȿ� �ִ� �÷��̾�� currentTargetPlayer ����
+                    Target = PlayersTransform[i];  // 시야각 안에 있는 플레이어로 currentTargetPlayer 설정
                     Debug.DrawRay(transform.position, directionToPlayer * viewDistance, Color.red);
-
-                    Debug.Log($"Ÿ�� ����{Target}");
+                    Debug.Log($"타겟 수집{Target}");
                     break;
                 }
             }
@@ -582,7 +591,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         }            
         else
         {
-            nav.isStopped = false; // Ȱ��ȭ
+            nav.isStopped = false; // 활성화
             return true;
         }           
     }
@@ -669,7 +678,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             // 데이터를 전송
             stream.SendNext(hostPosition);
             //stream.SendNext(navTargetPoint);
-            stream.SendNext(spriteRenderer.flipX); // �̰� �³�?
+            stream.SendNext(spriteRenderer.flipX); // 이게 맞나?
             stream.SendNext(enemyAim.transform.rotation);
 
         }

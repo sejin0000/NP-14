@@ -2,6 +2,7 @@ using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XR;
@@ -19,6 +20,7 @@ public class PlayerStatHandler : MonoBehaviourPun
     public event Action MoveStartEvent;
     public event Action MoveEndEvent;
     public event Action EnemyHitEvent;
+    public event Action KillCatchEvent;
     public event Action<float> GetDamege;
 
 
@@ -57,6 +59,9 @@ public class PlayerStatHandler : MonoBehaviourPun
     public int RegenHP;
     public int MaxRegenCoin;
     private int curRegenCoin;
+    private int kill;
+    [HideInInspector] public bool CanSpeedBuff;
+    [HideInInspector] public bool CanLowSteam;
     public int CurRegenCoin
     {
         get { return curRegenCoin; }
@@ -106,7 +111,7 @@ public class PlayerStatHandler : MonoBehaviourPun
                 Debug.Log($"HPHPHPHPHPHHP  {CurHP}");
             }
         }
-    }               //����   ü��
+    }
 
     [SerializeField] private float curAmmo;
     //[HideInInspector]
@@ -165,12 +170,15 @@ public class PlayerStatHandler : MonoBehaviourPun
         CanRoll = true;
         UseRoll = true;
         Invincibility = false;
+        CanSpeedBuff = true;
+        CanLowSteam = true;
 
         isNoramlMove = true;
         isCanSkill=true;
         isCanAtk = true;
         evasionPersent = 0;
 
+        kill = 0;
         MaxSkillStack = 1;
         CurSkillStack = MaxSkillStack;
         MaxRollStack = 1;
@@ -184,6 +192,20 @@ public class PlayerStatHandler : MonoBehaviourPun
         defense = 1;
 
         IsChargeAttack = false;
+    }
+    private void OnEnable()
+    {
+        if (!CanSpeedBuff) 
+        {
+            Speed.added -= 3f;
+            CanSpeedBuff = true;
+        }
+        if (!CanLowSteam) 
+        {
+            CanSpeedBuff = true;
+            AtkSpeed.added -= 0.5f;
+            Speed.added -= 0.5f;
+        }
     }
 
     private void Start()
@@ -229,8 +251,9 @@ public class PlayerStatHandler : MonoBehaviourPun
                 OnDieEvent?.Invoke();
                 this.gameObject.layer = 0;
             }
-
+            Debug.Log($"데미지 {DamegeTemp}");
             DamegeTemp = DamegeTemp * defense;
+            Debug.Log($"방어력 계수 적용 실제 데미지 {DamegeTemp}");
             CurHP -= DamegeTemp;
             HitEvent?.Invoke();
             HitEvent2?.Invoke(DamegeTemp);//이게 값이 필요한경우와 필요 없는경우가 있는데 한개로 할수가 있는지 모르겠음 일단 이렇게함
@@ -247,7 +270,6 @@ public class PlayerStatHandler : MonoBehaviourPun
     public void Regen(float HP)
     {
         CurHP = HP;
-        Debug.Log("��Ȱ�Ͽ����ϴ�. ��Ȱ ��ƼŬ �߰��ؾ���");
         OnRegenEvent?.Invoke();
         OnRegenCalculateEvent?.Invoke(RegenHP);
         GetComponent<PlayerInput>().actions.FindAction("Move2").Disable();
@@ -295,6 +317,14 @@ public class PlayerStatHandler : MonoBehaviourPun
     public void EnemyHitCall() 
     {
         EnemyHitEvent?.Invoke();
+    }
+    public void KillEvent()
+    {
+        if (photonView.IsMine) 
+        {
+            kill++;
+            KillCatchEvent?.Invoke();
+        }
     }
     public void RegenHPCalculator(int calHP = 0)
     {

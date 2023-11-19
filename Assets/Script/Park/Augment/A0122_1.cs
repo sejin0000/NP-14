@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class A0122_1 : MonoBehaviour
 {
+    public float time=0;
     public float damege=0;
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -13,4 +14,13 @@ public class A0122_1 : MonoBehaviour
             Debuff.GiveFire(target, damege);
         }
     }
+    private void Update()
+    {
+        time += Time.deltaTime;
+        if (time >= 5f) 
+        {
+            Destroy(gameObject);
+        }
+    }
+    
 }
