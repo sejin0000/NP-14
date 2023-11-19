@@ -208,6 +208,7 @@ MonoBehaviour:
   - TogetherSoDelicious
   - SyncAnimation
   - GiveSpeed
+  - Groggy
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
