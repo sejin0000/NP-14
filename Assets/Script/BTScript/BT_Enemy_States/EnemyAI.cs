@@ -86,7 +86,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
     //넉백 시작시간 & 넉백 지속 시간
     public float knockbackStartTime;
-    public float knockbackDuration = 0.2f;
+    public float knockbackDuration = 0.3f;
 
     public float ViewDistanceThreshold = 0.2f;
     public float KnockbackLimitTime = 0.2f;
@@ -148,6 +148,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             return;
         }
 
+        hostPosition = transform.position;
 
         //AI트리의 노드 상태를 매 프레임 마다 얻어옴
         TreeAIState.Tick();
@@ -310,7 +311,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         if (!PhotonNetwork.IsMasterClient)
         {
             //$추가됨 : 동기화된 위치에 대한 보간 처리
-            transform.position = Vector3.Lerp(transform.position, hostPosition, Time.deltaTime * lerpSpeed);
+            transform.position = Vector2.Lerp(hostPosition, knockbackTargetPosition, Time.deltaTime * lerpSpeed);
             return;
         }
 
