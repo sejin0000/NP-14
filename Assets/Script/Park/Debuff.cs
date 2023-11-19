@@ -78,11 +78,11 @@ public class Debuff : MonoBehaviourPun
         GameObject targetPlayer = photonView.gameObject;
         EnemyAI a = targetPlayer.GetComponent<EnemyAI>();
         NavMeshAgent nav = targetPlayer.GetComponent<NavMeshAgent>();
-        nav.speed = nav.speed * 0.8f;
+        nav.speed = nav.speed * 0.7f;
         if (a.CanIce) 
         {
             a.CanIce=false;
-            a.SpeedCoefficient = 0.8f;
+            a.SpeedCoefficient = 0.7f;
             yield return new WaitForSeconds(endtime);
             a.SpeedCoefficient = 1f;
             a.CanIce = true;
