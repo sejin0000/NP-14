@@ -506,7 +506,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A201(int PlayerNumber)//탱탱볼
     {
-        ChangePlayerStatHandler(PlayerNumber);
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
         playerstatHandler.BulletLifeTime.coefficient *= 2f;
         WeaponSystem a = targetPlayer.GetComponent<WeaponSystem>();
         a.canAngle = true;

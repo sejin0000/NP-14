@@ -78,13 +78,14 @@ public class Bullet : MonoBehaviour
         if (canAngle)
         {
             Debug.Log("111111111111");
-            Vector3 income = _direction; // ภิป็บคลอ
+            Vector3 income = _direction.normalized; // ภิป็บคลอ
             Vector3 normal = collision.contacts[0].normal; // นýผฑบคลอ
-            _direction = Vector3.Reflect(income, normal).normalized; // นÝป็บคลอ
+            Vector3 async = Vector3.Reflect(income, normal); // นÝป็บคลอ
+            _direction = async.normalized;
+
         }
         else if (collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
         {
-            Debug.Log("2222222222222");
             Destroy();
         }
     }
