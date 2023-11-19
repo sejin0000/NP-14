@@ -131,6 +131,11 @@ public class PlayerInputController : TopDownCharacterController
 
     public void OnRoll(InputValue value)
     {
+        // if (GetComponent<A3103> != null)
+        //{
+        //    CallSeizeEvent();
+        //    return;
+        //}
         Debug.Log("OnRoll" + value.ToString());
         CallRollEvent();
     }

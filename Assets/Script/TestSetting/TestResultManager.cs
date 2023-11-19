@@ -69,8 +69,7 @@ public class TestResultManager : MonoBehaviour//vsÄÚµå
         stat3 = TestMakeAugmentListManager.Instance.stat3;
         SpecialAugment1 = TestMakeAugmentListManager.Instance.SpecialAugment1;
         SpecialAugment2 = TestMakeAugmentListManager.Instance.SpecialAugment2;
-        SpecialAugment3 = TestMakeAugmentListManager.Instance.SpecialAugment3;
-        ProtoList = TestMakeAugmentListManager.Instance.Prototype;
+        SpecialAugment3 = TestMakeAugmentListManager.Instance.SpecialAugment3;        
     }
 
     public void Result()
