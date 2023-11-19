@@ -318,6 +318,7 @@ public class PlayerStatHandler : MonoBehaviourPun
     {
         EnemyHitEvent?.Invoke();
     }
+    [PunRPC]
     public void KillEvent()
     {
         if (photonView.IsMine) 
