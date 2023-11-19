@@ -221,11 +221,11 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
             if (playerBullet.fire) 
             {
-                Debuff.GiveFire(this.gameObject, atk);
+                Debuff.Instance.GiveFire(this.gameObject, atk);
             }
             if (playerBullet.water)
             {
-                Debuff.GiveIce(this.gameObject);
+                Debuff.Instance.GiveIce(this.gameObject);
             }
             if (playerBullet.ice) 
             {
