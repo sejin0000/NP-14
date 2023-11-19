@@ -21,6 +21,6 @@ public class A0122 : MonoBehaviourPun
     {
         GameObject A =PhotonNetwork.Instantiate("AugmentList/A0122", this.transform.localPosition, Quaternion.identity);
         A0122_1 AB= A.GetComponent<A0122_1>();
-        AB.damege = playerStatHandler.ATK.total;
+        AB.Init(photonView.ViewID, playerStatHandler.ATK.total);
     }
 }
