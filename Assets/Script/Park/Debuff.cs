@@ -45,6 +45,7 @@ public class Debuff : MonoBehaviourPun
             for (int i = 0; i < 5; ++i)
             {
                 a.DecreaseHP(damege);
+                photonView.RPC("DecreaseHP", RpcTarget.Others, damege);
                 yield return new WaitForSeconds(endtime);
             }
             a.CanFire = true;
