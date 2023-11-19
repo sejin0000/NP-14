@@ -1,11 +1,21 @@
 using Photon.Pun;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class Debuff : MonoBehaviourPun
 {
-    public static void GiveFire(GameObject gameObject , float totalpower) 
+    public static Debuff Instance;
+
+    private void Awake()
+    {
+        if (Instance == null) 
+        {
+            Instance = this;
+        }
+    }
+    public void GiveFire(GameObject gameObject , float totalpower) 
     {
         float power = totalpower * 0.2f;
 
@@ -13,7 +23,7 @@ public class Debuff : MonoBehaviourPun
         {
             PhotonView pv = gameObject.GetComponent<PhotonView>();
             int viewID = pv.ViewID;
-            pv.RPC("FireGive", RpcTarget.All, power, viewID);
+            photonView.RPC("FireGive", RpcTarget.All, power, viewID);
         }
     }
 
@@ -35,20 +45,20 @@ public class Debuff : MonoBehaviourPun
             for (int i = 0; i < 5; ++i)
             {
                 a.DecreaseHP(damege);
-                yield return endtime;
+                yield return new WaitForSeconds(endtime);
             }
             a.CanFire = true;
         }
 
     }
-    public static void GiveIce(GameObject gameObject)
+    public void GiveIce(GameObject gameObject)
     {
 
         if (gameObject.tag == "Enemy" && gameObject.GetComponent<EnemyAI>().CanIce)
         {
             PhotonView pv = gameObject.GetComponent<PhotonView>();
             int viewID = pv.ViewID;
-            pv.RPC("IceGive", RpcTarget.All, viewID);
+            photonView.RPC("IceGive", RpcTarget.All, viewID);
         }
     }
 
@@ -70,19 +80,19 @@ public class Debuff : MonoBehaviourPun
         {
             a.CanIce=false;
             a.SpeedCoefficient = 0.8f;
-            yield return endtime;
+            yield return new WaitForSeconds(endtime);
             a.SpeedCoefficient = 1f;
             a.CanIce = true;
         }
     }
 
-    public static void GiveLowSteamPack(GameObject gameObject)
+    public void GiveLowSteamPack(GameObject gameObject)
     {
         if (gameObject.tag == "Player" )
         {
             PhotonView pv = gameObject.GetComponent<PhotonView>();
             int viewID = pv.ViewID;
-            pv.RPC("LowSteamPackGive", RpcTarget.All, viewID);
+            photonView.RPC("LowSteamPackGive", RpcTarget.All, viewID);
         }
     }
 
@@ -102,19 +112,19 @@ public class Debuff : MonoBehaviourPun
             targetPlayer.CanLowSteam = false;
             targetPlayer.AtkSpeed.added += 0.5f;
             targetPlayer.Speed.added += 0.5f;
-            yield return endtime;
+            yield return new WaitForSeconds(endtime);
             targetPlayer.AtkSpeed.added -= 0.5f;
             targetPlayer.Speed.added -= 0.5f;
             targetPlayer.CanLowSteam = true;
         }
     }
-    public static void GiveTouchSpeed(GameObject gameObject)
+    public void GiveTouchSpeed(GameObject gameObject)
     {
         if (gameObject.tag == "Player" && gameObject.GetComponent<PlayerStatHandler>().CanSpeedBuff)
         {
             PhotonView pv = gameObject.GetComponent<PhotonView>();
             int viewID = pv.ViewID;
-            pv.RPC("GiveSpeed", RpcTarget.All, viewID);
+            photonView.RPC("GiveSpeed", RpcTarget.All, viewID);
         }
     }
 
@@ -124,18 +134,22 @@ public class Debuff : MonoBehaviourPun
         StartCoroutine("LowSpeed", viewID);
     }
 
-    static IEnumerator LowSpeed(int viewID)
+    private IEnumerator LowSpeed(int viewID)
     {
-        int endtime = 1;
+        Debug.Log("LowSpeed 코루틴 돌아가는중 ....");        
+        int endtime = 3;
         PhotonView photonView = PhotonView.Find(viewID);
         PlayerStatHandler targetPlayer = photonView.gameObject.GetComponent<PlayerStatHandler>();
         if (targetPlayer.CanSpeedBuff) 
         {
+            Debug.Log("스피드.... ");
             targetPlayer.CanSpeedBuff = false;
             targetPlayer.Speed.added += 3f;
-            yield return endtime;
+            Debug.Log($"현재 속도 1: {targetPlayer.Speed.total}");
+            yield return new WaitForSeconds(endtime);
             targetPlayer.Speed.added -= 3f;
             targetPlayer.CanSpeedBuff = true;
+            Debug.Log($"현재 속도 2: {targetPlayer.Speed.total}");
         }
     }
 
