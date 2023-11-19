@@ -21,7 +21,7 @@ public class A0126 : MonoBehaviourPun
         if (coll.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
             Debug.Log("몬스터와 충돌중");
-            var collObject = coll.transform.parent;
+            var collObject = coll.gameObject;
             var collEnemy = collObject.GetComponent<EnemyAI>();
             collEnemy.knockbackDistance = 3f;
         }
