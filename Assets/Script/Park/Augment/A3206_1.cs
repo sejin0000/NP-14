@@ -17,14 +17,20 @@ public class A3206_1 : MonoBehaviour
             Destroy();
         }
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("EnemyBullet"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet"))
         {
-            shieldHP -= collision.gameObject.GetComponent<Bullet>().ATK;
-            if (shieldHP < 0)
+            Bullet _bullet = collision.GetComponent<Bullet>();
+            if (collision.GetComponent<Bullet>().targets.ContainsValue((int)BulletTarget.Player)) 
             {
-                Destroy();
+                shieldHP -= collision.gameObject.GetComponent<Bullet>().ATK;
+                Debug.Log($"½¯µåÃ¼·Â{shieldHP}");
+                if (shieldHP < 0)
+                {
+                    Destroy();
+                }
+
             }
             Destroy(collision.gameObject);
         }

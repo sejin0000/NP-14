@@ -390,6 +390,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         _bullet.BulletLifeTime = enemySO.bulletLifeTime;
         _bullet.BulletSpeed = enemySO.bulletSpeed;
         _bullet.targets["Player"] = (int)BulletTarget.Player;
+        _bullet.BulletOwner = photonView.ViewID;
 
         /*
         //수정 : gameObject 에서 Bullet으로 ->변수 형태와 용도를 통일함

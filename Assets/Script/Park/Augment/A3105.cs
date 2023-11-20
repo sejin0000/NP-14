@@ -42,7 +42,7 @@ public class A3105 : MonoBehaviourPun
             ready = false;
             Isfirst = true;
         }
-        controller.CallEndSkillEvent();
+        SkillEnd();
 
     }
     void LostPower()
@@ -55,6 +55,20 @@ public class A3105 : MonoBehaviourPun
         Isfirst = false;
 
     }
+    public void SkillEnd()
+    {
+        if (photonView.IsMine)
+        {
+            //스킬이 끝나면 쿨타임을 계산하고 쿨타임이 끝나면  controller.playerStatHandler.CanSkill = 진실; 로 바꿔줌
+            Debug.Log("스킬 종료");
+            controller.playerStatHandler.useSkill = false;
+            if (controller.playerStatHandler.CurSkillStack > 0)
+            {
+                controller.playerStatHandler.CanSkill = true;
+            }
+            controller.CallEndSkillEvent();
+        }
+    }
     public void SkillLinkOff()
     {
         if (photonView.IsMine)
@@ -62,6 +76,7 @@ public class A3105 : MonoBehaviourPun
             if (isLink)
             {
                 controller.OnSkillEvent -= SetPower;
+                controller.OnEndAttackEvent -= LostPower;
                 isLink = false;
             }
         }
