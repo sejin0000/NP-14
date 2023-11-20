@@ -259,6 +259,10 @@ public class PlayerStatHandler : MonoBehaviourPun
                 {
                     MainGameManager.Instance.DiedAfter();
                 }
+                if (TestGameManager.Instance != null)
+                {
+                    TestGameManager.Instance.DiedAfter();
+                }
                 this.gameObject.layer = 0;
             }
 
