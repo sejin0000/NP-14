@@ -24,7 +24,8 @@ public class A0220 : MonoBehaviourPun
         int random = Random.Range(0, 100);
         if (percent > random)
         {
-            stats.CurHP += stats.ATK.total;
+            int healAmount = (int)(stats.ATK.total * 0.1f);
+            stats.HPadd(healAmount);
         }
     }
 

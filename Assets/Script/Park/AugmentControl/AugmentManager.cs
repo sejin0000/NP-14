@@ -650,7 +650,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A0220>();
         A0220 drainComponent = targetPlayer.GetComponent<A0220>();
-        drainComponent.PercentUp(30);
+        drainComponent.PercentUp(20);
         Debug.Log($"{drainComponent.percent}%의 확률로 흡혈 중");
 
     }
