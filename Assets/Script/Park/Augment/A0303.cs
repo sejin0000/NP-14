@@ -25,6 +25,10 @@ public class A0303 : MonoBehaviourPun
             {
                 Player = MainGameManager.Instance.InstantiatedPlayer;
             }
+            if (TestGameManager.Instance != null) 
+            {
+                Player = TestGameManager.Instance.InstantiatedPlayer;
+            }
             viewID = Player.GetPhotonView().ViewID;
             string playerPrefabPath = "Pefabs/Player";
             Partner = PhotonNetwork.Instantiate(playerPrefabPath, Vector3.zero, Quaternion.identity);
