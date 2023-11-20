@@ -34,24 +34,27 @@ public class A0203 : MonoBehaviourPun//현재체력비례 공격력
         playerStat.AtkSpeed.added += nowSpeed;
         playerStat.AtkSpeed.added -= oldSpeed;
         oldPower = nowPower;
+        oldSpeed = nowSpeed;
+        Debug.Log(playerStat.ATK.added);
+        Debug.Log(playerStat.AtkSpeed.added);
     }
     float GetPower() 
     {
-        float a = (playerStat.HP.total - playerStat.CurHP) * 0.1f;
+        float hpPercentage = (playerStat.CurHP/ playerStat.HP.total) * 100;
         int power=0;
-        if (a >= 40)
+        if (hpPercentage >= 40)
         {
             power = 5;
         }
-        else if (a >= 30) 
+        else if (hpPercentage >= 30) 
         {
             power = 15;
         }
-        else if (a >= 20)
+        else if (hpPercentage >= 20)
         {
             power = 15;
         }
-        else if (a >= 10)
+        else if (hpPercentage >= 10)
         {
             power = 20;
         }
@@ -59,24 +62,24 @@ public class A0203 : MonoBehaviourPun//현재체력비례 공격력
     }
     float GetSpeed()
     {
-        float a = (playerStat.HP.total - playerStat.CurHP) * 0.1f;
-        float power = 0;
-        if (a >= 40)
+        float hpPercentage = (playerStat.CurHP / playerStat.HP.total) * 100;
+        float speed = 0;
+        if (hpPercentage >= 40)
         {
-            power = 1.5f;
+            speed = 1.5f;
         }
-        else if (a >= 30)
+        else if (hpPercentage >= 30)
         {
-            power = 2.0f;
+            speed = 2.0f;
         }
-        else if (a >= 20)
+        else if (hpPercentage >= 20)
         {
-            power = 2.5f;
+            speed = 2.5f;
         }
-        else if (a >= 10)
+        else if (hpPercentage >= 10)
         {
-            power = 3;
+            speed = 3;
         }
-        return power;
+        return speed;
     }
 }

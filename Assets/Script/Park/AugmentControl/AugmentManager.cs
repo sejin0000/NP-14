@@ -37,7 +37,6 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         {
             Destroy(this.gameObject);
         }
-
     }
     public void startset(GameObject PlayerObj)//스타트세팅 메인게임매니저 게임 처음 시작부분에 호출되면 값셋팅 해줌
     {
@@ -506,7 +505,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A201(int PlayerNumber)//탱탱볼
     {
-        ChangePlayerStatHandler(PlayerNumber);
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
         playerstatHandler.BulletLifeTime.coefficient *= 2f;
         WeaponSystem a = targetPlayer.GetComponent<WeaponSystem>();
         a.canAngle = true;

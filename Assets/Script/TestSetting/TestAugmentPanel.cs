@@ -5,6 +5,7 @@ using System.Xml;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEngine.InputSystem;
 
 public class TestAugmentPanel : MonoBehaviourPun
 {
@@ -92,20 +93,11 @@ public class TestAugmentPanel : MonoBehaviourPun
         var key = buttonDictionary.FirstOrDefault(x => x.Value == clickedButton).Key;
         TestMakeAugmentListManager.Instance.StatDictionary.TryGetValue(key, out List<IAugment> buttonList);
         if (buttonList == null)
-        { 
-            TestMakeAugmentListManager.Instance.SpecialDictionary.TryGetValue(key, out List<SpecialAugment> specialButtonList);
-            foreach (var augment in specialButtonList)
-            {
-                GameObject sampleButton = Instantiate(Resources.Load<GameObject>(augmentButtonPath));
-                sampleButton.GetComponent<TestAugmentBtn>().Initialize(augment.Name, augment.Code);
-                sampleButton.transform.SetParent(AugmentScrollViewContent.transform, false);
-                if (cnt > 1)
-                {
-                    cnt = 0;
-                    AugmentScrollViewContent.GetComponent<RectTransform>().sizeDelta += new Vector2(0, 110);
-                }
-                cnt += 1;
-            }
+        {
+            GetDictionary(key, cnt, DictType.Special);
+            GetDictionary(key, cnt, DictType.Soldier);
+            GetDictionary(key, cnt, DictType.ShotGun);
+            GetDictionary(key, cnt, DictType.Sniper);
         }
         else
         {
@@ -128,5 +120,50 @@ public class TestAugmentPanel : MonoBehaviourPun
     public void CloseAugmentPanel()
     {
         this.gameObject.SetActive(false);
+    }
+
+    private void GetDictionary(string key, int cnt, DictType dictType)
+    {
+        var typeDict = GetDictionaryByType(dictType);
+        if (typeDict.TryGetValue(key, out List<SpecialAugment> specialButtonList))
+        {
+            foreach (var augment in specialButtonList)
+            {
+                GameObject sampleButton = Instantiate(Resources.Load<GameObject>(augmentButtonPath));
+                sampleButton.GetComponent<TestAugmentBtn>().Initialize(augment.Name, augment.Code);
+                sampleButton.transform.SetParent(AugmentScrollViewContent.transform, false);
+                if (cnt > 1)
+                {
+                    cnt = 0;
+                    AugmentScrollViewContent.GetComponent<RectTransform>().sizeDelta += new Vector2(0, 110);
+                }
+                cnt += 1;
+            }
+        }
+    }
+
+    public enum DictType
+    {
+        Special,
+        Soldier,
+        ShotGun,
+        Sniper,
+    }
+
+    private Dictionary<string, List<SpecialAugment>> GetDictionaryByType(DictType dictType)
+    {
+        switch (dictType)
+        {
+            case DictType.Special:
+                return TestMakeAugmentListManager.Instance.SpecialDictionary;
+            case DictType.Soldier:
+                return TestMakeAugmentListManager.Instance.SoldierDictionary;
+            case DictType.ShotGun:
+                return TestMakeAugmentListManager.Instance.ShotGunDictionary;
+            case DictType.Sniper:
+                return TestMakeAugmentListManager.Instance.SniperDictionary;
+            default:
+                return null;
+        }
     }
 }

@@ -78,18 +78,21 @@ public class Bullet : MonoBehaviour
         if (canAngle)
         {
             Debug.Log("111111111111");
-            Vector3 income = _direction; // ¿‘ªÁ∫§≈Õ
+            Vector3 income = _direction.normalized; // ¿‘ªÁ∫§≈Õ
             Vector3 normal = collision.contacts[0].normal; // π˝º±∫§≈Õ
-            _direction = Vector3.Reflect(income, normal).normalized; // π›ªÁ∫§≈Õ
+            _direction = income + normal * (-2 * Vector2.Dot(income, income));
+            transform.rotation = Quaternion.Euler(_direction);
         }
         else if (collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
         {
-            Debug.Log("2222222222222");
             Destroy();
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("¡¢√À≈◊Ω∫∆Æ∆Æ∏Æ∞≈");
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
+        {
+            Destroy();
+        }
     }
 }
