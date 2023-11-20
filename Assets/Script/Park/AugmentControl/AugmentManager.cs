@@ -717,6 +717,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.MaxRegenCoin += 1;
+        playerstatHandler.CurRegenCoin += 1;
         playerstatHandler.HP.coefficient *= 0.5f;
     }
     [PunRPC]
