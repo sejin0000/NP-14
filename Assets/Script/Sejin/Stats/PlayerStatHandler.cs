@@ -295,6 +295,7 @@ public class PlayerStatHandler : MonoBehaviourPun
         PlayerInputController tempInputControl = this.gameObject.GetComponent<PlayerInputController>();
         tempInputControl.ResetSetting();
         isDie = false;
+        isRegen = true;
         photonView.RPC("SendRegenBool", RpcTarget.All, viewID);
         Debug.Log("부활 무적 시작");
         // 부활 파티클이 켜져야 하는 시점
@@ -303,15 +304,8 @@ public class PlayerStatHandler : MonoBehaviourPun
     [PunRPC]
     public void SendRegenBool(int viewID)
     {
-        PhotonView pv = PhotonView.Find(viewID);
-        if (pv.IsMine)
-        {
-            isRegen = true;
-        }
-        else
-        {
-            pv.GetComponent<PlayerStatHandler>().isRegen = true;
-        }
+        PhotonView pv = PhotonView.Find(viewID);       
+        pv.GetComponent<PlayerStatHandler>().isRegen = true;
 
         Invoke("InvokeSetRegenBool", 5f);
     }
