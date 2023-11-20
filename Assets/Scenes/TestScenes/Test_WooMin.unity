@@ -11259,11 +11259,11 @@ PrefabInstance:
       objectReference: {fileID: 1993023786}
     - target: {fileID: 286463805610593237, guid: 0586bdf19307f4f468f56c6c0a9d1d6d, type: 3}
       propertyPath: monsterDataList.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 286463805610593237, guid: 0586bdf19307f4f468f56c6c0a9d1d6d, type: 3}
       propertyPath: monsterDataList.Array.data[0].monsterNum
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 286463805610593237, guid: 0586bdf19307f4f468f56c6c0a9d1d6d, type: 3}
       propertyPath: monsterDataList.Array.data[1].monsterNum
@@ -11271,7 +11271,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 286463805610593237, guid: 0586bdf19307f4f468f56c6c0a9d1d6d, type: 3}
       propertyPath: monsterDataList.Array.data[0].monsterType
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 286463805610593237, guid: 0586bdf19307f4f468f56c6c0a9d1d6d, type: 3}
       propertyPath: monsterDataList.Array.data[1].monsterType
@@ -15609,6 +15609,15 @@ MonoBehaviour:
   special1Button: {fileID: 1505031050}
   special2Button: {fileID: 44910199}
   special3Button: {fileID: 1200204625}
+  soldier1Button: {fileID: 0}
+  soldier2Button: {fileID: 0}
+  soldier3Button: {fileID: 0}
+  shotGun1Button: {fileID: 0}
+  shotGun2Button: {fileID: 0}
+  shotGun3Button: {fileID: 0}
+  sniper1Button: {fileID: 0}
+  sniper2Button: {fileID: 0}
+  sniper3Button: {fileID: 0}
   closePanelButton: {fileID: 1087842846}
   AugmentScrollViewContent: {fileID: 1858968720}
 --- !u!114 &607891022
