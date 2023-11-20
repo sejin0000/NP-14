@@ -698,7 +698,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     private void A302(int PlayerNumber)//인피니티불렛 탄창 9999 획득시점의 총알 값 계산하여 9999로 맞춰줌 많든 적든 같음
     {
         ChangePlayerStatHandler(PlayerNumber);
-        playerstatHandler.AmmoMax.added += 9999 - playerstatHandler.AmmoMax.total;
+        playerstatHandler.AmmoMax.added += 99 - playerstatHandler.AmmoMax.total;
     }
     [PunRPC]
     private void A303(int PlayerNumber)//분신
