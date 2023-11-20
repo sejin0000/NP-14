@@ -14,18 +14,13 @@ public class Player2Skill : Skill
     public float shieldScale=1;
     public float shieldSurvivalTime = 3;
 
-    public override void Awake()
-    {
-        pv = GetComponent<PhotonView>();
-        base.Awake();
-        
-    }
-
     public void Start()
     {
         if (photonView.IsMine)
         {
             controller.OnSkillEvent += SkillStart;
+            isLink = true;
+            controller.SkillMinusEvent += SkillLinkOff;
         }
     }
     public override void SkillStart()

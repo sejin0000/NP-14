@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
 
@@ -14,6 +15,8 @@ public class Player1Skill : Skill
         if (photonView.IsMine)
         {
             controller.OnSkillEvent += SkillStart;
+            isLink = true;
+            controller.SkillMinusEvent += SkillLinkOff;
         }
     }
     public override void SkillStart()

@@ -9,23 +9,14 @@ public class Skill : MonoBehaviourPun
 
     protected TopDownCharacterController controller;
     protected PlayerStatHandler playerStats;
-    private bool isLink;
+    public bool isLink;
 
-    public virtual void Awake()
+    public void Awake()
     {
         controller = GetComponent<TopDownCharacterController>();
         playerStats = GetComponent<PlayerStatHandler>();
     }
 
-    public virtual void Start()
-    {
-        if (photonView.IsMine)
-        {
-            controller.OnSkillEvent += SkillStart;
-            isLink=true;
-            controller.SkillMinusEvent += SkillLinkOff;
-        }
-    }
     public void SkillLinkOff()
     {
         if (photonView.IsMine)
