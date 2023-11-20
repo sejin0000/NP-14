@@ -24,15 +24,19 @@ public class TestGameManager : MonoBehaviourPun
 
     [Header("PlayerData")]
     public PlayerDataSetting characterSetting;
+    public bool isDie;
 
     [Header("GameData")]
     public List<MonsterData> monsterDataList;
     public int currentMonsterCount;
+    public int PartyDeathCount;
 
     [Header("Auguments")]
     public int tier;
     public int Ready;
 
+    [HideInInspector]
+    public event Action OnOverCheckEvent;
 
     [Serializable]
     public struct MonsterData
@@ -102,6 +106,12 @@ public class TestGameManager : MonoBehaviourPun
 
         // ClassIdentifier µ•¿Ã≈Õ Init()
         InstantiatedPlayer.GetComponent<ClassIdentifier>().playerData = characterSetting;
+
+        // isDie
+        var playerStatHandler = InstantiatedPlayer.GetComponent<PlayerStatHandler>();
+        isDie = playerStatHandler.isDie;
+        PartyDeathCount = 0;
+        playerStatHandler.OnDieEvent += DiedAfter;
     }
 
     [PunRPC]
@@ -176,5 +186,18 @@ public class TestGameManager : MonoBehaviourPun
         {
             photonView.RPC("uiscene", RpcTarget.All);
         }
+    }
+
+    public void DiedAfter()
+    {
+        photonView.RPC("AddPartyDeathCount", RpcTarget.All);
+        Debug.Log("MainGameManager : DiedAfter() => PartyDeath : " + PartyDeathCount.ToString());
+        OnOverCheckEvent?.Invoke();
+    }
+
+    [PunRPC]
+    public void AddPartyDeathCount()
+    {
+        PartyDeathCount++;
     }
 }
