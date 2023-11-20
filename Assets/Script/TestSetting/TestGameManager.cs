@@ -139,7 +139,7 @@ public class TestGameManager : MonoBehaviourPun
             go.transform.position = new Vector3(destinationX, destinationY, 0);
 
             EnemySpawn enemySpawn = go.GetComponent<EnemySpawn>();
-            enemySpawn.Spawn();
+            //enemySpawn.Spawn();
             Destroy(go);
         }
     }

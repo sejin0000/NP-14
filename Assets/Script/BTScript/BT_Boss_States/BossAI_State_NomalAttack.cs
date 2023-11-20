@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //스페셜 어택 -> 노말 어택 순서로 체크
-public class BossAI_State_NomalAttack : BTAction
+public class BossAI_State_NomalAttack : BTCondition
 {
     private GameObject owner;
     private EnemyAI enemyAI;
