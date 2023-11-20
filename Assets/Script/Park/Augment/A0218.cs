@@ -20,7 +20,7 @@ public class A0218 : MonoBehaviour
         foreach (GameObject star in target)
         {
             dir = this.transform.position - star.transform.position;
-            dir = dir * 0.1f * Time.deltaTime;
+            dir = dir * 2f * Time.deltaTime;
             star.GetComponent<Rigidbody2D>().AddForce(dir);
         }
         if (time >= 3) 
