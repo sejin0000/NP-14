@@ -35,17 +35,17 @@ public class A0206 : MonoBehaviour
         while (playerInput.actions["Attack"].ReadValue<float>() == 1)
         {
             elapsedTime += Time.deltaTime;
-            playerStatHandler.AtkSpeed.added = Mathf.Lerp(curATKSpeed, goalATKSpeed, elapsedTime);
+            playerStatHandler.AtkSpeed.added = (Mathf.Lerp(curATKSpeed, goalATKSpeed, elapsedTime) - curATKSpeed);
             yield return null;
         }
+        isLerping = false;
         float addedATKSpeed = playerStatHandler.AtkSpeed.total - curATKSpeed;
         playerStatHandler.AtkSpeed.added -= addedATKSpeed;
-        isLerping = false;
     }
 
     private void GetATKSpeed()
     {
         curATKSpeed = playerStatHandler.AtkSpeed.total;
-        goalATKSpeed = curATKSpeed * 2;
+        goalATKSpeed = curATKSpeed * 2.5f;
     }
 }
