@@ -19,15 +19,14 @@ public class A0218 : MonoBehaviour
 
         foreach (GameObject star in target)
         {
-            if (star == null) 
+            if (star != null) 
             {
-                return;
+                dir = this.transform.position - star.transform.position;
+                dir = dir * 5f;
+                star.GetComponent<Rigidbody2D>().AddForce(dir);
             }
-            dir = this.transform.position - star.transform.position;
-            dir = dir * 20f;
-            star.GetComponent<Rigidbody2D>().AddForce(dir);
         }
-        if (time >= 50) 
+        if (time >= 3) 
         {
             Destroy(this.gameObject);
         }
