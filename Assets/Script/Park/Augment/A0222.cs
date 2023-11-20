@@ -18,6 +18,6 @@ public class A0222 : MonoBehaviourPun
     }
     void RollingHeal()
     {
-        playerStat.CurHP += playerStat.HP.total*0.1f;
+        playerStat.HPadd(playerStat.HP.total * 0.1f);
     }
 }
