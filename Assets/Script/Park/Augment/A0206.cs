@@ -9,6 +9,7 @@ public class A0206 : MonoBehaviour
     private PlayerInput playerInput;
     private float curATKSpeed;
     private float goalATKSpeed;
+    private float addedATKSpeed;
     private bool isLerping;
 
     private void Awake()
@@ -16,6 +17,7 @@ public class A0206 : MonoBehaviour
         playerStatHandler = GetComponent<PlayerStatHandler>();
         playerInput = GetComponent<PlayerInput>();
         isLerping = false;
+        addedATKSpeed = 0;
     }
 
     private void Update()
@@ -31,21 +33,27 @@ public class A0206 : MonoBehaviour
     {
         GetATKSpeed();
         float elapsedTime = 0f;
-
         while (playerInput.actions["Attack"].ReadValue<float>() == 1)
         {
+            if (playerStatHandler.CurAmmo == 0)
+            {
+                playerStatHandler.AtkSpeed.added -= addedATKSpeed;
+                addedATKSpeed = 0;
+                yield return null;
+            }
             elapsedTime += Time.deltaTime;
             playerStatHandler.AtkSpeed.added += (goalATKSpeed - curATKSpeed) * elapsedTime;
+            addedATKSpeed += (goalATKSpeed - curATKSpeed) * elapsedTime;
             yield return null;
         }
         isLerping = false;
-        float addedATKSpeed = playerStatHandler.AtkSpeed.total - curATKSpeed;
         playerStatHandler.AtkSpeed.added -= addedATKSpeed;
+        addedATKSpeed = 0;
     }
 
     private void GetATKSpeed()
     {
         curATKSpeed = playerStatHandler.AtkSpeed.total;
-        goalATKSpeed = curATKSpeed * 1.001f;
+        goalATKSpeed = curATKSpeed * 1.0005f;
     }
 }
