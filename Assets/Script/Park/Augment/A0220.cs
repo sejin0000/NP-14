@@ -6,7 +6,6 @@ using UnityEngine;
 public class A0220 : MonoBehaviourPun
 {
     public int percent;
-    private TopDownCharacterController controller;
     private PlayerStatHandler stats;
     
     private void Awake()
@@ -14,9 +13,8 @@ public class A0220 : MonoBehaviourPun
         percent = 0;
         if (photonView.IsMine)
         {
-            controller = GetComponent<TopDownCharacterController>();
             stats = GetComponent<PlayerStatHandler>();
-            controller.OnAttackEvent += Drain;
+            stats.EnemyHitEvent += Drain;
         }
 
     }

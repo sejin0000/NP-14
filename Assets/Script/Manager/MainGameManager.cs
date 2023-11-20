@@ -89,6 +89,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     public event Action OnGameStartedEvent;
     public event Action OnGameEndedEvent;
     public event Action OnGameClearedEvent;
+    public event Action OnPlayerDieEvent;
     public event Action OnGameOverEvent;
     public event Action OnOverCheckEvent;
 
@@ -322,7 +323,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         var playerStatHandler = InstantiatedPlayer.GetComponent<PlayerStatHandler>();
         isDie = playerStatHandler.isDie;
         PartyDeathCount = 0;
-        playerStatHandler.OnDieEvent += DiedAfter;
+        //playerStatHandler.OnDieEvent += DiedAfter;
         // 플레이어 데이터 추가
         playerInfoDictionary.Add(viewID, InstantiatedPlayer.transform);
         GameObject sendingPlayer = InstantiatedPlayer;
@@ -429,7 +430,9 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     public void AddPartyDeathCount()
     {
         PartyDeathCount++;
+        OnPlayerDieEvent?.Invoke();
     }
+
 
     [PunRPC]
     public void SetEndState()
