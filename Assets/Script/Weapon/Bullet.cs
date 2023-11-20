@@ -56,12 +56,12 @@ public class Bullet : MonoBehaviour
         }
         if (locator) 
         {
-            ATK -= ATK*0.5f * Time.deltaTime;
+            ATK -= ATK*3.5f * Time.deltaTime;
             Debug.Log($"약해지는중 현재 {ATK} 시간 {time}");
         }
         if (sniping) 
         {
-            ATK += ATK * 1f * Time.deltaTime;
+            ATK += ATK * 2f * Time.deltaTime;
             Debug.Log($"강해지는중 현재 {ATK} 시간 {time}");
         }
     }
