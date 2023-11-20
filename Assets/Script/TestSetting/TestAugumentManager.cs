@@ -546,7 +546,7 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     private void A207(int PlayerNumber)//하이리스크 하이리턴
     {
         ChangePlayerStatHandler(PlayerNumber);
-        playerstatHandler.defense *= 0.5f;
+        playerstatHandler.defense *= 2f;
         playerstatHandler.ATK.coefficient *= 2f;
     }
     [PunRPC]
