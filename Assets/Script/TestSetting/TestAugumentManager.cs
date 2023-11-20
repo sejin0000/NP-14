@@ -552,7 +552,7 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     [PunRPC]
     private void A208(int PlayerNumber)//회피의달인
     {
-        ChangePlayerStatHandler(PlayerNumber);
+        ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A0208>();
     }
     [PunRPC]

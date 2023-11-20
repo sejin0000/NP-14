@@ -26,7 +26,7 @@ public class A0211 : MonoBehaviourPun
         int Per = Random.Range(persent, maxpersent);
         if (persent >= Per)
         {
-            playerStat.CurHP += damege*0.2f;
+            playerStat.HPadd(damege * 1.2f);
         }
     }
 }
