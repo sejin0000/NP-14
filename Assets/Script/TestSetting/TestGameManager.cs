@@ -111,7 +111,7 @@ public class TestGameManager : MonoBehaviourPun
         var playerStatHandler = InstantiatedPlayer.GetComponent<PlayerStatHandler>();
         isDie = playerStatHandler.isDie;
         PartyDeathCount = 0;
-        playerStatHandler.OnDieEvent += DiedAfter;
+        //playerStatHandler.OnDieEvent += DiedAfter;
     }
 
     [PunRPC]
