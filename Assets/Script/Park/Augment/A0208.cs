@@ -19,8 +19,12 @@ public class A0208 : MonoBehaviourPun//피해를 입지않은 시간이 길어질수록 강해집�
     }
     private void Update()
     {
+        if (photonView.IsMine)
+        {
             playerStat.ATK.added += (Time.deltaTime) * 0.3f;
             power += Time.deltaTime * 0.3f;
+        }
+
     }
 
     void HitDAHit()

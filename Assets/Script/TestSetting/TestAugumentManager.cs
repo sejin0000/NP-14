@@ -596,7 +596,7 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
         playerInput = targetPlayer.GetComponent<PlayerInput>();
         playerInput.actions.FindAction("Skill").Disable();
         playerstatHandler.isCanSkill = false;
-        Debug.Log("이 증강도 상당히 우려가 됩니다 우클릭 체크 하고 말해주세요");
+        playerstatHandler.ATK.coefficient *= 1.3f;
     }
     [PunRPC]
     private void A215(int PlayerNumber)//화염
