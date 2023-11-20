@@ -56,6 +56,7 @@ public class PlayerStatHandler : MonoBehaviourPun
     public bool isCanSkill;
     public bool isCanAtk;
     public bool isDie;
+    public bool isRegen;
     public int RegenHP;
     public int MaxRegenCoin;
     private int curRegenCoin;
@@ -177,6 +178,7 @@ public class PlayerStatHandler : MonoBehaviourPun
         isCanSkill=true;
         isCanAtk = true;
         evasionPersent = 0;
+        isRegen = false;
 
         kill = 0;
         MaxSkillStack = 1;
@@ -288,6 +290,15 @@ public class PlayerStatHandler : MonoBehaviourPun
         PlayerInputController tempInputControl = this.gameObject.GetComponent<PlayerInputController>();
         tempInputControl.ResetSetting();
         isDie = false;
+        isRegen = true;
+        Invoke("SetRegenBool", 5f);
+        // 부활 파티클이 켜져야 하는 시점
+    }
+
+    public void SetRegenBool()
+    {
+        isRegen = false;
+        // 부활 파티클이 꺼져야 하는 시점
     }
 
     public void RefillCoin()
