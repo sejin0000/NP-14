@@ -583,7 +583,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void SyncAnimation(string animName, bool set)
     {
-        Debug.Log($"{animName}이 {set} 상태로 호출됨");
+        //Debug.Log($"{animName}이 {set} 상태로 호출됨");
         anim.SetBool(animName, set);
     }
 
