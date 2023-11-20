@@ -323,7 +323,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         var playerStatHandler = InstantiatedPlayer.GetComponent<PlayerStatHandler>();
         isDie = playerStatHandler.isDie;
         PartyDeathCount = 0;
-        //playerStatHandler.OnDieEvent += DiedAfter;
+        //playerStatHandler.OnDieEvent += DiedAfter; 부활로 인해 
         // 플레이어 데이터 추가
         playerInfoDictionary.Add(viewID, InstantiatedPlayer.transform);
         GameObject sendingPlayer = InstantiatedPlayer;
