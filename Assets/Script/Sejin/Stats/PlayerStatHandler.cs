@@ -71,7 +71,7 @@ public class PlayerStatHandler : MonoBehaviourPun
             {
                 curRegenCoin = value;
             }
-            if (curRegenCoin == 0)
+            if (value == 0)
             {
                 OnRegenCalculateEvent += RegenHPCalculator;
             }
@@ -276,7 +276,7 @@ public class PlayerStatHandler : MonoBehaviourPun
         CurHP = HP;
         OnRegenEvent?.Invoke();
         OnRegenCalculateEvent?.Invoke(RegenHP);
-        //GetComponent<PlayerInput>().actions.FindAction("Move2").Disable();
+        GetComponent<PlayerInput>().actions.FindAction("Move2").Disable();
         isDie = false;
     }
 
