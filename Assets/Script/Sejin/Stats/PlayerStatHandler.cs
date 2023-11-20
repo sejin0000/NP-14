@@ -223,6 +223,12 @@ public class PlayerStatHandler : MonoBehaviourPun
             OnChangeCurHPEvent += SendSyncHP;
         }
 
+        if (TestGameManager.Instance != null) 
+        {
+            viewID = photonView.ViewID;
+            OnChangeCurHPEvent += SendSyncHP;
+        }
+
     }
     public override string ToString()
     {
