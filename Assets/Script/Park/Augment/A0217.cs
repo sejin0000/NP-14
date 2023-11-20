@@ -22,6 +22,5 @@ public class A0217 : MonoBehaviourPun
     {
         GameObject fire = PhotonNetwork.Instantiate("AugmentList/A0217", transform.localPosition, Quaternion.identity);
         A0217_1 a2203 = fire.GetComponent<A0217_1>();
-        a2203.Init(playerStat);
     }
 }
