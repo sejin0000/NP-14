@@ -100,13 +100,13 @@ public class WeaponSystem : MonoBehaviour
     [PunRPC]
     public void BS(Quaternion rot, float Atk, float bulletLifeTime,Dictionary<string, int> _targets, bool _isDamage, int _viewID)//BulletSpawn
     {
-        Debug.Log("타겟");
+        //Debug.Log("타겟");
         foreach (var target in _targets)
         {
-            Debug.Log(target);
+            //Debug.Log(target);
         }
-        Debug.Log("데미지를 주는가?");
-        Debug.Log(_isDamage);
+        //Debug.Log("데미지를 주는가?");
+        //Debug.Log(_isDamage);
         float size=1f;
 
         if (sizeBody) 

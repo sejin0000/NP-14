@@ -15,23 +15,23 @@ public class A0217_1 : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.tag == "Player" && !target.Contains(collision.GetComponent<PlayerStatHandler>()))
         {
             PlayerStatHandler targetstat = collision.GetComponent<PlayerStatHandler>();
             target.Add(targetstat);
-            targetstat.AtkSpeed.added += 10;
-            targetstat.Speed.added += 10;
+            targetstat.AtkSpeed.added += 5;
+            targetstat.Speed.added += 5;
             Debug.Log("플레이어입장");
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.tag == "Player" && target.Contains(collision.GetComponent<PlayerStatHandler>()))
         {
             PlayerStatHandler targetstat = collision.GetComponent<PlayerStatHandler>();
             target.Remove(targetstat);
-            targetstat.AtkSpeed.added -= 10;
-            targetstat.Speed.added -= 10;
+            targetstat.AtkSpeed.added -=5;
+            targetstat.Speed.added -= 5;
             Debug.Log("플레이어퇴장");
         }
     }

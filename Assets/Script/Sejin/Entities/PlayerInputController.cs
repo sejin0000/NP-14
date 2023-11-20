@@ -107,7 +107,7 @@ public class PlayerInputController : TopDownCharacterController
         int random = Random.Range(0, 100);
         if (atkPercent >= random) 
         {
-            Debug.Log("OnAttack" + value.ToString());
+            //Debug.Log("OnAttack" + value.ToString());
             if (EventSystem.current != null)
             {
                 //playerInput.actions["Attack"].ReadValue<float>()마우스 눌리는거 확인하는 변수
