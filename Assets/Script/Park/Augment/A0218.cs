@@ -19,10 +19,9 @@ public class A0218 : MonoBehaviour
 
         foreach (GameObject star in target)
         {
-            Debug.Log("들어오지를 않는거같은데?");
-            float dis = Vector3.Distance(this.transform.position, star.transform.position);
             dir = this.transform.position - star.transform.position;
-            star.transform.position += dir * 0.1f * Time.deltaTime;
+            dir = dir * 0.1f * Time.deltaTime;
+            star.GetComponent<Rigidbody2D>().AddForce(dir);
         }
         if (time >= 3) 
         {
