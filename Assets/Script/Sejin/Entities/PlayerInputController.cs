@@ -37,6 +37,10 @@ public class PlayerInputController : TopDownCharacterController
     }
     private void OnEnable()
     {
+        ResetSetting();
+    }
+    public void ResetSetting()
+    {
         if (playerstatHnadler.isNoramlMove)
         {
             playerInput.actions.FindAction("Move2").Disable();
@@ -51,7 +55,7 @@ public class PlayerInputController : TopDownCharacterController
         {
             playerInput.actions.FindAction("Skill").Enable();
         }
-        else 
+        else
         {
             playerInput.actions.FindAction("Skill").Disable();
         }

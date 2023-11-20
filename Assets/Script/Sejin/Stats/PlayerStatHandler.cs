@@ -276,7 +276,8 @@ public class PlayerStatHandler : MonoBehaviourPun
         CurHP = HP;
         OnRegenEvent?.Invoke();
         OnRegenCalculateEvent?.Invoke(RegenHP);
-        //GetComponent<PlayerInput>().actions.FindAction("Move2").Disable();
+        PlayerInputController tempInputControl = this.gameObject.GetComponent<PlayerInputController>();
+        tempInputControl.ResetSetting();
         isDie = false;
     }
 
