@@ -15,7 +15,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     public float viewDistance;               // 시야 거리 (기본 10)
 
     //컴포넌트 및 기타 외부요소(일부 할당은 하위 노드에서 진행)
-    public EnemySO enemySO;                  // Enemy 정보 [모든 Action Node에 owner로 획득시킴]
+    public EnemySO bossSO;                  // Enemy 정보 [모든 Action Node에 owner로 획득시킴]
     public SpriteRenderer spriteRenderer;
     public Animator anim;
 
@@ -31,7 +31,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
     public GameObject enemyAim;
     public Bullet enemyBulletPrefab;
-
+    public Transform bossHead;
 
     public LayerMask targetMask;             // 타겟 레이어(Player)
 
@@ -50,8 +50,8 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
     //가장많은 피해를 준 플레이어 타겟-> 불렛(쏜사람 정보) 맞은놈만 알면됨 ->플레이 공격력->
 
-    Vector2 nowEnemyPosition;
-    Quaternion nowEnemyRotation;
+
+
     [SerializeField]
     private Image images_Gauge;              //몬스터 UI : Status
 
@@ -77,9 +77,9 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
         //게임 오브젝트 활성화 시, 행동 트리 생성
         CreateTreeAIState();
-        currentHP = enemySO.hp;
-        viewAngle = enemySO.viewAngle;
-        viewDistance = enemySO.viewDistance;
+        currentHP = bossSO.hp;
+        viewAngle = bossSO.viewAngle;
+        viewDistance = bossSO.viewDistance;
         isLive = true;
 
 
@@ -87,7 +87,6 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         //쫓는 플레이어도 호스트가 판별?
 
 
-        nowEnemyPosition = this.gameObject.transform.position;
         knockbackDistance = 0f;
 
 
@@ -226,7 +225,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     }
     private void GaugeUpdate()
     {
-        images_Gauge.fillAmount = (float)currentHP / enemySO.hp;
+        images_Gauge.fillAmount = (float)currentHP / bossSO.hp;
     }
 
     [PunRPC]
@@ -234,8 +233,8 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     {
         currentHP += damage;
 
-        if (currentHP > enemySO.hp)
-            currentHP = enemySO.hp;
+        if (currentHP > bossSO.hp)
+            currentHP = bossSO.hp;
 
         GaugeUpdate();
     }
@@ -266,9 +265,9 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         var _bullet = Instantiate(enemyBulletPrefab, enemyAim.transform.position, enemyAim.transform.rotation);
 
         _bullet.IsDamage = true;
-        _bullet.ATK = enemySO.atk;
-        _bullet.BulletLifeTime = enemySO.bulletLifeTime;
-        _bullet.BulletSpeed = enemySO.bulletSpeed;
+        _bullet.ATK = bossSO.atk;
+        _bullet.BulletLifeTime = bossSO.bulletLifeTime;
+        _bullet.BulletSpeed = bossSO.bulletSpeed;
         _bullet.targets["Player"] = (int)BulletTarget.Player;
 
         /*
@@ -492,7 +491,6 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         EnemyState_GroggyCondition groggyConditon = new EnemyState_GroggyCondition(gameObject);
         BTAbnormal.AddChild(groggyConditon);
 
-        BTMainSelector.AddChild(BTAbnormal);
 
         //추적+공격
         //컨디션 체크 -> 플레이어 추적 & 플레이어가 공격 범위 내 -> 공격(성공 반환 후 최초로)
@@ -557,5 +555,12 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         }
 
     }
+
+    public void SetStateColor(Color _color)
+    {
+        spriteRenderer.color = _color;
+    }
+
     #endregion
+
 }
