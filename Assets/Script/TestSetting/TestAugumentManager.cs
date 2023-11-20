@@ -601,16 +601,16 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     [PunRPC]
     private void A215(int PlayerNumber)//화염
     {
-        ChangePlayerStatHandler(PlayerNumber);
-        WeaponSystem a = targetPlayer.GetComponent<WeaponSystem>();
-        a.burn = true;
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        WeaponSystem _weaponSystem = targetPlayer.GetComponent<WeaponSystem>();
+        _weaponSystem.burn = true;
     }
     [PunRPC]
     private void A216(int PlayerNumber)//아이스
     {
-        ChangePlayerStatHandler(PlayerNumber);
-        WeaponSystem a = targetPlayer.GetComponent<WeaponSystem>();
-        a.ice = true;
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        WeaponSystem _weaponSystem = targetPlayer.GetComponent<WeaponSystem>();
+        _weaponSystem.ice = true;
     }
     [PunRPC]
     private void A217(int PlayerNumber)//용기의 깃발 범위내 이속 공속증가
@@ -621,9 +621,9 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     [PunRPC]
     private void A218(int PlayerNumber)//과질량 장치
     {
-        ChangePlayerStatHandler(PlayerNumber);
-        WeaponSystem a = targetPlayer.GetComponent<WeaponSystem>();
-        a.gravity = true;
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        WeaponSystem _weaponSystem = targetPlayer.GetComponent<WeaponSystem>();
+        _weaponSystem.gravity = true;
     }
     [PunRPC]
     private void A219(int PlayerNumber) //고장내기mk2 1,2,3 공용 증강 이기에 좀 남다른 코드임 30
