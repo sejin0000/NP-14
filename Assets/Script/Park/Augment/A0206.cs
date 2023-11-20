@@ -35,7 +35,7 @@ public class A0206 : MonoBehaviour
         while (playerInput.actions["Attack"].ReadValue<float>() == 1)
         {
             elapsedTime += Time.deltaTime;
-            playerStatHandler.AtkSpeed.added += (Mathf.Lerp(curATKSpeed, goalATKSpeed, elapsedTime) - curATKSpeed);
+            playerStatHandler.AtkSpeed.added += (goalATKSpeed - curATKSpeed) * elapsedTime;
             yield return null;
         }
         isLerping = false;
@@ -46,6 +46,6 @@ public class A0206 : MonoBehaviour
     private void GetATKSpeed()
     {
         curATKSpeed = playerStatHandler.AtkSpeed.total;
-        goalATKSpeed = curATKSpeed * 1.3f;
+        goalATKSpeed = curATKSpeed * 1.001f;
     }
 }
