@@ -126,7 +126,7 @@ public class WeaponSystem : MonoBehaviour
         if (locator)
         {
             _bullet.locator = true;
-            Atk = Atk * 0.3f;
+            Atk += Atk * 1f;
         }
         if (sniping)
         {
