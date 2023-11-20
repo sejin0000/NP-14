@@ -230,7 +230,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             }
             if (playerBullet.burn)
             {
-                PhotonNetwork.Instantiate("AugmentList/A0122", transform.localPosition,quaternion.identity);
+                GameObject firezone =PhotonNetwork.Instantiate("AugmentList/A0122", transform.localPosition,quaternion.identity);
+                firezone.GetComponent<A0122_1>().Init(playerBullet.BulletOwner, atk);
             }
             if (playerBullet.gravity)
             {
