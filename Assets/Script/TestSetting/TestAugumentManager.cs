@@ -566,6 +566,7 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.MaxRegenCoin += 1;
+        playerstatHandler.CurRegenCoin += 1;
         playerstatHandler.RegenHP += 1;
     }
 
