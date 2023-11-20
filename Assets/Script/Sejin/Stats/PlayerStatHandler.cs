@@ -349,8 +349,7 @@ public class PlayerStatHandler : MonoBehaviourPun
         }
         else
         {
-            curHP = calHP;
+            HPadd((calHP - HP.total));
         }
     }
-
 }
