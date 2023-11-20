@@ -24,7 +24,7 @@ public class A0218 : MonoBehaviour
                 return;
             }
             dir = this.transform.position - star.transform.position;
-            dir = dir * 2f * Time.deltaTime;
+            dir = dir * 20f;
             star.GetComponent<Rigidbody2D>().AddForce(dir);
         }
         if (time >= 50) 
