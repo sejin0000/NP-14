@@ -276,7 +276,7 @@ public class PlayerStatHandler : MonoBehaviourPun
         CurHP = HP;
         OnRegenEvent?.Invoke();
         OnRegenCalculateEvent?.Invoke(RegenHP);
-        GetComponent<PlayerInput>().actions.FindAction("Move2").Disable();
+        //GetComponent<PlayerInput>().actions.FindAction("Move2").Disable();
         isDie = false;
     }
 
