@@ -240,15 +240,17 @@ public class PlayerStatHandler : MonoBehaviourPun
         {
             if (CurHP - DamegeTemp <= 0)
             {
+                isDie = true;
+                OnDieEvent?.Invoke();
+
                 if (CurRegenCoin > 0)
                 {
                     CurRegenCoin -= 1;
+                    Debug.Log($"부활 : {CurRegenCoin}");
                     Regen(HP.total);
                     return;
                 }
 
-                isDie = true;
-                OnDieEvent?.Invoke();
                 this.gameObject.layer = 0;
             }
             Debug.Log($"데미지 {DamegeTemp}");

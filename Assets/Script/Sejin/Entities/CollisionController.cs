@@ -16,11 +16,6 @@ public class CollisionController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-
-
-
-
-
         if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet") 
             && !playerStat.Invincibility 
             && !playerStat.isDie 
