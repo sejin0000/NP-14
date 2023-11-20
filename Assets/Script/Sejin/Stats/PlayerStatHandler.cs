@@ -104,6 +104,10 @@ public class PlayerStatHandler : MonoBehaviourPun
                 {
                     curHP = HP.total;
                 }
+                else if (value < 0)
+                {
+                    curHP = 0;
+                }
                 else
                 {
                     curHP = value;
@@ -247,6 +251,7 @@ public class PlayerStatHandler : MonoBehaviourPun
 
             if (CurHP - DamegeTemp <= 0)
             {
+                CurHP -= DamegeTemp;
                 isDie = true;
                 OnDieEvent?.Invoke();
 
@@ -284,7 +289,7 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     public void Regen(float HP)
     {
-        CurHP = HP;
+        HPadd(HP);
         OnRegenEvent?.Invoke();
         OnRegenCalculateEvent?.Invoke(RegenHP);
         PlayerInputController tempInputControl = this.gameObject.GetComponent<PlayerInputController>();
@@ -360,6 +365,7 @@ public class PlayerStatHandler : MonoBehaviourPun
         }
         else
         {
+            Debug.Log($"A206 발악 실행 : {calHP}");
             HPadd((calHP - HP.total));
         }
     }
