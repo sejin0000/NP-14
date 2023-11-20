@@ -17,23 +17,13 @@ public class SetTile : MonoBehaviour
     public RuleTile doorTile;
 
 
-    public void SetRectTile(RectInt rect, Tilemap tilemap, Vector2 Startpos)
+    public void RemoveRectTile(RectInt rect, Tilemap tilemap, Vector2 Startpos)
     {
         for (int i = 0; i < rect.width; i++)
         {
             for (int j = 0; j < rect.height; j++)
             {
                 tilemap.SetTile(new Vector3Int(i + ((int)Startpos.x), j + ((int)Startpos.y)), null);
-            }
-        }
-    }
-    public void SetRectTile(RectInt rect, Tilemap tilemap)
-    {
-        for (int i = 0; i < rect.width; i++)
-        {
-            for (int j = 0; j < rect.height; j++)
-            {
-                tilemap.SetTile(new Vector3Int(i - (rect.width / 2), j - (rect.height / 2)), null);
             }
         }
     }
@@ -58,7 +48,7 @@ public class SetTile : MonoBehaviour
         }
     }
 
-    public void SetLineTile(Tilemap tilemap, Vector2Int startPos,int length, Vector2 direction,Vector2 Startpos)
+    public void RemoveLineTile(Tilemap tilemap, Vector2Int startPos,int length, Vector2 direction,Vector2 Startpos)
     {
         for (int j = 0; j < length + 1; j++)
         {
@@ -78,7 +68,10 @@ public class SetTile : MonoBehaviour
         }
     }
 
-    public void SetPointTile(Vector2Int vector,Tilemap tilemap,RuleTile tile)
+
+
+
+    public void SetDoorTile(Vector2Int vector,Tilemap tilemap,RuleTile tile)
     {
         tilemap.SetTile((Vector3Int)vector,tile);
         vector.y += 1;
