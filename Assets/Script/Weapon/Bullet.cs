@@ -80,9 +80,8 @@ public class Bullet : MonoBehaviour
             Debug.Log("111111111111");
             Vector3 income = _direction.normalized; // 입사벡터
             Vector3 normal = collision.contacts[0].normal; // 법선벡터
-            Vector3 async = Vector3.Reflect(income, normal); // 반사벡터
-            _direction = async.normalized;
-
+            _direction = income + normal * (-2 * Vector2.Dot(income, income));
+            transform.rotation = Quaternion.Euler(_direction);
         }
         else if (collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
         {
@@ -91,6 +90,9 @@ public class Bullet : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("접촉테스트트리거");
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
+        {
+            Destroy();
+        }
     }
 }
