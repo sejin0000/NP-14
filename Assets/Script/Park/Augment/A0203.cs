@@ -34,10 +34,12 @@ public class A0203 : MonoBehaviourPun//현재체력비례 공격력
         playerStat.AtkSpeed.added += nowSpeed;
         playerStat.AtkSpeed.added -= oldSpeed;
         oldPower = nowPower;
+        oldSpeed = nowSpeed;
+        Debug.Log(playerStat.AtkSpeed.added);
     }
     float GetPower() 
     {
-        float a = (playerStat.HP.total - playerStat.CurHP) * 0.1f;
+        float a = (playerStat.CurHP/ playerStat.HP.total) * 100f;
         int power=0;
         if (a >= 40)
         {
@@ -59,7 +61,7 @@ public class A0203 : MonoBehaviourPun//현재체력비례 공격력
     }
     float GetSpeed()
     {
-        float a = (playerStat.HP.total - playerStat.CurHP) * 0.1f;
+        float a = (playerStat.CurHP / playerStat.HP.total) * 100f;
         float power = 0;
         if (a >= 40)
         {
