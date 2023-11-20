@@ -39,7 +39,7 @@ public class A0303 : MonoBehaviourPun
         return null;
     }
 
-    public void Initialize(Transform parentTransform)
+    public GameObject Initialize(Transform parentTransform)
     {
         GameObject partner = SpawnPartner();
         PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out object classNum);
@@ -47,6 +47,7 @@ public class A0303 : MonoBehaviourPun
         partner.GetPhotonView().RPC("ApplyClassChange", RpcTarget.Others, (int)classNum, viewID);
         partner.transform.parent = parentTransform;
         partner.transform.localPosition = Vector3.zero;
+        return partner;
     }
 
     private void SetClassType(int charType, GameObject playerGo)

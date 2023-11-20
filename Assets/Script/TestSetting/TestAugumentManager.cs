@@ -707,8 +707,9 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
         if (targetPlayer.GetPhotonView().IsMine)
         {
             GameObject prefab = PhotonNetwork.Instantiate("AugmentList/A0303", targetPlayer.transform.localPosition, Quaternion.identity);
-            prefab.GetComponent<A0303>().Initialize(prefab.transform);
-            int num = prefab.GetPhotonView().ViewID;
+            var partner = prefab.GetComponent<A0303>().Initialize(targetPlayer.transform);
+            Destroy(prefab);
+            int num = partner.GetPhotonView().ViewID;
             photonView.RPC("FindMaster", RpcTarget.All, num);
         }
     }
