@@ -46,6 +46,6 @@ public class A0206 : MonoBehaviour
     private void GetATKSpeed()
     {
         curATKSpeed = playerStatHandler.AtkSpeed.total;
-        goalATKSpeed = curATKSpeed * 3;
+        goalATKSpeed = curATKSpeed * 2;
     }
 }
