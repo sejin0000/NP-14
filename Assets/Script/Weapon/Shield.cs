@@ -69,7 +69,8 @@ public class Shield : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet")
+            && collision.gameObject.GetComponent<Bullet>().targets.ContainsValue((int)BulletTarget.Player))
         {
             var bullet = collision.gameObject.GetComponent<Bullet>();
             TargetID = bullet.BulletOwner;            
@@ -85,7 +86,7 @@ public class Shield : MonoBehaviour
                 Destroy(collision.gameObject);
                 return;
             }
-            Destroy(collision.gameObject);            
+            Destroy(collision.gameObject);   
         }
     }
 

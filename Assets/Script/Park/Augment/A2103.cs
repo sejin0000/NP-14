@@ -13,7 +13,7 @@ public class A2103 : MonoBehaviourPun
     public float power;
     public float oldPower;
 
-    int runtime = 1;
+    float setTime;
 
     public void Init()
     {
@@ -21,6 +21,7 @@ public class A2103 : MonoBehaviourPun
         controller = GetComponent<TopDownCharacterController>();
         target = null;
         oldPower = 0;
+        setTime = 0f;
         MainGameManager.Instance.OnGameStartedEvent += Restart;
         photonView.RPC("Check",RpcTarget.All);
     }
@@ -28,31 +29,42 @@ public class A2103 : MonoBehaviourPun
     {
         target = null;
     }
-    IEnumerator Check()
+    private void Update()
     {
-        if (photonView.IsMine) 
+        setTime += Time.deltaTime;
+        if (setTime >= 1f) 
         {
-            while (true) 
+            PowerSet();
+            setTime = 0f;
+        }
+
+    }
+
+    private void PowerSet() 
+    {
+        int count = 0;
+        foreach (PlayerStatHandler star in target)
+        {
+            if (star != null)
             {
-                me.ATK.added -= oldPower;
-                me.AtkSpeed.added -= oldPower;
-                me.AmmoMax.added -= oldPower;
-                me.BulletSpread.added += oldPower;
-                me.Speed.added -= oldPower;
-
-                power = target.Count*0.1f;
-
-                me.ATK.added += power;
-                me.AtkSpeed.added += power;
-                me.AmmoMax.added += power;
-                me.BulletSpread.added -= power;
-                me.Speed.added += power;
-
-                oldPower = power;
-
-                yield return runtime;
+                count++;
             }
         }
+        me.ATK.added -= oldPower;
+        me.AtkSpeed.added -= oldPower;
+        me.AmmoMax.added -= oldPower;
+        me.BulletSpread.added += oldPower;
+        me.Speed.added -= oldPower;
+
+        power = count * 0.1f;
+
+        me.ATK.added += power;
+        me.AtkSpeed.added += power;
+        me.AmmoMax.added += power;
+        me.BulletSpread.added -= power;
+        me.Speed.added += power;
+
+        oldPower = power;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -1017,8 +1017,12 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     [PunRPC]
     private void A3103(int PlayerNumber)//시즈모드 구르기를 시즈모드로 변경 
     {
-        ChangeOnlyPlayer(PlayerNumber);
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
         targetPlayer.AddComponent<A3103>();
+        targetPlayer.GetComponent<PlayerInputController>().siegeMode = true;
+        playerInput = targetPlayer.GetComponent<PlayerInput>();
+        playerInput.actions.FindAction("Roll").Disable();
+        playerInput.actions.FindAction("SiegeMode").Enable();
     }
     [PunRPC]
     private void A3104(int PlayerNumber)
