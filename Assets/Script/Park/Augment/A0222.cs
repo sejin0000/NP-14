@@ -13,11 +13,11 @@ public class A0222 : MonoBehaviourPun
         {
             controller = GetComponent<TopDownCharacterController>();
             playerStat = GetComponent<PlayerStatHandler>();
-            controller.OnSkillEvent += RollingHeal;
+            controller.OnRollEvent += RollingHeal;
         }
     }
     void RollingHeal()
     {
-        playerStat.CurHP += playerStat.HP.total*0.1f;
+        playerStat.HPadd(playerStat.HP.total * 0.1f);
     }
 }

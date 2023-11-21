@@ -37,6 +37,10 @@ public class PlayerInputController : TopDownCharacterController
     }
     private void OnEnable()
     {
+        ResetSetting();
+    }
+    public void ResetSetting()
+    {
         if (playerstatHnadler.isNoramlMove)
         {
             playerInput.actions.FindAction("Move2").Disable();
@@ -51,7 +55,7 @@ public class PlayerInputController : TopDownCharacterController
         {
             playerInput.actions.FindAction("Skill").Enable();
         }
-        else 
+        else
         {
             playerInput.actions.FindAction("Skill").Disable();
         }
@@ -103,7 +107,7 @@ public class PlayerInputController : TopDownCharacterController
         int random = Random.Range(0, 100);
         if (atkPercent >= random) 
         {
-            Debug.Log("OnAttack" + value.ToString());
+            //Debug.Log("OnAttack" + value.ToString());
             if (EventSystem.current != null)
             {
                 //playerInput.actions["Attack"].ReadValue<float>()마우스 눌리는거 확인하는 변수

@@ -125,13 +125,15 @@ public class PlayerAnimatorController : MonoBehaviour
     {
         Debug.Log("Á×À½¿ä");
         _animation.SetTrigger("IsDie");
-        pv.RPC("PunDie", RpcTarget.OthersBuffered);
+        int viewID = pv.ViewID;
+        pv.RPC("PunDie", RpcTarget.OthersBuffered, viewID);
     }
 
     [PunRPC]
-    private void PunDie()
+    private void PunDie(int viewID)
     {
-        _animation.SetTrigger("IsDie");
+        PhotonView pv = PhotonView.Find(viewID);
+        pv.GetComponent<PlayerAnimatorController>()._animation.SetTrigger("IsDie");        
     }
 
 
@@ -139,13 +141,15 @@ public class PlayerAnimatorController : MonoBehaviour
     {
         Debug.Log("ºÎÈ°");
         _animation.SetTrigger("IsRegen");
-        pv.RPC("PunRegen", RpcTarget.OthersBuffered);
+        int viewID = pv.ViewID;
+        pv.RPC("PunRegen", RpcTarget.OthersBuffered, viewID);
     }
 
     [PunRPC]
-    private void PunRegen()
+    private void PunRegen(int viewID)
     {
-        _animation.SetTrigger("IsRegen");
+        PhotonView pv = PhotonView.Find(viewID);
+        pv.GetComponent<PlayerAnimatorController>()._animation.SetTrigger("IsRegen");
     }
 
 }

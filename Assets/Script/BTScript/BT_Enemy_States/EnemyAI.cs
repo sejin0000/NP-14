@@ -230,7 +230,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             }
             if (playerBullet.burn)
             {
-                PhotonNetwork.Instantiate("AugmentList/A0122", transform.localPosition,quaternion.identity);
+                GameObject firezone =PhotonNetwork.Instantiate("AugmentList/A0122", transform.localPosition,quaternion.identity);
+                firezone.GetComponent<A0122_1>().Init(playerBullet.BulletOwner, atk);
             }
             if (playerBullet.gravity)
             {
@@ -582,7 +583,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void SyncAnimation(string animName, bool set)
     {
-        Debug.Log($"{animName}이 {set} 상태로 호출됨");
+        //Debug.Log($"{animName}이 {set} 상태로 호출됨");
         anim.SetBool(animName, set);
     }
 
@@ -649,7 +650,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         EnemyState_GroggyCondition groggyConditon = new EnemyState_GroggyCondition(gameObject);
         BTAbnormal.AddChild(groggyConditon);
 
-        BTMainSelector.AddChild(BTAbnormal);
+
 
         //추적+공격
         //컨디션 체크 -> 플레이어 추적 & 플레이어가 공격 범위 내 -> 공격(성공 반환 후 최초로)

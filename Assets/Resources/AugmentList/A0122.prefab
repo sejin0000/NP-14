@@ -135,7 +135,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   time: 0
-  damege: 0
+  damage: 0
+  viewID: 0
 --- !u!114 &4921024405245636672
 MonoBehaviour:
   m_ObjectHideFlags: 0

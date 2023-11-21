@@ -56,6 +56,7 @@ public class PlayerStatHandler : MonoBehaviourPun
     public bool isCanSkill;
     public bool isCanAtk;
     public bool isDie;
+    public bool isRegen;
     public int RegenHP;
     public int MaxRegenCoin;
     private int curRegenCoin;
@@ -71,7 +72,7 @@ public class PlayerStatHandler : MonoBehaviourPun
             {
                 curRegenCoin = value;
             }
-            if (curRegenCoin == 0)
+            if (value == 0)
             {
                 OnRegenCalculateEvent += RegenHPCalculator;
             }
@@ -102,6 +103,10 @@ public class PlayerStatHandler : MonoBehaviourPun
                 if (value > HP.total)
                 {
                     curHP = HP.total;
+                }
+                else if (value < 0)
+                {
+                    curHP = 0;
                 }
                 else
                 {
@@ -177,6 +182,7 @@ public class PlayerStatHandler : MonoBehaviourPun
         isCanSkill=true;
         isCanAtk = true;
         evasionPersent = 0;
+        isRegen = false;
 
         kill = 0;
         MaxSkillStack = 1;
@@ -217,6 +223,12 @@ public class PlayerStatHandler : MonoBehaviourPun
             OnChangeCurHPEvent += SendSyncHP;
         }
 
+        if (TestGameManager.Instance != null) 
+        {
+            viewID = photonView.ViewID;
+            OnChangeCurHPEvent += SendSyncHP;
+        }
+
     }
     public override string ToString()
     {
@@ -238,25 +250,35 @@ public class PlayerStatHandler : MonoBehaviourPun
         int a = UnityEngine.Random.Range(0, 100);
         if (evasionPersent <= a)
         {
-            if (CurHP - DamegeTemp <= 0)
-            {
-                if (CurRegenCoin > 0)
-                {
-                    CurRegenCoin -= 1;
-                    Regen(HP.total);
-                    return;
-                }
-
-                isDie = true;
-                OnDieEvent?.Invoke();
-                this.gameObject.layer = 0;
-            }
-            Debug.Log($"데미지 {DamegeTemp}");
             DamegeTemp = DamegeTemp * defense;
-            Debug.Log($"방어력 계수 적용 실제 데미지 {DamegeTemp}");
             CurHP -= DamegeTemp;
             HitEvent?.Invoke();
             HitEvent2?.Invoke(DamegeTemp);//이게 값이 필요한경우와 필요 없는경우가 있는데 한개로 할수가 있는지 모르겠음 일단 이렇게함
+
+            if (CurHP - DamegeTemp <= 0)
+            {
+                CurHP -= DamegeTemp;
+                isDie = true;
+                OnDieEvent?.Invoke();
+
+                if (CurRegenCoin > 0)
+                {
+                    CurRegenCoin -= 1;
+                    Debug.Log($"부활 : {CurRegenCoin}");
+                    Regen(HP.total);
+                    return;
+                }
+                if (MainGameManager.Instance != null) 
+                {
+                    MainGameManager.Instance.DiedAfter();
+                }
+                if (TestGameManager.Instance != null)
+                {
+                    TestGameManager.Instance.DiedAfter();
+                }
+                this.gameObject.layer = 0;
+            }
+
             Debug.Log("[PlayerStatHandler] " + "Damage Done");
         }
         else 
@@ -273,11 +295,46 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     public void Regen(float HP)
     {
-        CurHP = HP;
+        HPadd(HP);
         OnRegenEvent?.Invoke();
         OnRegenCalculateEvent?.Invoke(RegenHP);
-        GetComponent<PlayerInput>().actions.FindAction("Move2").Disable();
+        PlayerInputController tempInputControl = this.gameObject.GetComponent<PlayerInputController>();
+        tempInputControl.ResetSetting();
         isDie = false;
+        isRegen = true;
+        photonView.RPC("SendRegenBool", RpcTarget.All, viewID);
+        Debug.Log("부활 무적 시작");
+        // 부활 파티클이 켜져야 하는 시점
+    }
+
+    [PunRPC]
+    public void SendRegenBool(int viewID)
+    {
+        PhotonView pv = PhotonView.Find(viewID);       
+        pv.GetComponent<PlayerStatHandler>().isRegen = true;
+
+        Invoke("InvokeSetRegenBool", 5f);
+    }
+
+    private void InvokeSetRegenBool()
+    {
+        SetRegenBool(viewID);
+    }
+
+    [PunRPC]
+    public void SetRegenBool(int viewID)
+    {
+        PhotonView pv = PhotonView.Find(viewID);
+        if (pv.IsMine)
+        {
+            isRegen = false;
+        }
+        else
+        {
+            pv.GetComponent<PlayerStatHandler>().isRegen = false;            
+        }
+        Debug.Log("부활 무적 끝");
+        // 부활 파티클이 꺼져야 하는 시점
     }
 
     public void RefillCoin()
@@ -339,8 +396,8 @@ public class PlayerStatHandler : MonoBehaviourPun
         }
         else
         {
-            curHP = calHP;
+            Debug.Log($"A206 발악 실행 : {calHP}");
+            HPadd((calHP - HP.total));
         }
     }
-
 }

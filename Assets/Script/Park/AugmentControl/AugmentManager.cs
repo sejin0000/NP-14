@@ -539,19 +539,20 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A206(int PlayerNumber)
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0206>();
     }
     [PunRPC]
     private void A207(int PlayerNumber)//하이리스크 하이리턴
     {
         ChangePlayerStatHandler(PlayerNumber);
-        playerstatHandler.defense *= 0.5f;
+        playerstatHandler.defense *= 2f;
         playerstatHandler.ATK.coefficient *= 2f;
     }
     [PunRPC]
     private void A208(int PlayerNumber)//회피의달인
     {
-        ChangePlayerStatHandler(PlayerNumber);
+        ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A0208>();
     }
     [PunRPC]
@@ -565,6 +566,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.MaxRegenCoin += 1;
+        playerstatHandler.CurRegenCoin += 1;
         playerstatHandler.RegenHP += 1;
     }
 
@@ -594,21 +596,21 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         playerInput=targetPlayer.GetComponent<PlayerInput>();
         playerInput.actions.FindAction("Skill").Disable();
         playerstatHandler.isCanSkill = false;
-        Debug.Log("이 증강도 상당히 우려가 됩니다 우클릭 체크 하고 말해주세요");
+        playerstatHandler.ATK.coefficient *= 1.3f;
     }
     [PunRPC]
     private void A215(int PlayerNumber)//화염
     {
-        ChangePlayerStatHandler(PlayerNumber);
-        WeaponSystem a = targetPlayer.GetComponent<WeaponSystem>();
-        a.burn = true;
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        WeaponSystem _weaponSystem = targetPlayer.GetComponent<WeaponSystem>();
+        _weaponSystem.burn = true;
     }
     [PunRPC]
     private void A216(int PlayerNumber)//아이스
     {
-        ChangePlayerStatHandler(PlayerNumber);
-        WeaponSystem a = targetPlayer.GetComponent<WeaponSystem>();
-        a.ice = true;
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        WeaponSystem _weaponSystem = targetPlayer.GetComponent<WeaponSystem>();
+        _weaponSystem.ice = true;
     }
     [PunRPC]
     private void A217(int PlayerNumber)//용기의 깃발 범위내 이속 공속증가
@@ -619,9 +621,9 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A218(int PlayerNumber)//과질량 장치
     {
-        ChangePlayerStatHandler(PlayerNumber);
-        WeaponSystem a = targetPlayer.GetComponent<WeaponSystem>();
-        a.gravity = true;
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        WeaponSystem _weaponSystem = targetPlayer.GetComponent<WeaponSystem>();
+        _weaponSystem.gravity = true;
     }
     [PunRPC]
     private void A219(int PlayerNumber) //고장내기mk2 1,2,3 공용 증강 이기에 좀 남다른 코드임 30
@@ -645,8 +647,9 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     private void A220(int PlayerNumber)
     {
         ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A0220>();
         A0220 drainComponent = targetPlayer.GetComponent<A0220>();
-        drainComponent.PercentUp(30);
+        drainComponent.PercentUp(20);
         Debug.Log($"{drainComponent.percent}%의 확률로 흡혈 중");
 
     }
@@ -694,7 +697,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     private void A302(int PlayerNumber)//인피니티불렛 탄창 9999 획득시점의 총알 값 계산하여 9999로 맞춰줌 많든 적든 같음
     {
         ChangePlayerStatHandler(PlayerNumber);
-        playerstatHandler.AmmoMax.added += 9999 - playerstatHandler.AmmoMax.total;
+        playerstatHandler.AmmoMax.added += 99 - playerstatHandler.AmmoMax.total;
     }
     [PunRPC]
     private void A303(int PlayerNumber)//분신
@@ -714,6 +717,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.MaxRegenCoin += 1;
+        playerstatHandler.CurRegenCoin += 1;
         playerstatHandler.HP.coefficient *= 0.5f;
     }
     [PunRPC]

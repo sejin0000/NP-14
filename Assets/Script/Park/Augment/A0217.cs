@@ -20,8 +20,7 @@ public class A0217 : MonoBehaviourPun
     // Update is called once per frame
     void MakeHeal()
     {
-        GameObject fire = PhotonNetwork.Instantiate("AugmentList/A2203", transform.localPosition, Quaternion.identity);
-        A2203 a2203 = fire.GetComponent<A2203>();
-        a2203.Init(playerStat);
+        GameObject fire = PhotonNetwork.Instantiate("AugmentList/A0217", transform.localPosition, Quaternion.identity);
+        A0217_1 a2203 = fire.GetComponent<A0217_1>();
     }
 }

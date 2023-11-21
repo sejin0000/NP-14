@@ -23,12 +23,12 @@ public class PlayerDataSetting : MonoBehaviourPun
         PlayerStatHandler statSO;
         if (playerGo != null)
         {
-            Debug.Log($"적용 오브젝트 : {playerGo.name}");
+            //Debug.Log($"적용 오브젝트 : {playerGo.name}");
             statSO = playerGo.GetComponent<PlayerStatHandler>();
         }
         else
         {
-            Debug.Log($"적용 오브젝트 : PlayerContainer");
+            //Debug.Log($"적용 오브젝트 : PlayerContainer");
             statSO = playerContainer.GetComponentInChildren<PlayerStatHandler>();
         }
 

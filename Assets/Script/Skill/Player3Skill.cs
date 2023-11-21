@@ -5,17 +5,19 @@ using UnityEngine;
 public class Player3Skill : Skill
 {
     WeaponSystem _weaponSystem;
-    
+
 
     public void Start()
     {
         if (photonView.IsMine)
         {
             controller.OnSkillEvent += SkillStart;
+            isLink = true;
+            controller.SkillMinusEvent += SkillLinkOff;
         }
         _weaponSystem = GetComponent<WeaponSystem>();
-
     }
+
     public override void SkillStart()
     {
         //base.SkillStart();

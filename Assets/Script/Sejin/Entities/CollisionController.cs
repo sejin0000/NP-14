@@ -16,14 +16,10 @@ public class CollisionController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-
-
-
-
-
         if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet") 
             && !playerStat.Invincibility 
-            && !playerStat.isDie 
+            && !playerStat.isDie
+            && !playerStat.isRegen
             && collision.gameObject.GetComponent<Bullet>().targets.ContainsValue((int)BulletTarget.Player))
         {
             if (PV.IsMine)
@@ -37,9 +33,8 @@ public class CollisionController : MonoBehaviour
                 Debug.Log(_bullet.IsDamage);
 
                 if (_bullet.IsDamage)
-                {
-                    Debug.Log("데미지 받음 ");
-                    Debug.Log(playerStat.CurHP);
+                {                    
+                    Debug.Log($"데미지 받음 : {damage} / 남은 체력 : {playerStat.CurHP} ");
                     playerStat.Damage(damage);
                 }
                 else
