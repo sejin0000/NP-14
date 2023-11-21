@@ -10,9 +10,11 @@ public class SetTile : MonoBehaviour
     
     public Tilemap wallTileMap;
     public Tilemap groundTileMap;
+    public Tilemap dorTileMap;
 
     public RuleTile wallTile;
     public RuleTile groundTile;
+    public RuleTile doorTile;
 
 
     public void SetRectTile(RectInt rect, Tilemap tilemap, Vector2 Startpos)
@@ -74,5 +76,12 @@ public class SetTile : MonoBehaviour
             startPos.x -= (int)direction.x;
             startPos.y -= (int)direction.y;
         }
+    }
+
+    public void SetPointTile(Vector2Int vector,Tilemap tilemap,RuleTile tile)
+    {
+        tilemap.SetTile((Vector3Int)vector,tile);
+        vector.y += 1;
+        tilemap.SetTile((Vector3Int)vector, tile);
     }
 }

@@ -15,7 +15,14 @@ public class TestGameCamera : MonoBehaviour
 
     private void Start()
     {
-        Target = TestGameManager.Instance.InstantiatedPlayer;
+        if (TestGameManager.Instance != null)
+        {
+            Target = TestGameManager.Instance.InstantiatedPlayer;
+        }
+        if (TestGameManagerSejin.Instance != null)         
+        { 
+            Target = TestGameManagerSejin.Instance.InstantiatedPlayer;
+        }
         //Target = TestGameManagerDohyun.Instance.InstantiatedPlayer;
     }
 

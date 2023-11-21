@@ -6,37 +6,33 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TestGameManager : MonoBehaviourPun
+public class TestGameManagerSejin : MonoBehaviourPun
 {
-    public static TestGameManager Instance;
+    public static TestGameManagerSejin Instance;
 
     public enum MonsterType
     {
         몬스터1,
-        보스에용,
+        몬스터2,
+        몬스터3,
     }
 
     [Header("ClientPlayer")]
     public GameObject InstantiatedPlayer;
     [SerializeField] private bool isPlayerInstantiated;
     public Dictionary<int, Transform> playerInfoDictionary;
-    public Dictionary<MonsterType, string> monsterNameDictionary;
 
     [Header("PlayerData")]
     public PlayerDataSetting characterSetting;
-    public bool isDie;
 
     [Header("GameData")]
     public List<MonsterData> monsterDataList;
     public int currentMonsterCount;
-    public int PartyDeathCount;
 
     [Header("Auguments")]
     public int tier;
     public int Ready;
 
-    [HideInInspector]
-    public event Action OnOverCheckEvent;
 
     [Serializable]
     public struct MonsterData
@@ -55,10 +51,6 @@ public class TestGameManager : MonoBehaviourPun
     private void Awake()
     {
         playerInfoDictionary = new Dictionary<int, Transform>();
-        monsterNameDictionary = new Dictionary<MonsterType, string>();
-        AddMonsterDict();
-
-
         isPlayerInstantiated = false;
         if (!isPlayerInstantiated)
         {
@@ -89,11 +81,6 @@ public class TestGameManager : MonoBehaviourPun
         MakeSetting.MakeManager();
     }
 
-    private void AddMonsterDict()
-    {
-        monsterNameDictionary[MonsterType.몬스터1] = "Test_Enemy";
-        monsterNameDictionary[MonsterType.보스에용] = "Test_Boss";
-    }
     private void SpawnPlayer()
     {
         // PlayerCharacterSetting 
@@ -115,12 +102,6 @@ public class TestGameManager : MonoBehaviourPun
 
         // ClassIdentifier 데이터 Init()
         InstantiatedPlayer.GetComponent<ClassIdentifier>().playerData = characterSetting;
-
-        // isDie
-        var playerStatHandler = InstantiatedPlayer.GetComponent<PlayerStatHandler>();
-        isDie = playerStatHandler.isDie;
-        PartyDeathCount = 0;
-        //playerStatHandler.OnDieEvent += DiedAfter;
     }
 
     [PunRPC]
@@ -158,11 +139,11 @@ public class TestGameManager : MonoBehaviourPun
             go.transform.position = new Vector3(destinationX, destinationY, 0);
 
             EnemySpawn enemySpawn = go.GetComponent<EnemySpawn>();
-            enemySpawn.Spawn(targetMonster);
+            enemySpawn.Spawn("Test_Enemy");
             Destroy(go);
         }
     }
-    
+
     private void SetSpawnData()
     {
         AugmentPanel.SetActive(true);
@@ -174,9 +155,9 @@ public class TestGameManager : MonoBehaviourPun
         {
             int monsterCount = monsterInfo.monsterNum;
             var monsterType = monsterInfo.monsterType;
-            string monsterPar = monsterNameDictionary[monsterType];
+            string monsterPar = Enum.GetName(typeof(MonsterType), monsterType);
 
-            for (int i = 0; i < monsterCount; i++) 
+            for (int i = 0; i < monsterCount; i++)
             {
                 SpawnMonster(monsterCount, monsterPar);
                 currentMonsterCount += 1;
@@ -195,18 +176,5 @@ public class TestGameManager : MonoBehaviourPun
         {
             photonView.RPC("uiscene", RpcTarget.All);
         }
-    }
-
-    public void DiedAfter()
-    {
-        photonView.RPC("AddPartyDeathCount", RpcTarget.All);
-        Debug.Log("MainGameManager : DiedAfter() => PartyDeath : " + PartyDeathCount.ToString());
-        OnOverCheckEvent?.Invoke();
-    }
-
-    [PunRPC]
-    public void AddPartyDeathCount()
-    {
-        PartyDeathCount++;
     }
 }
