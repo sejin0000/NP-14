@@ -653,7 +653,7 @@ Transform:
   m_Children:
   - {fileID: 1497170097040228547}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4282806665659269914
 MonoBehaviour:
@@ -689,12 +689,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 060436a8c1ee29b42a9d3ff8c5853469, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wallTileMap: {fileID: 1719620161805068913}
   groundTileMap: {fileID: 8741393242010535206}
-  dorTileMap: {fileID: 8217374331268874386}
-  wallTile: {fileID: 11400000, guid: 6a7e7226299b9cf4b990917ef6093d40, type: 2}
+  wallTileMap: {fileID: 1719620161805068913}
+  doorTileMap: {fileID: 8217374331268874386}
   groundTile: {fileID: 11400000, guid: 36599476453345c4dbc0a9dc63d35203, type: 2}
+  wallTile: {fileID: 11400000, guid: 6a7e7226299b9cf4b990917ef6093d40, type: 2}
   doorTile: {fileID: 11400000, guid: 536bb6ee9fd0adf4b929f389d7662009, type: 2}
+  PV: {fileID: 0}
 --- !u!114 &6844911827228878363
 MonoBehaviour:
   m_ObjectHideFlags: 0
