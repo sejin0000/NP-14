@@ -155,7 +155,7 @@ public class TestGameManagerWooMin : MonoBehaviourPun
         {
             //float destinationX = UnityEngine.Random.Range(-5f, 5f);
             //float destinationY = UnityEngine.Random.Range(-5f, 5f);
-            go.transform.position = new Vector3(0, 0, 0);
+            go.transform.position = new Vector3(0, 5, 0);
 
             EnemySpawn enemySpawn = go.GetComponent<EnemySpawn>();
             enemySpawn.Spawn(targetMonster);

@@ -95,16 +95,16 @@ public class BossAI_State_SpecialAttack : BTAction
         float rotZ = Mathf.Atan2(newAim.y, newAim.x) * Mathf.Rad2Deg;
         rotZ += 90f;
 
-        if (rotZ < 270 && rotZ > 60)
+        if (rotZ > 40 || rotZ < -40f)
         {
             ReturnOriginRotate();
-            //여기다 바로 비명지르는 패턴써서 밀어버리기
+            //여기다 지진패턴[양 팔을 들어서 내려놓기] 넣어서 꼼수 대응
             return;
         }
 
         // 원하는 회전 범위 지정
-        float minRotation = -60f;
-        float maxRotation = 60f;
+        float minRotation = -25f;
+        float maxRotation = 25f;
         //270~61 == 회전하면 안됨
         rotZ = Mathf.Clamp(rotZ, minRotation, maxRotation);
 
@@ -116,7 +116,7 @@ public class BossAI_State_SpecialAttack : BTAction
         Quaternion targetRotation = Quaternion.Euler(0, 0, rotZ);
 
         // 회전 보간
-        float interpolationFactor = 0.5f; // 보간 계수
+        float interpolationFactor = 0.005f; // 보간 계수
         Quaternion interpolatedRotation = Quaternion.Slerp(currentRotation, targetRotation, interpolationFactor);
 
 
@@ -132,7 +132,7 @@ public class BossAI_State_SpecialAttack : BTAction
         Quaternion currentRotation = bossAI_Dragon.bossHead.transform.rotation;
 
         // 회전 보간
-        float interpolationFactor = 0.5f; // 보간 계수
+        float interpolationFactor = 0.005f; // 보간 계수
         Quaternion interpolatedRotation = Quaternion.Slerp(currentRotation, targetRotation, interpolationFactor);
 
 
