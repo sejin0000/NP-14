@@ -977,9 +977,11 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         playerstatHandler.ATK.added += changePower * 0.5f;
     }
     [PunRPC]
-    private void A2302(int PlayerNumber)
+    private void A2302(int PlayerNumber)// 유도탄
     {
-        Debug.Log("미완성");
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        targetPlayer.GetComponent<WeaponSystem>().humanAttackintelligentmissile = true;
+        playerstatHandler.ATK.coefficient *= 0.9f;
     }
     [PunRPC]
     private void A2303(int PlayerNumber)//아크로바틱 샷 

@@ -26,6 +26,7 @@ public class WeaponSystem : MonoBehaviour
     public bool Penetrate;
 
     public bool pivotSet;
+    public bool humanAttackintelligentmissile;
 
     public int _viewID;
     // Ãß°¡
@@ -55,6 +56,7 @@ public class WeaponSystem : MonoBehaviour
         gravity = false;
         Penetrate = false;
         pivotSet = false;
+        humanAttackintelligentmissile = false;
 
     _cool = GetComponent<CoolTimeController>();
     }
@@ -166,5 +168,9 @@ public class WeaponSystem : MonoBehaviour
         _bullet.burn = burn;
         _bullet.gravity = gravity;
         _bullet.Penetrate = Penetrate;
+        if (humanAttackintelligentmissile) 
+        {
+            _bullet.MissileFire();
+        }
     }
 }
