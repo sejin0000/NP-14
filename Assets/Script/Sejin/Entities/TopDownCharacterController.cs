@@ -17,6 +17,7 @@ public class TopDownCharacterController : MonoBehaviour
     public event Action OnReloadEvent;
     public event Action OnEndReloadEvent;
     public event Action OnStartSkillEvent;
+    public event Action OnSiegeModeEvent;
 
 
     public event Action SkillMinusEvent;
@@ -134,6 +135,10 @@ public class TopDownCharacterController : MonoBehaviour
         playerStatHandler.CanRoll = true;
         playerStatHandler.Invincibility = false;
         OnEndRollEvent?.Invoke();
+    }
+    public void CallSiegeModeEvent()
+    {
+        OnSiegeModeEvent?.Invoke();
     }
 
     public void CallReloadEvent()
