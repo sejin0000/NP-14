@@ -60,6 +60,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     //동기화
     public PhotonView PV;
     private Vector3 hostPosition;
+    private Quaternion hostRotation;
     public float lerpSpeed = 10f; // 보간시 필요한 수치(조정 필요)
 
 
@@ -90,13 +91,12 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         knockbackDistance = 0f;
 
 
-
         //생성할 때, 모든 플레이어 Transform 정보를 담는다.
         foreach (var _value in TestGameManagerWooMin.Instance.playerInfoDictionary.Values)
         {
-            PlayersTransform.Add(_value);
+            PlayersTransform.Add(_value);           
         }
-
+       
         //생성 시 랜덤 타겟 지정
         int randomTarget = Random.Range(0, PlayersTransform.Count);
 
@@ -108,11 +108,12 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         {
             //$추가됨 : 동기화된 위치에 대한 보간 처리
             transform.position = Vector3.Lerp(transform.position, hostPosition, Time.deltaTime * lerpSpeed);
+            bossHead.transform.rotation = Quaternion.Slerp(bossHead.transform.rotation, hostRotation, Time.deltaTime * lerpSpeed);
             return;
         }
 
         hostPosition = transform.position;
-
+        hostRotation = bossHead.transform.rotation;
 
         //AI트리의 노드 상태를 매 프레임 마다 얻어옴
         TreeAIState.Tick();
@@ -471,22 +472,28 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
         //페이즈 판별 <셀렉터 겸 컨디션>[기본 = 1페이즈  ||  체력 50% '미만' = 2페이즈]
         BTSelector Phase_One = new BTSelector();
+        //페이즈 컨디션
 
-        BossAI_State_SpecialAttack specialAttack_Condition = new BossAI_State_SpecialAttack(gameObject);
-        Phase_One.AddChild(specialAttack_Condition);
+
+        BossAI_State_SpecialAttack specialAttack = new BossAI_State_SpecialAttack(gameObject);
+        //패턴 컨디션 -> 컨디션
+        Phase_One.AddChild(specialAttack);
 
         //여기에서 노말액션 시퀀스에 사용할 랜덤 난수  쏴주기
         BTSelector nomalAttack_Selector = new BTSelector();
+        //패턴 컨디션 -> 컨디션
         Phase_One.AddChild(nomalAttack_Selector);
 
 
         BTSquence nomalAttack_Squence_1 = new BTSquence();
+        //노말 패턴 시퀀스의 컨디션 1
         //실제 노말 패턴 1
         //실제 노말 패턴 2
         //예시
         //BossAI_State_NomalAttackSequence_1 nomalAttack_Sequence_1 = new BossAI_State_NomalAttackSequence_1(gameObject);
         //nomalAttack_Squence_1.AddChild(액션노드 변수명);
         BTSquence nomalAttack_Squence_2 = new BTSquence();
+        //노말 패턴 시퀀스의 컨디션 2
         //실제 노말 패턴 1
         //실제 노말 패턴 2
         //실제 노말 패턴 3
@@ -494,6 +501,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         //BossAI_State_NomalAttackSequence_2 nomalAttack_Sequence_2 = new BossAI_State_NomalAttackSequence_2(gameObject);
         //nomalAttack_Squence_2.AddChild(액션노드 변수명);
         BTSquence nomalAttack_Squence_3 = new BTSquence();
+        //노말 패턴 시퀀스의 컨디션 3
         //실제 노말 패턴 1
         //실제 노말 패턴 2
         //실제 노말 패턴 3
@@ -547,7 +555,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
             // 데이터를 전송
             stream.SendNext(hostPosition);
             //stream.SendNext(navTargetPoint);
-            stream.SendNext(bossHeadPivot.transform.rotation);
+            stream.SendNext(hostRotation);
 
         }
         else if (stream.IsReading)
@@ -555,7 +563,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
             // 데이터를 수신
             hostPosition = (Vector3)stream.ReceiveNext();
             //navTargetPoint = (Vector3)stream.ReceiveNext();
-            bossHeadPivot.transform.rotation = (Quaternion)stream.ReceiveNext();
+            hostRotation = (Quaternion)stream.ReceiveNext();
         }
 
     }
