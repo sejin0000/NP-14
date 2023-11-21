@@ -1038,9 +1038,10 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
         targetPlayer.AddComponent<A3105>();
     }
     [PunRPC]
-    private void A3106()
+    private void A3106(int PlayerNumber)
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A3106>();
     }
     [PunRPC]
     private void A3107(int PlayerNumber) // 파이어 토네이도 테스트안함
