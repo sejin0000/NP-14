@@ -33,6 +33,7 @@ public class HumanAttackintelligentmissile : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (ready &&!targeting && collision.gameObject.layer == LayerMask.NameToLayer("Enemy")) 
+            //TODO ∏’» ≥Ø ∆¿≈≥ ∆–ƒ° «œ±‚
         {
             targeting = true;
             target= collision.gameObject;
