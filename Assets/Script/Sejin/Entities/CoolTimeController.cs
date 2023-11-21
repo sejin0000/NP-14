@@ -64,7 +64,7 @@ public class CoolTimeController : MonoBehaviour
         curRollCool = coolTime;
         controller.playerStatHandler.UseRoll = false;
     }
-    private void EndRollCoolTime()
+    public void EndRollCoolTime()
     {
         Debug.Log("구르기 쿨타임 종료 이벤트");
         controller.playerStatHandler.CurRollStack += 1;

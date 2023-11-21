@@ -896,7 +896,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         }
     }
     [PunRPC]
-    private void A2104(int PlayerNumber)//무기교체 :  핸드건 >> 등가 교환 최대 장탄수가 감소하지만  스팀팩 효과를 증가시키는 핸드건으로변경
+    private void A2104(int PlayerNumber)//무기교체 :  핸드건 >> 등가 교환 최대 장탄수가 감소하지만 기본 스킬 스팀팩 효과를 증가시키는 핸드건으로변경
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         playerstatHandler.AmmoMax.added -= 5;
@@ -942,7 +942,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         targetPlayer.AddComponent<A2202>();
     }
     [PunRPC]
-    private void A2203(int PlayerNumber)//구른자리에힐생성 힐한다는거 자체가 어캐 될지 모르겠음 //미완성
+    private void A2203(int PlayerNumber)//구른자리에힐생성 힐한다는거 자체가 어캐 될지 모르겠음 
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A2203_1>();
@@ -982,9 +982,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A2303(int PlayerNumber)
+    private void A2303(int PlayerNumber)//아크로바틱 샷 
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A2303>();
     }
     [PunRPC]
     private void A2304(int PlayerNumber)//스팀팩 막히고 일부 상시 적용

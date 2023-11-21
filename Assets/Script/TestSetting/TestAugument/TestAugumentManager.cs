@@ -986,6 +986,8 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     private void A2303(int PlayerNumber)
     {
         Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A2303>();
     }
     [PunRPC]
     private void A2304(int PlayerNumber)//스팀팩 막히고 일부 상시 적용
