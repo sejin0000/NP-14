@@ -682,6 +682,8 @@ MonoBehaviour:
   useSkill: 0
   UseRoll: 0
   IsChargeAttack: 0
+  CanReflect: 0
+  ReflectCoeff: 0
 --- !u!114 &7295784485177987548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -727,6 +729,7 @@ MonoBehaviour:
   playerInput: {fileID: 0}
   atkPercent: 0
   IsMove: 0
+  siegeMode: 0
 --- !u!114 &8906668803129869717
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -813,6 +816,7 @@ MonoBehaviour:
   burn: 0
   gravity: 0
   Penetrate: 0
+  pivotSet: 0
   _viewID: 0
   bulletNum: 0
 --- !u!114 &3736999086756257612

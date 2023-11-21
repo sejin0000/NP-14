@@ -16,7 +16,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
     //컴포넌트 및 기타 외부요소(일부 할당은 하위 노드에서 진행)
     public EnemySO bossSO;                  // Enemy 정보 [모든 Action Node에 owner로 획득시킴]
-    public SpriteRenderer spriteRenderer;
+    public SpriteRenderer[] spriteRenderers;
     public Animator anim;
 
 
@@ -72,7 +72,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     void Awake()
     {
         anim = GetComponentInChildren<Animator>();
-        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
         PV = GetComponent<PhotonView>();
 
         //게임 오브젝트 활성화 시, 행동 트리 생성
@@ -233,7 +233,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void DecreaseHP(float damage)
     {
-        SetStateColor();
+        SetStateColor(Color.red);
         currentHP -= damage;
         GaugeUpdate();
         if (currentHP <= 0)
@@ -390,9 +390,12 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     }
 
 
-    private void SetStateColor()
+    public void SetStateColor(Color _color)
     {
-        spriteRenderer.color = Color.red;
+        for (int i = 0; i < spriteRenderers.Length; i++)
+        {
+            spriteRenderers[i].color = _color;
+        }
     }
     #endregion
 
@@ -544,7 +547,6 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
             // 데이터를 전송
             stream.SendNext(hostPosition);
             //stream.SendNext(navTargetPoint);
-            stream.SendNext(spriteRenderer.flipX);
             stream.SendNext(bossHeadPivot.transform.rotation);
 
         }
@@ -553,15 +555,9 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
             // 데이터를 수신
             hostPosition = (Vector3)stream.ReceiveNext();
             //navTargetPoint = (Vector3)stream.ReceiveNext();
-            spriteRenderer.flipX = (bool)stream.ReceiveNext();
             bossHeadPivot.transform.rotation = (Quaternion)stream.ReceiveNext();
         }
 
-    }
-
-    public void SetStateColor(Color _color)
-    {
-        spriteRenderer.color = _color;
     }
 
     #endregion

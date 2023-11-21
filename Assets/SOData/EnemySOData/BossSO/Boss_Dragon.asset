@@ -12,20 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f76e7dab80292843a8ceb8dbf8daab0, type: 3}
   m_Name: Boss_Dragon
   m_EditorClassIdentifier: 
-  enemyName: 
+  enemyName: "\uBCF4\uC2A4\uC5D0\uC6A9"
   type: 0
-  atk: 0
-  hp: 0
-  bulletSpeed: 0
-  atkDelay: 0
+  atk: 5
+  hp: 100
+  bulletSpeed: 5
+  atkDelay: 1.5
   patrolDelay: 0
   chaseTime: 0
-  bulletLifeTime: 0
+  bulletLifeTime: 2
   enemyMoveSpeed: 0
   enemyChaseSpeed: 0
-  viewAngle: 0
-  viewDistance: 0
-  attackRange: 0
+  viewAngle: 55
+  viewDistance: 5
+  attackRange: 3
   dropGold: 0
   unitScale: 0
   bossPatternTime: 0
