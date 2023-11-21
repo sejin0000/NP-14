@@ -34,8 +34,8 @@ public class A3206 : MonoBehaviourPun // 공병 생성형
         float angle = Mathf.Atan2(mouse.y - player.y, mouse.x - player.x) * Mathf.Rad2Deg;
         //Quaternion.AngleAxis(angle - 90, Vector2.right)
         PhotonNetwork.Instantiate("AugmentList/A3206", transform.position + dir, Quaternion.Euler(new Vector3(0,0,angle-90)));
-        controller.CallEndSkillEvent();
-        //SkillEnd();
+        //controller.CallEndSkillEvent();
+        SkillEnd();
     }
 
     public void SkillEnd()
