@@ -896,7 +896,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         }
     }
     [PunRPC]
-    private void A2104(int PlayerNumber)//무기교체 :  핸드건 >> 등가 교환 최대 장탄수가 감소하지만  스팀팩 효과를 증가시키는 핸드건으로변경
+    private void A2104(int PlayerNumber)//무기교체 :  핸드건 >> 등가 교환 최대 장탄수가 감소하지만 기본 스킬 스팀팩 효과를 증가시키는 핸드건으로변경
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         playerstatHandler.AmmoMax.added -= 5;
@@ -942,7 +942,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         targetPlayer.AddComponent<A2202>();
     }
     [PunRPC]
-    private void A2203(int PlayerNumber)//구른자리에힐생성 힐한다는거 자체가 어캐 될지 모르겠음 //미완성
+    private void A2203(int PlayerNumber)//구른자리에힐생성 힐한다는거 자체가 어캐 될지 모르겠음 
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A2203_1>();
@@ -977,14 +977,17 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         playerstatHandler.ATK.added += changePower * 0.5f;
     }
     [PunRPC]
-    private void A2302(int PlayerNumber)
+    private void A2302(int PlayerNumber)// 유도탄
     {
-        Debug.Log("미완성");
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        targetPlayer.GetComponent<WeaponSystem>().humanAttackintelligentmissile = true;
+        playerstatHandler.ATK.coefficient *= 0.9f;
     }
     [PunRPC]
-    private void A2303(int PlayerNumber)
+    private void A2303(int PlayerNumber)//아크로바틱 샷 
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A2303>();
     }
     [PunRPC]
     private void A2304(int PlayerNumber)//스팀팩 막히고 일부 상시 적용
@@ -1016,8 +1019,12 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A3103(int PlayerNumber)//시즈모드 구르기를 시즈모드로 변경 
     {
-        ChangeOnlyPlayer(PlayerNumber);
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
         targetPlayer.AddComponent<A3103>();
+        targetPlayer.GetComponent<PlayerInputController>().siegeMode = true;
+        playerInput = targetPlayer.GetComponent<PlayerInput>();
+        playerInput.actions.FindAction("Roll").Disable();
+        playerInput.actions.FindAction("SiegeMode").Enable();
     }
     [PunRPC]
     private void A3104(int PlayerNumber)
@@ -1031,9 +1038,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         targetPlayer.AddComponent<A3105>();
     }
     [PunRPC]
-    private void A3106()
+    private void A3106(int PlayerNumber)
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A3106>();
     }
     [PunRPC]
     private void A3107(int PlayerNumber) // 파이어 토네이도 테스트안함

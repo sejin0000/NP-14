@@ -20,7 +20,7 @@ public class A2201 : MonoBehaviourPun
     }
     void RollingCoolTime()
     {
-        playerCool.curRollCool -= 2f;
+        playerCool.curRollCool -= 0.5f;
         Debug.Log($"기본 공격을 통해 구르기 쿨 2초 감소 이거 로그에 엄청나올듯");
     }
 }

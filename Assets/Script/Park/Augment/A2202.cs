@@ -24,7 +24,7 @@ public class A2202 : MonoBehaviourPun
     // Update is called once per frame
     void Cooltime()
     {
-        coolTimeController.curSkillCool -= 1f;
+        coolTimeController.curSkillCool -= 2f;
         Debug.Log("±¼·¶±â¿¡ ÄðÅ¸ÀÓ 1ÃÊ °¨¼Ò");
     }
 }

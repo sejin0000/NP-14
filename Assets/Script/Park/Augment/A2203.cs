@@ -5,7 +5,6 @@ using UnityEngine;
 public class A2203 : MonoBehaviour
 {
     float time = 0;
-    int stack = 0;//초/회
     int maxtime = 5;//사라지는시간 현재5초
     List<PlayerStatHandler> target= new List<PlayerStatHandler>();
     int healP=2;
@@ -35,9 +34,8 @@ public class A2203 : MonoBehaviour
         if (time >= 1f) 
         {
                 heal();
-                stack++;
         }
-        if (stack > maxtime) 
+        if (time > maxtime) 
         {
             goodbye();
         }
@@ -46,7 +44,7 @@ public class A2203 : MonoBehaviour
     {
         for (int i = 0; i < target.Count; ++i) 
         {
-            target[i].CurHP += healP;
+            target[i].HPadd(healP);
         }
     }
     private void goodbye()

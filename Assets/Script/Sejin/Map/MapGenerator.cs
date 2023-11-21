@@ -44,7 +44,7 @@ public class MapGenerator : MonoBehaviour
         {
             root = new Node(new RectInt(0, 0, mapSize.x, mapSize.y)); //전체 맵 크기의 루트노드를 만듬 
 
-            setTile.SetRectTile(new RectInt(0, 0, mapSize.x + 20, mapSize.y + 10), setTile.wallTileMap, setTile.wallTile, new Vector2(-((mapSize.x + 20) / 2), -((mapSize.y + 10) / 2)));
+            setTile.OrderSetRectTile(new RectInt(0, 0, mapSize.x + 20, mapSize.y + 10), setTile.wallTileMap, setTile.wallTile, new Vector2(-((mapSize.x + 20) / 2), -((mapSize.y + 10) / 2)));
 
             Divide(root, 0);
             GenerateRoom(root, 0);
@@ -68,7 +68,7 @@ public class MapGenerator : MonoBehaviour
                 }
             }
 
-            GetComponent<TestRoom>().ChooseRoom();
+            GetComponent<RoomNodeInfo>().ChooseRoom();
         }
     }
 
@@ -120,8 +120,8 @@ public class MapGenerator : MonoBehaviour
             int y = rect.y + UnityEngine.Random.Range(1, rect.height - height);
             rect = new RectInt(x, y, width, height);
 
-            setTile.RemoveRectTile(rect, setTile.wallTileMap, new Vector2(rect.x, rect.y) - mapSize / 2);
-            setTile.SetRectTile(rect, setTile.groundTileMap,setTile.groundTile, new Vector2(rect.x, rect.y) - mapSize / 2);
+            setTile.OrderSetRectTile(rect, setTile.wallTileMap,null, new Vector2(rect.x, rect.y) - mapSize / 2);
+            setTile.OrderSetRectTile(rect, setTile.groundTileMap,setTile.groundTile, new Vector2(rect.x, rect.y) - mapSize / 2);
         }
         else 
         {
@@ -232,18 +232,18 @@ public class MapGenerator : MonoBehaviour
                 endPos.y -= L_roomRect.height / 2;
             }
 
-            setTile.RemoveLineTile(setTile.wallTileMap, startPos, Mathf.Abs(startPos.y - endPos.y), new Vector2(0, startPos.y - endPos.y).normalized, mapSize / 2);
-            setTile.SetLineTile(setTile.groundTileMap, setTile.groundTile, startPos, Mathf.Abs(startPos.y - endPos.y), new Vector2(0, startPos.y - endPos.y).normalized, mapSize / 2);
+            setTile.OrderSetLineTile(setTile.wallTileMap, null, startPos - (mapSize / 2), Mathf.Abs(startPos.y - endPos.y), new Vector2(0, startPos.y - endPos.y).normalized);
+            setTile.OrderSetLineTile(setTile.groundTileMap, setTile.groundTile, startPos - (mapSize / 2), Mathf.Abs(startPos.y - endPos.y), new Vector2(0, startPos.y - endPos.y).normalized);
 
-            setTile.SetDoorTile(new Vector2Int(X, startPos.y - (Mathf.Abs(startPos.y - endPos.y) / 2) - 1) - (mapSize / 2),setTile.doorTileMap ,setTile.doorTile );
-            setTile.SetDoorTile(new Vector2Int(X - 1, startPos.y - (Mathf.Abs(startPos.y - endPos.y) / 2) - 1) - (mapSize / 2), setTile.doorTileMap, setTile.doorTile);
+            setTile.OrderSetDoorTile(new Vector2Int(X, startPos.y - (Mathf.Abs(startPos.y - endPos.y) / 2) - 1) - (mapSize / 2),setTile.doorTileMap ,setTile.doorTile );
+            setTile.OrderSetDoorTile(new Vector2Int(X - 1, startPos.y - (Mathf.Abs(startPos.y - endPos.y) / 2) - 1) - (mapSize / 2), setTile.doorTileMap, setTile.doorTile);
 
             startPos = new Vector2Int(X - 1, (int)R_roomRect.center.y);
             endPos = new Vector2Int(X - 1, (int)L_roomRect.center.y);
 
 
-            setTile.RemoveLineTile(setTile.wallTileMap, startPos, Mathf.Abs(startPos.y - endPos.y), new Vector2(0, startPos.y - endPos.y).normalized, mapSize / 2);
-            setTile.SetLineTile(setTile.groundTileMap, setTile.groundTile, startPos, Mathf.Abs(startPos.y - endPos.y), new Vector2(0, startPos.y - endPos.y).normalized, mapSize / 2);
+            setTile.OrderSetLineTile(setTile.wallTileMap, null, startPos - (mapSize / 2), Mathf.Abs(startPos.y - endPos.y), new Vector2(0, startPos.y - endPos.y).normalized);
+            setTile.OrderSetLineTile(setTile.groundTileMap, setTile.groundTile, startPos - (mapSize / 2), Mathf.Abs(startPos.y - endPos.y), new Vector2(0, startPos.y - endPos.y).normalized);
 
         }
         else if(minY < maxY)//x축 그리기
@@ -265,18 +265,18 @@ public class MapGenerator : MonoBehaviour
             }
 
 
-            setTile.RemoveLineTile(setTile.wallTileMap, startPos, Mathf.Abs(startPos.x - endPos.x), new Vector2(startPos.x - endPos.x, 0).normalized, mapSize / 2);
-            setTile.SetLineTile(setTile.groundTileMap, setTile.groundTile, startPos, Mathf.Abs(startPos.x - endPos.x), new Vector2(startPos.x - endPos.x, startPos.y - endPos.y).normalized, mapSize / 2);
+            setTile.OrderSetLineTile(setTile.wallTileMap, null, startPos - (mapSize / 2), Mathf.Abs(startPos.x - endPos.x), new Vector2(startPos.x - endPos.x, 0).normalized);
+            setTile.OrderSetLineTile(setTile.groundTileMap, setTile.groundTile, startPos - (mapSize / 2), Mathf.Abs(startPos.x - endPos.x), new Vector2(startPos.x - endPos.x, startPos.y - endPos.y).normalized);
 
-            setTile.SetDoorTile(new Vector2Int(startPos.x - (Mathf.Abs(startPos.x - endPos.x) / 2) - 1, Y) - (mapSize / 2), setTile.doorTileMap, setTile.doorTile);
-            setTile.SetDoorTile(new Vector2Int(startPos.x - (Mathf.Abs(startPos.x - endPos.x) / 2) - 1, Y - 1) - (mapSize / 2), setTile.doorTileMap, setTile.doorTile);
+            setTile.OrderSetDoorTile(new Vector2Int(startPos.x - (Mathf.Abs(startPos.x - endPos.x) / 2) - 1, Y) - (mapSize / 2), setTile.doorTileMap, setTile.doorTile);
+            setTile.OrderSetDoorTile(new Vector2Int(startPos.x - (Mathf.Abs(startPos.x - endPos.x) / 2) - 1, Y - 1) - (mapSize / 2), setTile.doorTileMap, setTile.doorTile);
 
 
             startPos = new Vector2Int((int)R_roomRect.center.x, Y - 1);
             endPos = new Vector2Int((int)L_roomRect.center.x, Y - 1);
 
-            setTile.RemoveLineTile(setTile.wallTileMap, startPos, Mathf.Abs(startPos.x - endPos.x), new Vector2(startPos.x - endPos.x, 0).normalized, mapSize / 2);
-            setTile.SetLineTile(setTile.groundTileMap, setTile.groundTile, startPos, Mathf.Abs(startPos.x - endPos.x), new Vector2(startPos.x - endPos.x, startPos.y - endPos.y).normalized, mapSize / 2);
+            setTile.OrderSetLineTile(setTile.wallTileMap, null, startPos - (mapSize / 2), Mathf.Abs(startPos.x - endPos.x), new Vector2(startPos.x - endPos.x, 0).normalized);
+            setTile.OrderSetLineTile(setTile.groundTileMap, setTile.groundTile, startPos - (mapSize / 2), Mathf.Abs(startPos.x - endPos.x), new Vector2(startPos.x - endPos.x, startPos.y - endPos.y).normalized);
 
 
         }
