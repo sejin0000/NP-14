@@ -23,6 +23,10 @@ public class TestGameCamera : MonoBehaviour
         { 
             Target = TestGameManagerSejin.Instance.InstantiatedPlayer;
         }
+        if (TestGameManagerWooMin.Instance != null)
+        {
+            Target = TestGameManagerWooMin.Instance.InstantiatedPlayer;
+        }
         //Target = TestGameManagerDohyun.Instance.InstantiatedPlayer;
     }
 

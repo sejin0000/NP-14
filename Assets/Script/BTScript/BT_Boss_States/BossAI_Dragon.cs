@@ -92,7 +92,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
 
         //생성할 때, 모든 플레이어 Transform 정보를 담는다.
-        foreach (var _value in TestGameManager.Instance.playerInfoDictionary.Values)
+        foreach (var _value in TestGameManagerWooMin.Instance.playerInfoDictionary.Values)
         {
             PlayersTransform.Add(_value);
         }

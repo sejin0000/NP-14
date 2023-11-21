@@ -11410,7 +11410,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 286463805610593237, guid: 0586bdf19307f4f468f56c6c0a9d1d6d, type: 3}
       propertyPath: monsterDataList.Array.data[1].monsterType
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1330355815204611109, guid: 0586bdf19307f4f468f56c6c0a9d1d6d, type: 3}
       propertyPath: m_RootOrder
