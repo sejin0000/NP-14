@@ -70,7 +70,6 @@ public class TopDownMovement : MonoBehaviour
     {
         if (!isRoll)
         {
-
             mousePos = _mousePos.normalized;
         }
     }

@@ -22,6 +22,7 @@ public class PlayerStatHandler : MonoBehaviourPun
     public event Action EnemyHitEvent;
     public event Action KillCatchEvent;
     public event Action<float> GetDamege;
+    public event Action<float, int> OnDamageReflectEvent;
 
 
     [SerializeField] private PlayerSO playerStats;
@@ -113,7 +114,6 @@ public class PlayerStatHandler : MonoBehaviourPun
                     curHP = value;
                 }
                 OnChangeCurHPEvent?.Invoke();
-                Debug.Log($"HPHPHPHPHPHHP  {CurHP}");
             }
         }
     }
@@ -145,6 +145,9 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     int viewID;
     [HideInInspector] public bool IsChargeAttack;
+    [HideInInspector] public bool CanReflect;
+
+    public float ReflectCoeff;
 
     private void Awake()
     {
@@ -398,6 +401,14 @@ public class PlayerStatHandler : MonoBehaviourPun
         {
             Debug.Log($"A206 발악 실행 : {calHP}");
             HPadd((calHP - HP.total));
+        }
+    }
+
+    public void CallReflectEvent(float damage, int targetID)
+    {
+        if (CanReflect)
+        {
+            OnDamageReflectEvent?.Invoke(damage, targetID);
         }
     }
 }

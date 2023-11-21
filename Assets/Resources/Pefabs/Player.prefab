@@ -190,6 +190,73 @@ MonoBehaviour:
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
+--- !u!1 &4388348359990716442
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9128620294467032156}
+  - component: {fileID: 2818698585101496412}
+  m_Layer: 8
+  m_Name: ShadowCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9128620294467032156
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4388348359990716442}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5674173202871627804}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!70 &2818698585101496412
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4388348359990716442}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.25}
+  m_Size: {x: 0.4, y: 0.3}
+  m_Direction: 1
 --- !u!1 &5210721623018569777
 GameObject:
   m_ObjectHideFlags: 0
@@ -537,7 +604,6 @@ GameObject:
   - component: {fileID: 335624847921487191}
   - component: {fileID: 3736999086756257612}
   - component: {fileID: 1628206893393210816}
-  - component: {fileID: 4308756119488858501}
   - component: {fileID: 7349713203675165571}
   - component: {fileID: 1135065481069528687}
   - component: {fileID: 4195880295105262226}
@@ -567,6 +633,7 @@ Transform:
   - {fileID: 326545430631188435}
   - {fileID: 4749478942147640618}
   - {fileID: 8212287404543091086}
+  - {fileID: 9128620294467032156}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -615,6 +682,8 @@ MonoBehaviour:
   useSkill: 0
   UseRoll: 0
   IsChargeAttack: 0
+  CanReflect: 0
+  ReflectCoeff: 0
 --- !u!114 &7295784485177987548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -660,6 +729,7 @@ MonoBehaviour:
   playerInput: {fileID: 0}
   atkPercent: 0
   IsMove: 0
+  siegeMode: 0
 --- !u!114 &8906668803129869717
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -746,6 +816,7 @@ MonoBehaviour:
   burn: 0
   gravity: 0
   Penetrate: 0
+  pivotSet: 0
   _viewID: 0
   bulletNum: 0
 --- !u!114 &3736999086756257612
@@ -805,41 +876,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!70 &4308756119488858501
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8735806354994587177}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.25}
-  m_Size: {x: 0.4, y: 0.3}
-  m_Direction: 1
 --- !u!70 &7349713203675165571
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

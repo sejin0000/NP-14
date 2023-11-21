@@ -1,4 +1,5 @@
 using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Principal;
@@ -14,6 +15,9 @@ public class Player2Skill : Skill
     public float shieldScale=1;
     public float shieldSurvivalTime = 3;
 
+    public event Action<float> OnGiveReflectCoeffEvent;
+    public float ReflectCoeff;
+
     public void Start()
     {
         if (photonView.IsMine)
@@ -28,6 +32,7 @@ public class Player2Skill : Skill
         base.SkillStart();
         shieldOBJ = PhotonNetwork.Instantiate("Prefabs/Player/Shield",transform.position,Quaternion.identity);
         Shield shield = shieldOBJ.GetComponent<Shield>();
+        OnGiveReflectCoeffEvent?.Invoke(ReflectCoeff);
         shieldOBJ.transform.SetParent(gameObject.transform);
         shield.Initialized(shieldHP, shieldScale, shieldSurvivalTime);
         Invoke("SkillEnd", shieldSurvivalTime);        
@@ -37,5 +42,9 @@ public class Player2Skill : Skill
     {
         Destroy(shieldOBJ);
         base.SkillEnd();
+    }
+    public void SetReflectCoeff(float coeff)
+    {
+        ReflectCoeff = coeff;
     }
 }

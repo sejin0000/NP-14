@@ -23,9 +23,15 @@ public class Bullet : MonoBehaviour
     public bool burn;
     public bool gravity;
     public bool Penetrate;
+
+    private HumanAttackintelligentmissile missile;
+
     public Dictionary<string, int> targets;
+
+
+
     //targets.Contains(BulletTarget.Enemy)
-    Vector2 _direction;
+    public Vector2 _direction;
     float time = 0f;
 
 
@@ -36,13 +42,18 @@ public class Bullet : MonoBehaviour
 
     private void Awake()
     {
-        targets = new Dictionary<string, int>(); 
+        targets = new Dictionary<string, int>();
     }
     void Start()
     {        
         BulletLifeTime = Random.Range(BulletLifeTime * 0.15f, BulletLifeTime * 0.2f);
         //Invoke("Destroy", BulletLifeTime);
         _direction = Vector2.right;
+    }
+    public void MissileFire() 
+    {
+        missile = GetComponentInChildren<HumanAttackintelligentmissile>();
+        missile.ready = true;
     }
 
     // Update is called once per frame
@@ -81,7 +92,7 @@ public class Bullet : MonoBehaviour
             Vector3 income = _direction.normalized; // ¿‘ªÁ∫§≈Õ
             Vector3 normal = collision.contacts[0].normal; // π˝º±∫§≈Õ
             _direction = income + normal * (-2 * Vector2.Dot(income, income));
-            transform.rotation = Quaternion.Euler(_direction);
+            transform.right = _direction;
         }
         else if (collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
         {

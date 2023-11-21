@@ -978,14 +978,19 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
         playerstatHandler.ATK.added += changePower * 0.5f;
     }
     [PunRPC]
-    private void A2302(int PlayerNumber)
+    private void A2302(int PlayerNumber)// 유도탄
     {
-        Debug.Log("미완성");
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        targetPlayer.GetComponent<WeaponSystem>().humanAttackintelligentmissile = true;
+        playerstatHandler.ATK.coefficient *= 0.9f;
+        //targetPlayer.GetComponent<WeaponSystem>().humanAttackintelligentmissile = true;
     }
     [PunRPC]
     private void A2303(int PlayerNumber)
     {
         Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A2303>();
     }
     [PunRPC]
     private void A2304(int PlayerNumber)//스팀팩 막히고 일부 상시 적용
@@ -1017,13 +1022,18 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     [PunRPC]
     private void A3103(int PlayerNumber)//시즈모드 구르기를 시즈모드로 변경 
     {
-        ChangeOnlyPlayer(PlayerNumber);
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
         targetPlayer.AddComponent<A3103>();
+        targetPlayer.GetComponent<PlayerInputController>().siegeMode = true;
+        playerInput = targetPlayer.GetComponent<PlayerInput>();
+        playerInput.actions.FindAction("Roll").Disable();
+        playerInput.actions.FindAction("SiegeMode").Enable();
     }
     [PunRPC]
     private void A3104(int PlayerNumber)
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A3104>();
     }
     [PunRPC]
     private void A3105(int PlayerNumber)//공격태세 스킬 사용시 다음 공격을 강화 시키는 스킬로 대체 #스킬대체 #다음공경
@@ -1032,9 +1042,10 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
         targetPlayer.AddComponent<A3105>();
     }
     [PunRPC]
-    private void A3106()
+    private void A3106(int PlayerNumber)
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A3106>();
     }
     [PunRPC]
     private void A3107(int PlayerNumber) // 파이어 토네이도 테스트안함

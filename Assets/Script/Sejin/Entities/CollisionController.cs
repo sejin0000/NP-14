@@ -27,15 +27,18 @@ public class CollisionController : MonoBehaviour
 
                 Bullet _bullet = collision.gameObject.GetComponent<Bullet>();
 
-                float damage = collision.gameObject.GetComponent<Bullet>().ATK;
-
-                Debug.Log("콜리전 데미지를 주는가?");
-                Debug.Log(_bullet.IsDamage);
+                float damage = _bullet.ATK;
+                int targetID = _bullet.BulletOwner;
 
                 if (_bullet.IsDamage)
-                {                    
-                    Debug.Log($"데미지 받음 : {damage} / 남은 체력 : {playerStat.CurHP} ");
+                {
+                    if (playerStat.CanReflect)
+                    {
+                        playerStat.CallReflectEvent(damage, targetID);
+                        damage *= (1 - playerStat.ReflectCoeff);
+                    }
                     playerStat.Damage(damage);
+                    Debug.Log($"데미지 받음 : {damage} / 남은 체력 : {playerStat.CurHP} ");
                 }
                 else
                 {

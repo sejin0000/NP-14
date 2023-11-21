@@ -13,6 +13,7 @@ public class PlayerInputController : TopDownCharacterController
     public int atkPercent;
     public bool IsMove = false;
     PlayerStatHandler playerstatHnadler;
+    public bool siegeMode;
 
     private void Awake()
     {
@@ -23,7 +24,7 @@ public class PlayerInputController : TopDownCharacterController
         playerstatHnadler.OnDieEvent += InputOff;
         playerstatHnadler.OnRegenEvent += InputOn;
         atkPercent = 100;
-
+        siegeMode = false;
 
         playerInput = GetComponent<PlayerInput>();
         playerInput.actions.FindAction("Move2").Disable();
@@ -66,6 +67,16 @@ public class PlayerInputController : TopDownCharacterController
         else
         {
             playerInput.actions.FindAction("Attack").Disable();
+        }
+        if (siegeMode)
+        {
+            playerInput.actions.FindAction("SiegeMode").Enable();
+            playerInput.actions.FindAction("Roll").Disable();
+        }
+        else
+        {
+            playerInput.actions.FindAction("SiegeMode").Disable();
+            playerInput.actions.FindAction("Roll").Enable();
         }
     }
     public void OnMove(InputValue value)
@@ -147,6 +158,12 @@ public class PlayerInputController : TopDownCharacterController
         Debug.Log("OnRoll" + value.ToString());
         CallRollEvent();
     }
+    public void OnSiegeMode(InputValue value)
+    {
+        Debug.Log("시즈모드 발사");
+        CallSiegeModeEvent();
+    }
+
 
     public void OnReload(InputValue value)
     {

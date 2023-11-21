@@ -2,6 +2,7 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI.Table;
 
 public class WeaponSystem : MonoBehaviour
 {
@@ -23,6 +24,9 @@ public class WeaponSystem : MonoBehaviour
     public bool burn;
     public bool gravity;
     public bool Penetrate;
+
+    public bool pivotSet;
+    public bool humanAttackintelligentmissile;
 
     public int _viewID;
     // Ãß°¡
@@ -51,6 +55,9 @@ public class WeaponSystem : MonoBehaviour
         burn = false;
         gravity = false;
         Penetrate = false;
+        pivotSet = false;
+        humanAttackintelligentmissile = false;
+
     _cool = GetComponent<CoolTimeController>();
     }
     private void Start()
@@ -69,7 +76,6 @@ public class WeaponSystem : MonoBehaviour
             float _BLT = _controller.playerStatHandler.BulletLifeTime.total;
             var _targets = targets;
             bool _isDamage = isDamage;
-
 
             pv.RPC("BS", RpcTarget.All, rot, _ATK, _BLT, _targets, _isDamage, _viewID);
             _controller.playerStatHandler.CurAmmo--;
@@ -96,6 +102,16 @@ public class WeaponSystem : MonoBehaviour
         }
         _cool.bulletNum = 0;
     }
+    public void burstCall(Quaternion rot)
+    {
+        float _ATK = _controller.playerStatHandler.ATK.total;
+        float _BLT = _controller.playerStatHandler.BulletLifeTime.total;
+        var _targets = targets;
+        bool _isDamage = isDamage;
+        pivotSet = true;
+        pv.RPC("BS", RpcTarget.All, rot, _ATK, _BLT, _targets, _isDamage, _viewID);
+        pivotSet = false;
+    }
 
     [PunRPC]
     public void BS(Quaternion rot, float Atk, float bulletLifeTime,Dictionary<string, int> _targets, bool _isDamage, int _viewID)//BulletSpawn
@@ -117,8 +133,14 @@ public class WeaponSystem : MonoBehaviour
         {
             size *= 1.3f;
         }
+ 
+        Vector3 bulletPositon= muzzleOfAGun.transform.position;
+        if (pivotSet) 
+        {
+            bulletPositon=this.gameObject.transform.localPosition;
+        }
 
-        GameObject _object =  Instantiate(bullet, muzzleOfAGun.transform.position, rot);
+        GameObject _object =  Instantiate(bullet, bulletPositon, rot);
         Bullet _bullet = _object.GetComponent<Bullet>();
 
         
@@ -146,5 +168,9 @@ public class WeaponSystem : MonoBehaviour
         _bullet.burn = burn;
         _bullet.gravity = gravity;
         _bullet.Penetrate = Penetrate;
+        if (humanAttackintelligentmissile) 
+        {
+            _bullet.MissileFire();
+        }
     }
 }

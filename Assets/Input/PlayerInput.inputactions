@@ -60,6 +60,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "SiegeMode",
+                    "type": "Button",
+                    "id": "d4ca190a-ff8d-4745-8822-9151c4e12f5a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Reload",
                     "type": "Button",
                     "id": "54ce5b28-a45f-4ad9-91e1-5176f53bc256",
@@ -285,6 +294,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "IsMove",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5c0d86d4-f617-4564-9636-1669f8184cda",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "SiegeMode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

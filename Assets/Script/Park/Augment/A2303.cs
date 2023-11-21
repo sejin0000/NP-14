@@ -1,47 +1,61 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using System.Runtime.CompilerServices;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
+using UnityEngine.InputSystem.XR;
 
-public class A3206 : MonoBehaviourPun // 공병 생성형
+public class A2303 : MonoBehaviourPun
 {
     private TopDownCharacterController controller;
     private PlayerStatHandler playerStat;
-
+    private CoolTimeController coolTimeController;
+    private PlayerInputController playerInputController;
+    private WeaponSystem weaponSystem;
     bool isLink;
-    private void Awake()
+    // Start is called before the first frame update
+    void Start()
     {
         if (photonView.IsMine)
         {
-            controller = GetComponent<TopDownCharacterController>();
+            controller = GetComponent<PlayerInputController>();
             playerStat = GetComponent<PlayerStatHandler>();
-            controller.OnSkillEvent += MakeWall;
+            coolTimeController= GetComponent<CoolTimeController>();
+            playerInputController = GetComponent<PlayerInputController>();
+            weaponSystem =GetComponent<WeaponSystem>();
+
+            controller.OnSkillEvent += AcroboticShot;
+
             controller.SkillReset();//여기부터참고
             controller.SkillMinusEvent += SkillLinkOff;
             isLink = true;
         }
     }
-    private void MakeWall() 
+
+    private void AcroboticShot() 
     {
         playerStat.CurSkillStack -= 1;
         controller.playerStatHandler.CanSkill = false;
         controller.playerStatHandler.useSkill = true;
-        Vector2 player =  transform.position;
-        Vector2 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        Vector3 dir = (mouse - player).normalized * 1.5f;
-        //transform.position + dir;
-
-        //Vector2 spawnPosition = new Vector2(mouse.y - player.y + 2.5f, mouse.x - player.x +2.5f);
-        float angle = Mathf.Atan2(mouse.y - player.y, mouse.x - player.x) * Mathf.Rad2Deg;
-        //Quaternion.AngleAxis(angle - 90, Vector2.right)
-        PhotonNetwork.Instantiate("AugmentList/A3206", transform.position + dir, Quaternion.Euler(new Vector3(0,0,angle-90)));
+        coolTimeController.EndRollCoolTime();//구르기 쿨타임 초기화 
+        playerInputController.CallRollEvent(); // 구르기 시전 
+        Invoke("shoting",0.6f);
         //controller.CallEndSkillEvent();
         SkillEnd();
     }
+    private void shoting() 
+    {
+        int n = 0;
+        Quaternion rot = Quaternion.Euler(new Vector3(0, 0, n));
+        for (int i = 0; i < 18; ++i)
+        {
+            weaponSystem.burstCall(rot);
+            n += 20;
+            rot = Quaternion.Euler(new Vector3(0, 0, n));
+        }
+    }
+
 
     public void SkillEnd()
     {
@@ -63,7 +77,7 @@ public class A3206 : MonoBehaviourPun // 공병 생성형
         {
             if (isLink)
             {
-                controller.OnSkillEvent -= MakeWall;
+                controller.OnSkillEvent -= AcroboticShot;
                 isLink = false;
             }
         }
