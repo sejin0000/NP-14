@@ -68,7 +68,7 @@ public class MapGenerator : MonoBehaviour
                 }
             }
 
-            GetComponent<TestRoom>().ChooseRoom();
+            GetComponent<RoomNodeInfo>().ChooseRoom();
         }
     }
 
