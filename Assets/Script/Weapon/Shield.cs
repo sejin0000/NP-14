@@ -26,14 +26,17 @@ public class Shield : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet")
+            && collision.gameObject.GetComponent<Bullet>().targets.ContainsValue((int)BulletTarget.Player))
         {
+
             shieldHP -= collision.gameObject.GetComponent<Bullet>().ATK;
             if (shieldHP < 0)
             {
                 Destroy();
             }
             Destroy(collision.gameObject);
+
         }
     }
 
