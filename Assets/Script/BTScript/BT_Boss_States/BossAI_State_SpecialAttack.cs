@@ -82,7 +82,6 @@ public class BossAI_State_SpecialAttack : BTAction
 
         //anim.SetTrigger("Attack"); // 공격 애니메이션
 
-        Debug.Log($"현재 타겟은 {target.name}입니다");
         //대상과 머리의 방향을 구한 뒤 해당 방향으로 RotateArm
         Vector3 direction = (target.transform.position - bossAI_Dragon.bossHead.transform.position).normalized;
 
