@@ -306,13 +306,16 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         if (collision.gameObject.GetComponent<A0126>() != null)
         {
             damageCoeff += collision.gameObject.GetComponent<A0126>().DamageCoeff;
+            int viewID = collision.gameObject.GetPhotonView().ViewID;
+            PV.RPC("DecreaseHPByObject", RpcTarget.All, collision.transform.GetComponent<PlayerStatHandler>().HP.total * damageCoeff, viewID);
         }
-        if (collision.gameObject.GetComponent<A3104>() != null)
+        if (collision.gameObject.GetComponent<A3104>().isRoll)
         {
             damageCoeff += collision.gameObject.GetComponent<A3104>().DamageCoeff;
+            int viewID = collision.gameObject.GetPhotonView().ViewID;
+            PV.RPC("DecreaseHPByObject", RpcTarget.All, collision.transform.GetComponent<PlayerStatHandler>().HP.total * damageCoeff, viewID);
         }
-        int viewID = collision.gameObject.GetPhotonView().ViewID;
-        PV.RPC("DecreaseHPByObject", RpcTarget.All, collision.transform.GetComponent<PlayerStatHandler>().HP.total * damageCoeff, viewID);
+        knockbackDistance = 0f;
     }
     private void HandleKnockback()
     {

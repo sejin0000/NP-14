@@ -1029,7 +1029,8 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     [PunRPC]
     private void A3104(int PlayerNumber)
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A3104>();
     }
     [PunRPC]
     private void A3105(int PlayerNumber)//공격태세 스킬 사용시 다음 공격을 강화 시키는 스킬로 대체 #스킬대체 #다음공경
