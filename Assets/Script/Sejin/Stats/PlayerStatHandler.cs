@@ -114,7 +114,6 @@ public class PlayerStatHandler : MonoBehaviourPun
                     curHP = value;
                 }
                 OnChangeCurHPEvent?.Invoke();
-                Debug.Log($"HPHPHPHPHPHHP  {CurHP}");
             }
         }
     }
@@ -147,6 +146,8 @@ public class PlayerStatHandler : MonoBehaviourPun
     int viewID;
     [HideInInspector] public bool IsChargeAttack;
     [HideInInspector] public bool CanReflect;
+
+    public float ReflectCoeff;
 
     private void Awake()
     {

@@ -78,7 +78,8 @@ public class Shield : MonoBehaviour
 
             reflectCoeff = playerSkill.ReflectCoeff;
             Debug.Log($"반사계수 : {reflectCoeff}");
-            playerStat.CallReflectEvent(ShieldDamage * reflectCoeff, TargetID);
+            playerStat.CallReflectEvent(ShieldDamage, TargetID);
+            ShieldHP += bullet.ATK * reflectCoeff;
 
             if (ShieldHP < 0)
             {
