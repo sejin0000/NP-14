@@ -212,9 +212,9 @@ MonoBehaviour:
   - KillEvent
   - DecreaseHPByObject
   - AutoHealingStart
-  - SendRegenBool
-  - SetRegenBool
-  - SendPartner
+  - OrderSetRectTile
+  - PunSetRectTile
+  - RPCCustomType
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
