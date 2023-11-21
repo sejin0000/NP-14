@@ -36,7 +36,6 @@ public class UIManager : LocalSingleton<UIManager>
     public void StartIntro()
     {
         Debug.Log("[UIManager] Start Intro");
-        layer.First().Open();
         //MainGameManager.Instance.GameState = MainGameManager.GameStates.UIPlaying;
     }
 }
