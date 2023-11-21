@@ -190,6 +190,73 @@ MonoBehaviour:
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
+--- !u!1 &5172257278926039612
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3772300934133234701}
+  - component: {fileID: 8627272025143738291}
+  m_Layer: 8
+  m_Name: ShadowCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3772300934133234701
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5172257278926039612}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5674173202871627804}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!70 &8627272025143738291
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5172257278926039612}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.25}
+  m_Size: {x: 0.4, y: 0.3}
+  m_Direction: 1
 --- !u!1 &5210721623018569777
 GameObject:
   m_ObjectHideFlags: 0
@@ -537,7 +604,6 @@ GameObject:
   - component: {fileID: 335624847921487191}
   - component: {fileID: 3736999086756257612}
   - component: {fileID: 1628206893393210816}
-  - component: {fileID: 4308756119488858501}
   - component: {fileID: 7349713203675165571}
   - component: {fileID: 1135065481069528687}
   - component: {fileID: 4195880295105262226}
@@ -566,6 +632,7 @@ Transform:
   m_Children:
   - {fileID: 326545430631188435}
   - {fileID: 4749478942147640618}
+  - {fileID: 3772300934133234701}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -594,6 +661,7 @@ MonoBehaviour:
   isCanSkill: 0
   isCanAtk: 0
   isDie: 0
+  isRegen: 0
   RegenHP: 0
   MaxRegenCoin: 0
   CanSpeedBuff: 0
@@ -803,41 +871,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!70 &4308756119488858501
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8735806354994587177}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.25}
-  m_Size: {x: 0.4, y: 0.3}
-  m_Direction: 1
 --- !u!70 &7349713203675165571
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -898,6 +931,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 877a641f7c7642849a2afa6f236ef077, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLink: 0
 --- !u!114 &2073819192828081166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -938,6 +972,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cd9806ff053b2d43917441c4eea8831, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLink: 0
 --- !u!114 &7213591188935441122
 MonoBehaviour:
   m_ObjectHideFlags: 0
