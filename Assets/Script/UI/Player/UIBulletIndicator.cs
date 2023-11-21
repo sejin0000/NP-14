@@ -4,7 +4,6 @@ using UnityEngine;
 using TMPro;
 using System.Text;
 using UnityEngine.SceneManagement;
-using Microsoft.Unity.VisualStudio.Editor;
 
 public class UIBulletIndicator : UIBase, ICommonUI
 {

@@ -15,32 +15,23 @@ public class UIStageTransition : UIBase
     [SerializeField] private float speed=0.1f;
 
 
-    private void Awake()
-    {
-
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     public override void Initialize()
     {
         Debug.Log("[UIStageTransition] initialized");
+
         MainGameManager.Instance.OnUIPlayingStateChanged += StartAnimation;
     }
 
     public void StartAnimation()
     {
-        UIManager.Instance.StartIntro();
+        //UIManager.Instance.StartIntro();
+        Open();
         StartCoroutine(MoveTower());
     }
 
     IEnumerator MoveTower()
     {
-        yield return new WaitForSecondsRealtime(5f);
+        yield return new WaitForSecondsRealtime(3f);
 
         animator.SetBool("isRun", true);
         RectTransform towerPos = tower.transform as RectTransform; 
@@ -77,4 +68,16 @@ public class UIStageTransition : UIBase
     {
         destinationFloor = floor;
     }
+
+    //public override void Open()
+    //{
+    //    base.Open();
+    //    this.gameObject.SetActive(true);
+    //}
+
+    //public override void Close()
+    //{
+    //    base.Close();
+    //    this.gameObject.SetActive(false);
+    //}
 }
