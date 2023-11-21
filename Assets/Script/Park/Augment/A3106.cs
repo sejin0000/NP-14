@@ -26,6 +26,7 @@ public class A3106 : MonoBehaviourPun
         // 반사 계수 적용
         reflectCoeff = 0.3f;
         shieldSkill.ReflectCoeff = reflectCoeff;
+        playerStat.ReflectCoeff = reflectCoeff;
         shieldSkill.OnGiveReflectCoeffEvent += shieldSkill.SetReflectCoeff;
     }
 
@@ -39,6 +40,7 @@ public class A3106 : MonoBehaviourPun
         PhotonView enemyPV = PhotonView.Find(targetViewID);
         float reflectDamage = damage * reflectCoeff;
         enemyPV.RPC("DecreaseHPByObject", RpcTarget.All, reflectDamage, viewID);
+        Debug.Log($"{viewID}에게 {reflectDamage}만큼의 데미지를 반사함.");
     }
 
         //// 쉴드 반사계수 부여
