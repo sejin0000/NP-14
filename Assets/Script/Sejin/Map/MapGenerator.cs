@@ -44,7 +44,7 @@ public class MapGenerator : MonoBehaviour
         {
             root = new Node(new RectInt(0, 0, mapSize.x, mapSize.y)); //전체 맵 크기의 루트노드를 만듬 
 
-            setTile.SetRectTile(new RectInt(0, 0, mapSize.x + 20, mapSize.y + 10), setTile.wallTileMap, setTile.wallTile, new Vector2(-((mapSize.x + 20) / 2), -((mapSize.y + 10) / 2)));
+            setTile.OrderSetRectTile(new RectInt(0, 0, mapSize.x + 20, mapSize.y + 10), setTile.wallTileMap, setTile.wallTile, new Vector2(-((mapSize.x + 20) / 2), -((mapSize.y + 10) / 2)));
 
             Divide(root, 0);
             GenerateRoom(root, 0);
