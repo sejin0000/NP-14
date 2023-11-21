@@ -34,11 +34,15 @@ public class A2303 : MonoBehaviourPun
 
     private void AcroboticShot() 
     {
+        playerStat.CurSkillStack -= 1;
+        controller.playerStatHandler.CanSkill = false;
+        controller.playerStatHandler.useSkill = true;
+
         coolTimeController.EndRollCoolTime();//구르기 쿨타임 초기화 
         playerInputController.CallRollEvent(); // 구르기 시전 
         Invoke("shoting",0.6f);
-        controller.CallEndSkillEvent();
-        //SkillEnd();
+        //controller.CallEndSkillEvent();
+        SkillEnd();
     }
     private void shoting() 
     {

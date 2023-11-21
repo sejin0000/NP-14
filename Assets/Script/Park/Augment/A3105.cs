@@ -47,6 +47,9 @@ public class A3105 : MonoBehaviourPun
     }
     void LostPower()
     {
+        playerStat.CurSkillStack -= 1;
+        controller.playerStatHandler.CanSkill = false;
+        controller.playerStatHandler.useSkill = true;
         if (Isfirst)
         {
             playerStat.ATK.added -= oldPower;

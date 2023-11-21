@@ -9,6 +9,7 @@ using UnityEngine.UIElements;
 public class A3206 : MonoBehaviourPun // 공병 생성형
 {
     private TopDownCharacterController controller;
+    private PlayerStatHandler playerStat;
 
     bool isLink;
     private void Awake()
@@ -16,6 +17,7 @@ public class A3206 : MonoBehaviourPun // 공병 생성형
         if (photonView.IsMine)
         {
             controller = GetComponent<TopDownCharacterController>();
+            playerStat = GetComponent<PlayerStatHandler>();
             controller.OnSkillEvent += MakeWall;
             controller.SkillReset();//여기부터참고
             controller.SkillMinusEvent += SkillLinkOff;
@@ -24,6 +26,9 @@ public class A3206 : MonoBehaviourPun // 공병 생성형
     }
     private void MakeWall() 
     {
+        playerStat.CurSkillStack -= 1;
+        controller.playerStatHandler.CanSkill = false;
+        controller.playerStatHandler.useSkill = true;
         Vector2 player =  transform.position;
         Vector2 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
