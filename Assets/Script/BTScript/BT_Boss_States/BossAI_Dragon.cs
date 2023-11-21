@@ -15,7 +15,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     public float viewDistance;               // 시야 거리 (기본 10)
 
     //컴포넌트 및 기타 외부요소(일부 할당은 하위 노드에서 진행)
-    public EnemySO enemySO;                  // Enemy 정보 [모든 Action Node에 owner로 획득시킴]
+    public EnemySO bossSO;                  // Enemy 정보 [모든 Action Node에 owner로 획득시킴]
     public SpriteRenderer spriteRenderer;
     public Animator anim;
 
@@ -29,9 +29,9 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     //public Collider2D target;
     public List<Transform> PlayersTransform;
 
-    public GameObject enemyAim;
     public Bullet enemyBulletPrefab;
-
+    public Transform bossHead;
+    public Transform bossHeadPivot;
 
     public LayerMask targetMask;             // 타겟 레이어(Player)
 
@@ -50,8 +50,8 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
     //가장많은 피해를 준 플레이어 타겟-> 불렛(쏜사람 정보) 맞은놈만 알면됨 ->플레이 공격력->
 
-    Vector2 nowEnemyPosition;
-    Quaternion nowEnemyRotation;
+
+
     [SerializeField]
     private Image images_Gauge;              //몬스터 UI : Status
 
@@ -77,9 +77,9 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
         //게임 오브젝트 활성화 시, 행동 트리 생성
         CreateTreeAIState();
-        currentHP = enemySO.hp;
-        viewAngle = enemySO.viewAngle;
-        viewDistance = enemySO.viewDistance;
+        currentHP = bossSO.hp;
+        viewAngle = bossSO.viewAngle;
+        viewDistance = bossSO.viewDistance;
         isLive = true;
 
 
@@ -87,13 +87,12 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         //쫓는 플레이어도 호스트가 판별?
 
 
-        nowEnemyPosition = this.gameObject.transform.position;
         knockbackDistance = 0f;
 
 
 
         //생성할 때, 모든 플레이어 Transform 정보를 담는다.
-        foreach (var _value in TestGameManager.Instance.playerInfoDictionary.Values)
+        foreach (var _value in TestGameManagerWooMin.Instance.playerInfoDictionary.Values)
         {
             PlayersTransform.Add(_value);
         }
@@ -122,15 +121,6 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
             return;
 
 
-        if (isAttaking)
-        {
-            //PV.RPC("Filp", RpcTarget.All);
-            ChaseView();
-        }
-        else
-        {
-            NomalView();
-        }
 
 
 
@@ -226,7 +216,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     }
     private void GaugeUpdate()
     {
-        images_Gauge.fillAmount = (float)currentHP / enemySO.hp;
+        images_Gauge.fillAmount = (float)currentHP / bossSO.hp;
     }
 
     [PunRPC]
@@ -234,8 +224,8 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     {
         currentHP += damage;
 
-        if (currentHP > enemySO.hp)
-            currentHP = enemySO.hp;
+        if (currentHP > bossSO.hp)
+            currentHP = bossSO.hp;
 
         GaugeUpdate();
     }
@@ -263,12 +253,12 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void Fire()
     {
-        var _bullet = Instantiate(enemyBulletPrefab, enemyAim.transform.position, enemyAim.transform.rotation);
+        var _bullet = Instantiate(enemyBulletPrefab, bossHeadPivot.transform.position, bossHeadPivot.transform.rotation);
 
         _bullet.IsDamage = true;
-        _bullet.ATK = enemySO.atk;
-        _bullet.BulletLifeTime = enemySO.bulletLifeTime;
-        _bullet.BulletSpeed = enemySO.bulletSpeed;
+        _bullet.ATK = bossSO.atk;
+        _bullet.BulletLifeTime = bossSO.bulletLifeTime;
+        _bullet.BulletSpeed = bossSO.bulletSpeed;
         _bullet.targets["Player"] = (int)BulletTarget.Player;
 
         /*
@@ -312,27 +302,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     }
 
 
-
-    private void NomalView()
-    {
-        Vector2 rightBoundary = BoundaryAngle(-viewAngle * 0.5f);
-        Vector2 leftBoundary = BoundaryAngle(viewAngle * 0.5f);
-
-        // 스프라이트 랜더러 flipX 상태에 따라 레이 방향을 반대로 설정
-        if (spriteRenderer.flipX)
-        {
-            rightBoundary = -rightBoundary;
-            leftBoundary = -leftBoundary;
-        }
-
-        Debug.DrawRay(transform.position, rightBoundary * viewDistance, Color.yellow);
-        Debug.DrawRay(transform.position, leftBoundary * viewDistance, Color.yellow);
-
-        FindPlayer(rightBoundary, leftBoundary);
-    }
-
-
-    //추적, 공격시 플레이어를 바라보는 시야각으로 전환
+    //특수 패턴 시, 대상 플레이어를 바라보도록 설정
     private void ChaseView()
     {
         if (currentTarget == null)
@@ -341,21 +311,21 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
             return;
         }
 
+        //머리와 타겟의 방향
+        Vector2 directionToTarget = (currentTarget.position - bossHead.transform.position).normalized;
 
-        Vector2 directionToTarget = (currentTarget.position - transform.position).normalized;
-
-
+        //브레스 범위
         Vector2 rightBoundary = Quaternion.Euler(0, 0, -viewAngle * 0.5f) * directionToTarget;
         Vector2 leftBoundary = Quaternion.Euler(0, 0, viewAngle * 0.5f) * directionToTarget;
 
-        Debug.DrawRay(transform.position, rightBoundary * viewDistance, Color.black);
-        Debug.DrawRay(transform.position, leftBoundary * viewDistance, Color.black);
+        Debug.DrawRay(transform.position, rightBoundary * viewDistance, Color.red);
+        Debug.DrawRay(transform.position, leftBoundary * viewDistance, Color.red);
 
-        FindPlayer(rightBoundary, leftBoundary);
+        LookPlayer(rightBoundary, leftBoundary);
     }
 
-
-    private void FindPlayer(Vector2 _rightBoundary, Vector2 _leftBoundary)
+    //특수 패턴 시, 대상 플레이어를 바라보도록 설정
+    private void LookPlayer(Vector2 _rightBoundary, Vector2 _leftBoundary)
     {
         if (!PhotonNetwork.IsMasterClient || currentTarget != null)
             return;
@@ -365,28 +335,27 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         //Debug.DrawRay(transform.position, middleDirection * viewDistance, Color.green);
 
 
-        //받아온 모든 플레이어 트랜스폼을 받아온다.
-        for (int i = 0; i < PlayersTransform.Count; i++)
+        //시야각 방향의 직선 Direction
+        Vector2 middleDirection = (_rightBoundary + _leftBoundary).normalized;
+        //Enemy와 Player 사이의 방향
+        Vector2 directionToPlayer = (currentTarget.position - transform.position).normalized;
+
+        float angle = Vector3.Angle(directionToPlayer, middleDirection);
+        if (angle < viewAngle * 0.5f)
         {
-            if (viewDistance >= Vector2.Distance(PlayersTransform[i].position, transform.position))
-            {
-                //시야각 방향의 직선 Direction
-                Vector2 middleDirection = (_rightBoundary + _leftBoundary).normalized;
-                //Enemy와 Player 사이의 방향
-                Vector2 directionToPlayer = (PlayersTransform[i].position - transform.position).normalized;
-
-                float angle = Vector3.Angle(directionToPlayer, middleDirection);
-                if (angle < viewAngle * 0.5f)
-                {
-                    currentTarget = PlayersTransform[i]; // currentTargetPlayer
-                    Debug.DrawRay(transform.position, directionToPlayer * viewDistance, Color.red);
-
-                    break;
-                }
-            }
-
+            Debug.DrawRay(transform.position, directionToPlayer * viewDistance, Color.red);
         }
+
     }
+    #endregion
+
+    #region 실제 액션[브레스]
+
+    public void Breath()
+    {
+
+    }
+
     #endregion
 
     #region 타겟(Player) 관련 
@@ -427,7 +396,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     }
     #endregion
 
-    #region player애니메이션 관련    
+    #region 애니메이션 관련    
 
     /*
     private void UpdateAnimation()
@@ -478,7 +447,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         BTSelector BTMainSelector = new BTSelector();
 
 
-
+        /*
         //Enemy 생존 체크
         //컨디션 체크 -> 사망 시 필요한 액션들(오브젝트 제거....)
         BTSquence BTDead = new BTSquence();
@@ -486,48 +455,80 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         BTDead.AddChild(deadCondition);
         EnemyState_Dead state_Dead = new EnemyState_Dead(gameObject);
         BTDead.AddChild(state_Dead);
+        */
 
+
+        /*
         //상태이상 체크 [스턴....]
         BTSquence BTAbnormal = new BTSquence();
         EnemyState_GroggyCondition groggyConditon = new EnemyState_GroggyCondition(gameObject);
         BTAbnormal.AddChild(groggyConditon);
-
-        BTMainSelector.AddChild(BTAbnormal);
-
-        //추적+공격
-        //컨디션 체크 -> 플레이어 추적 & 플레이어가 공격 범위 내 -> 공격(성공 반환 후 최초로)
-        BTSquence BTChase = new BTSquence();
-
-        EnemyState_Chase_ChaseCondition chaseCondition = new EnemyState_Chase_ChaseCondition(gameObject);
-        BTChase.AddChild(chaseCondition);
-        EnemyState_Chase state_Chase = new EnemyState_Chase(gameObject);
-        BTChase.AddChild(state_Chase);
-
-        EnemyState_Attack_AttackCondition attackCondition = new EnemyState_Attack_AttackCondition(gameObject);
-        BTChase.AddChild(attackCondition);
-        EnemyState_Attack state_Attack = new EnemyState_Attack(gameObject);
-        BTChase.AddChild(state_Attack);
+        */
 
 
+        //페이즈 판별 <셀렉터 겸 컨디션>[기본 = 1페이즈  ||  체력 50% '미만' = 2페이즈]
+        BTSelector Phase_One = new BTSelector();
+
+        BossAI_State_SpecialAttack specialAttack_Condition = new BossAI_State_SpecialAttack(gameObject);
+        Phase_One.AddChild(specialAttack_Condition);
+
+        //여기에서 노말액션 시퀀스에 사용할 랜덤 난수  쏴주기
+        BTSelector nomalAttack_Selector = new BTSelector();
+        Phase_One.AddChild(nomalAttack_Selector);
+
+
+        BTSquence nomalAttack_Squence_1 = new BTSquence();
+        //실제 노말 패턴 1
+        //실제 노말 패턴 2
+        //예시
+        //BossAI_State_NomalAttackSequence_1 nomalAttack_Sequence_1 = new BossAI_State_NomalAttackSequence_1(gameObject);
+        //nomalAttack_Squence_1.AddChild(액션노드 변수명);
+        BTSquence nomalAttack_Squence_2 = new BTSquence();
+        //실제 노말 패턴 1
+        //실제 노말 패턴 2
+        //실제 노말 패턴 3
+        //예시
+        //BossAI_State_NomalAttackSequence_2 nomalAttack_Sequence_2 = new BossAI_State_NomalAttackSequence_2(gameObject);
+        //nomalAttack_Squence_2.AddChild(액션노드 변수명);
+        BTSquence nomalAttack_Squence_3 = new BTSquence();
+        //실제 노말 패턴 1
+        //실제 노말 패턴 2
+        //실제 노말 패턴 3
+        //실제 노말 패턴 4
+        //예시
+        //BossAI_State_NomalAttackSequence3 nomalAttack_Sequence_3 = new BossAI_State_NomalAttackSequence_2(gameObject);
+        //nomalAttack_Squence_3.AddChild(액션노드 변수명);
+
+        nomalAttack_Selector.AddChild(nomalAttack_Squence_1);
+        nomalAttack_Selector.AddChild(nomalAttack_Squence_2);
+        nomalAttack_Selector.AddChild(nomalAttack_Squence_3);
+
+        // 예를 들어:
+        // EnemyState_Action1 action1 = new EnemyState_Action1(gameObject);
+        // EnemyState_Action2 action2 = new EnemyState_Action2(gameObject);
+        // specialAttackSequence.AddChild(action1);
+        // specialAttackSequence.AddChild(action2);
+
+
+        BTSelector Phase_Two = new BTSelector();
+        
 
 
 
-        //순찰(시퀀스 : 하나라도 실패하면 실패반환)
-        //할거 없으면 이동
-        BTSquence BTPatrol = new BTSquence();
 
-        EnemyState_Patrol state_Patrol = new EnemyState_Patrol(gameObject);
-        BTPatrol.AddChild(state_Patrol);
+
 
 
 
         //셀렉터는 우선순위 높은 순서로 배치 : 생존 여부 -> 특수 패턴 -> 플레이어 체크(공격 여부) -> 이동 여부 순서로 셀렉터 배치 
         //메인 셀렉터 : Squence를 Selector의 자식으로 추가(자식 순서 중요함) 
 
-        BTMainSelector.AddChild(BTDead);
-        BTMainSelector.AddChild(BTAbnormal);
-        BTMainSelector.AddChild(BTChase);
-        BTMainSelector.AddChild(BTPatrol);
+        //BTMainSelector.AddChild(BTDead);
+        //BTMainSelector.AddChild(BTAbnormal);
+
+        //메인(페이즈) 셀렉터
+        BTMainSelector.AddChild(Phase_One);
+        BTMainSelector.AddChild(Phase_Two);
 
         //작업이 끝난 Selector를 루트 노드에 붙이기
         TreeAIState.AddChild(BTMainSelector);
@@ -544,7 +545,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
             stream.SendNext(hostPosition);
             //stream.SendNext(navTargetPoint);
             stream.SendNext(spriteRenderer.flipX);
-            stream.SendNext(enemyAim.transform.rotation);
+            stream.SendNext(bossHeadPivot.transform.rotation);
 
         }
         else if (stream.IsReading)
@@ -553,9 +554,16 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
             hostPosition = (Vector3)stream.ReceiveNext();
             //navTargetPoint = (Vector3)stream.ReceiveNext();
             spriteRenderer.flipX = (bool)stream.ReceiveNext();
-            enemyAim.transform.rotation = (Quaternion)stream.ReceiveNext();
+            bossHeadPivot.transform.rotation = (Quaternion)stream.ReceiveNext();
         }
 
     }
+
+    public void SetStateColor(Color _color)
+    {
+        spriteRenderer.color = _color;
+    }
+
     #endregion
+
 }

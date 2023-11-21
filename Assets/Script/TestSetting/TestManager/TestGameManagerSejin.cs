@@ -1,27 +1,26 @@
-Ôªøusing Photon.Pun;
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TestGameManagerDohyun : MonoBehaviourPun
+public class TestGameManagerSejin : MonoBehaviourPun
 {
-    public static TestGameManagerDohyun Instance;
-    public event Action OnInitialized;
+    public static TestGameManagerSejin Instance;
 
     public enum MonsterType
     {
-        Î™¨Ïä§ÌÑ∞1,
-        Î™¨Ïä§ÌÑ∞2,
-        Î™¨Ïä§ÌÑ∞3,
+        ∏ÛΩ∫≈Õ1,
+        ∏ÛΩ∫≈Õ2,
+        ∏ÛΩ∫≈Õ3,
     }
 
     [Header("ClientPlayer")]
     public GameObject InstantiatedPlayer;
     [SerializeField] private bool isPlayerInstantiated;
+    public Dictionary<int, Transform> playerInfoDictionary;
 
     [Header("PlayerData")]
     public PlayerDataSetting characterSetting;
@@ -34,6 +33,7 @@ public class TestGameManagerDohyun : MonoBehaviourPun
     public int tier;
     public int Ready;
 
+
     [Serializable]
     public struct MonsterData
     {
@@ -43,19 +43,21 @@ public class TestGameManagerDohyun : MonoBehaviourPun
 
     [Header("Button")]
     public Button MonsterSpawnButton;
+    public Button AugmentPanelOpenButton;
+
+    [Header("Panel")]
+    [SerializeField] private GameObject AugmentPanel;
 
     private void Awake()
     {
+        playerInfoDictionary = new Dictionary<int, Transform>();
         isPlayerInstantiated = false;
         if (!isPlayerInstantiated)
         {
             isPlayerInstantiated = true;
+
             SpawnPlayer();
             SyncPlayer();
-
-            //// Augument
-            //PlayerResultController MakeSetting = InstantiatedPlayer.GetComponent<PlayerResultController>();
-            //MakeSetting.MakeManager();
         }
 
         if (Instance == null)
@@ -64,11 +66,19 @@ public class TestGameManagerDohyun : MonoBehaviourPun
         }
 
         MonsterSpawnButton.onClick.AddListener(OnMonsterSpawnButtonClicked);
+        AugmentPanelOpenButton.onClick.AddListener(OnAugmentPanelOpenButtonClicked);
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.Instantiate("Prefabs/Player/Debuff", Vector3.zero, Quaternion.identity);
+        }
     }
 
     private void Start()
     {
-        OnInitialized?.Invoke();
+        // Augument ø¨∞·
+        TestResultController MakeSetting = InstantiatedPlayer.GetComponent<TestResultController>();
+        MakeSetting.MakeManager();
     }
 
     private void SpawnPlayer()
@@ -79,22 +89,41 @@ public class TestGameManagerDohyun : MonoBehaviourPun
         characterSetting = characterSettingGO.GetComponent<PlayerDataSetting>();
 
         // PhotonNetwork.Instantiate()
-        string playerPrefabPath = "Pefabs/Player";
+        string playerPrefabPath = "Pefabs/TestPlayer";
         InstantiatedPlayer = PhotonNetwork.Instantiate(playerPrefabPath, Vector3.zero, Quaternion.identity);
-
         characterSetting.ownerPlayer = InstantiatedPlayer;
         characterSetting.viewID = InstantiatedPlayer.GetPhotonView().ViewID;
 
-        // ClassIdentifier Îç∞Ïù¥ÌÑ∞ Init()
+        // «√∑π¿ÃæÓ µ•¿Ã≈Õ √ﬂ∞°
+        int viewID = characterSetting.viewID;
+        playerInfoDictionary.Add(viewID, InstantiatedPlayer.transform);
+        GameObject sendingPlayer = InstantiatedPlayer;
+        photonView.RPC("SendPlayerInfo", RpcTarget.Others, viewID);
+
+        // ClassIdentifier µ•¿Ã≈Õ Init()
         InstantiatedPlayer.GetComponent<ClassIdentifier>().playerData = characterSetting;
+    }
+
+    [PunRPC]
+    public void SendPlayerInfo(int viewID)
+    {
+        GameObject clientPlayer = PhotonView.Find(viewID).gameObject;
+        playerInfoDictionary.Add(viewID, clientPlayer.transform);
+        Debug.Log($"{playerInfoDictionary.Count}∞≥∞° µÒº≈≥ ∏Æø° µÓ∑œµ ");
+        int cnt = 0;
+        foreach (var key in playerInfoDictionary.Keys)
+        {
+            cnt += 1;
+            Debug.Log($"{playerInfoDictionary.Count}∞≥¿« ≈∞ ¡ﬂ {cnt}π¯¬∞ == {key}");
+        }
     }
 
     private void SyncPlayer()
     {
-        int viewID = characterSetting.viewID;
         if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out object classNum))
         {
             characterSetting.SetClassType((int)classNum, InstantiatedPlayer);
+            int viewID = characterSetting.viewID;
             InstantiatedPlayer.GetComponent<PhotonView>().RPC("ApplyClassChange", RpcTarget.Others, (int)classNum, viewID);
         }
     }
@@ -110,13 +139,14 @@ public class TestGameManagerDohyun : MonoBehaviourPun
             go.transform.position = new Vector3(destinationX, destinationY, 0);
 
             EnemySpawn enemySpawn = go.GetComponent<EnemySpawn>();
-            enemySpawn.Spawn();
+            enemySpawn.Spawn("Test_Enemy");
+            Destroy(go);
         }
     }
 
     private void SetSpawnData()
     {
-
+        AugmentPanel.SetActive(true);
     }
 
     public void OnMonsterSpawnButtonClicked()
@@ -133,6 +163,11 @@ public class TestGameManagerDohyun : MonoBehaviourPun
                 currentMonsterCount += 1;
             }
         }
+    }
+
+    public void OnAugmentPanelOpenButtonClicked()
+    {
+        AugmentPanel.SetActive(true);
     }
 
     public void AllReady()

@@ -651,7 +651,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         EnemyState_GroggyCondition groggyConditon = new EnemyState_GroggyCondition(gameObject);
         BTAbnormal.AddChild(groggyConditon);
 
-        BTMainSelector.AddChild(BTAbnormal);
+
 
         //추적+공격
         //컨디션 체크 -> 플레이어 추적 & 플레이어가 공격 범위 내 -> 공격(성공 반환 후 최초로)

@@ -6,21 +6,21 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TestGameManager : MonoBehaviourPun
+public class TestGameManagerWooMin : MonoBehaviourPun
 {
-    public static TestGameManager Instance;
+    public static TestGameManagerWooMin Instance;
 
     public enum MonsterType
     {
         몬스터1,
-        몬스터2,
-        몬스터3,
+        보스에용,
     }
 
     [Header("ClientPlayer")]
     public GameObject InstantiatedPlayer;
     [SerializeField] private bool isPlayerInstantiated;
     public Dictionary<int, Transform> playerInfoDictionary;
+    public Dictionary<MonsterType, string> monsterNameDictionary;
 
     [Header("PlayerData")]
     public PlayerDataSetting characterSetting;
@@ -55,6 +55,10 @@ public class TestGameManager : MonoBehaviourPun
     private void Awake()
     {
         playerInfoDictionary = new Dictionary<int, Transform>();
+        monsterNameDictionary = new Dictionary<MonsterType, string>();
+        AddMonsterDict();
+
+
         isPlayerInstantiated = false;
         if (!isPlayerInstantiated)
         {
@@ -85,6 +89,11 @@ public class TestGameManager : MonoBehaviourPun
         MakeSetting.MakeManager();
     }
 
+    private void AddMonsterDict()
+    {
+        monsterNameDictionary[MonsterType.몬스터1] = "Test_Enemy";
+        monsterNameDictionary[MonsterType.보스에용] = "Test_Boss";
+    }
     private void SpawnPlayer()
     {
         // PlayerCharacterSetting 
@@ -149,11 +158,11 @@ public class TestGameManager : MonoBehaviourPun
             go.transform.position = new Vector3(destinationX, destinationY, 0);
 
             EnemySpawn enemySpawn = go.GetComponent<EnemySpawn>();
-            enemySpawn.Spawn();
+            enemySpawn.Spawn(targetMonster);
             Destroy(go);
         }
     }
-    
+
     private void SetSpawnData()
     {
         AugmentPanel.SetActive(true);
@@ -165,9 +174,9 @@ public class TestGameManager : MonoBehaviourPun
         {
             int monsterCount = monsterInfo.monsterNum;
             var monsterType = monsterInfo.monsterType;
-            string monsterPar = Enum.GetName(typeof(MonsterType), monsterType);
+            string monsterPar = monsterNameDictionary[monsterType];
 
-            for (int i = 0; i < monsterCount; i++) 
+            for (int i = 0; i < monsterCount; i++)
             {
                 SpawnMonster(monsterCount, monsterPar);
                 currentMonsterCount += 1;

@@ -115,7 +115,6 @@ public class MainGameManager : MonoBehaviourPunCallbacks
             Instance = this;
         }
 
-        //
         GameState = GameStates.Init;
         IsStateEnded = false;
 
@@ -367,7 +366,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         foreach (StageSO singleStageInfo in stageInfo.stageDict)
         {
             Debug.Log("매니저의 스테이지 이름: "+GetStageName());
-            Debug.Log("SO의 스테이지 이름: "+singleStageInfo.StageName);
+            Debug.Log("SO의 스테이지 이름: " + singleStageInfo.StageName);
             if (singleStageInfo.StageName == GetStageName())
             {
                 var monsterDatas = singleStageInfo.MonsterDatas;
@@ -380,12 +379,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
                     Debug.Log(monsterCount);
                     monsterDataList.Add(new MonsterData { monsterNum = monsterCount, monsterType = targetMonster });
                     currentMonsterCount += monsterCount;
-
-                    // 해당 타입의 몬스터를 monsterCount 만큼 반복해서 spawn할 것, 
                 }
-                // SpawnPoint 인스턴스화
-
-                
 
                 GameObject go = PhotonNetwork.Instantiate("Prefabs/Enemy/SpawnPoint", transform.position, Quaternion.identity);        
 
@@ -399,7 +393,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
 
                         Debug.Log(currentMonsterCount);
                         EnemySpawn enemySpawn = go.GetComponent<EnemySpawn>();
-                        enemySpawn.Spawn();
+                        enemySpawn.Spawn("Test_Enemy");
                         Destroy(go);
                     }
                 }

@@ -30,6 +30,12 @@ public class EnemySO : ScriptableObject
     public int dropGold;          // 주는 재화의 양
 
     public int unitScale;         // 유닛 크기
+
+
+
+    //보스
+
+    public float bossPatternTime;
 }
 public enum EnemyType
 {

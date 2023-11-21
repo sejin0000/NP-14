@@ -19,3 +19,5 @@ MonoBehaviour:
     monsters:
     - monsterType: "\uBAAC\uC2A4\uD1301"
       monsterCount: 20
+    - monsterType: "\uBAAC\uC2A4\uD1302"
+      monsterCount: 12
