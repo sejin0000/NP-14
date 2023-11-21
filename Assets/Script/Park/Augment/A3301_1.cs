@@ -26,8 +26,9 @@ public class A3301_1 : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("EnemyBullet"))
-        {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet")
+            && collision.gameObject.GetComponent<Bullet>().targets.ContainsValue((int)BulletTarget.Player))
+        { 
             shieldHP -= collision.gameObject.GetComponent<Bullet>().ATK;
             if (shieldHP < 0)
             {
