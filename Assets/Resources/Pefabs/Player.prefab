@@ -595,6 +595,7 @@ MonoBehaviour:
   isCanSkill: 0
   isCanAtk: 0
   isDie: 0
+  isRegen: 0
   RegenHP: 0
   MaxRegenCoin: 0
   CanSpeedBuff: 0
@@ -899,6 +900,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 877a641f7c7642849a2afa6f236ef077, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLink: 0
 --- !u!114 &2073819192828081166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -951,6 +953,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8050595d3f3d5b044bb22aa708738f0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLink: 0
   applicationTime: 5
   applicationspeed: 2
   applicationAtkSpeed: 2

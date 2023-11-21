@@ -192,15 +192,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4145190809881290648}
-  m_LocalRotation: {x: -0, y: -0, z: -0.0073060724, w: 0.9999733}
-  m_LocalPosition: {x: 0, y: 2.9923, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6100125845148993927}
   m_Father: {fileID: 4860750929372563565}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -0.837}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1905009259882385808
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -305,7 +305,7 @@ MonoBehaviour:
   viewAngle: 0
   viewDistance: 0
   bossSO: {fileID: 11400000, guid: 9d9d5dda21f41214ba8d89323f9ffa72, type: 2}
-  spriteRenderer: {fileID: 0}
+  spriteRenderers: []
   anim: {fileID: 0}
   PlayersTransform: []
   enemyBulletPrefab: {fileID: 0}
@@ -357,7 +357,7 @@ GameObject:
   - component: {fileID: 6100125845148993927}
   - component: {fileID: 3971179894340039219}
   m_Layer: 0
-  m_Name: HeadPivot
+  m_Name: BossAim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -370,9 +370,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7592494673301777471}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.6, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
+  m_LocalScale: {x: 0.10000001, y: 0.10000001, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3294095377200291057}

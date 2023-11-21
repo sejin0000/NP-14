@@ -233,7 +233,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void DecreaseHP(float damage)
     {
-        SetStateColor();
+        SetStateColor(Color.red);
         currentHP -= damage;
         GaugeUpdate();
         if (currentHP <= 0)
@@ -390,9 +390,12 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     }
 
 
-    private void SetStateColor()
+    public void SetStateColor(Color _color)
     {
-        spriteRenderer.color = Color.red;
+        for (int i = 0; i < spriteRenderers.Length; i++)
+        {
+            spriteRenderers[i].color = _color;
+        }
     }
     #endregion
 
@@ -544,7 +547,6 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
             // 데이터를 전송
             stream.SendNext(hostPosition);
             //stream.SendNext(navTargetPoint);
-            stream.SendNext(spriteRenderer.flipX);
             stream.SendNext(bossHeadPivot.transform.rotation);
 
         }
@@ -553,15 +555,9 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
             // 데이터를 수신
             hostPosition = (Vector3)stream.ReceiveNext();
             //navTargetPoint = (Vector3)stream.ReceiveNext();
-            spriteRenderer.flipX = (bool)stream.ReceiveNext();
             bossHeadPivot.transform.rotation = (Quaternion)stream.ReceiveNext();
         }
 
-    }
-
-    public void SetStateColor(Color _color)
-    {
-        spriteRenderer.color = _color;
     }
 
     #endregion

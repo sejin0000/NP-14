@@ -24,7 +24,7 @@ public class BossAI_State_SpecialAttack : BTAction
     public override void Initialize()
     {
         currentTime = bossSO.atkDelay;
-        SetStateColor();
+        bossAI_Dragon.SetStateColor(Color.yellow);
         target = bossAI_Dragon.currentTarget; //루트에서 받은 임의의 타겟 지정
     }
 
@@ -38,7 +38,7 @@ public class BossAI_State_SpecialAttack : BTAction
         {
             float distanceToTargets = Vector2.Distance(bossAI_Dragon.PlayersTransform[i].position, bossAI_Dragon.bossHead.position);
 
-            if (distanceToTargets > 0.3f)
+            if (distanceToTargets > 8f)
                 return Status.BT_Failure;
         }
 
@@ -82,8 +82,9 @@ public class BossAI_State_SpecialAttack : BTAction
 
         //anim.SetTrigger("Attack"); // 공격 애니메이션
 
-        //공격() 각도 바꿔준 후 -> 생성
-        Vector3 direction = (target.transform.position - bossAI_Dragon.bossHeadPivot.transform.position).normalized;
+        Debug.Log($"현재 타겟은 {target.name}입니다");
+        //대상과 머리의 방향을 구한 뒤 해당 방향으로 RotateArm
+        Vector3 direction = (target.transform.position - bossAI_Dragon.bossHead.transform.position).normalized;
 
 
 
@@ -92,15 +93,54 @@ public class BossAI_State_SpecialAttack : BTAction
     private void RotateArm(Vector2 newAim)
     {
         float rotZ = Mathf.Atan2(newAim.y, newAim.x) * Mathf.Rad2Deg;
+        rotZ += 90f;
 
-        bossAI_Dragon.bossHead.transform.rotation = Quaternion.Euler(0, 0, rotZ);
+        if (rotZ < 270 && rotZ > 60)
+        {
+            ReturnOriginRotate();
+            //여기다 바로 비명지르는 패턴써서 밀어버리기
+            return;
+        }
+
+        // 원하는 회전 범위 지정
+        float minRotation = -60f;
+        float maxRotation = 60f;
+        //270~61 == 회전하면 안됨
+        rotZ = Mathf.Clamp(rotZ, minRotation, maxRotation);
+
+
+        // 현재 회전 각도
+        Quaternion currentRotation = bossAI_Dragon.bossHead.transform.rotation;
+
+        // 목표 회전 각도
+        Quaternion targetRotation = Quaternion.Euler(0, 0, rotZ);
+
+        // 회전 보간
+        float interpolationFactor = 0.5f; // 보간 계수
+        Quaternion interpolatedRotation = Quaternion.Slerp(currentRotation, targetRotation, interpolationFactor);
+
+
+        bossAI_Dragon.bossHead.transform.rotation = interpolatedRotation;
     }
+
+    private void ReturnOriginRotate()
+    {
+        // 목표 회전 각도
+        Quaternion targetRotation = Quaternion.Euler(0, 0, 0);
+
+        // 현재 회전 각도
+        Quaternion currentRotation = bossAI_Dragon.bossHead.transform.rotation;
+
+        // 회전 보간
+        float interpolationFactor = 0.5f; // 보간 계수
+        Quaternion interpolatedRotation = Quaternion.Slerp(currentRotation, targetRotation, interpolationFactor);
+
+
+        bossAI_Dragon.bossHead.transform.rotation = interpolatedRotation;
+    }
+
     public override void Terminate()
     {
-    }
-
-    private void SetStateColor()
-    {
-        bossAI_Dragon.spriteRenderer.color = Color.black;
+        ReturnOriginRotate();
     }
 }
