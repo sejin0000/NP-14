@@ -31,46 +31,125 @@ public class SetTile : MonoBehaviourPun
         PV = GetComponent<PhotonView>();        
     }
 
+    public void OrderSetRectTile(RectInt rect, Tilemap tilemap, RuleTile tile, Vector2 Startpos)
+    {
+        TileMapType _tileMap;
+        TileMapType _tile;
+        Vector2 rectPos;
+        Vector2 widthHeight;
+
+        TileToEnum(out _tileMap, out _tile, tilemap, tile);
+        RectIntToVector2(rect, out rectPos, out widthHeight);
+
+        PV.RPC("PunSetRectTile",RpcTarget.AllBuffered, _tileMap, _tile, Startpos, rectPos, widthHeight);
+    }
 
     [PunRPC]
-    public void PunSetRectTile(TileMapType _TileMap, TileMapType _Tile, Vector2Int startPos, RectInt rect)
+    public void PunSetRectTile(TileMapType _TileMap, TileMapType _Tile, Vector2 startPos, Vector2 rectPos, Vector2 widthHeight)
     {
+        Tilemap tilemap;
+        RuleTile tile;
 
-        Tilemap tilemap = null;
-        RuleTile tile = null;
+        RectInt rect;
 
-        if(_TileMap == (TileMapType)1)
+        EnumToTile(_TileMap,_Tile,out tilemap, out tile);
+        Vector2ToRectInt(out rect, rectPos, widthHeight);
+
+        SetRectTile(rect, tilemap, tile, startPos);
+    }
+
+    public void TileToEnum(out TileMapType _TileMapEnum,out  TileMapType _TileEnum, Tilemap tilemap, RuleTile tile)
+    {
+        _TileMapEnum = 0;
+        _TileEnum = 0;
+
+        if (tilemap == groundTileMap)
+        {
+            _TileMapEnum = (TileMapType)1;
+        }
+        else if (tilemap == wallTileMap)
+        {
+            _TileMapEnum = (TileMapType)2;
+        }
+        else if (tilemap == doorTileMap)
+        {
+            _TileMapEnum = (TileMapType)3;
+        }
+
+        if (tile == null)
+        {
+            _TileEnum = (TileMapType)0;
+        }
+        else if (tile == groundTile)
+        {
+            _TileEnum = (TileMapType)1;
+        }
+        else if (tile == wallTile)
+        {
+            _TileEnum = (TileMapType)2;
+        }
+        else if (tile == doorTile)
+        {
+            _TileEnum = (TileMapType)3;
+        }
+    }
+
+    public void EnumToTile(TileMapType _TileMapEnum, TileMapType _TileEnum , out Tilemap tilemap , out RuleTile tile)
+    {
+        tilemap = null;
+        tile = null;
+
+        if (_TileMapEnum == (TileMapType)1)
         {
             tilemap = groundTileMap;
         }
-        else if(_TileMap == (TileMapType)2)
+        else if (_TileMapEnum == (TileMapType)2)
         {
             tilemap = wallTileMap;
         }
-        else if(_TileMap == (TileMapType)3)
+        else if (_TileMapEnum == (TileMapType)3)
         {
             tilemap = doorTileMap;
         }
 
-        if(_Tile == (TileMapType)0)
+        if (_TileEnum == (TileMapType)0)
         {
             tile = null;
         }
-        else if (_Tile == (TileMapType)1)
+        else if (_TileEnum == (TileMapType)1)
         {
             tile = groundTile;
         }
-        else if (_Tile == (TileMapType)2)
+        else if (_TileEnum == (TileMapType)2)
         {
             tile = wallTile;
         }
-        else if (_Tile == (TileMapType)3)
+        else if (_TileEnum == (TileMapType)3)
         {
             tile = doorTile;
         }
-
-        SetRectTile(rect, tilemap, tile, startPos);
     }
+
+
+    public void RectIntToVector2(RectInt rect, out Vector2 rectPos, out Vector2 widthHeight)
+    {
+        rectPos.x = rect.x;
+        rectPos.y = rect.y;
+        widthHeight.x = rect.width;
+        widthHeight.y = rect.height;
+    }
+
+    public void Vector2ToRectInt(out RectInt rect, Vector2 rectPos, Vector2 widthHeight)
+    {
+        rect = new RectInt();
+
+        rect.x = (int)rectPos.x;
+        rect.y = (int)rectPos.y;
+        rect.width  = (int)widthHeight.x;
+        rect.height = (int)widthHeight.y;
+    }
+
+
 
 
     // SetTile----------------------------------------------------------------------------------------------
@@ -83,11 +162,6 @@ public class SetTile : MonoBehaviourPun
             {
                 tilemap.SetTile(new Vector3Int(i + ((int)Startpos.x), j + ((int)Startpos.y)), tile);
             }
-        }
-
-        if(PhotonNetwork.IsMasterClient)
-        {
-
         }
     }
 

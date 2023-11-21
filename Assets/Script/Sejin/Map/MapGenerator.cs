@@ -120,8 +120,8 @@ public class MapGenerator : MonoBehaviour
             int y = rect.y + UnityEngine.Random.Range(1, rect.height - height);
             rect = new RectInt(x, y, width, height);
 
-            setTile.RemoveRectTile(rect, setTile.wallTileMap, new Vector2(rect.x, rect.y) - mapSize / 2);
-            setTile.SetRectTile(rect, setTile.groundTileMap,setTile.groundTile, new Vector2(rect.x, rect.y) - mapSize / 2);
+            setTile.OrderSetRectTile(rect, setTile.wallTileMap,null, new Vector2(rect.x, rect.y) - mapSize / 2);
+            setTile.OrderSetRectTile(rect, setTile.groundTileMap,setTile.groundTile, new Vector2(rect.x, rect.y) - mapSize / 2);
         }
         else 
         {
