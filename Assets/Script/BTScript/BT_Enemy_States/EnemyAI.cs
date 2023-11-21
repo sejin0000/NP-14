@@ -96,7 +96,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     //객체별 넉백거리
     public float knockbackDistance;
 
-
     void Awake()
     {
         nav = GetComponent<NavMeshAgent>();
@@ -282,7 +281,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if ((knockbackDistance == 0 || collision.gameObject.tag != "player")
-            && collision.gameObject.GetComponent<A0126>() == null)
+            && collision.gameObject.GetComponent<A0126>() == null 
+            && collision.gameObject.GetComponent<A3104>() == null )
             return;
 
         Transform PlayersTransform = collision.gameObject.transform;
@@ -300,9 +300,19 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         // 업데이트 넉백 실행
         isKnockback = true;
 
-        //TODO : 계수 수정 - 0.15f
+        // 계수 조정
+        float damageCoeff = 0;
+
+        if (collision.gameObject.GetComponent<A0126>() != null)
+        {
+            damageCoeff += collision.gameObject.GetComponent<A0126>().DamageCoeff;
+        }
+        if (collision.gameObject.GetComponent<A3104>() != null)
+        {
+            damageCoeff += collision.gameObject.GetComponent<A3104>().DamageCoeff;
+        }
         int viewID = collision.gameObject.GetPhotonView().ViewID;
-        PV.RPC("DecreaseHPByObject", RpcTarget.All, collision.transform.GetComponent<PlayerStatHandler>().HP.total * 0.15f, viewID);
+        PV.RPC("DecreaseHPByObject", RpcTarget.All, collision.transform.GetComponent<PlayerStatHandler>().HP.total * damageCoeff, viewID);
     }
     private void HandleKnockback()
     {
