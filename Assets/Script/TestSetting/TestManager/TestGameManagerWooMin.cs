@@ -153,9 +153,9 @@ public class TestGameManagerWooMin : MonoBehaviourPun
         GameObject go = PhotonNetwork.Instantiate("Prefabs/Enemy/SpawnPoint", transform.position, Quaternion.identity);
         if (PhotonNetwork.IsMasterClient)
         {
-            float destinationX = UnityEngine.Random.Range(-5f, 5f);
-            float destinationY = UnityEngine.Random.Range(-5f, 5f);
-            go.transform.position = new Vector3(destinationX, destinationY, 0);
+            //float destinationX = UnityEngine.Random.Range(-5f, 5f);
+            //float destinationY = UnityEngine.Random.Range(-5f, 5f);
+            go.transform.position = new Vector3(0, 5, 0);
 
             EnemySpawn enemySpawn = go.GetComponent<EnemySpawn>();
             enemySpawn.Spawn(targetMonster);

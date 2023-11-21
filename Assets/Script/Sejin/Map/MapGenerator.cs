@@ -1,3 +1,4 @@
+using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
@@ -39,35 +40,36 @@ public class MapGenerator : MonoBehaviour
 
     void Start()
     {
-        root = new Node(new RectInt(0, 0, mapSize.x, mapSize.y)); //전체 맵 크기의 루트노드를 만듬
-        DrawMap(0, 0);
-
-
-        setTile.SetRectTile(new RectInt(0, 0, mapSize.x + 20, mapSize.y + 10), setTile.wallTileMap, setTile.wallTile);
-
-        Divide(root, 0);
-        GenerateRoom(root, 0);
-
-        MapMake();
-
-        for(int i = 0; i < L_childrenNode.Count; i++)
+        if (PhotonNetwork.IsMasterClient)
         {
-            allRoomList.Add(L_childrenNode[i]);
-        }
-        for (int i = 0; i < R_childrenNode.Count; i++)
-        {
-            allRoomList.Add(R_childrenNode[i]);
-        }
+            root = new Node(new RectInt(0, 0, mapSize.x, mapSize.y)); //전체 맵 크기의 루트노드를 만듬 
 
-        for(int i = 0; i < allRoomList.Count; i++)
-        {
-            if (allRoomList[i].roadCount == 1)
+            setTile.SetRectTile(new RectInt(0, 0, mapSize.x + 20, mapSize.y + 10), setTile.wallTileMap, setTile.wallTile, new Vector2(-((mapSize.x + 20) / 2), -((mapSize.y + 10) / 2)));
+
+            Divide(root, 0);
+            GenerateRoom(root, 0);
+
+            MapMake();
+
+            for(int i = 0; i < L_childrenNode.Count; i++)
             {
-                lastRoomList.Add(allRoomList[i]);
+                allRoomList.Add(L_childrenNode[i]);
             }
-        }
+            for (int i = 0; i < R_childrenNode.Count; i++)
+            {
+                allRoomList.Add(R_childrenNode[i]);
+            }
 
-        GetComponent<TestRoom>().ChooseRoom();
+            for(int i = 0; i < allRoomList.Count; i++)
+            {
+                if (allRoomList[i].roadCount == 1)
+                {
+                    lastRoomList.Add(allRoomList[i]);
+                }
+            }
+
+            GetComponent<TestRoom>().ChooseRoom();
+        }
     }
 
 
@@ -81,24 +83,6 @@ public class MapGenerator : MonoBehaviour
             NodeSelection(root, 0);
             ConnectAdjacentNodes();
         }
-    }
-
-
-    private void DrawRectangle(RectInt rect)
-    {
-        LineRenderer lineRenderer = Instantiate(roomLine).GetComponent<LineRenderer>();
-        lineRenderer.SetPosition(0, new Vector2(rect.x, rect.y) - mapSize / 2); //좌측 하단
-        lineRenderer.SetPosition(1, new Vector2(rect.x + rect.width, rect.y) - mapSize / 2); //우측 하단
-        lineRenderer.SetPosition(2, new Vector2(rect.x + rect.width, rect.y + rect.height) - mapSize / 2);//우측 상단
-        lineRenderer.SetPosition(3, new Vector2(rect.x, rect.y + rect.height) - mapSize / 2); //좌측 상단
-    }
-    private void DrawMap(int x, int y) 
-    {
-        LineRenderer lineRenderer = Instantiate(map).GetComponent<LineRenderer>();
-        lineRenderer.SetPosition(0, new Vector2(x, y) - mapSize / 2); //좌측 하단
-        lineRenderer.SetPosition(1, new Vector2(x + mapSize.x, y) - mapSize / 2); //우측 하단
-        lineRenderer.SetPosition(2, new Vector2(x + mapSize.x, y + mapSize.y) - mapSize / 2);//우측 상단
-        lineRenderer.SetPosition(3, new Vector2(x, y + mapSize.y) - mapSize / 2); //좌측 상단
     }
     void Divide(Node tree, int n)
     {
@@ -124,12 +108,6 @@ public class MapGenerator : MonoBehaviour
         Divide(tree.leftNode, n + 1);
         Divide(tree.rightNode, n + 1);
     }
-    private void DrawLine(Vector2 from, Vector2 to)
-    {
-        LineRenderer lineRenderer = Instantiate(line).GetComponent<LineRenderer>();
-        lineRenderer.SetPosition(0, from - mapSize / 2);
-        lineRenderer.SetPosition(1, to - mapSize / 2);
-    }
     private RectInt GenerateRoom(Node tree, int n)
     {
         RectInt rect;
@@ -141,10 +119,9 @@ public class MapGenerator : MonoBehaviour
             int x = rect.x + UnityEngine.Random.Range(1, rect.width - width);
             int y = rect.y + UnityEngine.Random.Range(1, rect.height - height);
             rect = new RectInt(x, y, width, height);
-            DrawRectangle(rect);
 
-            setTile.SetRectTile(rect, setTile.wallTileMap, new Vector2(rect.x, rect.y) - mapSize / 2);
-            setTile.SetRectTile(rect, setTile.groundTileMap,setTile.groundTile, new Vector2(rect.x, rect.y) - mapSize / 2);
+            setTile.OrderSetRectTile(rect, setTile.wallTileMap,null, new Vector2(rect.x, rect.y) - mapSize / 2);
+            setTile.OrderSetRectTile(rect, setTile.groundTileMap,setTile.groundTile, new Vector2(rect.x, rect.y) - mapSize / 2);
         }
         else 
         {
@@ -255,19 +232,17 @@ public class MapGenerator : MonoBehaviour
                 endPos.y -= L_roomRect.height / 2;
             }
 
-            DrawLine(new Vector2(X, endPos.y), new Vector2(X, startPos.y));//코너부분,시작부분
-
-            setTile.SetLineTile(setTile.wallTileMap, startPos, Mathf.Abs(startPos.y - endPos.y), new Vector2(0, startPos.y - endPos.y).normalized, mapSize / 2);
+            setTile.RemoveLineTile(setTile.wallTileMap, startPos, Mathf.Abs(startPos.y - endPos.y), new Vector2(0, startPos.y - endPos.y).normalized, mapSize / 2);
             setTile.SetLineTile(setTile.groundTileMap, setTile.groundTile, startPos, Mathf.Abs(startPos.y - endPos.y), new Vector2(0, startPos.y - endPos.y).normalized, mapSize / 2);
 
-            setTile.SetPointTile(new Vector2Int(X, startPos.y - (Mathf.Abs(startPos.y - endPos.y) / 2) - 1) - (mapSize / 2),setTile.dorTileMap ,setTile.doorTile );
-            setTile.SetPointTile(new Vector2Int(X - 1, startPos.y - (Mathf.Abs(startPos.y - endPos.y) / 2) - 1) - (mapSize / 2), setTile.dorTileMap, setTile.doorTile);
+            setTile.SetDoorTile(new Vector2Int(X, startPos.y - (Mathf.Abs(startPos.y - endPos.y) / 2) - 1) - (mapSize / 2),setTile.doorTileMap ,setTile.doorTile );
+            setTile.SetDoorTile(new Vector2Int(X - 1, startPos.y - (Mathf.Abs(startPos.y - endPos.y) / 2) - 1) - (mapSize / 2), setTile.doorTileMap, setTile.doorTile);
 
             startPos = new Vector2Int(X - 1, (int)R_roomRect.center.y);
             endPos = new Vector2Int(X - 1, (int)L_roomRect.center.y);
 
 
-            setTile.SetLineTile(setTile.wallTileMap, startPos, Mathf.Abs(startPos.y - endPos.y), new Vector2(0, startPos.y - endPos.y).normalized, mapSize / 2);
+            setTile.RemoveLineTile(setTile.wallTileMap, startPos, Mathf.Abs(startPos.y - endPos.y), new Vector2(0, startPos.y - endPos.y).normalized, mapSize / 2);
             setTile.SetLineTile(setTile.groundTileMap, setTile.groundTile, startPos, Mathf.Abs(startPos.y - endPos.y), new Vector2(0, startPos.y - endPos.y).normalized, mapSize / 2);
 
         }
@@ -290,19 +265,17 @@ public class MapGenerator : MonoBehaviour
             }
 
 
-            DrawLine(new Vector2(startPos.x, Y), new Vector2(endPos.x, Y));//시작부분,코너부분
-
-            setTile.SetLineTile(setTile.wallTileMap, startPos, Mathf.Abs(startPos.x - endPos.x), new Vector2(startPos.x - endPos.x, 0).normalized, mapSize / 2);
+            setTile.RemoveLineTile(setTile.wallTileMap, startPos, Mathf.Abs(startPos.x - endPos.x), new Vector2(startPos.x - endPos.x, 0).normalized, mapSize / 2);
             setTile.SetLineTile(setTile.groundTileMap, setTile.groundTile, startPos, Mathf.Abs(startPos.x - endPos.x), new Vector2(startPos.x - endPos.x, startPos.y - endPos.y).normalized, mapSize / 2);
 
-            setTile.SetPointTile(new Vector2Int(startPos.x - (Mathf.Abs(startPos.x - endPos.x) / 2) - 1, Y) - (mapSize / 2), setTile.dorTileMap, setTile.doorTile);
-            setTile.SetPointTile(new Vector2Int(startPos.x - (Mathf.Abs(startPos.x - endPos.x) / 2) - 1, Y - 1) - (mapSize / 2), setTile.dorTileMap, setTile.doorTile);
+            setTile.SetDoorTile(new Vector2Int(startPos.x - (Mathf.Abs(startPos.x - endPos.x) / 2) - 1, Y) - (mapSize / 2), setTile.doorTileMap, setTile.doorTile);
+            setTile.SetDoorTile(new Vector2Int(startPos.x - (Mathf.Abs(startPos.x - endPos.x) / 2) - 1, Y - 1) - (mapSize / 2), setTile.doorTileMap, setTile.doorTile);
 
 
             startPos = new Vector2Int((int)R_roomRect.center.x, Y - 1);
             endPos = new Vector2Int((int)L_roomRect.center.x, Y - 1);
 
-            setTile.SetLineTile(setTile.wallTileMap, startPos, Mathf.Abs(startPos.x - endPos.x), new Vector2(startPos.x - endPos.x, 0).normalized, mapSize / 2);
+            setTile.RemoveLineTile(setTile.wallTileMap, startPos, Mathf.Abs(startPos.x - endPos.x), new Vector2(startPos.x - endPos.x, 0).normalized, mapSize / 2);
             setTile.SetLineTile(setTile.groundTileMap, setTile.groundTile, startPos, Mathf.Abs(startPos.x - endPos.x), new Vector2(startPos.x - endPos.x, startPos.y - endPos.y).normalized, mapSize / 2);
 
 

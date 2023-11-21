@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,38 +6,154 @@ using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
 using UnityEngine.WSA;
 
-public class SetTile : MonoBehaviour
+public enum TileMapType
+{
+    Null = 0,
+    Ground = 1,
+    Wall = 2,
+    Door = 3
+}
+public class SetTile : MonoBehaviourPun
 {
     
-    public Tilemap wallTileMap;
     public Tilemap groundTileMap;
-    public Tilemap dorTileMap;
+    public Tilemap wallTileMap;
+    public Tilemap doorTileMap;
 
-    public RuleTile wallTile;
     public RuleTile groundTile;
+    public RuleTile wallTile;
     public RuleTile doorTile;
 
+    public PhotonView PV;
 
-    public void SetRectTile(RectInt rect, Tilemap tilemap, Vector2 Startpos)
+    private void Awake()
     {
-        for (int i = 0; i < rect.width; i++)
+        PV = GetComponent<PhotonView>();        
+    }
+
+    public void OrderSetRectTile(RectInt rect, Tilemap tilemap, RuleTile tile, Vector2 Startpos)
+    {
+        TileMapType _tileMap;
+        TileMapType _tile;
+        Vector2 rectPos;
+        Vector2 widthHeight;
+
+        TileToEnum(out _tileMap, out _tile, tilemap, tile);
+        RectIntToVector2(rect, out rectPos, out widthHeight);
+
+        PV.RPC("PunSetRectTile",RpcTarget.AllBuffered, _tileMap, _tile, Startpos, rectPos, widthHeight);
+    }
+
+    [PunRPC]
+    public void PunSetRectTile(TileMapType _TileMap, TileMapType _Tile, Vector2 startPos, Vector2 rectPos, Vector2 widthHeight)
+    {
+        Tilemap tilemap;
+        RuleTile tile;
+
+        RectInt rect;
+
+        EnumToTile(_TileMap,_Tile,out tilemap, out tile);
+        Vector2ToRectInt(out rect, rectPos, widthHeight);
+
+        SetRectTile(rect, tilemap, tile, startPos);
+    }
+
+    public void TileToEnum(out TileMapType _TileMapEnum,out  TileMapType _TileEnum, Tilemap tilemap, RuleTile tile)
+    {
+        _TileMapEnum = 0;
+        _TileEnum = 0;
+
+        if (tilemap == groundTileMap)
         {
-            for (int j = 0; j < rect.height; j++)
-            {
-                tilemap.SetTile(new Vector3Int(i + ((int)Startpos.x), j + ((int)Startpos.y)), null);
-            }
+            _TileMapEnum = (TileMapType)1;
+        }
+        else if (tilemap == wallTileMap)
+        {
+            _TileMapEnum = (TileMapType)2;
+        }
+        else if (tilemap == doorTileMap)
+        {
+            _TileMapEnum = (TileMapType)3;
+        }
+
+        if (tile == null)
+        {
+            _TileEnum = (TileMapType)0;
+        }
+        else if (tile == groundTile)
+        {
+            _TileEnum = (TileMapType)1;
+        }
+        else if (tile == wallTile)
+        {
+            _TileEnum = (TileMapType)2;
+        }
+        else if (tile == doorTile)
+        {
+            _TileEnum = (TileMapType)3;
         }
     }
-    public void SetRectTile(RectInt rect, Tilemap tilemap)
+
+    public void EnumToTile(TileMapType _TileMapEnum, TileMapType _TileEnum , out Tilemap tilemap , out RuleTile tile)
     {
-        for (int i = 0; i < rect.width; i++)
+        tilemap = null;
+        tile = null;
+
+        if (_TileMapEnum == (TileMapType)1)
         {
-            for (int j = 0; j < rect.height; j++)
-            {
-                tilemap.SetTile(new Vector3Int(i - (rect.width / 2), j - (rect.height / 2)), null);
-            }
+            tilemap = groundTileMap;
+        }
+        else if (_TileMapEnum == (TileMapType)2)
+        {
+            tilemap = wallTileMap;
+        }
+        else if (_TileMapEnum == (TileMapType)3)
+        {
+            tilemap = doorTileMap;
+        }
+
+        if (_TileEnum == (TileMapType)0)
+        {
+            tile = null;
+        }
+        else if (_TileEnum == (TileMapType)1)
+        {
+            tile = groundTile;
+        }
+        else if (_TileEnum == (TileMapType)2)
+        {
+            tile = wallTile;
+        }
+        else if (_TileEnum == (TileMapType)3)
+        {
+            tile = doorTile;
         }
     }
+
+
+    public void RectIntToVector2(RectInt rect, out Vector2 rectPos, out Vector2 widthHeight)
+    {
+        rectPos.x = rect.x;
+        rectPos.y = rect.y;
+        widthHeight.x = rect.width;
+        widthHeight.y = rect.height;
+    }
+
+    public void Vector2ToRectInt(out RectInt rect, Vector2 rectPos, Vector2 widthHeight)
+    {
+        rect = new RectInt();
+
+        rect.x = (int)rectPos.x;
+        rect.y = (int)rectPos.y;
+        rect.width  = (int)widthHeight.x;
+        rect.height = (int)widthHeight.y;
+    }
+
+
+
+
+    // SetTile----------------------------------------------------------------------------------------------
+
     public void SetRectTile(RectInt rect, Tilemap tilemap, RuleTile tile, Vector2 Startpos)
     {
         for (int i = 0; i < rect.width; i++)
@@ -47,26 +164,7 @@ public class SetTile : MonoBehaviour
             }
         }
     }
-    public void SetRectTile(RectInt rect, Tilemap tilemap, RuleTile tile)
-    {
-        for (int i = 0; i < rect.width; i++)
-        {
-            for (int j = 0; j < rect.height; j++)
-            {
-                tilemap.SetTile(new Vector3Int(i - (rect.width / 2), j - (rect.height / 2)), tile);
-            }
-        }
-    }
 
-    public void SetLineTile(Tilemap tilemap, Vector2Int startPos,int length, Vector2 direction,Vector2 Startpos)
-    {
-        for (int j = 0; j < length + 1; j++)
-        {
-            tilemap.SetTile(new Vector3Int(startPos.x - ((int)Startpos.x), startPos.y - ((int)Startpos.y)), null);
-            startPos.x -= (int)direction.x;
-            startPos.y -= (int)direction.y;
-        }
-    }
 
     public void SetLineTile(Tilemap tilemap, RuleTile tile, Vector2Int startPos, int length, Vector2 direction, Vector2 Startpos)
     {
@@ -78,10 +176,36 @@ public class SetTile : MonoBehaviour
         }
     }
 
-    public void SetPointTile(Vector2Int vector,Tilemap tilemap,RuleTile tile)
+
+
+    public void SetDoorTile(Vector2Int vector,Tilemap tilemap,RuleTile tile)
     {
         tilemap.SetTile((Vector3Int)vector,tile);
         vector.y += 1;
         tilemap.SetTile((Vector3Int)vector, tile);
+    }
+
+
+    // RemoveTile----------------------------------------------------------------------------------------------
+
+    public void RemoveRectTile(RectInt rect, Tilemap tilemap, Vector2 Startpos)
+    {
+        for (int i = 0; i < rect.width; i++)
+        {
+            for (int j = 0; j < rect.height; j++)
+            {
+                tilemap.SetTile(new Vector3Int(i + ((int)Startpos.x), j + ((int)Startpos.y)), null);
+            }
+        }
+    }
+
+    public void RemoveLineTile(Tilemap tilemap, Vector2Int startPos,int length, Vector2 direction,Vector2 Startpos)
+    {
+        for (int j = 0; j < length + 1; j++)
+        {
+            tilemap.SetTile(new Vector3Int(startPos.x - ((int)Startpos.x), startPos.y - ((int)Startpos.y)), null);
+            startPos.x -= (int)direction.x;
+            startPos.y -= (int)direction.y;
+        }
     }
 }
