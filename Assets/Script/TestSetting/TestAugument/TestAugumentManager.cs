@@ -751,9 +751,14 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A1104(int PlayerNumber)
+    private void A1104(int PlayerNumber)//플래쉬
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A1104>();
+        playerInput = targetPlayer.GetComponent<PlayerInput>();
+        playerInput.actions.FindAction("Flash").Enable();
+        playerInput.actions.FindAction("Roll").Disable();
+        playerInput.actions.FindAction("SiegeMode").Disable();
     }
     [PunRPC]
     private void A1105(int PlayerNumber)//오토 쉬프트  //현재 코루틴 버그가 있음;
@@ -803,9 +808,13 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     #region Sniper2
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@스나이퍼 2티어
     [PunRPC]
-    private void A1201(int PlayerNumber)
+    private void A1201(int PlayerNumber)//관통탄
     {
-        Debug.Log("미완성");
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        targetPlayer.GetComponent<WeaponSystem>().Penetrate = true;
+        //playerstatHandler.AmmoMax.added -= playerstatHandler.AmmoMax.total - 1;
+        playerstatHandler.ReloadCoolTime.coefficient *= 1.3f;
+        //playerstatHandler.ReloadCoolTime.coefficient *= 0.7f;
     }
     [PunRPC]
     private void A1202(int PlayerNumber)//최장거리 저격 로케이터의 반대버전

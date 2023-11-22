@@ -18,6 +18,7 @@ public class TopDownCharacterController : MonoBehaviour
     public event Action OnEndReloadEvent;
     public event Action OnStartSkillEvent;
     public event Action OnSiegeModeEvent;
+    public event Action OnFlashEvent;
 
 
     public event Action SkillMinusEvent;
@@ -38,18 +39,18 @@ public class TopDownCharacterController : MonoBehaviour
     private void Update()
     {
         if (AtkKeyhold)
-        {            
-            if 
+        {
+            if
                 (
-                !topDownMovement.isRoll 
-                && playerStatHandler.CurAmmo > 0 
+                !topDownMovement.isRoll
+                && playerStatHandler.CurAmmo > 0
                 && playerStatHandler.CanFire
                 && (playerStatHandler.CanReload  // 일반공격 조건부
                     || (!playerStatHandler.CanReload && GetComponent<CoolTimeController>().isKeepCount)) // 차지샷 조건부
                 )
             {
                 OnAttackEvent?.Invoke();
-                
+
             }
             else
             {
@@ -59,9 +60,9 @@ public class TopDownCharacterController : MonoBehaviour
         else
         {
             if (
-                !topDownMovement.isRoll 
-                && playerStatHandler.CurAmmo >=0 
-                && playerStatHandler.CanFire 
+                !topDownMovement.isRoll
+                && playerStatHandler.CurAmmo >= 0
+                && playerStatHandler.CanFire
                 && playerStatHandler.CanReload
                 && coolTimeController.bulletNum > 0
                 )
@@ -91,20 +92,20 @@ public class TopDownCharacterController : MonoBehaviour
         OnAttackKeepEvent?.Invoke(hold);
     }
 
-    public void CallAttackEndEvent() 
+    public void CallAttackEndEvent()
     {
         OnEndAttackEvent?.Invoke();
     }
 
     public void CallSkillEvent()
-    {        
-        if(playerStatHandler.CanSkill)
+    {
+        if (playerStatHandler.CanSkill)
         {
             Debug.Log("callSkillEvent 실행중");
             OnSkillEvent?.Invoke();
         }
     }
-    public void SkillReset() 
+    public void SkillReset()
     {
         SkillMinusEvent?.Invoke();
     }
@@ -119,7 +120,7 @@ public class TopDownCharacterController : MonoBehaviour
         {
             OnRollEvent?.Invoke();
             playerStatHandler.CurRollStack -= 1;
-            Debug.Log($"구르기 스택 까임 : {playerStatHandler.CurRollStack} 남음");            
+            Debug.Log($"구르기 스택 까임 : {playerStatHandler.CurRollStack} 남음");
             playerStatHandler.CanRoll = false;
             playerStatHandler.Invincibility = true;
             Invoke("CallEndRollEvent", 0.6f);
@@ -139,6 +140,23 @@ public class TopDownCharacterController : MonoBehaviour
     public void CallSiegeModeEvent()
     {
         OnSiegeModeEvent?.Invoke();
+    }
+    public void CallFlashEvent() 
+    {
+
+        if (playerStatHandler.CanRoll)
+        {
+            OnFlashEvent?.Invoke();
+            playerStatHandler.CurRollStack -= 1;
+            Debug.Log($"구르기 스택 까임 : {playerStatHandler.CurRollStack} 남음");
+            playerStatHandler.CanRoll = false;
+            playerStatHandler.Invincibility = true;
+            CallEndRollEvent();
+        }
+        else
+        {
+            Debug.Log("구르기 쿨타임 입니다");
+        }
     }
 
     public void CallReloadEvent()
