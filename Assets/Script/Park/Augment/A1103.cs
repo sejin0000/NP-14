@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,9 +24,10 @@ public class A1103 : MonoBehaviour
 
         statHandler = GetComponent<PlayerStatHandler>();
     }
-    private void ConvertHealToHeal(float healed)
+    private void ConvertHealToHeal(float healed, int viewID)
     {
-        statHandler.HPadd(healed * convertCoeff);
+        PhotonView pv = PhotonView.Find(viewID);
+        pv.GetComponent<PlayerStatHandler>().HPadd(healed * convertCoeff);
         Debug.Log($"A1103 È¸º¹µÈ HP : {healed * convertCoeff}");
     }
 }

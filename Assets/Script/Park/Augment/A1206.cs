@@ -26,15 +26,16 @@ public class A1206 : MonoBehaviour
         statHandler = GetComponent<PlayerStatHandler>();
     }
 
-    private void CalculateHealedAmount(float healed)
+    private void CalculateHealedAmount(float healed, int viewID)
     {
         healTotal += healed;
         Debug.Log($"누적 힐량 : {healTotal}");
     }    
 
-    private void ConvertHealToATK(float healed)
+    private void ConvertHealToATK(float healed, int viewID)
     {
-        statHandler.ATK.added += (healed * convertCoeff);
+        PhotonView pv = PhotonView.Find(viewID);
+        pv.GetComponent<PlayerStatHandler>().ATK.added += (healed * convertCoeff);
         Debug.Log($"추가된 공격력 : {healed * convertCoeff}");
     }
 }

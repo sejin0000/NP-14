@@ -8,7 +8,7 @@ public class CollisionController : MonoBehaviourPun
 {
     private PlayerStatHandler playerStat;
     private PhotonView PV;
-    private int ViewID;
+    private int LastHealedViewID; 
 
     // ADDED
     private float healedTotal;
@@ -17,16 +17,6 @@ public class CollisionController : MonoBehaviourPun
         get { return healedTotal; }
         set 
         {
-            if (value != healedTotal
-                && CanPayBack)         // A1103 : 페이백
-            {                
-                CallHealedEvent(value - healedTotal);
-            }
-            if (value != healedTotal
-                && CanSupport)         // A1206 : 진정한 서포터의 길
-            {
-                CallHealedEvent(value - healedTotal);
-            }
             if (value != healedTotal)
             {
                 healedTotal = value;
@@ -34,7 +24,7 @@ public class CollisionController : MonoBehaviourPun
         }
     }
 
-    public event Action<float> OnHealedEvent;
+    public event Action<float, int> OnHealedEvent;
 
     public bool CanPayBack;
     public bool CanSupport;
@@ -43,7 +33,7 @@ public class CollisionController : MonoBehaviourPun
     {
         playerStat = GetComponent<PlayerStatHandler>();   
         PV = GetComponent<PhotonView>();
-        ViewID = photonView.ViewID;
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -77,7 +67,8 @@ public class CollisionController : MonoBehaviourPun
                     Debug.Log("체력 회복 ");
                     // ADD : 힐량 누적
                     damage = (damage + playerStat.CurHP > playerStat.HP.total)? playerStat.HP.total - playerStat.CurHP : damage;
-                    photonView.RPC("AddHealAmount", RpcTarget.All, damage);
+                    photonView.RPC("AddHealAmount", RpcTarget.All, damage, _bullet.BulletOwner);
+                    PhotonView.Find(_bullet.BulletOwner).RPC("InvokeHealedEvent", RpcTarget.All, damage, _bullet.BulletOwner);
 
                     playerStat.HPadd(damage);
                 }
@@ -86,14 +77,17 @@ public class CollisionController : MonoBehaviourPun
         }
     }
 
-    public void CallHealedEvent(float healedAmount)
+
+    [PunRPC]
+    private void AddHealAmount(float healedAmount, int viewID)
     {
-        OnHealedEvent?.Invoke(healedAmount);
+        HealedTotal += healedAmount;
+        LastHealedViewID = viewID;
     }
 
     [PunRPC]
-    private void AddHealAmount(float healedAmount)
+    private void InvokeHealedEvent(float healedAmount, int viewID)
     {
-        HealedTotal += healedAmount;
+        OnHealedEvent?.Invoke(healedAmount, viewID);
     }
 }
