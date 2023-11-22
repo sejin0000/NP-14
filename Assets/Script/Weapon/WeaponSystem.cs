@@ -1,8 +1,10 @@
 using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI.Table;
+using Random = UnityEngine.Random;
 
 public class WeaponSystem : MonoBehaviour
 {
@@ -40,6 +42,8 @@ public class WeaponSystem : MonoBehaviour
     private CoolTimeController _cool;
 
     public WeaponType weaponType;
+
+    public event Action<float> OnFinalDamageEvent;
 
     private void Awake()
     {
@@ -106,6 +110,7 @@ public class WeaponSystem : MonoBehaviour
             var _targets = targets;
             bool _isDamage = isDamage;
 
+            OnFinalDamageEvent?.Invoke(_ATK);
             pv.RPC("BS", RpcTarget.All, rot, _ATK, _BLT, _targets, _isDamage, _viewID);
             //_controller.playerStatHandler.CurAmmo--;
         }
