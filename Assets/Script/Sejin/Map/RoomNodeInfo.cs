@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class RoomNodeInfo : MonoBehaviour
 {
+    public List<Node> allRoomList;
     Node startRoom;
     Node endRoom;
 
@@ -20,7 +21,10 @@ public class RoomNodeInfo : MonoBehaviour
     public void ChooseRoom()
     {
         startRoom = mapGenerator.lastRoomList[0];
+        mapGenerator.lastRoomList[0].thisRoomClear = true;
         endRoom = mapGenerator.lastRoomList[mapGenerator.lastRoomList.Count - 1];
+        mapGenerator.lastRoomList[mapGenerator.lastRoomList.Count - 1].thisRoomClear = true;
+        allRoomList = mapGenerator.allRoomList;
     }
 
     public void PlayerPositionSetting()

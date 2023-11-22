@@ -27,19 +27,21 @@ public class MapGenerator : MonoBehaviour
     public List<Node> loadRoomList = new List<Node>();
     public List<Node> lastRoomList = new List<Node>();
 
-
     int nodeDepth;
 
-    private SetTile setTile;
+    public SetTile setTile;
+    public RoomNodeInfo roomNodeInfo;
 
     Node root;
     private void Awake()
     {
         setTile = GetComponent<SetTile>();
+        roomNodeInfo = GetComponent<RoomNodeInfo>();
     }
 
     private void Start()
     {
+
     }
 
     public void MapMake()
@@ -71,10 +73,11 @@ public class MapGenerator : MonoBehaviour
                     lastRoomList.Add(allRoomList[i]);
                 }
             }
-            GetComponent<RoomNodeInfo>().ChooseRoom();
-
-            GetComponent<RoomNodeInfo>().PlayerPositionSetting();
+            roomNodeInfo.ChooseRoom();
+            roomNodeInfo.PlayerPositionSetting();
         }
+
+        setTile.doorTileMap.gameObject.SetActive(false);
     }
 
     public void RoomMake()

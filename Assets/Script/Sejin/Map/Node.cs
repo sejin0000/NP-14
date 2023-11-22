@@ -10,7 +10,8 @@ public class Node
     public Node parNode;
     public RectInt nodeRect; //분리된 공간의 rect정보
     public RectInt roomRect; //분리된 공간 속 방의 rect정보
-    public bool isConnect = false;
+    public bool thisRoomClear = false;
+    public bool roomInPlayer = false;
 
     public int roadCount = 0;
 

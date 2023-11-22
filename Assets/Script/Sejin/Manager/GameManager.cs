@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
         OnStageStartEvent = _mapGenerator.GetComponent<MapGenerator>().MapMake;
         CallInitEvent();
     }
-
+    
 
 
     private void Start()
@@ -50,6 +50,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+
     }
 
     public void CallInitEvent()
