@@ -13,15 +13,17 @@ public class A1303 : MonoBehaviourPun
 
     private void Awake()
     {
-        if (photonView.IsMine
-            && _ws.weaponType != WeaponSystem.WeaponType.Charging)
+        if (photonView.IsMine)
         {
             controller = GetComponent<TopDownCharacterController>();
             stats = GetComponent<PlayerStatHandler>();
             coolTimeController = GetComponent<CoolTimeController>();
             _ws = GetComponent<WeaponSystem>();
-            _ws.weaponType = WeaponSystem.WeaponType.Charging;
-            SetCharge();
+            if(_ws.weaponType != WeaponSystem.WeaponType.Charging)
+            {
+                _ws.weaponType = WeaponSystem.WeaponType.Charging;
+                SetCharge();
+            }
 
             _ws.OnFinalDamageEvent += FinalAttackBonus;
             damageCoeff = 0.5f;
@@ -37,11 +39,12 @@ public class A1303 : MonoBehaviourPun
         controller.playerStatHandler.IsChargeAttack = true;
     }
 
-    private void FinalAttackBonus(float damage)
+    private void FinalAttackBonus()
     {
         if (stats.CurAmmo == 0)
         {
-            //TODO weaponSystem에 finalAttack 계수 만들기
+            _ws.finalAttackCoeff += damageCoeff;
+            Debug.Log($"계수 추가 완료 : {damageCoeff}");
         }        
     }
 }

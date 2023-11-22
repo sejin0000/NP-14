@@ -880,7 +880,8 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     [PunRPC]
     private void A1303(int PlayerNumber)
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A1303>();
     }
     [PunRPC]
     private void A1304(int PlayerNumber)// 기회비용 힐모드 변경 x 딜모드 딜량증가

@@ -45,7 +45,8 @@ public class WeaponSystem : MonoBehaviour
 
     public WeaponType weaponType;
 
-    public event Action<float> OnFinalDamageEvent;
+    public event Action OnFinalDamageEvent;
+    public float finalAttackCoeff;
 
     private void Awake()
     {
@@ -73,7 +74,7 @@ public class WeaponSystem : MonoBehaviour
         canresurrection = false;
         sniperAtkBuff=false;
         weaponType = WeaponType.Shooting;
-
+        finalAttackCoeff = 1;
         humanAttackintelligentmissile = false;
 
     _cool = GetComponent<CoolTimeController>();
@@ -105,20 +106,22 @@ public class WeaponSystem : MonoBehaviour
         int bullets = _cool.bulletNum;
         if (bullets == 0)
             return;
+
+        OnFinalDamageEvent?.Invoke();
+
         for (int i = 0; i < bullets; i++) 
         {
             Quaternion rot = muzzleOfAGun.transform.rotation;
             rot.eulerAngles += new Vector3(0, 0, Random.Range(-1 * _controller.playerStatHandler.BulletSpread.total, _controller.playerStatHandler.BulletSpread.total));// Áß¿äÇÔ
 
-            float _ATK = _controller.playerStatHandler.ATK.total;
+            float _ATK = _controller.playerStatHandler.ATK.total * finalAttackCoeff;
             float _BLT = _controller.playerStatHandler.BulletLifeTime.total;
             var _targets = targets;
             bool _isDamage = isDamage;
 
-            OnFinalDamageEvent?.Invoke(_ATK);
-            pv.RPC("BS", RpcTarget.All, rot, _ATK, _BLT, _targets, _isDamage, _viewID);
-            //_controller.playerStatHandler.CurAmmo--;
+            pv.RPC("BS", RpcTarget.All, rot, _ATK, _BLT, _targets, _isDamage, _viewID);            
         }
+        finalAttackCoeff = 1;
         _cool.bulletNum = 0;
     }
     public void burstCall(Quaternion rot)
