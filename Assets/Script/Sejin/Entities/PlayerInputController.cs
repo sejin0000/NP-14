@@ -85,7 +85,7 @@ public class PlayerInputController : TopDownCharacterController
         if (cantSpacebar) 
         {
             playerInput.actions.FindAction("SiegeMode").Disable();
-            playerInput.actions.FindAction("Roll").Disable();
+            playerInput.actions.FindAction("Roll").Enable();
             playerInput.actions.FindAction("Flash").Disable();
         }
         else if (siegeMode)
@@ -100,12 +100,7 @@ public class PlayerInputController : TopDownCharacterController
             playerInput.actions.FindAction("Roll").Disable();
             playerInput.actions.FindAction("Flash").Enable();
         }
-        else
-        {
-            playerInput.actions.FindAction("SiegeMode").Disable();
-            playerInput.actions.FindAction("Roll").Enable();
-            playerInput.actions.FindAction("Flash").Disable();
-        }
+
     }
     public void OnMove(InputValue value)
     {
@@ -186,6 +181,7 @@ public class PlayerInputController : TopDownCharacterController
         Debug.Log("OnRoll" + value.ToString());
         CallRollEvent();
     }
+
     public void OnSiegeMode(InputValue value)
     {
         Debug.Log("시즈모드 발사");

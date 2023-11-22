@@ -12,14 +12,8 @@ public class A1205 : MonoBehaviourPun//스킬 사용시 스킬체크를 하여 성공시 데미지
 
     private float tempPower;
     public float power;
-    public GameObject skillCheckObj;
-    private SkillCheckMaster skillCheckobj;
-    //float superPower;
-
-    /// <summary>
-    ///  무조건 f키로 한다 진짜로 진짜로 진짜
-    ///  아니 넌 틀렸어 인풋시스템을 한개 더만든다 
-    /// </summary>
+    public GameObject skillCheckPrefab;
+    public SkillCheckMaster skillCheckobj;
     private void Awake()
     {
         if (photonView.IsMine)
@@ -29,20 +23,16 @@ public class A1205 : MonoBehaviourPun//스킬 사용시 스킬체크를 하여 성공시 데미지
             playerInput = GetComponent<PlayerInput>();
             tempPower = 0;
             controller.OnStartSkillEvent += SkillCheck; // 중요한부분
-            Instantiate(skillCheckObj);
-            skillCheckObj.SetActive(false);
+            skillCheckobj = Instantiate<SkillCheckMaster>(skillCheckobj);
+            skillCheckobj.Init(this);
+            skillCheckPrefab.SetActive(false);
         }
     }
     // Update is called once per frame
     void SkillCheck()
     {
         playerInput.actions.FindAction("Attack").Disable();
-        skillCheck2();
-    }
-    void skillCheck2() 
-    {
-        skillCheckobj.Init(this);
-        skillCheckObj.SetActive(true);
+        skillCheckPrefab.SetActive(true);
     }
     public void endCall(float power) 
     {
@@ -54,6 +44,6 @@ public class A1205 : MonoBehaviourPun//스킬 사용시 스킬체크를 하여 성공시 데미지
     }
     void objActiveControl() 
     {
-        skillCheckObj.SetActive(false);
+        skillCheckPrefab.SetActive(false);
     }
 }
