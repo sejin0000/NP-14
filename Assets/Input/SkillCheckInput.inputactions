@@ -1,0 +1,34 @@
+{
+    "name": "SkillCheckInput",
+    "maps": [
+        {
+            "name": "SkillCheck",
+            "id": "78ca2879-1725-4fee-a127-6c244cc02a49",
+            "actions": [
+                {
+                    "name": "Skill",
+                    "type": "Button",
+                    "id": "1e305811-bd2c-4319-9734-47beec6f29dc",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a5ff3f83-7d82-4a20-bf76-64e1d704f930",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skill",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

@@ -1,20 +1,22 @@
 using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 public class A1207 : MonoBehaviourPun
 {
     private CollisionController collision;
     private PlayerStatHandler playerStatHandler;
-    private Transform target;
-    Vector2 position;
+    private List<Transform> target;
+    private Transform targetOne;
+    private PlayerStatHandler targetPlayerStatHandler;
+    private PlayerInput playerinput;
 
     private void Awake()
-    // 포지션업데이트로 다른플레이어값 받아서
-    //돌림 시작하자마자 플레이어 목숨 -1 그냥 죽은취급
     {
         if (photonView.IsMine)
         {
@@ -25,9 +27,19 @@ public class A1207 : MonoBehaviourPun
             collision.rigidbody.bodyType = RigidbodyType2D.Kinematic;
 
             MainGameManager.Instance.OnGameStartedEvent += ImDie;
-            //
-            position = Vector2.zero;
-            //target ??
+            MainGameManager.Instance.OnPlayerDieEvent += TargetDieCheck;
+            playerinput = GetComponent<PlayerInput>();
+
+            Dictionary<int, Transform> dic = MainGameManager.Instance.playerInfoDictionary;
+                foreach (KeyValuePair<int, Transform> kv in dic)
+            {
+                if (kv.Key != gameObject.GetPhotonView().ViewID) 
+                {
+                    target.Add(kv.Value);
+                }
+                targetOne = target[0];
+                targetPlayerStatHandler = targetOne.GetComponent <PlayerStatHandler >();
+            }
 
         }
     }
@@ -35,16 +47,39 @@ public class A1207 : MonoBehaviourPun
     {
         if (photonView.IsMine) 
         {
-            transform.position = new Vector2(target.position.x + 0.2f, target.position.y + 0.2f);
+            transform.position = new Vector2(targetOne.position.x + 0.2f, targetOne.position.y + 0.2f);
         }
 
+    }
+    private void TargetDieCheck() 
+    {
+        if (targetPlayerStatHandler.isDie)
+        {
+            playerinput.actions.FindAction("Attack").Disable();
+        }
+        else
+        {
+            playerinput.actions.FindAction("Attack").Enable();
+        }
+    }
+    public void Change()
+    {
+        if (targetOne = target[0])
+        {
+            targetOne = target[1];
+        }
+        else
+        {
+            targetOne = target[0];
+        }
+        targetPlayerStatHandler= targetOne.GetComponent<PlayerStatHandler>();
+        TargetDieCheck();
     }
     // Update is called once per frame
     void ImDie()
     {
         //MainGameManager.Instance.AddPartyDeathCount();
         MainGameManager.Instance.photonView.RPC("AddPartyDeathCount", RpcTarget.All);
-        playerStatHandler.isDie = true;
-        this.gameObject.layer = 13; //고스트플레이어레이어
+        this.gameObject.layer = 13; 
     }
 }
