@@ -6,6 +6,12 @@ using static UnityEngine.Rendering.DebugUI.Table;
 
 public class WeaponSystem : MonoBehaviour
 {
+    public enum WeaponType
+    {
+        Shooting,
+        Charging,
+    }
+
     private TopDownCharacterController _controller;
     private PhotonView pv;
     public Transform muzzleOfAGun;
@@ -33,6 +39,8 @@ public class WeaponSystem : MonoBehaviour
     public int bulletNum;
     private CoolTimeController _cool;
 
+    public WeaponType weaponType;
+
     private void Awake()
     {
         isDamage = true;
@@ -56,6 +64,7 @@ public class WeaponSystem : MonoBehaviour
         gravity = false;
         Penetrate = false;
         pivotSet = false;
+        weaponType = WeaponType.Shooting;
         humanAttackintelligentmissile = false;
 
     _cool = GetComponent<CoolTimeController>();
