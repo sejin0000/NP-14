@@ -1133,11 +1133,12 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     private void A3302(int PlayerNumber)//쉴드 범위 증가, 쉴드량 증가,  평타 약화,  쉴드 안에 아군 버프
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        targetPlayer.AddComponent<A3302>();
         if (targetPlayer.GetComponent<Player2Skill>())
         {
             Player2Skill player2 = targetPlayer.GetComponent<Player2Skill>();
-            player2.shieldScale *= 2f;
-            player2.shieldHP += 20f;
+            player2.shieldScale *= 4f;
+            player2.shieldHP += 40f;
         }
         playerstatHandler.ATK.coefficient *= 0.8f;
     }

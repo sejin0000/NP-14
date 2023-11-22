@@ -7,6 +7,8 @@ public class Shield : MonoBehaviour
 {
     [HideInInspector] PlayerStatHandler playerStat;
     [HideInInspector] Player2Skill playerSkill;
+    List<PlayerStatHandler> target = new List<PlayerStatHandler>();
+    private float buffAmount;
 
     [Header("ShieldInfo")]
     public float shieldSurvivalTime = 3;
@@ -46,10 +48,15 @@ public class Shield : MonoBehaviour
     //public float shieldPower;//커밋에서 내가 넣었다고 뜨는데 내가 넣은 기억이 없음 일단 주석처리후 나중에 확인해서 지우기
     private float time = 0;
 
+
     private void Start()
     {
         playerStat = transform.parent.GetComponent<PlayerStatHandler>();
-        playerSkill = transform.parent.GetComponent<Player2Skill>();        
+        playerSkill = transform.parent.GetComponent<Player2Skill>();
+        if (transform.parent.GetComponent<A3302>() != null)
+        {
+            buffAmount = transform.parent.GetComponent<A3302>().BuffAmount;
+        }
     }
 
     private void Update()
@@ -89,10 +96,44 @@ public class Shield : MonoBehaviour
             }
             Destroy(collision.gameObject);   
         }
+        if (collision.tag == "Player" && !target.Contains(collision.GetComponent<PlayerStatHandler>())
+            && transform.parent.GetComponent<A3302>() != null)
+        {
+            PlayerStatHandler targetstat = collision.GetComponent<PlayerStatHandler>();
+            target.Add(targetstat);
+            buffAmount = transform.parent.GetComponent<A3302>().BuffAmount;
+            targetstat.AtkSpeed.added += buffAmount;
+            targetstat.Speed.added += buffAmount;
+            Debug.Log("플레이어입장");
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "Player" && target.Contains(collision.GetComponent<PlayerStatHandler>())
+            && transform.parent.GetComponent<A3302>() != null)
+        {
+            PlayerStatHandler targetstat = collision.GetComponent<PlayerStatHandler>();
+            target.Remove(targetstat);
+            buffAmount = transform.parent.GetComponent<A3302>().BuffAmount;
+            targetstat.AtkSpeed.added -= buffAmount;
+            targetstat.Speed.added -= buffAmount;
+            Debug.Log("플레이어퇴장");
+        }
     }
 
     private void Destroy()
     {
+        if (transform.parent.GetComponent<A3302>() != null)
+        {
+            buffAmount = transform.parent.GetComponent<A3302>().BuffAmount;
+            for (int i = 0; i < target.Count; ++i)
+            {
+                target[i].AtkSpeed.added -= buffAmount;
+                target[i].Speed.added -= buffAmount;
+                target.Remove(target[i]);
+            }
+        }
         Destroy(gameObject);
     }
 

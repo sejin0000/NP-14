@@ -31,11 +31,20 @@ public class Player2Skill : Skill
     {
         base.SkillStart();
         shieldOBJ = PhotonNetwork.Instantiate("Prefabs/Player/Shield",transform.position,Quaternion.identity);
+        int shieldID = shieldOBJ.GetPhotonView().ViewID;
+        photonView.RPC("SetShieldParent", RpcTarget.All, shieldID, photonView.ViewID);
         Shield shield = shieldOBJ.GetComponent<Shield>();
         OnGiveReflectCoeffEvent?.Invoke(ReflectCoeff);
-        shieldOBJ.transform.SetParent(gameObject.transform);
         shield.Initialized(shieldHP, shieldScale, shieldSurvivalTime);
         Invoke("SkillEnd", shieldSurvivalTime);        
+    }
+
+    [PunRPC]
+    private void SetShieldParent(int shieldID, int viewID)
+    {
+        PhotonView playerPV = PhotonView.Find(viewID);
+        PhotonView shieldPV = PhotonView.Find(shieldID);
+        shieldPV.transform.SetParent(playerPV.transform);
     }
 
     public override void SkillEnd()//애를 별거 아니라고 봤는데 엄청중요함 현재 스킬이 사용되고 나서 쿨이도는방식
