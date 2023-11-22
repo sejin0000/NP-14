@@ -116,7 +116,12 @@ public class TopDownCharacterController : MonoBehaviour
 
     public void CallRollEvent()
     {
-        if (playerStatHandler.CanRoll)
+        if (gameObject.GetComponent<A1207>()) 
+        {
+            A1207 a1207 = gameObject.GetComponent<A1207>();
+            a1207.Change();
+        }
+        else if (playerStatHandler.CanRoll)
         {
             OnRollEvent?.Invoke();
             playerStatHandler.CurRollStack -= 1;
@@ -147,11 +152,11 @@ public class TopDownCharacterController : MonoBehaviour
         if (playerStatHandler.CanRoll)
         {
             OnFlashEvent?.Invoke();
-            playerStatHandler.CurRollStack -= 1;
-            Debug.Log($"구르기 스택 까임 : {playerStatHandler.CurRollStack} 남음");
-            playerStatHandler.CanRoll = false;
-            playerStatHandler.Invincibility = true;
-            CallEndRollEvent();
+            //playerStatHandler.CurRollStack -= 1;
+            //Debug.Log($"구르기 스택 까임 : {playerStatHandler.CurRollStack} 남음");
+            //playerStatHandler.CanRoll = false;
+            //playerStatHandler.Invincibility = true;
+            //CallEndRollEvent();
         }
         else
         {

@@ -835,9 +835,10 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A1205(int PlayerNumber)
+    private void A1205(int PlayerNumber)//신중한 사격 스킬체크
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A1205>();
     }
     [PunRPC]
     private void A1206(int PlayerNumber)
@@ -846,9 +847,19 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
         targetPlayer.AddComponent<A1206>();
     }
     [PunRPC]
-    private void A1207(int PlayerNumber)
+    private void A1207(int PlayerNumber)//>>이동다끔 콜리전끔 포지션업데이트로 다른플레이어값 받아서
+                                        //돌림 시작하자마자 플레이어 목숨 -1 그냥 죽은취급
     {
-        Debug.Log("미완성");
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        targetPlayer.AddComponent<A1207>();
+        PlayerInputController inputController = targetPlayer.GetComponent<PlayerInputController>();
+        inputController.cantMove = true;
+        inputController.cantSpacebar = true;
+        playerInput = targetPlayer.GetComponent<PlayerInput>();
+        playerInput.actions.FindAction("Move2").Disable();
+        playerInput.actions.FindAction("Move").Disable();
+        playerInput.actions.FindAction("SiegeMode").Disable();
+        playerInput.actions.FindAction("Flash").Disable();
     }
     #endregion
     #region Sniper3
