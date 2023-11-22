@@ -159,5 +159,39 @@ public class Debuff : MonoBehaviourPun
             Debug.Log($"현재 속도 2: {targetPlayer.Speed.total}");
         }
     }
+    public void GiveAtkBuff(GameObject gameObject)
+    {
+        if (gameObject.tag == "Player" && gameObject.GetComponent<PlayerStatHandler>().CanAtkBuff)
+        {
+            PhotonView pv = gameObject.GetComponent<PhotonView>();
+            int viewID = pv.ViewID;
+            photonView.RPC("GiveAtk", RpcTarget.All, viewID);
+        }
+    }
+
+    [PunRPC]
+    public void GiveAtk(int viewID)
+    {
+        StartCoroutine("GoodAtk", viewID);
+    }
+
+    private IEnumerator GoodAtk(int viewID)
+    {
+        Debug.Log("LowSpeed 코루틴 돌아가는중 ....");
+        int endtime = 3;
+        PhotonView photonView = PhotonView.Find(viewID);
+        PlayerStatHandler targetPlayer = photonView.gameObject.GetComponent<PlayerStatHandler>();
+        if (targetPlayer.CanAtkBuff)
+        {
+            Debug.Log("스피드.... ");
+            targetPlayer.CanAtkBuff = false;
+            targetPlayer.ATK.coefficient += 0.1f;
+            Debug.Log($"현재 속도 1: {targetPlayer.Speed.total}");
+            yield return new WaitForSeconds(endtime);
+            targetPlayer.ATK.coefficient -= 0.1f;
+            targetPlayer.CanAtkBuff = true;
+            Debug.Log($"현재 속도 2: {targetPlayer.Speed.total}");
+        }
+    }
 
 }

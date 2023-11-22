@@ -426,6 +426,11 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         PartyDeathCount++;
         OnPlayerDieEvent?.Invoke();
     }
+    [PunRPC]
+    public void RemovePartyDeathCount()
+    {
+        PartyDeathCount--;
+    }
 
 
     [PunRPC]

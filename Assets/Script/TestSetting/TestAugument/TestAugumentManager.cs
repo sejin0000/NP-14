@@ -852,14 +852,17 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     #region Sniper3
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@스나이퍼 3티어
     [PunRPC]
-    private void A1301(int PlayerNumber)
+    private void A1301(int PlayerNumber)//고급지원가 
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.GetComponent<WeaponSystem>().sniperAtkBuff = true;
     }
     [PunRPC]
-    private void A1302(int PlayerNumber)
+    private void A1302(int PlayerNumber)//리바이브샷 스테이지당 한번 아군 부활시키기
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.GetComponent<WeaponSystem>().canresurrection = true;
+        targetPlayer.AddComponent<A1302>();
     }
     [PunRPC]
     private void A1303(int PlayerNumber)

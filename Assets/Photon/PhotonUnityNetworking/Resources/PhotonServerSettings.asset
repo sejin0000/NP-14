@@ -219,6 +219,11 @@ MonoBehaviour:
   - SetRegenBool
   - PunSetLineTile
   - PunSetDoorTile
+  - SetShieldParent
+  - thankyouLife
+  - MiremovePartyDeathCount
+  - RemovePartyDeathCount
+  - GiveAtk
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

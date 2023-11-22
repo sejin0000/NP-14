@@ -27,6 +27,8 @@ public class WeaponSystem : MonoBehaviour
 
     public bool pivotSet;
     public bool humanAttackintelligentmissile;
+    public bool canresurrection;
+    public bool sniperAtkBuff;
 
     public int _viewID;
     // Ãß°¡
@@ -56,6 +58,8 @@ public class WeaponSystem : MonoBehaviour
         gravity = false;
         Penetrate = false;
         pivotSet = false;
+        canresurrection = false;
+        sniperAtkBuff=false;
         humanAttackintelligentmissile = false;
 
     _cool = GetComponent<CoolTimeController>();
@@ -168,6 +172,8 @@ public class WeaponSystem : MonoBehaviour
         _bullet.burn = burn;
         _bullet.gravity = gravity;
         _bullet.Penetrate = Penetrate;
+        _bullet.canresurrection = canresurrection;
+        _bullet.sniperAtkBuff = sniperAtkBuff;
         if (humanAttackintelligentmissile) 
         {
             _bullet.MissileFire();

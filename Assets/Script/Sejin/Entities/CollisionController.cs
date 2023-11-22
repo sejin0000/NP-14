@@ -8,6 +8,8 @@ public class CollisionController : MonoBehaviour
     private PlayerStatHandler playerStat;
     private PhotonView PV;
 
+    public CapsuleCollider2D footCollider;
+    public Rigidbody2D rigidbody;
     private void Awake()
     {
         playerStat = GetComponent<PlayerStatHandler>();   
@@ -16,6 +18,28 @@ public class CollisionController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+
+        if(playerStat.isDie && collision.gameObject.GetComponent<Bullet>().canresurrection && this.gameObject.layer ==12)
+        {
+            Bullet _bullet = collision.gameObject.GetComponent<Bullet>();
+            PhotonView photonView = PhotonView.Find(_bullet.BulletOwner);
+            WeaponSystem stat = photonView.gameObject.GetComponent<WeaponSystem>();
+            if (stat.canresurrection) 
+            {
+                playerStat.Regen(playerStat.HP.total);
+                this.gameObject.layer = 8;
+                int PvNum = _bullet.BulletOwner;
+
+                playerStat.photonView.RPC("thankyouLife",RpcTarget.All, PvNum);
+
+                if (MainGameManager.Instance != null) 
+                {
+                    MainGameManager.Instance.photonView.RPC("RemovePartyDeathCount",RpcTarget.All);
+                }
+            }
+        }
+
+
         if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet") 
             && !playerStat.Invincibility 
             && !playerStat.isDie
@@ -52,9 +76,14 @@ public class CollisionController : MonoBehaviour
                     //{
                     //    playerStat.ATK.Add(damage);
                     //}
+                    if (_bullet.sniperAtkBuff) 
+                    {
+                        Debuff.Instance.GiveAtkBuff(gameObject);
+                    }
                 }
             }
             Destroy(collision.gameObject);
         }
     }
+
 }
