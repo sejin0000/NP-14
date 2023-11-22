@@ -25,24 +25,20 @@ public class RoomNodeInfo : MonoBehaviour
 
     public void PlayerPositionSetting()
     {
-        Vector2 _mapSize = mapGenerator.mapSize;
         Vector2 _startRoom = new Vector2(startRoom.roomRect.x, startRoom.roomRect.y);
         Vector2 _widthHeight = new Vector2(startRoom.roomRect.width, startRoom.roomRect.height);
 
-        PV.RPC("PunPlayerPositionSetting",RpcTarget.AllBuffered, _mapSize, _startRoom, _widthHeight);
+        PV.RPC("PunPlayerPositionSetting",RpcTarget.AllBuffered, _startRoom, _widthHeight);
     }
 
     [PunRPC]
-    public void PunPlayerPositionSetting(Vector2 mapSize, Vector2 startRoom, Vector2 widthHeight)
+    public void PunPlayerPositionSetting( Vector2 startRoom, Vector2 widthHeight)
     {
         Vector2 vector;
-
 
         vector.x = Random.Range(startRoom.x + 1, startRoom.x + widthHeight.x - 1);
         vector.y = Random.Range(startRoom.y + 1, startRoom.y + widthHeight.y - 1);
 
-        vector.x -= (mapSize.x / 2);
-        vector.y -= (mapSize.y / 2);
 
         TestGameManagerSejin.Instance.InstantiatedPlayer.transform.position = vector;
     }

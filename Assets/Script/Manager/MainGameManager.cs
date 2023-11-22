@@ -36,10 +36,10 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     public List<int> PartyViewIDList;
     public int PartyDeathCount;
 
-
     [Header("GameData")]
     public int currentMonsterCount;
     public List<MonsterData> monsterDataList;
+
     [Space(10f)]
     public StageData stageData;
     public int EndingStage;
@@ -189,7 +189,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     #region Events
     public void CallStartEvent()
     {
-        OnGameStartedEvent?.Invoke();
+        OnGameStartedEvent?.Invoke();    
     }
 
     public void CallEndEvent()
@@ -372,7 +372,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
                 var monsterDatas = singleStageInfo.MonsterDatas;
                 var monsterStructList = monsterDatas.monsters;
                 foreach (var monsterStruct in monsterStructList)
-                {
+                { 
                     var targetMonster = monsterStruct.monsterType;
                     var monsterCount = monsterStruct.monsterCount;
                     Debug.Log(targetMonster);
@@ -415,6 +415,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
             photonView.RPC("SetEndState", RpcTarget.All);
         }
     }
+
     private string GetStageName()
     {
         return $"Stage_{stageData.currentArea}_{stageData.currentStage}";
