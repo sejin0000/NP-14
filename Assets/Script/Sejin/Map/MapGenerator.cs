@@ -67,8 +67,9 @@ public class MapGenerator : MonoBehaviour
                     lastRoomList.Add(allRoomList[i]);
                 }
             }
-
             GetComponent<RoomNodeInfo>().ChooseRoom();
+
+            GetComponent<RoomNodeInfo>().PlayerPositionSetting();
         }
     }
 
