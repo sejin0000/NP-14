@@ -217,6 +217,8 @@ MonoBehaviour:
   - RPCCustomType
   - SendRegenBool
   - SetRegenBool
+  - PunSetLineTile
+  - PunSetDoorTile
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

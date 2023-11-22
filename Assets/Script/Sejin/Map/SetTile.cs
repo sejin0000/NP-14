@@ -35,6 +35,7 @@ public class SetTile : MonoBehaviourPun
     {
         TileMapType _tileMap;
         TileMapType _tile;
+
         Vector2 rectPos;
         Vector2 widthHeight;
 
@@ -57,6 +58,57 @@ public class SetTile : MonoBehaviourPun
 
         SetRectTile(rect, tilemap, tile, startPos);
     }
+
+
+    public void OrderSetLineTile(Tilemap tilemap, RuleTile tile, Vector2Int startPos, int length, Vector2 direction)
+    {
+        TileMapType _tileMap;
+        TileMapType _tile;
+
+        TileToEnum(out _tileMap, out _tile, tilemap, tile);
+
+        PV.RPC("PunSetLineTile",RpcTarget.AllBuffered, _tileMap, _tile, (Vector2)startPos, length, direction);
+    }
+
+    [PunRPC]
+    public void PunSetLineTile(TileMapType _TileMap, TileMapType _Tile, Vector2 startPos,int length,Vector2 direction)
+    {
+        Tilemap tilemap;
+        RuleTile tile;
+
+
+        EnumToTile(_TileMap, _Tile, out tilemap, out tile);
+
+        SetLineTile(tilemap, tile, new Vector2Int((int)startPos.x, (int)startPos.y), length, direction);
+    }
+
+    public void OrderSetDoorTile(Vector2Int vector, Tilemap tilemap, RuleTile tile)
+    {
+        TileMapType _tileMap;
+        TileMapType _tile;
+
+        TileToEnum(out _tileMap, out _tile, tilemap, tile);
+
+
+        PV.RPC("PunSetDoorTile", RpcTarget.AllBuffered, _tileMap, _tile, (Vector2)vector);
+    }
+
+    [PunRPC]
+    public void PunSetDoorTile(TileMapType _TileMap, TileMapType _Tile, Vector2 startPos)
+    {
+        Tilemap tilemap;
+        RuleTile tile;
+
+
+        EnumToTile(_TileMap, _Tile, out tilemap, out tile);
+
+        SetDoorTile(new Vector2Int( (int)startPos.x, (int)startPos.y),tilemap,tile);
+    }
+
+
+
+
+
 
     public void TileToEnum(out TileMapType _TileMapEnum,out  TileMapType _TileEnum, Tilemap tilemap, RuleTile tile)
     {
@@ -166,16 +218,15 @@ public class SetTile : MonoBehaviourPun
     }
 
 
-    public void SetLineTile(Tilemap tilemap, RuleTile tile, Vector2Int startPos, int length, Vector2 direction, Vector2 Startpos)
+    public void SetLineTile(Tilemap tilemap, RuleTile tile, Vector2Int startPos, int length, Vector2 direction)
     {
         for (int j = 0; j < length + 1; j++)
         {
-            tilemap.SetTile(new Vector3Int(startPos.x - ((int)Startpos.x), startPos.y - ((int)Startpos.y)), tile);
+            tilemap.SetTile(new Vector3Int(startPos.x, startPos.y), tile);
             startPos.x -= (int)direction.x;
             startPos.y -= (int)direction.y;
         }
     }
-
 
 
     public void SetDoorTile(Vector2Int vector,Tilemap tilemap,RuleTile tile)
@@ -183,29 +234,5 @@ public class SetTile : MonoBehaviourPun
         tilemap.SetTile((Vector3Int)vector,tile);
         vector.y += 1;
         tilemap.SetTile((Vector3Int)vector, tile);
-    }
-
-
-    // RemoveTile----------------------------------------------------------------------------------------------
-
-    public void RemoveRectTile(RectInt rect, Tilemap tilemap, Vector2 Startpos)
-    {
-        for (int i = 0; i < rect.width; i++)
-        {
-            for (int j = 0; j < rect.height; j++)
-            {
-                tilemap.SetTile(new Vector3Int(i + ((int)Startpos.x), j + ((int)Startpos.y)), null);
-            }
-        }
-    }
-
-    public void RemoveLineTile(Tilemap tilemap, Vector2Int startPos,int length, Vector2 direction,Vector2 Startpos)
-    {
-        for (int j = 0; j < length + 1; j++)
-        {
-            tilemap.SetTile(new Vector3Int(startPos.x - ((int)Startpos.x), startPos.y - ((int)Startpos.y)), null);
-            startPos.x -= (int)direction.x;
-            startPos.y -= (int)direction.y;
-        }
     }
 }
