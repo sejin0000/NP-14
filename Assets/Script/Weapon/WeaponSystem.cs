@@ -1,11 +1,19 @@
 using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI.Table;
+using Random = UnityEngine.Random;
 
 public class WeaponSystem : MonoBehaviour
 {
+    public enum WeaponType
+    {
+        Shooting,
+        Charging,
+    }
+
     private TopDownCharacterController _controller;
     private PhotonView pv;
     public Transform muzzleOfAGun;
@@ -35,6 +43,10 @@ public class WeaponSystem : MonoBehaviour
     public int bulletNum;
     private CoolTimeController _cool;
 
+    public WeaponType weaponType;
+
+    public event Action<float> OnFinalDamageEvent;
+
     private void Awake()
     {
         isDamage = true;
@@ -60,6 +72,8 @@ public class WeaponSystem : MonoBehaviour
         pivotSet = false;
         canresurrection = false;
         sniperAtkBuff=false;
+        weaponType = WeaponType.Shooting;
+
         humanAttackintelligentmissile = false;
 
     _cool = GetComponent<CoolTimeController>();
@@ -101,6 +115,7 @@ public class WeaponSystem : MonoBehaviour
             var _targets = targets;
             bool _isDamage = isDamage;
 
+            OnFinalDamageEvent?.Invoke(_ATK);
             pv.RPC("BS", RpcTarget.All, rot, _ATK, _BLT, _targets, _isDamage, _viewID);
             //_controller.playerStatHandler.CurAmmo--;
         }

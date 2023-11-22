@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class A0221 : MonoBehaviourPun
+public class A1303 : MonoBehaviourPun
 {
     private TopDownCharacterController controller;
     private PlayerStatHandler stats;
@@ -12,7 +12,7 @@ public class A0221 : MonoBehaviourPun
 
     private void Awake()
     {
-        if (photonView.IsMine 
+        if (photonView.IsMine
             && _ws.weaponType != WeaponSystem.WeaponType.Charging)
         {
             controller = GetComponent<TopDownCharacterController>();

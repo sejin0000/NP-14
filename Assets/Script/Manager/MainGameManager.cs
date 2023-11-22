@@ -23,28 +23,28 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     }
 
     [Header("ClientPlayer")]
-    public GameObject InstantiatedPlayer;
-    private bool isPlayerInstantiated;
-    public Dictionary<int, Transform> playerInfoDictionary;
+    public GameObject InstantiatedPlayer; // 클라이언트가 소환한 플레이어
+    private bool isPlayerInstantiated;    // 클라이언트가 플레이어를 소환했는지 여부
+    public Dictionary<int, Transform> playerInfoDictionary;   // 각 플레이어의 viewID를 키로 하고 Trasform을 value로 하는 딕셔너리
 
     [Header("PlayerData")]
-    public PlayerDataSetting characterSetting;
-    public bool isDie;
-    public int Gold;
+    public PlayerDataSetting characterSetting; // 플레이어의 정보
+    public bool isDie; // 플레이어 죽음 여부
+    public int Gold;  // 골드
 
     [HideInInspector]
-    public List<int> PartyViewIDList;
-    public int PartyDeathCount;
+    public List<int> PartyViewIDList; // 파티의 viewID 리스트
+    public int PartyDeathCount; // 파티의 죽음 카운트
 
 
     [Header("GameData")]
-    public int currentMonsterCount;
-    public List<MonsterData> monsterDataList;
+    public int currentMonsterCount; // 현재 남은 몬스터수
+    public List<MonsterData> monsterDataList; // SO에서 읽어온 몬스터 데이터 리스트
     [Space(10f)]
-    public StageData stageData;
-    public int EndingStage;
+    public StageData stageData; // 스테이지 SO의 데이터
+    public int EndingStage; // 엔드 스테이지
     [Space(10f)]
-    private GameStates gameState;
+    private GameStates gameState; // 게임 스테이트
     public GameStates GameState
     {
         get => gameState;
@@ -57,20 +57,20 @@ public class MainGameManager : MonoBehaviourPunCallbacks
             }
         ; }
     }
-    public bool IsStateEnded;
+    public bool IsStateEnded; // 스테이트가 끝났는지 여부
     [Space(10f)]
-    public StageDictSO stageInfo;
+    public StageDictSO stageInfo; // 스테이지 SO 정보
 
 
     [Serializable]
-    public struct MonsterData
+    public struct MonsterData // 몬스터 데이터
     {
         public int monsterNum;
         public string monsterType;
     }
 
     [Serializable]
-    public struct StageData
+    public struct StageData // 스테이지의 데이터
     {
         public int currentArea;
         public int currentStage;
@@ -80,31 +80,29 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     }
 
     [Header("UI")]
-    public GameObject StageInfoUI;
+    public GameObject StageInfoUI; //스테이지 UI
 
     [Header("Enemy")]
-    public GameObject Nav;
+    public GameObject Nav; // nav
 
     [HideInInspector]
-    public event Action OnGameStartedEvent;
-    public event Action OnGameEndedEvent;
-    public event Action OnGameClearedEvent;
-    public event Action OnPlayerDieEvent;
-    public event Action OnGameOverEvent;
-    public event Action OnOverCheckEvent;
+    public event Action OnGameStartedEvent; // 게임 시작시 이벤트 (증강쪽)
+    public event Action OnGameEndedEvent; // 게임 끝날시 이벤트 (증강쪽)
+    public event Action OnGameClearedEvent; // 게임 클리어시 이벤트
+    public event Action OnPlayerDieEvent; // 플레이어 사망시 이벤트
+    public event Action OnGameOverEvent; // 게임 오버시 이벤트
+    public event Action OnOverCheckEvent; // 다른 플레이어 사망시 현재 생존자를 세는 이벤트
 
     [HideInInspector]
-    public event Action OnUIPlayingStateChanged;
-    public event Action OnStartStateChanged;
-    public event Action OnPlayingStateChanged;
-    public event Action OnEndStateChanged;
-    public event Action OnAugmentListingStateChanged;
-
+    public event Action OnUIPlayingStateChanged; // UI쪽 플레이시 이벤트
+    public event Action OnStartStateChanged; // 스타트 스테이트시 이벤트
+    public event Action OnPlayingStateChanged; // 플레잉 스테이트시 이벤트
+    public event Action OnEndStateChanged; // 끝날 시 이벤트
+    public event Action OnAugmentListingStateChanged; // 보상 스테이트시 이벤트
+     
     [HideInInspector]
-    public int tier;
-    public int Ready;
-    public bool IsCleared;
-    public bool IsOvered;
+    public int tier;  // 증강의 티어
+    public int Ready; // 다른 사람들이 증강을 선택했는지 여부를 알기 위해
 
 
 
@@ -224,7 +222,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         }
     }
 
-    private void OnStartStateChangedHandler()
+    private void OnStartStateChangedHandler()  // 스타트 스테이트로 시작될 때
     {        
         InstantiatedPlayer.SetActive(true);
 
@@ -242,7 +240,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         GameState = GameStates.Playing;
     }
 
-    private void OnEndStateChangedHandler()
+    private void OnEndStateChangedHandler()  // 엔드 스테이트로 시작될 때
     {
         // 게임 오버라면...
         if (stageData.currentStage < EndingStage && PartyDeathCount == PhotonNetwork.CurrentRoom.PlayerCount)
@@ -279,7 +277,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         }
     }
 
-    private void OnAugmentListingStateChangedHandler()
+    private void OnAugmentListingStateChangedHandler() // 증강 선택 스테이트 시작시
     {
         tier = UnityEngine.Random.Range(1, 4);
         Ready = 0;
@@ -287,7 +285,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         //GameState = GameStates.UIPlaying;
     }
     
-    public void AllReady() 
+    public void AllReady()  // 증강 선택 여부 확인
     {
         if (Ready == PhotonNetwork.CurrentRoom.MaxPlayers) 
         {
@@ -295,7 +293,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         }
     }
     [PunRPC]
-    public void uiscene() 
+    public void uiscene()  // UI 플레이시
     {
         InstantiatedPlayer.SetActive(false);
         GameState = GameStates.UIPlaying;
@@ -303,7 +301,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     #endregion
 
 
-    private void SpawnPlayer()
+    private void SpawnPlayer() // 플레이어 소환
     {
         // PlayerCharacterSetting 
         string characterSettingPath = "Prefabs/CharacterData/PlayerCharacterSetting";
@@ -332,7 +330,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         InstantiatedPlayer.GetComponent<ClassIdentifier>().playerData = characterSetting;
     }
     [PunRPC]
-    public void SendPlayerInfo(int viewID)
+    public void SendPlayerInfo(int viewID) // playerInfoDictionary 동기화 및 채우기
     {
         GameObject clientPlayer = PhotonView.Find(viewID).gameObject;
         playerInfoDictionary.Add(viewID, clientPlayer.transform);
@@ -351,7 +349,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         PartyViewIDList.Add(viewID);
     }
 
-    private void SyncPlayer()
+    private void SyncPlayer() // 플레이어 동기화
     {
         if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out object classNum))
         {
@@ -361,7 +359,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         }
     }
 
-    private void SpawnMonster()
+    private void SpawnMonster() // 몬스터 소환
     {
         foreach (StageSO singleStageInfo in stageInfo.stageDict)
         {
@@ -401,14 +399,14 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public void DiedAfter()
+    public void DiedAfter() // 사망이후
     {
         photonView.RPC("AddPartyDeathCount", RpcTarget.All);
         Debug.Log("MainGameManager : DiedAfter() => PartyDeath : " + PartyDeathCount.ToString());
         OnOverCheckEvent?.Invoke();
     }
 
-    public void OverCheck()
+    public void OverCheck() 
     {
         if (PartyDeathCount == PhotonNetwork.CurrentRoom.PlayerCount)
         {
