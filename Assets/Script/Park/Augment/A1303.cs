@@ -13,15 +13,17 @@ public class A1303 : MonoBehaviourPun
 
     private void Awake()
     {
-        if (photonView.IsMine
-            && _ws.weaponType != WeaponSystem.WeaponType.Charging)
+        if (photonView.IsMine)
         {
             controller = GetComponent<TopDownCharacterController>();
             stats = GetComponent<PlayerStatHandler>();
             coolTimeController = GetComponent<CoolTimeController>();
             _ws = GetComponent<WeaponSystem>();
-            _ws.weaponType = WeaponSystem.WeaponType.Charging;
-            SetCharge();
+            if(_ws.weaponType != WeaponSystem.WeaponType.Charging)
+            {
+                _ws.weaponType = WeaponSystem.WeaponType.Charging;
+                SetCharge();
+            }
 
             _ws.OnFinalDamageEvent += FinalAttackBonus;
             damageCoeff = 0.5f;
