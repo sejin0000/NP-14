@@ -37,11 +37,12 @@ public class A1303 : MonoBehaviourPun
         controller.playerStatHandler.IsChargeAttack = true;
     }
 
-    private void FinalAttackBonus(float damage)
+    private void FinalAttackBonus()
     {
         if (stats.CurAmmo == 0)
         {
-            //TODO weaponSystem에 finalAttack 계수 만들기
+            _ws.finalAttackCoeff += damageCoeff;
+            Debug.Log($"계수 추가 완료 : {damageCoeff}");
         }        
     }
 }
