@@ -754,6 +754,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A1104>();
+        targetPlayer.GetComponent<PlayerInputController>().Flash = true;
         playerInput = targetPlayer.GetComponent<PlayerInput>();
         playerInput.actions.FindAction("Flash").Enable();
         playerInput.actions.FindAction("Roll").Disable();
@@ -856,7 +857,6 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         playerInput.actions.FindAction("Move2").Disable();
         playerInput.actions.FindAction("Move").Disable();
         playerInput.actions.FindAction("SiegeMode").Disable();
-        playerInput.actions.FindAction("Roll").Disable();
         playerInput.actions.FindAction("Flash").Disable();
     }
     #endregion
