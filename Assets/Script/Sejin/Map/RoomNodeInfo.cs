@@ -40,6 +40,6 @@ public class RoomNodeInfo : MonoBehaviour
         vector.y = Random.Range(startRoom.y + 1, startRoom.y + widthHeight.y - 1);
 
 
-        TestGameManagerSejin.Instance.InstantiatedPlayer.transform.position = vector;
+        GameManager.Instance.clientPlayer.transform.position = vector;
     }
 }

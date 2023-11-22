@@ -99,7 +99,7 @@ public class MainGameManager : MonoBehaviourPunCallbacks
     public event Action OnPlayingStateChanged; // 플레잉 스테이트시 이벤트
     public event Action OnEndStateChanged; // 끝날 시 이벤트
     public event Action OnAugmentListingStateChanged; // 보상 스테이트시 이벤트
-     
+    
     [HideInInspector]
     public int tier;  // 증강의 티어
     public int Ready; // 다른 사람들이 증강을 선택했는지 여부를 알기 위해
@@ -316,11 +316,13 @@ public class MainGameManager : MonoBehaviourPunCallbacks
         characterSetting.viewID = viewID;
         PartyViewIDList.Add(viewID);
         photonView.RPC("SendViewID", RpcTarget.Others, viewID);
+
         // isDie
         var playerStatHandler = InstantiatedPlayer.GetComponent<PlayerStatHandler>();
         isDie = playerStatHandler.isDie;
         PartyDeathCount = 0;
         //playerStatHandler.OnDieEvent += DiedAfter; 부활로 인해 
+
         // 플레이어 데이터 추가
         playerInfoDictionary.Add(viewID, InstantiatedPlayer.transform);
         GameObject sendingPlayer = InstantiatedPlayer;

@@ -15,8 +15,11 @@ public class UIReloadHUD : UIBase, ICommonUI
     {
         if (SceneManager.GetActiveScene().name == "Test_DoHyun")
             player = TestGameManagerDohyun.Instance.InstantiatedPlayer.gameObject;
-        else
+        else if(MainGameManager.Instance != null)
             player = MainGameManager.Instance.InstantiatedPlayer.gameObject;
+        else
+            player = GameManager.Instance.clientPlayer.gameObject;
+
 
         controller = player.GetComponent<CoolTimeController>();
         statHandler = player.GetComponent<PlayerStatHandler>();

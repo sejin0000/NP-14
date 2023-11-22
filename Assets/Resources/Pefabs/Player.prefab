@@ -730,6 +730,7 @@ MonoBehaviour:
   atkPercent: 0
   IsMove: 0
   siegeMode: 0
+  Flash: 0
 --- !u!114 &8906668803129869717
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -817,6 +818,7 @@ MonoBehaviour:
   gravity: 0
   Penetrate: 0
   pivotSet: 0
+  humanAttackintelligentmissile: 0
   _viewID: 0
   bulletNum: 0
 --- !u!114 &3736999086756257612
