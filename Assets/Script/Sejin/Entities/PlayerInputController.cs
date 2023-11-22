@@ -14,6 +14,7 @@ public class PlayerInputController : TopDownCharacterController
     public bool IsMove = false;
     PlayerStatHandler playerstatHnadler;
     public bool siegeMode;
+    public bool Flash;
 
     private void Awake()
     {
@@ -25,6 +26,7 @@ public class PlayerInputController : TopDownCharacterController
         playerstatHnadler.OnRegenEvent += InputOn;
         atkPercent = 100;
         siegeMode = false;
+        Flash = false;
 
         playerInput = GetComponent<PlayerInput>();
         playerInput.actions.FindAction("Move2").Disable();
@@ -68,15 +70,24 @@ public class PlayerInputController : TopDownCharacterController
         {
             playerInput.actions.FindAction("Attack").Disable();
         }
+
         if (siegeMode)
         {
             playerInput.actions.FindAction("SiegeMode").Enable();
             playerInput.actions.FindAction("Roll").Disable();
+            playerInput.actions.FindAction("Flash").Disable();
+        }
+        else if (Flash)
+        {
+            playerInput.actions.FindAction("SiegeMode").Disable();
+            playerInput.actions.FindAction("Roll").Disable();
+            playerInput.actions.FindAction("Flash").Enable();
         }
         else
         {
             playerInput.actions.FindAction("SiegeMode").Disable();
             playerInput.actions.FindAction("Roll").Enable();
+            playerInput.actions.FindAction("Flash").Disable();
         }
     }
     public void OnMove(InputValue value)
@@ -162,6 +173,10 @@ public class PlayerInputController : TopDownCharacterController
     {
         Debug.Log("시즈모드 발사");
         CallSiegeModeEvent();
+    }
+    public void OnFlash(InputValue value)
+    {
+        CallFlashEvent();
     }
 
 

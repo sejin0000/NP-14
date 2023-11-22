@@ -270,10 +270,10 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
             // 업데이트 넉백 실행
             isKnockback = true;
-            Destroy(collision.gameObject);
+            
             if (!playerBullet.Penetrate) 
             {
-
+                Destroy(collision.gameObject);
             }
         }
     }
