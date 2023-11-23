@@ -13,14 +13,15 @@ public class A3204 : MonoBehaviourPun
 
     private void Awake()
     {
-        controller = GetComponent<TopDownCharacterController>();
-        playerStat = GetComponent<PlayerStatHandler>();
-    }
-    private void Start()
-    {
-        controller.OnEndRollEvent += make;
-        Prefabs = Resources.Load<GameObject>("AugmentList/A3204_1");
-        nullcheck = null;
+        if (photonView.IsMine) 
+        {
+            controller = GetComponent<TopDownCharacterController>();
+            playerStat = GetComponent<PlayerStatHandler>();
+            controller.OnEndRollEvent += make;
+            Prefabs = Resources.Load<GameObject>("AugmentList/A3204_1");
+            nullcheck = null;
+        }
+
     }
     void make()
     {
@@ -30,16 +31,19 @@ public class A3204 : MonoBehaviourPun
     [PunRPC]
     void Makeshield()
     {
-        if (nullcheck == null)
+        if (photonView.IsMine)
         {
-            GameObject shield = Instantiate(Prefabs, transform);
-            A3204_1 a3204_1 = shield.GetComponent<A3204_1>();
-            a3204_1.Init(playerStat);
-            nullcheck = shield;
-        }
-        else
-        {
-            Debug.Log("실드 재생");
+            if (nullcheck == null)
+            {
+                GameObject shield = Instantiate(Prefabs, transform);
+                A3204_1 a3204_1 = shield.GetComponent<A3204_1>();
+                a3204_1.Init(playerStat);
+                nullcheck = shield;
+            }
+            else
+            {
+                Debug.Log("실드 재생");
+            }
         }
     }
 }
