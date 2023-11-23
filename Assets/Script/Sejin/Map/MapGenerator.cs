@@ -54,7 +54,7 @@ public class MapGenerator : MonoBehaviour
             GenerateRoom(root, 0);
 
             RoomMake();
-
+            allRoomList.Clear();
             for (int i = 0; i < L_childrenNode.Count; i++)
             {
                 allRoomList.Add(L_childrenNode[i]);
@@ -63,7 +63,7 @@ public class MapGenerator : MonoBehaviour
             {
                 allRoomList.Add(R_childrenNode[i]);
             }
-
+            lastRoomList.Clear();
             for (int i = 0; i < allRoomList.Count; i++)
             {
                 if (allRoomList[i].roadCount == 1)

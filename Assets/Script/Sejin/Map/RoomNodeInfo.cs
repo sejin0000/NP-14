@@ -38,6 +38,7 @@ public class RoomNodeInfo : MonoBehaviour
         }
         else
         {
+            porTal.SetActive(true);
             porTal.transform.position = new Vector3(endRoom.roomRect.x + endRoom.roomRect.width / 2, endRoom.roomRect.y + endRoom.roomRect.height / 2);
         }
         mapGenerator.lastRoomList[mapGenerator.lastRoomList.Count - 1].thisRoomClear = true;

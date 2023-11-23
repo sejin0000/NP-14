@@ -10,6 +10,7 @@ public class Portal : MonoBehaviour
         if (other.tag == "Player" && other.gameObject.GetComponent<PhotonView>().IsMine)
         {
             GameManager.Instance.CallStageEndEvent();
+            gameObject.SetActive(false);
         }
     }
 }
