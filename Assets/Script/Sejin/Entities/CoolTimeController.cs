@@ -154,7 +154,7 @@ public class CoolTimeController : MonoBehaviour
         {
             controller.playerStatHandler.CanSkill = false;
         }
-        curSkillCool = coolTime;
+        curSkillCool += coolTime;
        
         Debug.Log("스킬 쿨 타임 시작");
     }
