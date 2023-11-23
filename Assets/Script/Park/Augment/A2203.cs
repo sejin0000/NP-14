@@ -4,10 +4,17 @@ using UnityEngine;
 
 public class A2203 : MonoBehaviour
 {
-    float time = 0;
-    int maxtime = 5;//사라지는시간 현재5초
-    List<PlayerStatHandler> target= new List<PlayerStatHandler>();
-    int healP=2;
+    private float time = 0;
+    [SerializeField] private int maxtime;//사라지는시간 현재5초
+    [SerializeField] private int healP;
+    private List<PlayerStatHandler> target;
+
+    private void Awake()
+    {
+        target= new List<PlayerStatHandler>();
+        healP = 2;
+        maxtime = 5;
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
