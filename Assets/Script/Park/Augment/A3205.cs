@@ -17,11 +17,12 @@ public class A3205 : MonoBehaviourPun//설계시 2204참고
         {
             for (int i = 0; i < target.Count; ++i)
             {
-                GameObject a = PhotonNetwork.Instantiate("AugmentList/A3205", target[i].transform.localPosition, Quaternion.identity);
-                int targetID = a.GetPhotonView().ViewID;
+                GameObject shiled = PhotonNetwork.Instantiate("AugmentList/A3205_1", target[i].transform.localPosition, Quaternion.identity);
+                int targetID = shiled.GetPhotonView().ViewID;
                 int ParentID = target[i].photonView.ViewID;
-                a.transform.SetParent(target[i].transform);
-                //photonView.RPC("TogetherSoDelicious",RpcTarget.All,ParentID,targetID);
+                shiled.GetComponent<Shield>().Initialized(10,1,1.5f);
+                shiled.transform.SetParent(target[i].transform);
+                photonView.RPC("TogetherSoDelicious",RpcTarget.Others,ParentID,targetID);
             }
         }
 
