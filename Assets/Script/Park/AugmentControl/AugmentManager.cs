@@ -1165,9 +1165,15 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     private void A3303(int PlayerNumber)//닥치고 돌격
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
-        playerInput = targetPlayer.GetComponent<PlayerInput>();
-        playerstatHandler.AmmoMax.added += 5f;
-        playerstatHandler.AtkSpeed.added += 2f;
-        playerstatHandler.RollCoolTime.added -= 2f;
+        if (targetPlayer.GetPhotonView().IsMine) 
+        {
+            playerInput = targetPlayer.GetComponent<PlayerInput>();
+            playerstatHandler.AmmoMax.added += 5f;
+            playerstatHandler.AtkSpeed.added += 2f;
+            playerstatHandler.RollCoolTime.added -= 2f;
+            playerInput.actions.FindAction("Skill").Disable();
+            playerstatHandler.isCanSkill = false;
+        }
+
     }
 }
