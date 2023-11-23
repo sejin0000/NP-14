@@ -34,7 +34,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
     public Bullet enemyBulletPrefab;
     public Transform bossHead;
-    public Transform bossHeadPivot;
+    public Transform bossAim;
 
     public LayerMask targetMask;             // 타겟 레이어(Player)
 
@@ -255,7 +255,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void Fire()
     {
-        var _bullet = Instantiate(enemyBulletPrefab, bossHeadPivot.transform.position, bossHeadPivot.transform.rotation);
+        var _bullet = Instantiate(enemyBulletPrefab, bossAim.transform.position, bossAim.transform.rotation);
 
         _bullet.IsDamage = true;
         _bullet.ATK = bossSO.atk;
@@ -375,36 +375,63 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         switch(patternNum)
         {
             case 0:
-                AreaList[0].gameObject.SetActive(true); //좌측 팔
-                StartCoroutine(InvokeInActiveAttackArea(3f, 0));
+                AreaList[0].gameObject.SetActive(true); //우측 공격영역 (좌측 팔)
+                SetAnim("isLeftAttack", true); //트리거로 하려고 했으나 팀원이 에러가 가끔 생긴다고 해서 bool로 animSet
+                StartCoroutine(SetAnimFalse("isLeftAttack"));
+                StartCoroutine(SetAreaLayers(0));
+
+                //공격 이후
+                StartCoroutine(LaterInActiveAttackArea(0));
                 break;
             case 1:
-                AreaList[1].gameObject.SetActive(true); ; //우측 팔
-                StartCoroutine(InvokeInActiveAttackArea(3f, 1));
+                AreaList[1].gameObject.SetActive(true); ; //좌측 공격영역 (우측 팔)
+                SetAnim("isRightAttack", true);
+                StartCoroutine(SetAnimFalse("isRightAttack"));
+                StartCoroutine(SetAreaLayers(1));
+
+
+                StartCoroutine(LaterInActiveAttackArea(1));
                 break;
             case 2:
-                AreaList[0].gameObject.SetActive(true); ; // 좌측 우측 동시 실행
+                AreaList[0].gameObject.SetActive(true); ; // 좌측 우측 동시 실행             
                 AreaList[1].gameObject.SetActive(true); ;
-                StartCoroutine(InvokeInActiveAttackArea(3f, 2));
+                SetAnim("isTwoArmAttack", true);
+                StartCoroutine(SetAnimFalse("isTwoArmAttack"));
+                StartCoroutine(SetAreaLayers(0));
+                StartCoroutine(SetAreaLayers(1));
+
+
+                StartCoroutine(LaterInActiveAttackArea(2)); // 2 : 둘 다 꺼짐
                 break;
             case 3:
                 AreaList[2].gameObject.SetActive(true); ; // 모든 범위 실행
-                StartCoroutine(InvokeInActiveAttackArea(3f, 3));
+                StartCoroutine(SetAreaLayers(2));
+
+
+                StartCoroutine(LaterInActiveAttackArea(3));               
                 break;
             case 4:
                 AreaList[3].gameObject.SetActive(true); ; // 타겟 플레이어에 원형 실행
-                StartCoroutine(InvokeInActiveAttackArea(3f, 4));
+                StartCoroutine(SetAreaLayers(3));
+
+
+                StartCoroutine(LaterInActiveAttackArea(4));             
                 break;
             case 5:
                 for (int i = 0; i < PlayersTransform.Count; i++)
                 {
                     AreaList[3].gameObject.SetActive(true); ; // 모든 플레이어에 원형 실행
-                    StartCoroutine(InvokeInActiveAttackArea(3f, 5));
+                    StartCoroutine(SetAreaLayers(3));
+
+
+                    StartCoroutine(LaterInActiveAttackArea(5));                    
                 }              
                 break;
             case 6:
                 AreaList[4].gameObject.SetActive(true); ; // 브레스 범위 표시(방법이 상이함)
-                StartCoroutine(InvokeInActiveAttackArea(3f, 6));
+                StartCoroutine(SetAreaLayers(4));
+
+                StartCoroutine(LaterInActiveAttackArea(6));                
                 break; 
         }
     }
@@ -417,37 +444,62 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
                 AreaList[0].gameObject.SetActive(false); //좌측 팔
                 break;
             case 1:
-                AreaList[1].gameObject.SetActive(false); ; //우측 팔
+                AreaList[1].gameObject.SetActive(false); //우측 팔
                 break;
             case 2:
-                AreaList[0].gameObject.SetActive(false); ; // 좌측 우측 동시 실행
-                AreaList[1].gameObject.SetActive(false); ;
+                AreaList[0].gameObject.SetActive(false); // 좌측 우측 동시 실행
+                AreaList[1].gameObject.SetActive(false);                
                 break;
             case 3:
-                AreaList[2].gameObject.SetActive(false); ; // 모든 범위 실행
+                AreaList[2].gameObject.SetActive(false); // 모든 범위 실행
                 break;
             case 4:
-                AreaList[3].gameObject.SetActive(false); ; // 타겟 플레이어에 원형 실행
+                AreaList[3].gameObject.SetActive(false); // 타겟 플레이어에 원형 실행
                 break;
             case 5:
                 for (int i = 0; i < PlayersTransform.Count; i++)
                 {
-                    AreaList[3].gameObject.SetActive(false); ; // 모든 플레이어에 원형 실행
+                    AreaList[3].gameObject.SetActive(false); // 모든 플레이어에 원형 실행
                 }
                 break;
             case 6:
-                AreaList[4].gameObject.SetActive(false); ; // 브레스 범위 표시(방법이 상이함)
+                AreaList[4].gameObject.SetActive(false); // 브레스 범위 표시(방법이 상이함)
                 break;
         }
     }
 
 
-    //공격 범위 종료용 코루틴
-    public IEnumerator InvokeInActiveAttackArea(float delay, int patternNum)
+    //공격 범위 UI 종료용 코루틴(여기서 예고 레이어 타격 영역 => 일반 영역으로 교체)
+    public IEnumerator LaterInActiveAttackArea(int patternNum)
     {
-        yield return new WaitForSeconds(delay);
-        Debug.Log("코루틴 실행됨");
+        yield return new WaitForSeconds(3f);       
         InActiveAttackArea(patternNum);
+    }
+
+    //애니메이션 종료용 코루틴(여기서 예고 레이어 일반 영역 => 타격 영역으로 교체)
+    IEnumerator SetAnimFalse(string boolName)
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        SetAnim(boolName, false);
+    }
+
+    public void ChangeAreaLayers(int targetArea)
+    {
+        if (AreaList[targetArea].gameObject.layer == 14)
+            AreaList[targetArea].gameObject.layer = 15;
+        else
+            AreaList[targetArea].gameObject.layer = 14;
+    }
+
+    //영역이 다 차오르면, 잠시 공격레이어로 변환 후 다시 원래 레이어로 복귀
+    IEnumerator SetAreaLayers(int targetArea)
+    {
+        yield return new WaitForSeconds(2f);
+        ChangeAreaLayers(targetArea);
+
+        yield return new WaitForSeconds(0.3f);
+        ChangeAreaLayers(targetArea);
     }
     #endregion
 
