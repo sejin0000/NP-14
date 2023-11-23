@@ -1114,7 +1114,7 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
         playerstatHandler.HP.coefficient *= 3;
     }
     [PunRPC]
-    private void A3204(int PlayerNumber)
+    private void A3204(int PlayerNumber)//임시 방어 굴러서 방어
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A3204>();

@@ -9,7 +9,7 @@ public class A3204 : MonoBehaviourPun
     private PlayerStatHandler playerStat;
     private CoolTimeController coolTimeController;
     GameObject Prefabs;
-    GameObject nullcheck;
+    A3204_1 nullcheck;
 
     private void Awake()
     {
@@ -18,7 +18,7 @@ public class A3204 : MonoBehaviourPun
             controller = GetComponent<TopDownCharacterController>();
             playerStat = GetComponent<PlayerStatHandler>();
             controller.OnEndRollEvent += make;
-            Prefabs = Resources.Load<GameObject>("AugmentList/A3204_1");
+
             nullcheck = null;
         }
 
@@ -35,15 +35,24 @@ public class A3204 : MonoBehaviourPun
         {
             if (nullcheck == null)
             {
-                GameObject shield = Instantiate(Prefabs, transform);
-                A3204_1 a3204_1 = shield.GetComponent<A3204_1>();
-                a3204_1.Init(playerStat);
-                nullcheck = shield;
+                Prefabs = PhotonNetwork.Instantiate("AugmentList/A3204_1", Vector3.zero, Quaternion.identity);
+                int PvNum= Prefabs.GetPhotonView().ViewID;
+                nullcheck = Prefabs.GetComponent<A3204_1>();
+                nullcheck.Init(playerStat);
+                photonView.RPC("FindMaster", RpcTarget.All, PvNum);
             }
             else
             {
-                Debug.Log("실드 재생");
+                nullcheck.reloading();
             }
         }
+    }
+    [PunRPC]
+    private void FindMaster(int num)
+    {
+        PhotonView a = PhotonView.Find(num);
+        a.transform.SetParent(this.gameObject.transform);
+        a.transform.localPosition = Vector3.zero;
+        //Prefabs.transform.SetParent(targetPlayer.transform);
     }
 }
