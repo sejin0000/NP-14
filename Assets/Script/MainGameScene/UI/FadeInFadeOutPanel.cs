@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 public class FadeInFadeOutPanel : MonoBehaviour
 {
-    Image image;
+    SpriteRenderer image;
     private void Awake()
     {
-        image = GetComponent<Image>();
+        image = GetComponent<SpriteRenderer>();
     }
 
     private void Start()
