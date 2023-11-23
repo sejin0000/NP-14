@@ -35,6 +35,7 @@ public class A3205 : MonoBehaviourPun//설계시 2204참고
         PhotonView targetView = PhotonView.Find(targetID);
         GameObject target = targetView.gameObject;
         target.transform.SetParent(parent.transform);
+        target.transform.localScale = parent.transform.localScale;
     }
 
     public void Init()
