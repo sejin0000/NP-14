@@ -97,14 +97,14 @@ public class WeaponSystem : MonoBehaviour
             bool _isDamage = isDamage;
 
             pv.RPC("BS", RpcTarget.All, rot, _ATK, _BLT, _targets, _isDamage, _viewID);
-            _controller.playerStatHandler.CurAmmo--;
         }
+        _controller.playerStatHandler.CurAmmo--;
     }
 
     public void Charging()
     {
         int bullets = _cool.bulletNum;
-        if (bullets == 0)
+        if (bullets <= 1)
             return;
 
         OnFinalDamageEvent?.Invoke();

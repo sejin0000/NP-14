@@ -12,6 +12,12 @@ public enum BulletTarget
 
 public class Bullet : MonoBehaviour
 {
+    //충돌할 면의 벡터
+    Vector2 collisionVector;
+
+
+
+
     public float ATK;
     public float BulletLifeTime;
     public float BulletSpeed = 15;
@@ -51,6 +57,8 @@ public class Bullet : MonoBehaviour
         BulletLifeTime = Random.Range(BulletLifeTime * 0.15f, BulletLifeTime * 0.2f);
         //Invoke("Destroy", BulletLifeTime);
         _direction = Vector2.right;
+        //to del 아래
+        canAngle = true;
     }
     public void MissileFire() 
     {
@@ -105,8 +113,31 @@ public class Bullet : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Wall")) //만약벽이라면
         {
-            Invoke("Destroy", 0.01f);
-            Debug.Log("벽이라서삭제");
+            if (canAngle)
+            {
+
+                //충돌할 면의 벡터
+                //Vector2 collisionVector;
+                collisionVector = collision.transform.localPosition;
+                //충돌한 면의 벡터를 각도로 변환
+                float collisionAngle = Mathf.Atan2(_direction.y, _direction.x) * 180f / Mathf.PI;
+
+                //입사벡터를 각도로 변환
+                float incidentAngle = Vector3.SignedAngle(collisionVector, _direction, -Vector3.forward);
+
+                //반사할 벡터의 각도를 구함(충돌한 면의 벡터 기준)
+                float reflectAngle = incidentAngle - 180 + collisionAngle;
+
+                //반사할 벡터의 각도를 라디안으로 변환
+                float reflectionRadian = reflectAngle * Mathf.Deg2Rad;
+
+                //반사벡터
+                _direction = new Vector2(Mathf.Cos(reflectionRadian), Mathf.Sin(reflectionRadian));
+            }
+            else 
+            {
+                Invoke("Destroy", 0.01f);
+            }
             return;
         }
         //만약 팀킬이 아닌 몬스터의 총알이라면 몬스터가 아니라면 삭제
@@ -115,20 +146,17 @@ public class Bullet : MonoBehaviour
             && collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             Invoke("Destroy", 0.01f);
-            Debug.Log("몬스터총알이 플레이어에 부딪혀서 삭제");
             return;
         }
         //만약 관통인 플레이어의 총알이라면 벽일때삭제
         else if (Penetrate)
         {
-            Debug.Log("관통");
             return;
         }
         //플레이어의 총알이 몬스터에게부딪혀서 삭제
         else if (targets.ContainsValue((int)BulletTarget.Enemy) && collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
             Invoke("Destroy", 0.01f);
-            Debug.Log("플레이어의총알이 무언가에 부딪혀서 삭제");
             return;
         }
     }

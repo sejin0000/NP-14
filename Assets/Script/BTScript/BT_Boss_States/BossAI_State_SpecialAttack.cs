@@ -35,16 +35,6 @@ public class BossAI_State_SpecialAttack : BTAction
         //헤드 피벗 위치를 넘어서 존재한다면? -> 랜덤 패턴값 비명으로 고정
 
 
-        //보스 머리 끝부분 위치의 y값 보다 위쪽에 위치하는 플레이어가 존재한다면 => 강제적으로 밀치기 패턴을 사용함
-        for (int i = 0; i < bossAI_Dragon.PlayersTransform.Count; i++)
-        {
-            if (bossAI_Dragon.PlayersTransform[i].position.y > 0f)
-            {
-                bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 3);
-                return Status.BT_Success;
-            }               
-        }
-
         SetAim(); //특수패턴 시작 시 보스 머리 방향 => 항상 플레이어 쪽으로
 
         //bossAI_Dragon.bossHead.transform.LookAt(target.position, Vector3.forward);
@@ -53,9 +43,18 @@ public class BossAI_State_SpecialAttack : BTAction
 
         if (currentTime <= 0)
         {
+            //보스 머리 끝부분 위치의 y값 보다 위쪽에 위치하는 플레이어가 존재한다면 => 강제적으로 밀치기 패턴을 사용함
+            for (int i = 0; i < bossAI_Dragon.PlayersTransform.Count; i++)
+            {
+                if (bossAI_Dragon.PlayersTransform[i].position.y > 0f)
+                {
+                    bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 3);
+                    return Status.BT_Success;
+                }
+            }
             // 공격 주기에 도달하면 랜덤 공격 실행
             int randomPattern = Random.Range(0, 3);
-          
+
 
             //난수에 따른 패턴 RPC 여기에 입력 if else로 한번 더 분기(특수 패턴은 확정 패턴과 랜덤 패턴이 필요함)
 
@@ -63,15 +62,15 @@ public class BossAI_State_SpecialAttack : BTAction
             {
                 case 0:
                     //양 팔 공격
-                    bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 2);                  
+                    bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 0);                  
                     //bossAI_Dragon.PV.RPC("Fire", RpcTarget.All);
                     break;
                 case 1:
-                    bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 3);
+                    bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 1);
                     //bossAI_Dragon.PV.RPC("Fire", RpcTarget.All);
                     break;
                 case 2:
-                    bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 6);
+                    bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 2);
                     //bossAI_Dragon.PV.RPC("Fire", RpcTarget.All);
                     break;
             }            

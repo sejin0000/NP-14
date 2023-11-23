@@ -5,37 +5,37 @@ using UnityEngine;
 public class A3204_1 : MonoBehaviour
 {
     PlayerStatHandler playerstat;
-    int maxHp = 30;
-    int hp = 30;//실드체
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        //transform.localScale*playerstat.gameObject.transform.localScale
-        GameObject scalechange = playerstat.gameObject;
-        transform.localScale = scalechange.transform.localScale;
-    }
+    int maxHp = 15;
+    float hp = 15;//실드체
     public void Init(PlayerStatHandler playerstatHandler)
     {
         playerstat = playerstatHandler;
         hp = maxHp;
+        GameObject scalechange = playerstat.gameObject;
+        transform.localScale = scalechange.transform.localScale;
     }
     public void reloading() 
     {
         hp = maxHp;
         Debug.Log("hp");
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "적혹은적수타체") 
+        if (collision.gameObject.GetComponent<Bullet>()) 
         {
-            //
-            deadcheck();
+            Bullet bullet = collision.gameObject.GetComponent<Bullet>();
+            if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet")
+            && bullet.targets.ContainsValue((int)BulletTarget.Player))
+            {
+                deadcheck(bullet.ATK);
+                Destroy(collision.gameObject);
+            }
         }
+
     }
-    void deadcheck() 
+    void deadcheck(float a) 
     {
+        hp -= a;
         if (hp < 0) 
         {
             Destroy(gameObject);

@@ -34,29 +34,33 @@ public class A3105 : MonoBehaviourPun
     // Update is called once per frame
     void SetPower()
     {
+        playerStat.CurSkillStack -= 1;
+        controller.playerStatHandler.CanSkill = false;
+        controller.playerStatHandler.useSkill = true;
         if (ready) 
         {
+            Debug.Log($"강화 전의  현재 총 공격력{playerStat.ATK.total}");
             nowPower = playerStat.ATK.total;
             playerStat.ATK.added += nowPower;
             oldPower = nowPower;
             ready = false;
             Isfirst = true;
+            Debug.Log($"강화된 현재 총 공격력{playerStat.ATK.total}");
         }
         SkillEnd();
 
     }
     void LostPower()
     {
-        playerStat.CurSkillStack -= 1;
-        controller.playerStatHandler.CanSkill = false;
-        controller.playerStatHandler.useSkill = true;
+
         if (Isfirst)
         {
             playerStat.ATK.added -= oldPower;
             ready = true;
+            Debug.Log($"첫발을쏜 현재  총 공격력{playerStat.ATK.total}");
         }
         Isfirst = false;
-
+        Debug.Log($"공격하고 난 후 총 공격력{playerStat.ATK.total}");
     }
     public void SkillEnd()
     {

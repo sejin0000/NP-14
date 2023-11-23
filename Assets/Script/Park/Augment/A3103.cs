@@ -37,7 +37,7 @@ public class A3103 : MonoBehaviourPun
             playerInput.actions.FindAction("Move").Disable();
 
             playerStat.BulletLifeTime.coefficient *= 3f;
-            playerStat.BulletSpread.coefficient *= 0.3f;
+            playerStat.BulletSpread.coefficient /= 3f;
         }
         else
         {
@@ -50,7 +50,7 @@ public class A3103 : MonoBehaviourPun
                 playerInput.actions.FindAction("Move2").Enable();
             }
             IsSiegeMode = !IsSiegeMode;
-            playerStat.BulletLifeTime.coefficient *= 0.3f;
+            playerStat.BulletLifeTime.coefficient /= 3f;
             playerStat.BulletSpread.coefficient *= 3f;
         }
 

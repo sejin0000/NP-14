@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
 
-public class A3107 : MonoBehaviour
+public class A3107 : MonoBehaviourPun
 {
     // Start is called before the first frame update
     int objSize;// 돌아가는 투사체 갯수
@@ -15,6 +15,7 @@ public class A3107 : MonoBehaviour
     public GameObject[] target;
     public PlayerStatHandler playerStat;
     public float damege;
+    public int PvNum;
 
     private void Start()
     {
@@ -26,7 +27,7 @@ public class A3107 : MonoBehaviour
     {
         GameObject player1 = pl;
         playerStat = player1.GetComponent<PlayerStatHandler>();
-        MainGameManager.Instance.OnGameStartedEvent += DamegeUpdate;
+        PvNum = playerStat.photonView.ViewID;
         DamegeUpdate();
     }
     void Update()
@@ -48,15 +49,19 @@ public class A3107 : MonoBehaviour
         {
             deg = 0;
         }
+        if (photonView.IsMine) 
+        {
+            DamegeUpdate();
+        }
+
 
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Debug.Log("");
-        if (collision.gameObject.layer == LayerMask.NameToLayer("EnemyBullet"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
             EnemyAI wjr = collision.GetComponent<EnemyAI>();
-            wjr.PV.RPC("DecreaseHP", RpcTarget.All, damege);
+            wjr.PV.RPC("DecreaseHPByObject", RpcTarget.All, damege, PvNum);
         }
     }
     public void DamegeUpdate()

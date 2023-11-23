@@ -48,59 +48,61 @@ public class PlayerInputController : TopDownCharacterController
     }
     public void ResetSetting()
     {
-        if (cantMove) 
+        if (photonView.IsMine) 
         {
-            playerInput.actions.FindAction("Move2").Disable();
-            playerInput.actions.FindAction("Move").Disable();
-        }
-        else if (playerstatHnadler.isNoramlMove)
-        {
-            playerInput.actions.FindAction("Move2").Disable();
-            playerInput.actions.FindAction("Move").Enable();
-        }
-        else
-        {
-            playerInput.actions.FindAction("Move2").Enable();
-            playerInput.actions.FindAction("Move").Disable();
-        }
+            if (cantMove)
+            {
+                playerInput.actions.FindAction("Move2").Disable();
+                playerInput.actions.FindAction("Move").Disable();
+            }
+            else if (playerstatHnadler.isNoramlMove)
+            {
+                playerInput.actions.FindAction("Move2").Disable();
+                playerInput.actions.FindAction("Move").Enable();
+            }
+            else
+            {
+                playerInput.actions.FindAction("Move2").Enable();
+                playerInput.actions.FindAction("Move").Disable();
+            }
 
-        if (playerstatHnadler.isCanSkill)
-        {
-            playerInput.actions.FindAction("Skill").Enable();
-        }
-        else
-        {
-            playerInput.actions.FindAction("Skill").Disable();
-        }
+            if (playerstatHnadler.isCanSkill)
+            {
+                playerInput.actions.FindAction("Skill").Enable();
+            }
+            else
+            {
+                playerInput.actions.FindAction("Skill").Disable();
+            }
 
-        if (playerstatHnadler.isCanAtk)
-        {
-            playerInput.actions.FindAction("Attack").Enable();
-        }
-        else
-        {
-            playerInput.actions.FindAction("Attack").Disable();
-        }
+            if (playerstatHnadler.isCanAtk)
+            {
+                playerInput.actions.FindAction("Attack").Enable();
+            }
+            else
+            {
+                playerInput.actions.FindAction("Attack").Disable();
+            }
 
-        if (cantSpacebar) 
-        {
-            playerInput.actions.FindAction("SiegeMode").Disable();
-            playerInput.actions.FindAction("Roll").Enable();
-            playerInput.actions.FindAction("Flash").Disable();
+            if (cantSpacebar)
+            {
+                playerInput.actions.FindAction("SiegeMode").Disable();
+                playerInput.actions.FindAction("Roll").Enable();
+                playerInput.actions.FindAction("Flash").Disable();
+            }
+            else if (siegeMode)
+            {
+                playerInput.actions.FindAction("SiegeMode").Enable();
+                playerInput.actions.FindAction("Roll").Disable();
+                playerInput.actions.FindAction("Flash").Disable();
+            }
+            else if (Flash)
+            {
+                playerInput.actions.FindAction("SiegeMode").Disable();
+                playerInput.actions.FindAction("Roll").Disable();
+                playerInput.actions.FindAction("Flash").Enable();
+            }
         }
-        else if (siegeMode)
-        {
-            playerInput.actions.FindAction("SiegeMode").Enable();
-            playerInput.actions.FindAction("Roll").Disable();
-            playerInput.actions.FindAction("Flash").Disable();
-        }
-        else if (Flash)
-        {
-            playerInput.actions.FindAction("SiegeMode").Disable();
-            playerInput.actions.FindAction("Roll").Disable();
-            playerInput.actions.FindAction("Flash").Enable();
-        }
-
     }
     public void OnMove(InputValue value)
     {

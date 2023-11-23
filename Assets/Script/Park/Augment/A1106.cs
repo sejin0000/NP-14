@@ -2,6 +2,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -23,16 +24,21 @@ public class A1106 : MonoBehaviourPun
     }
     public void divide(float damege) 
     {
+        if (target.Contains(StatHandler)) 
+        {
+            target.Remove(StatHandler);
+        }
         int count = target.Count+1;
         StatHandler.DamegeTemp = damege / count;
-        for(int i = 0; i < target.Count; ++i) 
+        float giveDamege = StatHandler.DamegeTemp;
+        for (int i = 0; i < target.Count; ++i) 
         {
-            target[i].Damage(StatHandler.DamegeTemp);
+            target[i].photonView.RPC("GiveDamege", RpcTarget.All,giveDamege);
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player" && !target.Contains(collision.GetComponent<PlayerStatHandler>()) && (collision.GetComponent<PlayerStatHandler>() != null))
+        if (collision.tag == "Player" && !target.Contains(collision.GetComponent<PlayerStatHandler>()) && (collision.GetComponent<PlayerStatHandler>()))
         {
             target.Add(collision.GetComponent<PlayerStatHandler>());
             Debug.Log("플레이어입장");

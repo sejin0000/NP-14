@@ -15,6 +15,13 @@ public class GameManager : MonoBehaviour
     public event Action OnRoomEndEvent;       //룸 종료
     public event Action OnStageEndEvent;      //스테이지 종료
 
+
+    public event Action OnBossStageSettingEvent; //보스 룸 시작
+    public event Action OnBossStageStartEvent; //보스 룸 시작
+    public event Action OnBossStageEndEvent;   //보스 룸 종료
+
+
+
     public event Action OnGameClearEvent;     //게임 클리어
     public event Action OnGameOverEvent;      //게임 오버
 
@@ -25,7 +32,10 @@ public class GameManager : MonoBehaviour
     private FadeInFadeOutPanel FF;
 
     public static GameManager Instance;
-    
+
+
+    public StageDictSO StageInfo;
+    private int curStage;
 
     public GameObject clientPlayer;
     public Dictionary<int, Transform> playerInfoDictionary;
@@ -121,7 +131,23 @@ public class GameManager : MonoBehaviour
         CallStageStartEvent();
     }
 
+    public void CallBossStageSettingEvent()
+    {
+        Debug.Log("보스 스테이지 세팅");
+        OnBossStageSettingEvent?.Invoke();
+    }
 
+    public void CallBossStageStartEvent()
+    {
+        Debug.Log("보스 스테이지 시작");
+        OnBossStageStartEvent?.Invoke();
+    }
+
+    public void CallBossStageEndEvent()
+    {
+        Debug.Log("보스 스테이지 종료");
+        OnBossStageEndEvent?.Invoke();
+    }
 
     public void CallGameClearEvent()
     {

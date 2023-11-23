@@ -3,7 +3,9 @@ guid: d728c91c0ab5e6042a6d9dc754d1447d
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - skillCheckPrefab: {fileID: 4387548951849352730, guid: aa74cc9d4bb08b44c8ff3cbfbe6bcd11, type: 3}
+  - skillCheckobj: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

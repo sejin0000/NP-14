@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2547949289652623968}
   - component: {fileID: 2692545846970572398}
   - component: {fileID: 3628704329601974633}
-  m_Layer: 5
+  m_Layer: 14
   m_Name: RightArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -601,7 +601,7 @@ GameObject:
   - component: {fileID: 5695657470351571447}
   - component: {fileID: 2021926468873057648}
   - component: {fileID: 2097177228745729371}
-  m_Layer: 5
+  m_Layer: 14
   m_Name: LeftArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -746,7 +746,7 @@ GameObject:
   - component: {fileID: 5153525538559250439}
   - component: {fileID: 5699165426589817685}
   - component: {fileID: 1383063223327082518}
-  m_Layer: 5
+  m_Layer: 14
   m_Name: All_Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -977,7 +977,7 @@ GameObject:
   - component: {fileID: 7186564239756097306}
   - component: {fileID: 7946260566624593606}
   - component: {fileID: 3270317938882836021}
-  m_Layer: 5
+  m_Layer: 14
   m_Name: TargetCircleArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1162,7 +1162,7 @@ MonoBehaviour:
   PlayersTransform: []
   enemyBulletPrefab: {fileID: 0}
   bossHead: {fileID: 3294095377200291057}
-  bossHeadPivot: {fileID: 6100125845148993927}
+  bossAim: {fileID: 0}
   targetMask:
     serializedVersion: 2
     m_Bits: 0
@@ -1384,7 +1384,7 @@ GameObject:
   - component: {fileID: 6652517881443013073}
   - component: {fileID: 6907178135105136631}
   - component: {fileID: 8788936629196536957}
-  m_Layer: 5
+  m_Layer: 14
   m_Name: TriangleArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}

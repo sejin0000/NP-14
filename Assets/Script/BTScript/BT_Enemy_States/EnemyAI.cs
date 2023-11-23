@@ -93,9 +93,11 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
 
 
+
     //객체별 넉백거리
     public float knockbackDistance;
 
+    public float GroggyCount = 100f;
     void Awake()
     {
         nav = GetComponent<NavMeshAgent>();
@@ -210,6 +212,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             float atk = collision.transform.GetComponent<Bullet>().ATK;
             isChase = true;
             int ViewID = playerBullet.BulletOwner;
+            //Debug.Log($"뷰아이디 : {ViewID}");
             PhotonView PlayerPv = PhotonView.Find(ViewID);
             PlayerStatHandler player = PlayerPv.gameObject.GetComponent<PlayerStatHandler>();
             player.EnemyHitCall();
@@ -225,7 +228,11 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             }
             if (playerBullet.ice) 
             {
-                
+                int random = UnityEngine.Random.Range(0, 100);
+                if (random < 90) 
+                {
+                    isGroggy = true;
+                }
             }
             if (playerBullet.burn)
             {
@@ -627,7 +634,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
     public bool IsNavAbled()
     {
-        if (isAttaking || !isLive)
+        if (isAttaking || !isLive || isGroggy)
         {
             nav.isStopped = true;
             return false;

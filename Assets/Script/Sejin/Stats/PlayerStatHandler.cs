@@ -253,7 +253,11 @@ public class PlayerStatHandler : MonoBehaviourPun
         Debug.Log("[PlayerStatHandler]" + this.ToString());
         Debug.Log("[PlayerStatHandler] " + "CharacterChange Done");
     }
-
+    [PunRPC]
+    public void GiveDamege(float damege)
+    {
+        Damage(damege);
+    }
     public void Damage(float damage)
     {
         DamegeTemp = damage;

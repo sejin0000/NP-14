@@ -19,6 +19,6 @@ public class A3102 : MonoBehaviourPun
     }
     void SkillHpUp()
     {
-        playerStat.HP.added += 0.4f;
+        playerStat.HP.added += 0.5f;
     }
 }

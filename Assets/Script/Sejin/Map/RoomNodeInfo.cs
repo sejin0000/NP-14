@@ -38,7 +38,7 @@ public class RoomNodeInfo : MonoBehaviour
         }
         else
         {
-            PV.RPV("PunPortalSetting",RpcTarget.AllBuffered);
+            PV.RPC("PunPortalSetting",RpcTarget.AllBuffered);
             porTal.SetActive(true);
             porTal.transform.position = new Vector3(endRoom.roomRect.x + endRoom.roomRect.width / 2, endRoom.roomRect.y + endRoom.roomRect.height / 2);
         }
