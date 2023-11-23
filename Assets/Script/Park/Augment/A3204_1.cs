@@ -5,8 +5,8 @@ using UnityEngine;
 public class A3204_1 : MonoBehaviour
 {
     PlayerStatHandler playerstat;
-    int maxHp = 30;
-    int hp = 30;//실드체
+    int maxHp = 15;
+    int hp = 15;//실드체
 
 
     // Start is called before the first frame update
@@ -26,11 +26,11 @@ public class A3204_1 : MonoBehaviour
         hp = maxHp;
         Debug.Log("hp");
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "적혹은적수타체") 
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet")
+        && collision.gameObject.GetComponent<Bullet>().targets.ContainsValue((int)BulletTarget.Player))
         {
-            //
             deadcheck();
         }
     }
