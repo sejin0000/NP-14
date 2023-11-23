@@ -28,7 +28,7 @@ public class A3204_1 : MonoBehaviour
             && bullet.targets.ContainsValue((int)BulletTarget.Player))
             {
                 deadcheck(bullet.ATK);
-                Destroy(collision);
+                Destroy(collision.gameObject);
             }
         }
 
