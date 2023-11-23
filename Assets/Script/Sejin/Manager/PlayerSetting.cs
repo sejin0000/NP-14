@@ -40,7 +40,7 @@ public class PlayerSetting : MonoBehaviour
     }
 
     [PunRPC]
-    private void PunSendPlayerLocation(Vector2 playerPos)
+    private void PunSendPlayerLocation(Vector2 playerPos)//호스트만 받음
     {
         Debug.Log("PunSendPlayerLocation");
         List<Node> _allRoomList = GameManager.Instance._mapGenerator.GetComponent<MapGenerator>().roomNodeInfo.allRoomList;
@@ -54,12 +54,27 @@ public class PlayerSetting : MonoBehaviour
                 _allRoomList[i].roomInPlayer = true;
                 if (_allRoomList[i].thisRoomClear == false)
                 {
-                    GameManager.Instance._mapGenerator.GetComponent<MapGenerator>().setTile.doorTileMap.gameObject.SetActive(true);
+                    GameManager.Instance.CallRoomStartEvent();
+                    PV.RPC("PlayerPositionSetting", RpcTarget.All,playerPos,new Vector2(_allRoomList[i].roomRect.x, _allRoomList[i].roomRect.y),new Vector2(_allRoomList[i].roomRect.width, _allRoomList[i].roomRect.height));
                 }
             }
         }
     }
 
+    [PunRPC]
+    private void PlayerPositionSetting(Vector2 roomInPlayer, Vector2 rectPos,Vector2 widthHeight)
+    {
+        Vector2 player = GameManager.Instance.clientPlayer.transform.position;
+        if (rectPos.x < player.x && rectPos.x + widthHeight.x > player.x &&
+            rectPos.y < player.y && rectPos.y + widthHeight.y > player.y)
+        {
+            return;
+        }
+        else
+        {
+            GameManager.Instance.clientPlayer.transform.position = roomInPlayer;
+        }
+    }
 
     IEnumerator SendPlayerLocation()
     {
