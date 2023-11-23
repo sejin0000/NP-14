@@ -9,17 +9,13 @@ public class A0218 : MonoBehaviour
     float time = 0;
     Vector2 a;
     Vector3 dir;
-    private void Awake()
-    {
-        //처음에 타겟 리스트 안들어갈거같음 이미안에있는애들 레이쏴서 하기 고려용 주석
-    }
     private void Update()
     {
         time += Time.deltaTime;
 
         foreach (GameObject star in target)
         {
-            if (star != null) 
+            if (star != null && star.GetComponent<Rigidbody2D>()) 
             {
                 dir = this.transform.position - star.transform.position;
                 dir = dir * 5f;
