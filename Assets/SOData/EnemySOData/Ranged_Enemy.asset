@@ -20,7 +20,7 @@ MonoBehaviour:
   atkDelay: 1.5
   patrolDelay: 10
   chaseTime: 4
-  bulletLifeTime: 2
+  bulletLifeTime: 6
   enemyMoveSpeed: 3.5
   enemyChaseSpeed: 2.5
   viewAngle: 55
@@ -28,3 +28,4 @@ MonoBehaviour:
   attackRange: 3
   dropGold: 0
   unitScale: 2
+  bossPatternTime: 0
