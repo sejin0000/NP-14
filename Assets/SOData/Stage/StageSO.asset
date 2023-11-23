@@ -16,6 +16,7 @@ MonoBehaviour:
   areaNum: 1
   stageNum: 1
   MonsterDatas:
+    stageTypr: 0
     monsters:
     - monsterType: "\uBAAC\uC2A4\uD1301"
       monsterCount: 10

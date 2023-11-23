@@ -40,13 +40,10 @@ public class MapGenerator : MonoBehaviour
         roomNodeInfo = GetComponent<RoomNodeInfo>();
     }
 
-    private void Start()
-    {
-
-    }
 
     public void MapMake()
     {
+        Debug.Log("MapMake");
         if (PhotonNetwork.IsMasterClient)
         {
             root = new Node(new RectInt(0, 0, mapSize.x, mapSize.y)); //전체 맵 크기의 루트노드를 만듬 
@@ -57,7 +54,7 @@ public class MapGenerator : MonoBehaviour
             GenerateRoom(root, 0);
 
             RoomMake();
-
+            allRoomList.Clear();
             for (int i = 0; i < L_childrenNode.Count; i++)
             {
                 allRoomList.Add(L_childrenNode[i]);
@@ -66,7 +63,7 @@ public class MapGenerator : MonoBehaviour
             {
                 allRoomList.Add(R_childrenNode[i]);
             }
-
+            lastRoomList.Clear();
             for (int i = 0; i < allRoomList.Count; i++)
             {
                 if (allRoomList[i].roadCount == 1)

@@ -822,5 +822,10 @@ namespace Photon.Pun
         {
             return string.Format("View {0}{3} on {1} {2}", this.ViewID, (this.gameObject != null) ? this.gameObject.name : "GO==null", (this.IsRoomView) ? "(scene)" : string.Empty, this.Prefix > 0 ? "lvl" + this.Prefix : "");
         }
+
+        public void RPV(string v, RpcTarget allBuffered)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

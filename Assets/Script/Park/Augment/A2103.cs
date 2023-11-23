@@ -5,29 +5,38 @@ using UnityEngine;
 
 public class A2103 : MonoBehaviourPun
 {
-    List<PlayerStatHandler> target = new List<PlayerStatHandler>();
+    List<GameObject> target;
     PlayerStatHandler me;
     public GameObject Player;
     private TopDownCharacterController controller;
 
-    public float power;
-    public float oldPower;
+    public float AtkPower;
+    public float AtkSpeedPower;
+    public float BulletSpreadPower;
+    public float SpeedPower;
+    public float AtkOldPower;
+    public float AtkspeedOldPower;
+    public float BulletSpreadOldPower;
+    public float SpeedOldPower;
 
     float setTime;
+    int count;
 
     public void Init()
     {
         me = transform.parent.gameObject.GetComponent<PlayerStatHandler>();
         controller = GetComponent<TopDownCharacterController>();
-        target = null;
-        oldPower = 0;
-        setTime = 0f;
-        MainGameManager.Instance.OnGameStartedEvent += Restart;
-        photonView.RPC("Check",RpcTarget.All);
-    }
-    public void Restart()
-    {
-        target = null;
+        target = new List<GameObject>();
+        AtkPower = 0;
+        AtkSpeedPower = 0;
+        BulletSpreadPower = 0;
+        SpeedPower = 0;
+        AtkOldPower = 0;
+        AtkspeedOldPower = 0;
+        BulletSpreadOldPower = 0;
+        SpeedOldPower = 0;
+        count = 0;
+
     }
     private void Update()
     {
@@ -42,45 +51,45 @@ public class A2103 : MonoBehaviourPun
 
     private void PowerSet() 
     {
-        int count = 0;
-        foreach (PlayerStatHandler star in target)
+        if (target.Count>=0) 
         {
-            if (star != null)
-            {
-                count++;
-            }
+            count = target.Count;
+            Debug.Log(count);
+            me.ATK.added -= AtkOldPower;
+            me.AtkSpeed.added -= AtkspeedOldPower;
+            me.BulletSpread.added -= BulletSpreadOldPower;
+            me.Speed.added -= SpeedOldPower;
+
+            AtkPower = count * 1f;
+            AtkSpeedPower = count * 0.1f;
+            BulletSpreadPower = count * -0.1f;
+            SpeedPower = count * 0.1f;
+
+            me.ATK.added += AtkPower;
+            me.AtkSpeed.added += AtkSpeedPower;
+            me.BulletSpread.added += BulletSpreadPower;
+            me.Speed.added += SpeedPower;
+
+            AtkOldPower = AtkPower;
+            AtkspeedOldPower = AtkSpeedPower;
+            BulletSpreadOldPower = BulletSpreadPower;
+            SpeedOldPower = SpeedPower;
         }
-        me.ATK.added -= oldPower;
-        me.AtkSpeed.added -= oldPower;
-        me.AmmoMax.added -= oldPower;
-        me.BulletSpread.added += oldPower;
-        me.Speed.added -= oldPower;
 
-        power = count * 0.1f;
-
-        me.ATK.added += power;
-        me.AtkSpeed.added += power;
-        me.AmmoMax.added += power;
-        me.BulletSpread.added -= power;
-        me.Speed.added += power;
-
-        oldPower = power;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Enemy" && !target.Contains(collision.GetComponent<PlayerStatHandler>()) && (collision.GetComponent<PlayerStatHandler>() != null))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            target.Add(collision.GetComponent<PlayerStatHandler>());
-            Debug.Log("적입장");
+            target.Add(collision.gameObject);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Enemy" && target.Contains(collision.GetComponent<PlayerStatHandler>()))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            target.Remove(collision.GetComponent<PlayerStatHandler>());
-            Debug.Log("적퇴장");
+            target.Remove(collision.gameObject);
         }
     }
 }

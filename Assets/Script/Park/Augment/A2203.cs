@@ -4,17 +4,24 @@ using UnityEngine;
 
 public class A2203 : MonoBehaviour
 {
-    float time = 0;
-    int maxtime = 5;//사라지는시간 현재5초
-    List<PlayerStatHandler> target= new List<PlayerStatHandler>();
-    int healP=2;
-    public void Init(PlayerStatHandler playerstatHandler)
+    private float time = 0;
+    [SerializeField] private int maxtime;//사라지는시간 현재5초
+    [SerializeField] private int healP;
+    private List<PlayerStatHandler> target;
+
+    int stack;
+    private void Awake()
     {
-        target.Add(playerstatHandler);
+        target= new List<PlayerStatHandler>();
+        healP = 2;
+        maxtime = 5;
+        stack = 0;
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player") 
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player")
+            && collision.gameObject.GetComponent<PlayerStatHandler>()) 
         {
             target.Add(collision.GetComponent<PlayerStatHandler>());
             Debug.Log("플레이어입장");
@@ -22,7 +29,8 @@ public class A2203 : MonoBehaviour
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player")
+            && collision.gameObject.GetComponent<PlayerStatHandler>())
         {
             target.Remove(collision.GetComponent<PlayerStatHandler>());
             Debug.Log("플레이어퇴장");
@@ -33,9 +41,11 @@ public class A2203 : MonoBehaviour
         time += Time.deltaTime;
         if (time >= 1f) 
         {
-                heal();
+            heal();
+            stack++;
+            time = 0f;
         }
-        if (time > maxtime) 
+        if (stack > maxtime) 
         {
             goodbye();
         }
@@ -44,7 +54,11 @@ public class A2203 : MonoBehaviour
     {
         for (int i = 0; i < target.Count; ++i) 
         {
-            target[i].HPadd(healP);
+            if (!target[i].isDie) 
+            {
+                target[i].HPadd(healP);
+                Debug.Log(target[i].CurHP);
+            }
         }
     }
     private void goodbye()

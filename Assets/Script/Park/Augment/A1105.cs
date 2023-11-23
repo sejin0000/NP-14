@@ -3,28 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class A1105 : MonoBehaviourPun
-{
-    //private TopDownCharacterController controller;
-    private PlayerStatHandler playerStat;
-    //private CoolTimeController coolTimeController;
+{  
     public WeaponSystem WeaponSystem;
-    public GameObject player;
-    int autoTime = 5;
+    private WaitForSeconds autoTime = new WaitForSeconds(5f);
+
     private void Awake()
     {
         if (photonView.IsMine)
         {
             WeaponSystem=GetComponent<WeaponSystem>();
-            photonView.RPC("RPCAutoChangeStart", RpcTarget.All);
         }
     }
     private void OnEnable()
     {
         if (photonView.IsMine) 
         {
-            photonView.RPC("RPCAutoChangeStart", RpcTarget.All);
+            AutoChangeStart();
         }
     }
     // Update is called once per frame
@@ -40,8 +37,30 @@ public class A1105 : MonoBehaviourPun
     {
         while (true)
         {
-            //if(gameObject.SetActive() == true)
             WeaponSystem.isDamage = !WeaponSystem.isDamage;
+            var targets = WeaponSystem.targets;
+            if (WeaponSystem.isDamage) 
+            {
+                if (targets.ContainsKey("Enemy"))
+                    continue;
+                else
+                {
+                    targets["Enemy"] = (int)BulletTarget.Enemy;
+                    targets.Remove("Player");
+                    Debug.Log("A1105 - 공격모드 실행");
+                }
+            }
+            else
+            {
+                if (targets.ContainsKey("Player"))
+                    continue;
+                else
+                {
+                    targets["Player"] = (int)BulletTarget.Player;
+                    targets.Remove("Enemy");
+                    Debug.Log("A1105 - 힐모드 실행");
+                }
+            }
             yield return autoTime;
         }
     }

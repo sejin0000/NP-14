@@ -14,8 +14,8 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     int atk = 5;
     int hp = 8;
     float speed = 1;
-    float atkspeed = 1f;
-    float bulletSpread = -1f;
+    float atkspeed = 0.1f;
+    float bulletSpread = -0.1f;
     int cooltime = -1;
     int critical = 5;
     int AmmoMax = 1;
@@ -733,7 +733,7 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     [PunRPC]
     private void A1101(int PlayerNumber) //대기만성 적 타격시 공증
     {
-        ChangePlayerStatHandler(PlayerNumber);
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
         targetPlayer.AddComponent<A1101>();
     }
     [PunRPC]
@@ -764,7 +764,7 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     [PunRPC]
     private void A1105(int PlayerNumber)//오토 쉬프트  //현재 코루틴 버그가 있음;
     {
-        ChangePlayerStatHandler(PlayerNumber);
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
         targetPlayer.AddComponent<A1105>();
         playerInput = targetPlayer.GetComponent<PlayerInput>();
         playerInput.actions.FindAction("Skill").Disable();
@@ -785,15 +785,6 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     }
 
     [PunRPC]
-    private void A1107_1(int PlayerNumber)//오브젝트 생성형 폐기된 디자인
-    {
-        ChangeOnlyPlayer(PlayerNumber);
-        GameObject Prefabs = Resources.Load<GameObject>("AugmentList/A1107");
-        GameObject go = Instantiate(Prefabs, targetPlayer.transform);
-        go.transform.SetParent(targetPlayer.transform);
-
-    }
-    [PunRPC]
     private void A1107(int PlayerNumber) //영역전개 최초의 대상에게 영구적으로 올려주는 타입 아직 세세한 오류가 있을것으로 예상된
     {
         ChangeOnlyPlayer(PlayerNumber);
@@ -813,9 +804,9 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         targetPlayer.GetComponent<WeaponSystem>().Penetrate = true;
-        //playerstatHandler.AmmoMax.added -= playerstatHandler.AmmoMax.total - 1;
-        playerstatHandler.ReloadCoolTime.coefficient *= 1.3f;
-        //playerstatHandler.ReloadCoolTime.coefficient *= 0.7f;
+        playerstatHandler.AmmoMax.added -= playerstatHandler.AmmoMax.total - 1;
+        playerstatHandler.ReloadCoolTime.coefficient *= 0.5f;
+        playerstatHandler.ATK.added += 5f;
     }
     [PunRPC]
     private void A1202(int PlayerNumber)//최장거리 저격 로케이터의 반대버전
@@ -886,14 +877,16 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     [PunRPC]
     private void A1304(int PlayerNumber)// 기회비용 힐모드 변경 x 딜모드 딜량증가
     {
-        ChangePlayerStatHandler(PlayerNumber);
-        WeaponSystem weaponSystemA = targetPlayer.GetComponent<WeaponSystem>();
-        playerInput = targetPlayer.GetComponent<PlayerInput>();
-        playerInput.actions.FindAction("Skill").Disable();
-        playerstatHandler.isCanSkill = false;
-        weaponSystemA.isDamage = false;
-        playerstatHandler.ATK.coefficient *= 1.5f;
-
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        if (targetPlayer.GetPhotonView().IsMine)
+        {
+            WeaponSystem weaponSystemA = targetPlayer.GetComponent<WeaponSystem>();
+            playerInput = targetPlayer.GetComponent<PlayerInput>();
+            playerInput.actions.FindAction("Skill").Disable();
+            playerstatHandler.isCanSkill = false;
+            weaponSystemA.isDamage = true;
+            playerstatHandler.ATK.coefficient *= 1.5f;
+        }
     }
     #endregion
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@솔져 1티어
@@ -969,7 +962,7 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
         targetPlayer.AddComponent<A2202>();
     }
     [PunRPC]
-    private void A2203(int PlayerNumber)//구른자리에힐생성 힐한다는거 자체가 어캐 될지 모르겠음 //미완성
+    private void A2203(int PlayerNumber)//구른자리에힐생성 힐한다는거 자체가 어캐 될지 모르겠음
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A2203_1>();
@@ -991,7 +984,7 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.AmmoMax.added += 30;
-        playerstatHandler.Speed.added -= 2;
+        playerstatHandler.Speed.added -= 0.5f;
         playerstatHandler.RollCoolTime.added += 2;
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@솔져 3티어
@@ -1001,7 +994,7 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
         ChangePlayerStatHandler(PlayerNumber);
         float changePower = playerstatHandler.AmmoMax.total - 1;
         playerstatHandler.AmmoMax.added -= playerstatHandler.AmmoMax.total - 1;
-        playerstatHandler.ATK.added += changePower * 0.5f;
+        playerstatHandler.ATK.added += changePower * 1f;
     }
     [PunRPC]
     private void A2302(int PlayerNumber)// 유도탄
@@ -1049,11 +1042,14 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     private void A3103(int PlayerNumber)//시즈모드 구르기를 시즈모드로 변경 
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
-        targetPlayer.AddComponent<A3103>();
-        targetPlayer.GetComponent<PlayerInputController>().siegeMode = true;
-        playerInput = targetPlayer.GetComponent<PlayerInput>();
-        playerInput.actions.FindAction("Roll").Disable();
-        playerInput.actions.FindAction("SiegeMode").Enable();
+        if(targetPlayer.GetPhotonView().IsMine)
+        {
+            targetPlayer.AddComponent<A3103>();
+            targetPlayer.GetComponent<PlayerInputController>().siegeMode = true;
+            playerInput = targetPlayer.GetComponent<PlayerInput>();
+            playerInput.actions.FindAction("Roll").Disable();
+            playerInput.actions.FindAction("SiegeMode").Enable();
+        }
     }
     [PunRPC]
     private void A3104(int PlayerNumber)
@@ -1100,7 +1096,6 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         playerstatHandler.AmmoMax.added += 5;
         playerstatHandler.AtkSpeed.coefficient *= 1.2f;
-        playerstatHandler.ATK.coefficient *= 0.9f;
     }
     [PunRPC]
     private void A3203(int PlayerNumber)//사이즈업 몸2배체력3배
@@ -1112,7 +1107,7 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
         playerstatHandler.HP.coefficient *= 3;
     }
     [PunRPC]
-    private void A3204(int PlayerNumber)
+    private void A3204(int PlayerNumber)//임시 방어 굴러서 방어
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A3204>();
@@ -1172,9 +1167,14 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     private void A3303(int PlayerNumber)//닥치고 돌격
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
-        playerInput = targetPlayer.GetComponent<PlayerInput>();
-        playerstatHandler.AmmoMax.added += 5f;
-        playerstatHandler.AtkSpeed.added += 2f;
-        playerstatHandler.RollCoolTime.added -= 2f;
+        if (targetPlayer.GetPhotonView().IsMine)
+        {
+            playerInput = targetPlayer.GetComponent<PlayerInput>();
+            playerstatHandler.AmmoMax.added += 5f;
+            playerstatHandler.AtkSpeed.added += 1f;
+            playerstatHandler.RollCoolTime.added -= 2f;
+            playerInput.actions.FindAction("Skill").Disable();
+            playerstatHandler.isCanSkill = false;
+        }
     }
 }

@@ -23,6 +23,5 @@ public class A2203_1 : MonoBehaviourPun
     {
         GameObject fire = PhotonNetwork.Instantiate("AugmentList/A2203",transform.localPosition,Quaternion.identity);
         A2203 a2203 = fire.GetComponent<A2203>();
-        //a2203.Init(playerStat);
     }
 }

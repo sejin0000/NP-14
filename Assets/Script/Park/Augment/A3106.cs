@@ -38,6 +38,7 @@ public class A3106 : MonoBehaviourPun
     private void ReflectDamage(float damage, int targetViewID)
     {
         PhotonView enemyPV = PhotonView.Find(targetViewID);
+        // TODO targetViewID가 Player일 경우 따로 처리해야함.
         float reflectDamage = damage * reflectCoeff;
         enemyPV.RPC("DecreaseHPByObject", RpcTarget.All, reflectDamage, viewID);
         Debug.Log($"{viewID}에게 {reflectDamage}만큼의 데미지를 반사함.");

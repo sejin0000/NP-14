@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyState_GroggyCondition : BTCondition
+public class EnemyState_GroggyCondition : BTAction
 {
     private GameObject owner;
     private EnemyAI enemyAI;
@@ -22,8 +22,6 @@ public class EnemyState_GroggyCondition : BTCondition
 
     public override void Initialize()
     {
-        SetStateColor();
-
         currentTime = enemySO.chaseTime;
     }
 
@@ -42,8 +40,11 @@ public class EnemyState_GroggyCondition : BTCondition
 
 
 
-        if (enemyAI.isGroggy)
+        if (enemyAI.isGroggy) 
+        {
+            SetStateColor();
             return Status.BT_Running;
+        }
         else
             return Status.BT_Failure;
     }
@@ -53,7 +54,7 @@ public class EnemyState_GroggyCondition : BTCondition
 
     public override void Terminate()
     {
-
+        enemyAI.spriteRenderer.color = new Color(255 / 255f, 255 / 255f, 255 / 255f ,255/255f);
     }
 
     private void SetStateColor()

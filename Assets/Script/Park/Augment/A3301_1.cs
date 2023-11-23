@@ -6,8 +6,8 @@ using UnityEngine;
 public class A3301_1 : MonoBehaviour
 {
     public float time = 0f;
-    public float shieldHP = 1f;
-    public float shieldSurvivalTime =0.5f;
+    public float shieldHP;
+    public float shieldSurvivalTime;
     int viewID;
     //public LayerMask
     // Start is called before the first frame update
@@ -16,6 +16,9 @@ public class A3301_1 : MonoBehaviour
     public void Init(int viewid)
     {
         viewID=viewid;
+        Debug.Log(viewID);
+        shieldHP = 1f;
+        shieldSurvivalTime = 0.75f;
     }
     private void Update()
     {
@@ -34,12 +37,6 @@ public class A3301_1 : MonoBehaviour
         if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet")
             && collision.gameObject.GetComponent<Bullet>().targets.ContainsValue((int)BulletTarget.Player))
         { 
-            shieldHP -= collision.gameObject.GetComponent<Bullet>().ATK;
-            if (shieldHP < 0)
-            {
-                Destroy();
-            }
-
             Bullet _bullet = collision.GetComponent<Bullet>();
 
             _bullet.BulletLifeTime = 10f;//시간 받아와야겠는데 모르겠으니까 걍 10초때린다 불만없제
@@ -48,6 +45,8 @@ public class A3301_1 : MonoBehaviour
             _bullet.BulletOwner = viewID;
             //아래는 반사
             collision.gameObject.transform.right = -collision.gameObject.transform.right;
+
+             Destroy();
         }
     }
 }

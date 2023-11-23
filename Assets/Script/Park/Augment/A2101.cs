@@ -19,6 +19,6 @@ public class A2101 : MonoBehaviourPun
     // Update is called once per frame
     void AtkSpeedUp()
     {
-        playerStat.AtkSpeed.added += 0.01f;
+        playerStat.AtkSpeed.added += 0.02f;
     }
 }
