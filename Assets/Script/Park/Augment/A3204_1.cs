@@ -7,19 +7,12 @@ public class A3204_1 : MonoBehaviour
     PlayerStatHandler playerstat;
     int maxHp = 15;
     float hp = 15;//Ω«µÂ√º
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        //transform.localScale*playerstat.gameObject.transform.localScale
-        GameObject scalechange = playerstat.gameObject;
-        transform.localScale = scalechange.transform.localScale;
-    }
     public void Init(PlayerStatHandler playerstatHandler)
     {
         playerstat = playerstatHandler;
         hp = maxHp;
+        GameObject scalechange = playerstat.gameObject;
+        transform.localScale = scalechange.transform.localScale;
     }
     public void reloading() 
     {
