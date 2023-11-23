@@ -969,7 +969,7 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
         targetPlayer.AddComponent<A2202>();
     }
     [PunRPC]
-    private void A2203(int PlayerNumber)//구른자리에힐생성 힐한다는거 자체가 어캐 될지 모르겠음 //미완성
+    private void A2203(int PlayerNumber)//구른자리에힐생성 힐한다는거 자체가 어캐 될지 모르겠음
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A2203_1>();
