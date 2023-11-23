@@ -29,12 +29,18 @@ public class A3301 : MonoBehaviourPun
         {
             shieldOBJ = PhotonNetwork.Instantiate("AugmentList/A3301", transform.position, Quaternion.identity);
             shieldOBJ.transform.SetParent(gameObject.transform);
-            shieldOBJ.GetComponent<A3301_1>().Init(viewid);
-            controller.CallEndSkillEvent();
+            //shieldOBJ.GetComponent<A3301_1>().Init(viewid);
             int PvNum = shieldOBJ.GetPhotonView().ViewID;
             photonView.RPC("FindMaster", RpcTarget.All, PvNum);
+            photonView.RPC("View", RpcTarget.All, PvNum,viewid);
             SkillEnd();
         }
+    }
+    [PunRPC]
+    private void View(int PvNum,int viewid)
+    {
+        PhotonView shieldOBJ = PhotonView.Find(PvNum);
+        shieldOBJ.GetComponent<A3301_1>().Init(viewid);
     }
     [PunRPC]
     private void FindMaster(int num)

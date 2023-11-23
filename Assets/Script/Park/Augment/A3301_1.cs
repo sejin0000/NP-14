@@ -16,6 +16,7 @@ public class A3301_1 : MonoBehaviour
     public void Init(int viewid)
     {
         viewID=viewid;
+        Debug.Log(viewID);
         shieldHP = 1f;
         shieldSurvivalTime = 0.75f;
     }
