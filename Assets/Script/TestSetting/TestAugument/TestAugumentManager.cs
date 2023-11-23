@@ -884,7 +884,7 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
             playerInput = targetPlayer.GetComponent<PlayerInput>();
             playerInput.actions.FindAction("Skill").Disable();
             playerstatHandler.isCanSkill = false;
-            weaponSystemA.isDamage = false;
+            weaponSystemA.isDamage = true;
             playerstatHandler.ATK.coefficient *= 1.5f;
         }
     }

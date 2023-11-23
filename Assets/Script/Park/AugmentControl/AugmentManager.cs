@@ -890,7 +890,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
             playerInput = targetPlayer.GetComponent<PlayerInput>();
             playerInput.actions.FindAction("Skill").Disable();
             playerstatHandler.isCanSkill = false;
-            weaponSystemA.isDamage = false;
+            weaponSystemA.isDamage = true;
             playerstatHandler.ATK.coefficient *= 1.5f;
         }
     }
