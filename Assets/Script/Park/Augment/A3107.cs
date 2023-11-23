@@ -15,6 +15,7 @@ public class A3107 : MonoBehaviour
     public GameObject[] target;
     public PlayerStatHandler playerStat;
     public float damege;
+    public int PvNum;
 
     private void Start()
     {
@@ -26,6 +27,7 @@ public class A3107 : MonoBehaviour
     {
         GameObject player1 = pl;
         playerStat = player1.GetComponent<PlayerStatHandler>();
+        PvNum = playerStat.photonView.ViewID;
         MainGameManager.Instance.OnGameStartedEvent += DamegeUpdate;
         DamegeUpdate();
     }
@@ -52,11 +54,10 @@ public class A3107 : MonoBehaviour
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Debug.Log("");
-        if (collision.gameObject.layer == LayerMask.NameToLayer("EnemyBullet"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
             EnemyAI wjr = collision.GetComponent<EnemyAI>();
-            wjr.PV.RPC("DecreaseHP", RpcTarget.All, damege);
+            wjr.PV.RPC("DecreaseHPByObject", RpcTarget.All, damege, PvNum);
         }
     }
     public void DamegeUpdate()
