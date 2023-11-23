@@ -51,22 +51,28 @@ public class BossAI_State_SpecialAttack : BTAction
         if (currentTime <= 0)
         {
             // 공격 주기에 도달하면 랜덤 공격 실행
-            int randomPattern = Random.Range(0, 2);
+            int randomPattern = Random.Range(0, 3);
 
+            Debug.Log($"랜덤 패턴 뽑는중 현재 : {randomPattern}");
 
             //난수에 따른 패턴 RPC 여기에 입력
             switch(randomPattern)
             {
                 case 0:
+                    //이거 싹다 동기화 해야댐
+                    bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 2);                  
                     //bossAI_Dragon.PV.RPC("Fire", RpcTarget.All);
                     break;
                 case 1:
+                    bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 3);
                     //bossAI_Dragon.PV.RPC("Fire", RpcTarget.All);
                     break;
                 case 2:
+                    bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 6);
                     //bossAI_Dragon.PV.RPC("Fire", RpcTarget.All);
                     break;
             }            
+
             currentTime = bossSO.atkDelay; //시간 초기화
         }
 
@@ -82,7 +88,6 @@ public class BossAI_State_SpecialAttack : BTAction
 
         //anim.SetTrigger("Attack"); // 공격 애니메이션
 
-        Debug.Log($"현재 타겟은 {target.name}입니다");
         //대상과 머리의 방향을 구한 뒤 해당 방향으로 RotateArm
         Vector3 direction = (target.transform.position - bossAI_Dragon.bossHead.transform.position).normalized;
 

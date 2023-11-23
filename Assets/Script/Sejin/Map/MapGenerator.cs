@@ -27,31 +27,37 @@ public class MapGenerator : MonoBehaviour
     public List<Node> loadRoomList = new List<Node>();
     public List<Node> lastRoomList = new List<Node>();
 
-
     int nodeDepth;
 
-    private SetTile setTile;
+    public SetTile setTile;
+    public RoomNodeInfo roomNodeInfo;
 
     Node root;
     private void Awake()
     {
         setTile = GetComponent<SetTile>();
+        roomNodeInfo = GetComponent<RoomNodeInfo>();
     }
 
-    void Start()
+    private void Start()
+    {
+
+    }
+
+    public void MapMake()
     {
         if (PhotonNetwork.IsMasterClient)
         {
             root = new Node(new RectInt(0, 0, mapSize.x, mapSize.y)); //전체 맵 크기의 루트노드를 만듬 
 
-            setTile.OrderSetRectTile(new RectInt(0, 0, mapSize.x + 20, mapSize.y + 10), setTile.wallTileMap, setTile.wallTile,new Vector2(-10,-5));
+            setTile.OrderSetRectTile(new RectInt(0, 0, mapSize.x + 20, mapSize.y + 10), setTile.wallTileMap, setTile.wallTile, new Vector2(-10, -5));
 
             Divide(root, 0);
             GenerateRoom(root, 0);
 
-            MapMake();
+            RoomMake();
 
-            for(int i = 0; i < L_childrenNode.Count; i++)
+            for (int i = 0; i < L_childrenNode.Count; i++)
             {
                 allRoomList.Add(L_childrenNode[i]);
             }
@@ -60,21 +66,21 @@ public class MapGenerator : MonoBehaviour
                 allRoomList.Add(R_childrenNode[i]);
             }
 
-            for(int i = 0; i < allRoomList.Count; i++)
+            for (int i = 0; i < allRoomList.Count; i++)
             {
                 if (allRoomList[i].roadCount == 1)
                 {
                     lastRoomList.Add(allRoomList[i]);
                 }
             }
-            GetComponent<RoomNodeInfo>().ChooseRoom();
-
-            GetComponent<RoomNodeInfo>().PlayerPositionSetting();
+            roomNodeInfo.ChooseRoom();
+            roomNodeInfo.PlayerPositionSetting();
         }
+
+        setTile.doorTileMap.gameObject.SetActive(false);
     }
 
-
-    public void MapMake()
+    public void RoomMake()
     {
         for (int i = 0; i < maximumDepth; i++)
         {

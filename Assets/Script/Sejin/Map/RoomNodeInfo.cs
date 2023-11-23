@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class RoomNodeInfo : MonoBehaviour
 {
+    public List<Node> allRoomList;
     Node startRoom;
     Node endRoom;
 
@@ -17,22 +18,33 @@ public class RoomNodeInfo : MonoBehaviour
         PV = GetComponent<PhotonView>();
     }
 
+    private void Start()
+    {
+        GameManager.Instance.OnRoomStartEvent += CloseDoor;
+        GameManager.Instance.OnRoomEndEvent += OpenDoor;
+    }
+
     public void ChooseRoom()
     {
         startRoom = mapGenerator.lastRoomList[0];
+        mapGenerator.lastRoomList[0].thisRoomClear = true;
         endRoom = mapGenerator.lastRoomList[mapGenerator.lastRoomList.Count - 1];
+        mapGenerator.lastRoomList[mapGenerator.lastRoomList.Count - 1].thisRoomClear = true;
+        allRoomList = mapGenerator.allRoomList;
     }
+
+
 
     public void PlayerPositionSetting()
     {
         Vector2 _startRoom = new Vector2(startRoom.roomRect.x, startRoom.roomRect.y);
         Vector2 _widthHeight = new Vector2(startRoom.roomRect.width, startRoom.roomRect.height);
 
-        PV.RPC("PunPlayerPositionSetting",RpcTarget.AllBuffered, _startRoom, _widthHeight);
+        PV.RPC("PunPlayerPositionSetting", RpcTarget.AllBuffered, _startRoom, _widthHeight);
     }
 
     [PunRPC]
-    public void PunPlayerPositionSetting( Vector2 startRoom, Vector2 widthHeight)
+    private void PunPlayerPositionSetting(Vector2 startRoom, Vector2 widthHeight)
     {
         Vector2 vector;
 
@@ -40,6 +52,28 @@ public class RoomNodeInfo : MonoBehaviour
         vector.y = Random.Range(startRoom.y + 1, startRoom.y + widthHeight.y - 1);
 
 
-        TestGameManagerSejin.Instance.InstantiatedPlayer.transform.position = vector;
+        GameManager.Instance.clientPlayer.transform.position = vector;
+    }
+
+    public void CloseDoor()
+    {
+        PV.RPC("PunCloseDoor",RpcTarget.All);
+    }
+
+    [PunRPC]
+    private void PunCloseDoor()
+    {
+        mapGenerator.setTile.doorTileMap.gameObject.SetActive(true);
+    }
+
+    public void OpenDoor()
+    {
+        PV.RPC("PunCloseDoor", RpcTarget.All);
+    }
+
+    [PunRPC]
+    private void PunOpenDoor()
+    {
+        mapGenerator.setTile.doorTileMap.gameObject.SetActive(false);
     }
 }
