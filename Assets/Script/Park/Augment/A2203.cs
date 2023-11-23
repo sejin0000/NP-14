@@ -9,11 +9,13 @@ public class A2203 : MonoBehaviour
     [SerializeField] private int healP;
     private List<PlayerStatHandler> target;
 
+    int stack;
     private void Awake()
     {
         target= new List<PlayerStatHandler>();
         healP = 2;
         maxtime = 5;
+        stack = 0;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -39,9 +41,11 @@ public class A2203 : MonoBehaviour
         time += Time.deltaTime;
         if (time >= 1f) 
         {
-                heal();
+            heal();
+            stack++;
+            time = 0f;
         }
-        if (time > maxtime) 
+        if (stack > maxtime) 
         {
             goodbye();
         }
@@ -53,6 +57,7 @@ public class A2203 : MonoBehaviour
             if (!target[i].isDie) 
             {
                 target[i].HPadd(healP);
+                Debug.Log(target[i].CurHP);
             }
         }
     }
