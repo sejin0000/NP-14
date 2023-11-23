@@ -210,6 +210,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             float atk = collision.transform.GetComponent<Bullet>().ATK;
             isChase = true;
             int ViewID = playerBullet.BulletOwner;
+            Debug.Log($"뷰아이디 : {ViewID}");
             PhotonView PlayerPv = PhotonView.Find(ViewID);
             PlayerStatHandler player = PlayerPv.gameObject.GetComponent<PlayerStatHandler>();
             player.EnemyHitCall();
