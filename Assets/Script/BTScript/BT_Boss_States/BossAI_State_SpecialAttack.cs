@@ -51,22 +51,28 @@ public class BossAI_State_SpecialAttack : BTAction
         if (currentTime <= 0)
         {
             // 공격 주기에 도달하면 랜덤 공격 실행
-            int randomPattern = Random.Range(0, 2);
+            int randomPattern = Random.Range(0, 3);
 
+            Debug.Log($"랜덤 패턴 뽑는중 현재 : {randomPattern}");
 
             //난수에 따른 패턴 RPC 여기에 입력
             switch(randomPattern)
             {
                 case 0:
+                    //이거 싹다 동기화 해야댐
+                    bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 2);                  
                     //bossAI_Dragon.PV.RPC("Fire", RpcTarget.All);
                     break;
                 case 1:
+                    bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 3);
                     //bossAI_Dragon.PV.RPC("Fire", RpcTarget.All);
                     break;
                 case 2:
+                    bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 6);
                     //bossAI_Dragon.PV.RPC("Fire", RpcTarget.All);
                     break;
             }            
+
             currentTime = bossSO.atkDelay; //시간 초기화
         }
 
