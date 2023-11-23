@@ -219,7 +219,17 @@ MonoBehaviour:
   - SetRegenBool
   - PunSetLineTile
   - PunSetDoorTile
-  - ActiveAttackArea
+  - SetShieldParent
+  - thankyouLife
+  - MiremovePartyDeathCount
+  - RemovePartyDeathCount
+  - GiveAtk
+  - AddHealAmount
+  - InvokeHealedEvent
+  - PunPlayerPositionSetting
+  - SetShieldParent
+  - PlayerInfoDictionarySetting
+  - PunSendPlayerLocation
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

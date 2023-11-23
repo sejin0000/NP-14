@@ -18,8 +18,11 @@ public class A0221 : MonoBehaviourPun
             stats = GetComponent<PlayerStatHandler>();
             coolTimeController = GetComponent<CoolTimeController>();
             _ws = GetComponent<WeaponSystem>();
-
-            SetCharge();
+            if (_ws.weaponType != WeaponSystem.WeaponType.Charging)
+            {
+                _ws.weaponType = WeaponSystem.WeaponType.Charging;
+                SetCharge();
+            }
         }
     }
 
@@ -30,6 +33,5 @@ public class A0221 : MonoBehaviourPun
         controller.OnAttackEvent -= _ws.Shooting;
         controller.OnChargeAttackEvent += _ws.Charging;
         controller.playerStatHandler.IsChargeAttack = true;
-        Debug.Log("A0221 세팅 완료");
     }
 }

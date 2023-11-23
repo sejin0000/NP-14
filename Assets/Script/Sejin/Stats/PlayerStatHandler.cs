@@ -64,6 +64,7 @@ public class PlayerStatHandler : MonoBehaviourPun
     private int kill;
     [HideInInspector] public bool CanSpeedBuff;
     [HideInInspector] public bool CanLowSteam;
+    [HideInInspector] public bool CanAtkBuff;
     public int CurRegenCoin
     {
         get { return curRegenCoin; }
@@ -178,8 +179,10 @@ public class PlayerStatHandler : MonoBehaviourPun
         CanRoll = true;
         UseRoll = true;
         Invincibility = false;
+
         CanSpeedBuff = true;
         CanLowSteam = true;
+        CanAtkBuff = true;
 
         isNoramlMove = true;
         isCanSkill=true;
@@ -214,6 +217,11 @@ public class PlayerStatHandler : MonoBehaviourPun
             CanSpeedBuff = true;
             AtkSpeed.added -= 0.5f;
             Speed.added -= 0.5f;
+        }
+        if (!CanAtkBuff)
+        {
+            ATK.coefficient -= 0.1f;
+            CanAtkBuff = true;
         }
     }
 
@@ -279,7 +287,7 @@ public class PlayerStatHandler : MonoBehaviourPun
                 {
                     TestGameManager.Instance.DiedAfter();
                 }
-                this.gameObject.layer = 0;
+                this.gameObject.layer = 12;
             }
 
             Debug.Log("[PlayerStatHandler] " + "Damage Done");
@@ -359,14 +367,14 @@ public class PlayerStatHandler : MonoBehaviourPun
         Debug.Log($" { viewID} : HP : {_CurHP}");
         PhotonView _PV;
         _PV = PhotonView.Find(viewID);
+        PlayerStatHandler _PvPlayer = _PV.gameObject.GetComponent<PlayerStatHandler>();
+        _PvPlayer.CurHP = _CurHP;
 
-        _PV.gameObject.GetComponent <PlayerStatHandler>().CurHP = _CurHP;
-
-        if(_PV.gameObject.GetComponent<PlayerStatHandler>().CurHP <= 0 )
+        if(_PvPlayer.CurHP <= 0 )
         {
             isDie = true;
             OnDieEvent?.Invoke();
-            this.gameObject.layer = 0;
+            this.gameObject.layer = 12;
         }
     }
     public void MoveStartCall() 
@@ -410,5 +418,13 @@ public class PlayerStatHandler : MonoBehaviourPun
         {
             OnDamageReflectEvent?.Invoke(damage, targetID);
         }
+    }
+
+    [PunRPC]
+    public void thankyouLife(int pvid)
+    {
+        PhotonView photonView = PhotonView.Find(pvid);
+        WeaponSystem weapon = photonView.gameObject.GetComponent<WeaponSystem>();
+        weapon.canresurrection = false;
     }
 }

@@ -23,6 +23,8 @@ public class Bullet : MonoBehaviour
     public bool burn;
     public bool gravity;
     public bool Penetrate;
+    public bool canresurrection;
+    public bool sniperAtkBuff;
 
     private HumanAttackintelligentmissile missile;
 
@@ -99,11 +101,35 @@ public class Bullet : MonoBehaviour
             Destroy();
         }
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)//TO DEL 이 부분은 스나이퍼1201을 고려하여 작성하여야 합니다
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Wall")) //만약벽이라면
         {
-            Destroy();
+            Invoke("Destroy", 0.01f);
+            Debug.Log("벽이라서삭제");
+            return;
+        }
+        //만약 팀킬이 아닌 몬스터의 총알이라면 몬스터가 아니라면 삭제
+        else if (targets.ContainsValue((int)BulletTarget.Player)
+            && !targets.ContainsValue((int)BulletTarget.Enemy)
+            && collision.gameObject.layer == LayerMask.NameToLayer("Player"))
+        {
+            Invoke("Destroy", 0.01f);
+            Debug.Log("몬스터총알이 플레이어에 부딪혀서 삭제");
+            return;
+        }
+        //만약 관통인 플레이어의 총알이라면 벽일때삭제
+        else if (Penetrate)
+        {
+            Debug.Log("관통");
+            return;
+        }
+        //플레이어의 총알이 몬스터에게부딪혀서 삭제
+        else if (targets.ContainsValue((int)BulletTarget.Enemy) && collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            Invoke("Destroy", 0.01f);
+            Debug.Log("플레이어의총알이 무언가에 부딪혀서 삭제");
+            return;
         }
     }
 }

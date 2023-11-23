@@ -750,9 +750,15 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A1104(int PlayerNumber)
+    private void A1104(int PlayerNumber)//플래시 
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A1104>();
+        targetPlayer.GetComponent<PlayerInputController>().Flash = true;
+        playerInput = targetPlayer.GetComponent<PlayerInput>();
+        playerInput.actions.FindAction("Flash").Enable();
+        playerInput.actions.FindAction("Roll").Disable();
+        playerInput.actions.FindAction("SiegeMode").Disable();
     }
     [PunRPC]
     private void A1105(int PlayerNumber)//오토 쉬프트  //현재 코루틴 버그가 있음;
@@ -802,9 +808,13 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     #region Sniper2
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@스나이퍼 2티어
     [PunRPC]
-    private void A1201(int PlayerNumber)
+    private void A1201(int PlayerNumber)//관통탄
     {
-        Debug.Log("미완성");
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        targetPlayer.GetComponent<WeaponSystem>().Penetrate = true;
+        playerstatHandler.AmmoMax.added -= playerstatHandler.AmmoMax.total - 1;
+        playerstatHandler.ReloadCoolTime.coefficient *= 1.3f;
+        //playerstatHandler.ReloadCoolTime.coefficient *= 0.7f;
     }
     [PunRPC]
     private void A1202(int PlayerNumber)//최장거리 저격 로케이터의 반대버전
@@ -824,9 +834,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A1205(int PlayerNumber)
+    private void A1205(int PlayerNumber)//신중한 사격 스킬체크
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A1205>();
     }
     [PunRPC]
     private void A1206(int PlayerNumber)
@@ -834,22 +845,35 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Debug.Log("미완성");
     }
     [PunRPC]
-    private void A1207(int PlayerNumber)
+    private void A1207(int PlayerNumber)//>>이동다끔 콜리전끔 포지션업데이트로 다른플레이어값 받아서
+                                        //돌림 시작하자마자 플레이어 목숨 -1 그냥 죽은취급
     {
-        Debug.Log("미완성");
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        targetPlayer.AddComponent<A1207>();
+        PlayerInputController inputController= targetPlayer.GetComponent<PlayerInputController>();
+        inputController.cantMove = true;
+        inputController.cantSpacebar = true;
+        playerInput = targetPlayer.GetComponent<PlayerInput>();
+        playerInput.actions.FindAction("Move2").Disable();
+        playerInput.actions.FindAction("Move").Disable();
+        playerInput.actions.FindAction("SiegeMode").Disable();
+        playerInput.actions.FindAction("Flash").Disable();
     }
     #endregion
     #region Sniper3
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@스나이퍼 3티어
     [PunRPC]
-    private void A1301(int PlayerNumber)
+    private void A1301(int PlayerNumber)//고급지원가 
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.GetComponent<WeaponSystem>().sniperAtkBuff = true;
     }
     [PunRPC]
-    private void A1302(int PlayerNumber)
+    private void A1302(int PlayerNumber)//리바이브샷 스테이지당 한번 아군 부활시키기
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.GetComponent<WeaponSystem>().canresurrection = true;
+        targetPlayer.AddComponent<A1302>();
     }
     [PunRPC]
     private void A1303(int PlayerNumber)
@@ -1025,6 +1049,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         playerInput = targetPlayer.GetComponent<PlayerInput>();
         playerInput.actions.FindAction("Roll").Disable();
         playerInput.actions.FindAction("SiegeMode").Enable();
+        playerInput.actions.FindAction("Flash").Disable();
     }
     [PunRPC]
     private void A3104(int PlayerNumber)

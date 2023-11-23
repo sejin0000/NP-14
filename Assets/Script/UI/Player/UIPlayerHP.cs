@@ -32,8 +32,10 @@ public class UIPlayerHP : UIBase, ICommonUI
     {
         if (SceneManager.GetActiveScene().name == "Test_DoHyun")
             playerStats = TestGameManagerDohyun.Instance.InstantiatedPlayer.GetComponent<PlayerStatHandler>();
-        else
+        else if (MainGameManager.Instance != null)
             playerStats = MainGameManager.Instance.InstantiatedPlayer.GetComponent<PlayerStatHandler>();
+        else
+            playerStats = GameManager.Instance.clientPlayer.GetComponent<PlayerStatHandler>();
 
         hpGauge = GetComponentInChildren<Slider>();
 
