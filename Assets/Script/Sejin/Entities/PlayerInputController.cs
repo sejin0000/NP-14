@@ -158,22 +158,6 @@ public class PlayerInputController : TopDownCharacterController
                     CallAttackKeepEvent(false);
                 }
             }
-            else
-            {
-                //playerInput.actions["Attack"].ReadValue<float>()마우스 눌리는거 확인하는 변수
-                if (!IsAtking && !EventSystem.current.IsPointerOverGameObject() && playerInput.actions["Attack"].ReadValue<float>() == 1)
-                {
-                    CallAttackEvent(true);
-                    //추가함
-                    CallAttackKeepEvent(true);
-                }
-                else
-                {
-                    CallAttackEvent(false);
-                    //추가함
-                    CallAttackKeepEvent(false);
-                }
-            }
         }
         else
         {
