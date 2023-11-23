@@ -790,7 +790,6 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         GameObject Prefabs = Resources.Load<GameObject>("AugmentList/A1107");
         GameObject go = Instantiate(Prefabs, targetPlayer.transform);
         go.transform.SetParent(targetPlayer.transform);
-
     }
     [PunRPC]
     private void A1107(int PlayerNumber) //영역전개 최초의 대상에게 영구적으로 올려주는 타입 아직 세세한 오류가 있을것으로 예상된
@@ -813,7 +812,8 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         targetPlayer.GetComponent<WeaponSystem>().Penetrate = true;
         playerstatHandler.AmmoMax.added -= playerstatHandler.AmmoMax.total - 1;
-        playerstatHandler.ReloadCoolTime.coefficient *= 1.3f;
+        playerstatHandler.ReloadCoolTime.coefficient *= 0.5f;
+        playerstatHandler.ATK.added += 5f;
         //playerstatHandler.ReloadCoolTime.coefficient *= 0.7f;
     }
     [PunRPC]
@@ -883,14 +883,16 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A1304(int PlayerNumber)// 기회비용 힐모드 변경 x 딜모드 딜량증가
     {
-        ChangePlayerStatHandler(PlayerNumber);
-        WeaponSystem weaponSystemA = targetPlayer.GetComponent<WeaponSystem>();
-        playerInput = targetPlayer.GetComponent<PlayerInput>();
-        playerInput.actions.FindAction("Skill").Disable();
-        playerstatHandler.isCanSkill = false;
-        weaponSystemA.isDamage=false;
-        playerstatHandler.ATK.coefficient *= 1.5f;
-
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        if (targetPlayer.GetPhotonView().IsMine) 
+        {
+            WeaponSystem weaponSystemA = targetPlayer.GetComponent<WeaponSystem>();
+            playerInput = targetPlayer.GetComponent<PlayerInput>();
+            playerInput.actions.FindAction("Skill").Disable();
+            playerstatHandler.isCanSkill = false;
+            weaponSystemA.isDamage = false;
+            playerstatHandler.ATK.coefficient *= 1.5f;
+        }
     }
     #endregion
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@솔져 1티어
