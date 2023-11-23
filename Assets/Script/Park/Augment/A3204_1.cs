@@ -6,7 +6,7 @@ public class A3204_1 : MonoBehaviour
 {
     PlayerStatHandler playerstat;
     int maxHp = 15;
-    int hp = 15;//실드체
+    float hp = 15;//실드체
 
 
     // Start is called before the first frame update
@@ -28,14 +28,21 @@ public class A3204_1 : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet")
-        && collision.gameObject.GetComponent<Bullet>().targets.ContainsValue((int)BulletTarget.Player))
+        if (collision.gameObject.GetComponent<Bullet>()) 
         {
-            deadcheck();
+            Bullet bullet = collision.gameObject.GetComponent<Bullet>();
+            if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet")
+            && bullet.targets.ContainsValue((int)BulletTarget.Player))
+            {
+                deadcheck(bullet.ATK);
+                Destroy(collision);
+            }
         }
+
     }
-    void deadcheck() 
+    void deadcheck(float a) 
     {
+        hp -= a;
         if (hp < 0) 
         {
             Destroy(gameObject);
