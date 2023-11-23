@@ -219,6 +219,13 @@ MonoBehaviour:
   - SetRegenBool
   - PunSetLineTile
   - PunSetDoorTile
+  - SetShieldParent
+  - thankyouLife
+  - MiremovePartyDeathCount
+  - RemovePartyDeathCount
+  - GiveAtk
+  - AddHealAmount
+  - InvokeHealedEvent
   - PunPlayerPositionSetting
   - SetShieldParent
   - PlayerInfoDictionarySetting

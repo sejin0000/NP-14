@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class A0221 : MonoBehaviourPun
+public class A1303 : MonoBehaviourPun
 {
     private TopDownCharacterController controller;
     private PlayerStatHandler stats;
     private CoolTimeController coolTimeController;
     private WeaponSystem _ws;
+    private float damageCoeff;
 
     private void Awake()
     {
@@ -18,11 +19,14 @@ public class A0221 : MonoBehaviourPun
             stats = GetComponent<PlayerStatHandler>();
             coolTimeController = GetComponent<CoolTimeController>();
             _ws = GetComponent<WeaponSystem>();
-            if (_ws.weaponType != WeaponSystem.WeaponType.Charging)
+            if(_ws.weaponType != WeaponSystem.WeaponType.Charging)
             {
                 _ws.weaponType = WeaponSystem.WeaponType.Charging;
                 SetCharge();
             }
+
+            _ws.OnFinalDamageEvent += FinalAttackBonus;
+            damageCoeff = 0.5f;
         }
     }
 
@@ -33,5 +37,14 @@ public class A0221 : MonoBehaviourPun
         controller.OnAttackEvent -= _ws.Shooting;
         controller.OnChargeAttackEvent += _ws.Charging;
         controller.playerStatHandler.IsChargeAttack = true;
+    }
+
+    private void FinalAttackBonus()
+    {
+        if (stats.CurAmmo == 0)
+        {
+            _ws.finalAttackCoeff += damageCoeff;
+            Debug.Log($"계수 추가 완료 : {damageCoeff}");
+        }        
     }
 }

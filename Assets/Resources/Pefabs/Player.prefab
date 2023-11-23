@@ -667,6 +667,7 @@ MonoBehaviour:
   MaxRegenCoin: 0
   CanSpeedBuff: 0
   CanLowSteam: 0
+  CanAtkBuff: 0
   MaxSkillStack: 0
   CurSkillStack: 0
   MaxRollStack: 0
@@ -731,6 +732,8 @@ MonoBehaviour:
   IsMove: 0
   siegeMode: 0
   Flash: 0
+  cantMove: 0
+  cantSpacebar: 0
 --- !u!114 &8906668803129869717
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -819,8 +822,12 @@ MonoBehaviour:
   Penetrate: 0
   pivotSet: 0
   humanAttackintelligentmissile: 0
+  canresurrection: 0
+  sniperAtkBuff: 0
   _viewID: 0
   bulletNum: 0
+  weaponType: 0
+  finalAttackCoeff: 0
 --- !u!114 &3736999086756257612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -951,6 +958,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8f4eac6df6b7a44781b53e506cb3524, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CanPayBack: 0
+  CanSupport: 0
+  footCollider: {fileID: 0}
+  rigidbody: {fileID: 0}
 --- !u!114 &216501136413859800
 MonoBehaviour:
   m_ObjectHideFlags: 0

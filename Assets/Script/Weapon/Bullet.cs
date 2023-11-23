@@ -23,6 +23,8 @@ public class Bullet : MonoBehaviour
     public bool burn;
     public bool gravity;
     public bool Penetrate;
+    public bool canresurrection;
+    public bool sniperAtkBuff;
 
     private HumanAttackintelligentmissile missile;
 

@@ -1,11 +1,19 @@
 using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI.Table;
+using Random = UnityEngine.Random;
 
 public class WeaponSystem : MonoBehaviour
 {
+    public enum WeaponType
+    {
+        Shooting,
+        Charging,
+    }
+
     private TopDownCharacterController _controller;
     private PhotonView pv;
     public Transform muzzleOfAGun;
@@ -27,11 +35,18 @@ public class WeaponSystem : MonoBehaviour
 
     public bool pivotSet;
     public bool humanAttackintelligentmissile;
+    public bool canresurrection;
+    public bool sniperAtkBuff;
 
     public int _viewID;
     // 추가
     public int bulletNum;
     private CoolTimeController _cool;
+
+    public WeaponType weaponType;
+
+    public event Action OnFinalDamageEvent;
+    public float finalAttackCoeff;
 
     private void Awake()
     {
@@ -56,6 +71,10 @@ public class WeaponSystem : MonoBehaviour
         gravity = false;
         Penetrate = false;
         pivotSet = false;
+        canresurrection = false;
+        sniperAtkBuff=false;
+        weaponType = WeaponType.Shooting;
+        finalAttackCoeff = 1;
         humanAttackintelligentmissile = false;
 
     _cool = GetComponent<CoolTimeController>();
@@ -87,19 +106,22 @@ public class WeaponSystem : MonoBehaviour
         int bullets = _cool.bulletNum;
         if (bullets == 0)
             return;
+
+        OnFinalDamageEvent?.Invoke();
+
         for (int i = 0; i < bullets; i++) 
         {
             Quaternion rot = muzzleOfAGun.transform.rotation;
             rot.eulerAngles += new Vector3(0, 0, Random.Range(-1 * _controller.playerStatHandler.BulletSpread.total, _controller.playerStatHandler.BulletSpread.total));// 중요함
 
-            float _ATK = _controller.playerStatHandler.ATK.total;
+            float _ATK = _controller.playerStatHandler.ATK.total * finalAttackCoeff;
             float _BLT = _controller.playerStatHandler.BulletLifeTime.total;
             var _targets = targets;
             bool _isDamage = isDamage;
 
-            pv.RPC("BS", RpcTarget.All, rot, _ATK, _BLT, _targets, _isDamage, _viewID);
-            //_controller.playerStatHandler.CurAmmo--;
+            pv.RPC("BS", RpcTarget.All, rot, _ATK, _BLT, _targets, _isDamage, _viewID);            
         }
+        finalAttackCoeff = 1;
         _cool.bulletNum = 0;
     }
     public void burstCall(Quaternion rot)
@@ -168,6 +190,8 @@ public class WeaponSystem : MonoBehaviour
         _bullet.burn = burn;
         _bullet.gravity = gravity;
         _bullet.Penetrate = Penetrate;
+        _bullet.canresurrection = canresurrection;
+        _bullet.sniperAtkBuff = sniperAtkBuff;
         if (humanAttackintelligentmissile) 
         {
             _bullet.MissileFire();
