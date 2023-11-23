@@ -23,9 +23,9 @@ public class A3204 : MonoBehaviourPun
         nullcheck = null;
     }
     void make()
-        {
+    {
         photonView.RPC("Makeshield", RpcTarget.All);
-        }
+    }
     // Update is called once per frame
     [PunRPC]
     void Makeshield()

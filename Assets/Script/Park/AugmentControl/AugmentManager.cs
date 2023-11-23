@@ -1095,7 +1095,6 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         playerstatHandler.AmmoMax.added += 5;
         playerstatHandler.AtkSpeed.coefficient *= 1.2f;
-        playerstatHandler.ATK.coefficient *= 0.9f;
     }
     [PunRPC]
     private void A3203(int PlayerNumber)//사이즈업 몸2배체력3배
