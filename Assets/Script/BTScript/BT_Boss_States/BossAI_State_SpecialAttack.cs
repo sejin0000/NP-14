@@ -34,12 +34,15 @@ public class BossAI_State_SpecialAttack : BTAction
         //가깝다면? 특수 패턴 실행 ->멀다면? 실패 반환[노말 패턴으로 바로 넘어감]
         //헤드 피벗 위치를 넘어서 존재한다면? -> 랜덤 패턴값 비명으로 고정
 
+
+        //보스 머리 끝부분 위치의 y값 보다 위쪽에 위치하는 플레이어가 존재한다면 => 강제적으로 밀치기 패턴을 사용함
         for (int i = 0; i < bossAI_Dragon.PlayersTransform.Count; i++)
         {
-            float distanceToTargets = Vector2.Distance(bossAI_Dragon.PlayersTransform[i].position, bossAI_Dragon.bossHead.position);
-
-            if (distanceToTargets > 8f)
-                return Status.BT_Failure;
+            if (bossAI_Dragon.PlayersTransform[i].position.y > 0f)
+            {
+                bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 3);
+                return Status.BT_Success;
+            }               
         }
 
         SetAim(); //특수패턴 시작 시 보스 머리 방향 => 항상 플레이어 쪽으로
@@ -52,14 +55,14 @@ public class BossAI_State_SpecialAttack : BTAction
         {
             // 공격 주기에 도달하면 랜덤 공격 실행
             int randomPattern = Random.Range(0, 3);
+          
 
-            Debug.Log($"랜덤 패턴 뽑는중 현재 : {randomPattern}");
+            //난수에 따른 패턴 RPC 여기에 입력 if else로 한번 더 분기(특수 패턴은 확정 패턴과 랜덤 패턴이 필요함)
 
-            //난수에 따른 패턴 RPC 여기에 입력
-            switch(randomPattern)
+            switch (randomPattern)
             {
                 case 0:
-                    //이거 싹다 동기화 해야댐
+                    //양 팔 공격
                     bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 2);                  
                     //bossAI_Dragon.PV.RPC("Fire", RpcTarget.All);
                     break;

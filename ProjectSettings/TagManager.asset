@@ -8,6 +8,8 @@ TagManager:
   - Wall
   - EnemyBullet
   - Bullet
+  - NonAttackArea
+  - AttackArea
   layers:
   - Default
   - TransparentFX
@@ -23,8 +25,8 @@ TagManager:
   - Partner
   - DeadPlayer
   - GhostPlayer
-  - 
-  - 
+  - NonAttackArea
+  - AttackArea
   - 
   - 
   - 

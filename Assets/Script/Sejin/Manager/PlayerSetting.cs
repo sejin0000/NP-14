@@ -72,18 +72,33 @@ public class PlayerSetting : MonoBehaviour
         }
         else
         {
-            GameManager.Instance.clientPlayer.transform.position = roomInPlayer;
-
             int i = Random.Range(0, 2);
             int j = Random.Range(0, 2);
+
+
+            Vector2 vector;
+
             if(i == 0)
             {
-
+                vector = new Vector2(j,0);
             }
             else
             {
+                vector = new Vector2(0, j);
+            }
+
+            if (rectPos.x < roomInPlayer.x + vector.x && rectPos.x + widthHeight.x > roomInPlayer.x + vector.x &&
+                rectPos.y < roomInPlayer.y + vector.y && rectPos.y + widthHeight.y > roomInPlayer.y + vector.y)
+            {
+                GameManager.Instance.clientPlayer.transform.position = roomInPlayer += vector;
+            }
+            else
+            {
+                GameManager.Instance.clientPlayer.transform.position = roomInPlayer -= vector;
 
             }
+
+
         }
     }
 
