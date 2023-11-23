@@ -5,17 +5,10 @@ using UnityEngine.UI;
 
 public class FadeInFadeOutPanel : MonoBehaviour
 {
-    Image image;
+    SpriteRenderer image;
     private void Awake()
     {
-        image = GetComponent<Image>();
-    }
-
-    private void Start()
-    {
-        GameManager.Instance.OnStageEndEvent += FadeOut;
-        GameManager.Instance.OnGameClearEvent += FadeOut;
-        GameManager.Instance.OnGameOverEvent += FadeOut;
+        image = GetComponent<SpriteRenderer>();
     }
 
     public void FadeIn()
@@ -32,16 +25,17 @@ public class FadeInFadeOutPanel : MonoBehaviour
             image.color -= new Color(image.color.r, image.color.g, image.color.b, 0.05f);
             yield return new WaitForSecondsRealtime(0.1f);
         }
+
     }
 
-    void FadeOut()
+    public void FadeOut(int i)
     {
 
         Debug.Log("FadeOut");
-        StartCoroutine(FadeOut_());
+        StartCoroutine(FadeOut_(i));
     }
 
-    IEnumerator FadeOut_()
+    IEnumerator FadeOut_(int i)
     {
         while (image.color.a < 1)
         {
@@ -49,6 +43,19 @@ public class FadeInFadeOutPanel : MonoBehaviour
 
             image.color += new Color(image.color.r, image.color.g, image.color.b, 0.05f);
             yield return new WaitForSecondsRealtime(0.1f);
+        }
+
+        if (i == 1)
+        {
+            GameManager.Instance.NextStageEndEvent();
+        }
+        else if(i == 2)
+        {
+            GameManager.Instance.NextGameClearEvent();
+        }
+        else
+        {
+            GameManager.Instance.NextGameOverEvent();
         }
     }
 }
