@@ -9,10 +9,17 @@ public struct MonsterData
     public string monsterType;
     public int monsterCount;
 }
+public enum StageTypr
+{
+    Noemal,
+    Boss
+}
+
 
 [Serializable]
 public class StageMonsterData
 {
+    public StageTypr stageTypr;
     public List<MonsterData> monsters;
 }
 
