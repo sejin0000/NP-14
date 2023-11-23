@@ -40,26 +40,29 @@ public class CollisionController : MonoBehaviourPun
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-
-        if(playerStat.isDie && collision.gameObject.GetComponent<Bullet>().canresurrection && this.gameObject.layer ==12)
+        if (collision.gameObject.GetComponent<Bullet>()) 
         {
-            Bullet _bullet = collision.gameObject.GetComponent<Bullet>();
-            PhotonView photonView = PhotonView.Find(_bullet.BulletOwner);
-            WeaponSystem stat = photonView.gameObject.GetComponent<WeaponSystem>();
-            if (stat.canresurrection) 
+            if (playerStat.isDie && collision.gameObject.GetComponent<Bullet>().canresurrection && this.gameObject.layer == 12)
             {
-                playerStat.Regen(playerStat.HP.total);
-                this.gameObject.layer = 8;
-                int PvNum = _bullet.BulletOwner;
-
-                playerStat.photonView.RPC("thankyouLife",RpcTarget.All, PvNum);
-
-                if (MainGameManager.Instance != null) 
+                Bullet _bullet = collision.gameObject.GetComponent<Bullet>();
+                PhotonView photonView = PhotonView.Find(_bullet.BulletOwner);
+                WeaponSystem stat = photonView.gameObject.GetComponent<WeaponSystem>();
+                if (stat.canresurrection)
                 {
-                    MainGameManager.Instance.photonView.RPC("RemovePartyDeathCount",RpcTarget.All);
+                    playerStat.Regen(playerStat.HP.total);
+                    this.gameObject.layer = 8;
+                    int PvNum = _bullet.BulletOwner;
+
+                    playerStat.photonView.RPC("thankyouLife", RpcTarget.All, PvNum);
+
+                    if (MainGameManager.Instance != null)
+                    {
+                        MainGameManager.Instance.photonView.RPC("RemovePartyDeathCount", RpcTarget.All);
+                    }
                 }
             }
         }
+
 
 
         if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet") 

@@ -2,6 +2,7 @@ using myBehaviourTree;
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.Intrinsics;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
@@ -19,6 +20,8 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     public SpriteRenderer[] spriteRenderers;
     public Animator anim;
 
+    public GameObject Show_AttackArea;
+    public Collider2D[] AreaList;
 
     private Transform target;
     public Transform currentTarget
@@ -75,6 +78,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         anim = GetComponentInChildren<Animator>();
         spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
         PV = GetComponent<PhotonView>();
+        AreaList = Show_AttackArea.GetComponentsInChildren<Collider2D>(true); //비활성화된 오브젝트도 탐색<>(true)
 
         //게임 오브젝트 활성화 시, 행동 트리 생성
         CreateTreeAIState();
@@ -106,7 +110,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (!PhotonNetwork.IsMasterClient)
         {
-            //$추가됨 : 동기화된 위치에 대한 보간 처리
+            //$추가됨 : 동기화된 머리 위치에 대한 보간 처리
             transform.position = Vector3.Lerp(transform.position, hostPosition, Time.deltaTime * lerpSpeed);
             bossHead.transform.rotation = Quaternion.Slerp(bossHead.transform.rotation, hostRotation, Time.deltaTime * lerpSpeed);
             return;
@@ -120,9 +124,6 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
         if (!isLive)
             return;
-
-
-
 
 
         /*
@@ -354,9 +355,100 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
     public void Breath()
     {
+    }
+
+    //양팔 공격은 [두 메서드 동시에 실행함]
+    public void RightArmAttack()
+    {
+
+    }
+    public void LeftArmAttack() 
+    {
 
     }
 
+    [PunRPC]
+    public void ActiveAttackArea(int patternNum)
+    {
+        //고정 범위->다 차오르면 스프라이트 내부에 있는 플레이어에게 데미지
+        //원형 범위->타겟 플레이어를 추적하다 다 차오르기 직전에 정지 -> 다 차오르면 해당 위치에 낙석 오브젝트 생성
+        switch(patternNum)
+        {
+            case 0:
+                AreaList[0].gameObject.SetActive(true); //좌측 팔
+                StartCoroutine(InvokeInActiveAttackArea(3f, 0));
+                break;
+            case 1:
+                AreaList[1].gameObject.SetActive(true); ; //우측 팔
+                StartCoroutine(InvokeInActiveAttackArea(3f, 1));
+                break;
+            case 2:
+                AreaList[0].gameObject.SetActive(true); ; // 좌측 우측 동시 실행
+                AreaList[1].gameObject.SetActive(true); ;
+                StartCoroutine(InvokeInActiveAttackArea(3f, 2));
+                break;
+            case 3:
+                AreaList[2].gameObject.SetActive(true); ; // 모든 범위 실행
+                StartCoroutine(InvokeInActiveAttackArea(3f, 3));
+                break;
+            case 4:
+                AreaList[3].gameObject.SetActive(true); ; // 타겟 플레이어에 원형 실행
+                StartCoroutine(InvokeInActiveAttackArea(3f, 4));
+                break;
+            case 5:
+                for (int i = 0; i < PlayersTransform.Count; i++)
+                {
+                    AreaList[3].gameObject.SetActive(true); ; // 모든 플레이어에 원형 실행
+                    StartCoroutine(InvokeInActiveAttackArea(3f, 5));
+                }              
+                break;
+            case 6:
+                AreaList[4].gameObject.SetActive(true); ; // 브레스 범위 표시(방법이 상이함)
+                StartCoroutine(InvokeInActiveAttackArea(3f, 6));
+                break; 
+        }
+    }
+
+    public void InActiveAttackArea(int patternNum)
+    {
+        switch (patternNum)
+        {
+            case 0:
+                AreaList[0].gameObject.SetActive(false); //좌측 팔
+                break;
+            case 1:
+                AreaList[1].gameObject.SetActive(false); ; //우측 팔
+                break;
+            case 2:
+                AreaList[0].gameObject.SetActive(false); ; // 좌측 우측 동시 실행
+                AreaList[1].gameObject.SetActive(false); ;
+                break;
+            case 3:
+                AreaList[2].gameObject.SetActive(false); ; // 모든 범위 실행
+                break;
+            case 4:
+                AreaList[3].gameObject.SetActive(false); ; // 타겟 플레이어에 원형 실행
+                break;
+            case 5:
+                for (int i = 0; i < PlayersTransform.Count; i++)
+                {
+                    AreaList[3].gameObject.SetActive(false); ; // 모든 플레이어에 원형 실행
+                }
+                break;
+            case 6:
+                AreaList[4].gameObject.SetActive(false); ; // 브레스 범위 표시(방법이 상이함)
+                break;
+        }
+    }
+
+
+    //공격 범위 종료용 코루틴
+    public IEnumerator InvokeInActiveAttackArea(float delay, int patternNum)
+    {
+        yield return new WaitForSeconds(delay);
+        Debug.Log("코루틴 실행됨");
+        InActiveAttackArea(patternNum);
+    }
     #endregion
 
     #region 타겟(Player) 관련 
@@ -400,7 +492,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     }
     #endregion
 
-    #region 애니메이션 관련    
+    #region 애니메이션 관련
 
     /*
     private void UpdateAnimation()
