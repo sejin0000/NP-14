@@ -634,7 +634,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
     public bool IsNavAbled()
     {
-        if (isAttaking || !isLive)
+        if (isAttaking || !isLive || isGroggy)
         {
             nav.isStopped = true;
             return false;
