@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
 
 
     public GameObject _mapGenerator;
+    public MapGenerator MG;
     public GameObject _fadeInfadeOutPanel;
     private FadeInFadeOutPanel FF;
 
@@ -44,7 +45,7 @@ public class GameManager : MonoBehaviour
 
         OnInitEvent += GetComponent<PlayerSetting>().InstantiatePlayer;
 
-        MapGenerator MG = _mapGenerator.GetComponent<MapGenerator>();
+        MG = _mapGenerator.GetComponent<MapGenerator>();
         FF = _fadeInfadeOutPanel.GetComponent<FadeInFadeOutPanel>();
 
 

@@ -11,6 +11,10 @@ public class Portal : MonoBehaviour
         {
             GameManager.Instance.CallStageEndEvent();
             gameObject.SetActive(false);
+            if(GameManager.Instance.MG.roomNodeInfo.porTal == null)
+            {
+                GameManager.Instance.MG.roomNodeInfo.porTal = gameObject;
+            }
         }
     }
 }

@@ -38,6 +38,7 @@ public class RoomNodeInfo : MonoBehaviour
         }
         else
         {
+            PV.RPV("PunPortalSetting",RpcTarget.AllBuffered);
             porTal.SetActive(true);
             porTal.transform.position = new Vector3(endRoom.roomRect.x + endRoom.roomRect.width / 2, endRoom.roomRect.y + endRoom.roomRect.height / 2);
         }
@@ -87,5 +88,11 @@ public class RoomNodeInfo : MonoBehaviour
     private void PunOpenDoor()
     {
         mapGenerator.setTile.doorTileMap.gameObject.SetActive(false);
+    }
+
+    [PunRPC]
+    private void PunPortalSetting()
+    {
+        porTal.SetActive(true);
     }
 }
