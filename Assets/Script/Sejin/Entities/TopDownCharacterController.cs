@@ -152,11 +152,10 @@ public class TopDownCharacterController : MonoBehaviour
         if (playerStatHandler.CanRoll)
         {
             OnFlashEvent?.Invoke();
-            //playerStatHandler.CurRollStack -= 1;
-            //Debug.Log($"구르기 스택 까임 : {playerStatHandler.CurRollStack} 남음");
-            //playerStatHandler.CanRoll = false;
-            //playerStatHandler.Invincibility = true;
-            //CallEndRollEvent();
+            playerStatHandler.CurRollStack -= 1;
+            playerStatHandler.CanRoll = false;
+            playerStatHandler.Invincibility = true;
+            CallEndRollEvent();
         }
         else
         {

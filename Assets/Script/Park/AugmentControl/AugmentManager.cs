@@ -988,7 +988,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.AmmoMax.added += 30;
-        playerstatHandler.Speed.added -= 2;
+        playerstatHandler.Speed.added -= 0.5f;
         playerstatHandler.RollCoolTime.added += 2;
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@솔져 3티어
