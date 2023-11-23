@@ -28,7 +28,7 @@ public class A3107 : MonoBehaviour
         GameObject player1 = pl;
         playerStat = player1.GetComponent<PlayerStatHandler>();
         PvNum = playerStat.photonView.ViewID;
-        MainGameManager.Instance.OnGameStartedEvent += DamegeUpdate;
+        //MainGameManager.Instance.OnGameStartedEvent += DamegeUpdate;
         DamegeUpdate();
     }
     void Update()
