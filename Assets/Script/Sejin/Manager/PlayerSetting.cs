@@ -73,6 +73,17 @@ public class PlayerSetting : MonoBehaviour
         else
         {
             GameManager.Instance.clientPlayer.transform.position = roomInPlayer;
+
+            int i = Random.Range(0, 2);
+            int j = Random.Range(0, 2);
+            if(i == 0)
+            {
+
+            }
+            else
+            {
+
+            }
         }
     }
 
