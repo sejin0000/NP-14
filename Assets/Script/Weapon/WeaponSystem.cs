@@ -104,7 +104,7 @@ public class WeaponSystem : MonoBehaviour
     public void Charging()
     {
         int bullets = _cool.bulletNum;
-        if (bullets == 0)
+        if (bullets <= 1)
             return;
 
         OnFinalDamageEvent?.Invoke();
