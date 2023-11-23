@@ -28,7 +28,6 @@ public class A3107 : MonoBehaviour
         GameObject player1 = pl;
         playerStat = player1.GetComponent<PlayerStatHandler>();
         PvNum = playerStat.photonView.ViewID;
-        //MainGameManager.Instance.OnGameStartedEvent += DamegeUpdate;
         DamegeUpdate();
     }
     void Update()
@@ -50,6 +49,7 @@ public class A3107 : MonoBehaviour
         {
             deg = 0;
         }
+        DamegeUpdate();
 
     }
     private void OnTriggerExit2D(Collider2D collision)
