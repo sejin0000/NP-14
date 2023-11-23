@@ -32,6 +32,7 @@ public class MapGenerator : MonoBehaviour
     public SetTile setTile;
     public RoomNodeInfo roomNodeInfo;
 
+
     Node root;
     private void Awake()
     {

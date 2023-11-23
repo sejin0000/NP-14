@@ -230,6 +230,9 @@ MonoBehaviour:
   - SetShieldParent
   - PlayerInfoDictionarySetting
   - PunSendPlayerLocation
+  - PlayerPositionSetting
+  - PunCloseDoor
+  - PunOpenDoor
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
