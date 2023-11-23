@@ -21,8 +21,7 @@ public class A3205 : MonoBehaviourPun//설계시 2204참고
                 int targetID = shiled.GetPhotonView().ViewID;
                 int ParentID = target[i].photonView.ViewID;
                 shiled.GetComponent<Shield>().Initialized(10,1,1.5f);
-                shiled.transform.SetParent(target[i].transform);
-                photonView.RPC("TogetherSoDelicious",RpcTarget.Others,ParentID,targetID);
+                photonView.RPC("TogetherSoDelicious",RpcTarget.All,ParentID,targetID);
             }
         }
 
