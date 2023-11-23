@@ -31,6 +31,20 @@ public class SetTile : MonoBehaviourPun
         PV = GetComponent<PhotonView>();        
     }
 
+    private void Start()
+    {
+        GameManager.Instance.OnStageEndEvent += TileClear;
+    }
+
+    public void TileClear()
+    {
+        Debug.Log("Áö¿ì±â");
+        groundTileMap.ClearAllTiles();  
+        wallTileMap.ClearAllTiles();
+        doorTileMap.ClearAllTiles();
+    }
+
+
     public void OrderSetRectTile(RectInt rect, Tilemap tilemap, RuleTile tile, Vector2 Startpos)
     {
         TileMapType _tileMap;

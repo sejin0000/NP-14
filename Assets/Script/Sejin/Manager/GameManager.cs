@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject _mapGenerator;
     public GameObject _fadeInfadeOutPanel;
+    FadeInFadeOutPanel FF;
 
     public static GameManager Instance;
 
@@ -37,8 +38,13 @@ public class GameManager : MonoBehaviour
         playerInfoDictionary = new Dictionary<int, Transform>();
 
         OnInitEvent += GetComponent<PlayerSetting>().InstantiatePlayer;
-        OnStageStartEvent += _mapGenerator.GetComponent<MapGenerator>().MapMake;
 
+        MapGenerator MG = _mapGenerator.GetComponent<MapGenerator>();
+        FF = _fadeInfadeOutPanel.GetComponent<FadeInFadeOutPanel>();
+
+
+        OnStageStartEvent += MG.MapMake;
+        OnStageStartEvent += FF.FadeIn;
         CallInitEvent();
     }
     
@@ -46,8 +52,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        OnStageStartEvent += _fadeInfadeOutPanel.GetComponent<FadeInFadeOutPanel>().FadeIn;
-
         CallStageStartEvent();
     }
 
@@ -64,6 +68,7 @@ public class GameManager : MonoBehaviour
     public void CallStageStartEvent()
     {
         Debug.Log("스테이지 시작");
+
         OnStageStartEvent?.Invoke();
     }
     public void CallRoomStartEvent()
@@ -79,16 +84,32 @@ public class GameManager : MonoBehaviour
     public void CallStageEndEvent()
     {
         Debug.Log("스테이지 종료");
+        FF.FadeOut(1);
+    }
+    public void NextStageEndEvent()
+    {
         OnStageEndEvent?.Invoke();
     }
+
     public void CallGameClearEvent()
     {
         Debug.Log("게임 클리어");
+        FF.FadeOut(2);
+    }
+    public void NextGameClearEvent()
+    {
         OnGameClearEvent?.Invoke();
     }
+
     public void CallGameOverEvent()
     {
         Debug.Log("게임 오버");
+        FF.FadeOut(3);
+    }
+    public void NextGameOverEvent()
+    {
         OnGameOverEvent?.Invoke();
     }
+
+
 }
