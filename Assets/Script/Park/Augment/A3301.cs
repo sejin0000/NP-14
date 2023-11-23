@@ -7,7 +7,6 @@ using UnityEngine.InputSystem.XR;
 
 public class A3301 : MonoBehaviourPun
 {
-    public float shieldSurvivalTime = 0.5f;
     private GameObject shieldOBJ;
     private TopDownCharacterController controller;
     bool isLink;
@@ -31,9 +30,19 @@ public class A3301 : MonoBehaviourPun
             shieldOBJ = PhotonNetwork.Instantiate("AugmentList/A3301", transform.position, Quaternion.identity);
             shieldOBJ.transform.SetParent(gameObject.transform);
             shieldOBJ.GetComponent<A3301_1>().Init(viewid);
-            Invoke("SkillEnd", shieldSurvivalTime + 0.5f);
             controller.CallEndSkillEvent();
+            int PvNum = shieldOBJ.GetPhotonView().ViewID;
+            photonView.RPC("FindMaster", RpcTarget.All, PvNum);
+            SkillEnd();
         }
+    }
+    [PunRPC]
+    private void FindMaster(int num)
+    {
+        PhotonView a = PhotonView.Find(num);
+        a.transform.SetParent(this.gameObject.transform);
+        a.transform.localPosition = Vector3.zero;
+        //Prefabs.transform.SetParent(targetPlayer.transform);
     }
     public void SkillLinkOff()
     {
@@ -44,6 +53,20 @@ public class A3301 : MonoBehaviourPun
                 controller.OnSkillEvent -= SkillStart;
                 isLink = false;
             }
+        }
+    }
+    public void SkillEnd()
+    {
+        if (photonView.IsMine)
+        {
+            //스킬이 끝나면 쿨타임을 계산하고 쿨타임이 끝나면  controller.playerStatHandler.CanSkill = 진실; 로 바꿔줌
+            Debug.Log("스킬 종료");
+            controller.playerStatHandler.useSkill = false;
+            if (controller.playerStatHandler.CurSkillStack > 0)
+            {
+                controller.playerStatHandler.CanSkill = true;
+            }
+            controller.CallEndSkillEvent();
         }
     }
 }
