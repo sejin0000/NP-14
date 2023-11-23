@@ -8,6 +8,8 @@ public class PlayerSetting : MonoBehaviour
 {
     PhotonView PV;
 
+    public PlayerDataSetting characterSetting; // 플레이어의 정보
+
     private void Awake()
     {
         PV = GetComponent<PhotonView>();
@@ -21,11 +23,23 @@ public class PlayerSetting : MonoBehaviour
             PV = GetComponent<PhotonView>();
         }
 
+        // PlayerCharacterSetting 
+        string characterSettingPath = "Prefabs/CharacterData/PlayerCharacterSetting";
+        GameObject characterSettingGO = Instantiate(Resources.Load<GameObject>(characterSettingPath));
+        characterSetting = characterSettingGO.GetComponent<PlayerDataSetting>();
+
         string playerPrefabPath = "Pefabs/Player";
         GameManager.Instance.clientPlayer = PhotonNetwork.Instantiate(playerPrefabPath, Vector3.zero, Quaternion.identity);
 
-
+        characterSetting.ownerPlayer = GameManager.Instance.clientPlayer;
         int viewID = GameManager.Instance.clientPlayer.GetPhotonView().ViewID;
+        characterSetting.viewID = viewID;
+        // ClassIdentifier 데이터 Init()
+        GameManager.Instance.clientPlayer.GetComponent<ClassIdentifier>().playerData = characterSetting;
+
+        SyncPlayer();
+
+
         PV.RPC("PlayerInfoDictionarySetting", RpcTarget.AllBuffered, viewID);
 
 
@@ -99,6 +113,16 @@ public class PlayerSetting : MonoBehaviour
             }
 
 
+        }
+    }
+
+    private void SyncPlayer() // 플레이어 동기화
+    {
+        if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out object classNum))
+        {
+            characterSetting.SetClassType((int)classNum, GameManager.Instance.clientPlayer);
+            int viewID = characterSetting.viewID;
+            GameManager.Instance.clientPlayer.GetComponent<PhotonView>().RPC("ApplyClassChange", RpcTarget.Others, (int)classNum, viewID);
         }
     }
 
