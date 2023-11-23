@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -5,6 +6,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    private PhotonView PV;
+
     public event Action OnInitEvent;          //초기세팅
 
     public event Action OnStageStartEvent;    //스테이지 시작
@@ -18,10 +21,10 @@ public class GameManager : MonoBehaviour
 
     public GameObject _mapGenerator;
     public GameObject _fadeInfadeOutPanel;
-    FadeInFadeOutPanel FF;
+    private FadeInFadeOutPanel FF;
 
     public static GameManager Instance;
-
+    
 
     public GameObject clientPlayer;
     public Dictionary<int, Transform> playerInfoDictionary;
@@ -35,6 +38,8 @@ public class GameManager : MonoBehaviour
             Instance = this;
         }
 
+        PV = GetComponent<PhotonView>();
+
         playerInfoDictionary = new Dictionary<int, Transform>();
 
         OnInitEvent += GetComponent<PlayerSetting>().InstantiatePlayer;
@@ -44,7 +49,6 @@ public class GameManager : MonoBehaviour
 
 
         OnStageStartEvent += MG.MapMake;
-        OnStageStartEvent += FF.FadeIn;
         CallInitEvent();
     }
     
@@ -55,10 +59,6 @@ public class GameManager : MonoBehaviour
         CallStageStartEvent();
     }
 
-    private void Update()
-    {
-
-    }
 
     public void CallInitEvent()
     {
@@ -68,9 +68,20 @@ public class GameManager : MonoBehaviour
     public void CallStageStartEvent()
     {
         Debug.Log("스테이지 시작");
-
         OnStageStartEvent?.Invoke();
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PV.RPC("PunReadyCheck", RpcTarget.AllBuffered);
+        }
     }
+
+    [PunRPC]
+    public void PunReadyCheck()
+    {
+        FF.FadeIn();
+    }
+
+
     public void CallRoomStartEvent()
     {
         Debug.Log("룸 시작");
@@ -89,7 +100,27 @@ public class GameManager : MonoBehaviour
     public void NextStageEndEvent()
     {
         OnStageEndEvent?.Invoke();
+        PV.RPC("EndPlayerCheck", RpcTarget.AllBuffered);
     }
+
+    int EndPlayer = 0;
+    [PunRPC]
+    public void EndPlayerCheck()
+    {
+        EndPlayer++;
+        if (EndPlayer == 2)
+        {
+            StageClear();
+            EndPlayer = 0;
+        }
+    }
+
+    public void StageClear()
+    {
+        CallStageStartEvent();
+    }
+
+
 
     public void CallGameClearEvent()
     {
