@@ -11828,7 +11828,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8599324111135393774, guid: 98a910679d6a70f46b5abec579bc114b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8919050421685183988, guid: 98a910679d6a70f46b5abec579bc114b, type: 3}
       propertyPath: m_AnchorMax.y
@@ -12208,8 +12208,6 @@ MonoBehaviour:
   Nav: {fileID: 0}
   tier: 0
   Ready: 0
-  IsCleared: 0
-  IsOvered: 0
 --- !u!4 &1789951522
 Transform:
   m_ObjectHideFlags: 0
