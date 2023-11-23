@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
 
-public class A3107 : MonoBehaviour
+public class A3107 : MonoBehaviourPun
 {
     // Start is called before the first frame update
     int objSize;// 돌아가는 투사체 갯수
@@ -49,7 +49,11 @@ public class A3107 : MonoBehaviour
         {
             deg = 0;
         }
-        DamegeUpdate();
+        if (photonView.IsMine) 
+        {
+            DamegeUpdate();
+        }
+
 
     }
     private void OnTriggerExit2D(Collider2D collision)
