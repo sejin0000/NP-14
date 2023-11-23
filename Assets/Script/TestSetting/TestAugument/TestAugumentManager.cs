@@ -764,7 +764,7 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     [PunRPC]
     private void A1105(int PlayerNumber)//오토 쉬프트  //현재 코루틴 버그가 있음;
     {
-        ChangePlayerStatHandler(PlayerNumber);
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
         targetPlayer.AddComponent<A1105>();
         playerInput = targetPlayer.GetComponent<PlayerInput>();
         playerInput.actions.FindAction("Skill").Disable();
@@ -784,15 +784,6 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
         }
     }
 
-    [PunRPC]
-    private void A1107_1(int PlayerNumber)//오브젝트 생성형 폐기된 디자인
-    {
-        ChangeOnlyPlayer(PlayerNumber);
-        GameObject Prefabs = Resources.Load<GameObject>("AugmentList/A1107");
-        GameObject go = Instantiate(Prefabs, targetPlayer.transform);
-        go.transform.SetParent(targetPlayer.transform);
-
-    }
     [PunRPC]
     private void A1107(int PlayerNumber) //영역전개 최초의 대상에게 영구적으로 올려주는 타입 아직 세세한 오류가 있을것으로 예상된
     {

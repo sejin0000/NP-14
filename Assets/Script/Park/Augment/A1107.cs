@@ -7,20 +7,20 @@ using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-public class A1107 : MonoBehaviourPun//주변힐
+public class A1107 : MonoBehaviourPun //주변힐
 {
     float time = 0;
-    List<PlayerStatHandler> target = new List<PlayerStatHandler>();
+    List<PlayerStatHandler> colleagueList = new List<PlayerStatHandler>();
     int healP=2;
     public GameObject Player;
 
  
     public void Init()
     {
-        PlayerStatHandler a = transform.parent.gameObject.GetComponent<PlayerStatHandler>();
-        if (!target.Contains(a)) 
+        PlayerStatHandler playerStat = transform.parent.gameObject.GetComponent<PlayerStatHandler>();
+        if (!colleagueList.Contains(playerStat)) 
         {
-            target.Add(a);
+            colleagueList.Add(playerStat);
         }
 
     }
@@ -28,19 +28,21 @@ public class A1107 : MonoBehaviourPun//주변힐
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player" && !target.Contains(collision.GetComponent<PlayerStatHandler>())) 
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player")
+            && collision.gameObject.GetComponent<PlayerStatHandler>()) 
         {
-            target.Add(collision.GetComponent<PlayerStatHandler>());
-            Debug.Log("플레이어입장");
+            colleagueList.Add(collision.GetComponent<PlayerStatHandler>());
+            Debug.Log($"플레이어 입장 - 현재 플레이어 수 : {colleagueList.Count()}");
         }
         
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Player" && target.Contains(collision.GetComponent<PlayerStatHandler>()))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player")
+            && collision.gameObject.GetComponent<PlayerStatHandler>())
         {
-            target.Remove(collision.GetComponent<PlayerStatHandler>());
-            Debug.Log("플레이어퇴장");
+            colleagueList.Remove(collision.GetComponent<PlayerStatHandler>());
+            Debug.Log($"플레이어 퇴장 - 현재 플레이어 수 : {colleagueList.Count()}");
         }
 
     }
@@ -48,21 +50,21 @@ public class A1107 : MonoBehaviourPun//주변힐
     private void FixedUpdate()
     {
         time += Time.deltaTime;
-        if (time >= 2f && (target.Count>=1)) 
+        if (time >= 2f && (colleagueList.Count>=1)) 
         {
-            if (target.Count >= 1) 
+            if (colleagueList.Count >= 1) 
             {
-                heal();
+                Heal();
                 time = 0F;
             }
-
         }
     }
-    private void heal() 
+    private void Heal() 
     {
-        for (int i = 0; i < target.Count; ++i) 
+        for (int i = 0; i < colleagueList.Count; ++i) 
         {
-            target[i].CurHP += healP;
+            colleagueList[i].HPadd(healP);
+            Debug.Log($"힐 대상 : {colleagueList[i].photonView.ViewID}  /  대상 현제 체력 : {colleagueList[i].CurHP}");
         }
     }
 }
