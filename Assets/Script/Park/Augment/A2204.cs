@@ -29,7 +29,6 @@ public class A2204 : MonoBehaviourPun
         if (collision.tag == "Player" && !target.Contains(collision.GetComponent<PlayerStatHandler>()) && (collision.GetComponent<PlayerStatHandler>()!=null))
         {
             target.Add(collision.GetComponent<PlayerStatHandler>());
-            Debug.Log("2204 현재 염려 되는 버그는 이트리거가 맞는것이다 이경우 리지드바디 키네마틱을 추가해줘");
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -37,7 +36,6 @@ public class A2204 : MonoBehaviourPun
         if (collision.tag == "Player" && target.Contains(collision.GetComponent<PlayerStatHandler>()))
         {
             target.Remove(collision.GetComponent<PlayerStatHandler>());
-            Debug.Log("2204 현재 염려 되는 버그는 이트리거가 맞는것이다 이경우 리지드바디 키네마틱을 추가해줘");
         }
     }
 }

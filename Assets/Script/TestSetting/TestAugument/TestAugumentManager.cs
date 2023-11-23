@@ -991,7 +991,7 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.AmmoMax.added += 30;
-        playerstatHandler.Speed.added -= 2;
+        playerstatHandler.Speed.added -= 0.5f;
         playerstatHandler.RollCoolTime.added += 2;
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@솔져 3티어
@@ -1001,7 +1001,7 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
         ChangePlayerStatHandler(PlayerNumber);
         float changePower = playerstatHandler.AmmoMax.total - 1;
         playerstatHandler.AmmoMax.added -= playerstatHandler.AmmoMax.total - 1;
-        playerstatHandler.ATK.added += changePower * 0.5f;
+        playerstatHandler.ATK.added += changePower * 1f;
     }
     [PunRPC]
     private void A2302(int PlayerNumber)// 유도탄
