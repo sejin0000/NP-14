@@ -18,7 +18,8 @@ public class A2203 : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player")) 
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player")
+            && collision.gameObject.GetComponent<PlayerStatHandler>()) 
         {
             target.Add(collision.GetComponent<PlayerStatHandler>());
             Debug.Log("플레이어입장");
@@ -26,7 +27,8 @@ public class A2203 : MonoBehaviour
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player")
+            && collision.gameObject.GetComponent<PlayerStatHandler>())
         {
             target.Remove(collision.GetComponent<PlayerStatHandler>());
             Debug.Log("플레이어퇴장");
