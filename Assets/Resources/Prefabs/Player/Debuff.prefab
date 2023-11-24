@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debuffFirePrefab: {fileID: 5841480865693072410, guid: 3a0fde6525c5d8a44bf285180378909e, type: 3}
   debuffWaterPrefab: {fileID: 4889116420223146657, guid: 380d12c728372ce4199b724c20cf5968, type: 3}
-  debuffIcePrefab: {fileID: 0}
+  debuffIcePrefab: {fileID: 3473045457145921758, guid: b51696b8c33380f42b0d9ad7403f698c, type: 3}
   debuffHealPrefab: {fileID: 0}
 --- !u!114 &980166947041678949
 MonoBehaviour:

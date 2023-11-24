@@ -70,7 +70,7 @@ public class Debuff : MonoBehaviourPun
     public void GiveWater(GameObject gameObject)
     {
 
-        if (gameObject.tag == "Enemy" && gameObject.GetComponent<EnemyAI>().CanIce)
+        if (gameObject.tag == "Enemy" && gameObject.GetComponent<EnemyAI>().CanWater)
         {
             PhotonView pv = gameObject.GetComponent<PhotonView>();
             int viewID = pv.ViewID;
@@ -92,17 +92,16 @@ public class Debuff : MonoBehaviourPun
         EnemyAI enemy = targetPlayer.GetComponent<EnemyAI>();
         NavMeshAgent nav = targetPlayer.GetComponent<NavMeshAgent>();
         nav.speed = nav.speed * 0.7f;
-        if (enemy.CanIce) 
+        if (enemy.CanWater) 
         {
-            enemy.CanIce=false;
+            enemy.CanWater=false;
             enemy.SpeedCoefficient = 0.8f;
             GameObject particleIce = Instantiate(debuffWaterPrefab);
             particleIce.transform.SetParent(enemy.gameObject.transform);
             particleIce.transform.localPosition = Vector3.zero;
-            Debug.Log("현재 그로기 시간을 모름 5초하는중");
             yield return new WaitForSeconds(endtime);
             enemy.SpeedCoefficient = 1f;
-            enemy.CanIce = true;
+            enemy.CanWater = true;
         }
     }
 
@@ -204,6 +203,41 @@ public class Debuff : MonoBehaviourPun
             targetPlayer.ATK.coefficient -= 0.1f;
             targetPlayer.CanAtkBuff = true;
             Debug.Log($"현재 속도 2: {targetPlayer.Speed.total}");
+        }
+    }
+
+    public void GiveIce(GameObject gameObject)
+    {
+
+        if (gameObject.tag == "Enemy" && gameObject.GetComponent<EnemyAI>().CanIce)
+        {
+            PhotonView pv = gameObject.GetComponent<PhotonView>();
+            int viewID = pv.ViewID;
+            photonView.RPC("IceGive", RpcTarget.All, viewID);
+            Debug.Log("얼음체크");
+        }
+    }
+    [PunRPC]
+    public void IceGive(int viewID)
+    {
+        StartCoroutine("Ice", viewID);
+    }
+
+    private IEnumerator Ice(int viewID)
+    {
+        float endtime = 1.5f;
+        PhotonView photonView = PhotonView.Find(viewID);
+        GameObject targetenemy = photonView.gameObject;
+        EnemyAI enemy = targetenemy.GetComponent<EnemyAI>();
+        if (enemy.CanIce)
+        {
+            Debug.Log("얼음체크");
+            enemy.CanIce = false;
+            GameObject particleIce = Instantiate(debuffIcePrefab);
+            particleIce.transform.SetParent(enemy.gameObject.transform);
+            particleIce.transform.localPosition = Vector3.zero;
+            yield return new WaitForSeconds(endtime);
+            enemy.CanIce = true;
         }
     }
 
