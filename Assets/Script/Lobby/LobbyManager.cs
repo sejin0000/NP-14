@@ -19,6 +19,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 {
     public static LobbyManager Instance;
 
+    [Header("State")]
+    public PanelType CurrentState;
+
     [Header("LoginPanel")]
     public LoginPanel LoginP;
 
@@ -33,8 +36,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public GameObject _CharacterSelectPopup;
     public bool IsCharacterSelectInitialized;
 
-    //[Header("TestLobbyPanel")]
-    //public TestLobbyPanel TestLobbyP;
+    [Header("TestLobbyPanel")]
+    public TestLobbyPanel TestLobbyP;
 
     //[Header("TestRoomPanel")]
     //public TestRoomPanel TestRoomP;
@@ -57,6 +60,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             Instance = this;
         }
 
+        // DESC : Current State
+        CurrentState = PanelType.LoginPanel;
+
         // DESC : Instantiate Dictionaries
         cachedRoomList = new Dictionary<string, RoomInfo>();        
         cachedTestRoomList = new Dictionary<string, RoomInfo>();
@@ -68,9 +74,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         {
             InstantiateCharacterSelectPopup();
         }
-
-        // DESC : 커스텀 프로퍼티 - Char_Class 추가
-        ClassNum = CharacterSelect.GetCharClass();
     }
 
     public override void OnJoinedLobby()
@@ -79,15 +82,38 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         {
             cachedRoomList.Clear();
         }
+        if (cachedTestRoomList != null)
+        {
+            cachedTestRoomList.Clear();
+        }
+    }
+
+    public override void OnLeftLobby()
+    {
+        cachedRoomList.Clear();
+        cachedTestRoomList.Clear();
+    }
+
+    public override void OnCreateRoomFailed(short returnCode, string message)
+    {
+        Debug.Log(PhotonNetwork.NetworkingClient.LoadBalancingPeer.DebugOut);
+        SetPanel(PanelType.MainLobbyPanel);
+        PhotonNetwork.LeaveRoom();
+    }
+
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        SetPanel(PanelType.MainLobbyPanel);
+        PhotonNetwork.LeaveRoom();
     }
 
 
     #region CharacterSelectPopup
     public void CheckCharacterSelectPopup()
     {
-        for (int i = 0; i < this.transform.parent.childCount; i++)
+        for (int i = 0; i < this.transform.childCount; i++)
         {
-            if (this.transform.parent.GetChild(i).GetComponent<CharacterSelectPopup>())
+            if (this.transform.GetChild(i).GetComponent<CharacterSelectPopup>())
             {
                 IsCharacterSelectInitialized = true;
                 var caseTransform = this.transform.parent.GetChild(i);
@@ -99,32 +125,36 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     }
     public void InstantiateCharacterSelectPopup()
     {
-        _CharacterSelectPopup = Instantiate(Resources.Load<GameObject>("Prefabs/LobbyScene/CharacterSelectPopup"), this.transform.parent);
+        Debug.Log("LobbyManager - CharacterSelectPopup 인스턴스화");
+        _CharacterSelectPopup = Instantiate(Resources.Load<GameObject>(PrefabPathes.CHARACTER_SELECT_POPUP), this.transform);
         _CharacterSelectPopup.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
         CharacterSelect = _CharacterSelectPopup.GetComponent<CharacterSelectPopup>();
         _CharacterSelectPopup.SetActive(false);
+        IsCharacterSelectInitialized = true;
     }
     #endregion
 
     #region Button
     public void OnTestLobbyButtonClicked()
     {
-        SetPanel(Enum.GetName(typeof(PanelType), PanelType.TestLobbyPanel));
+        SetPanel(PanelType.TestLobbyPanel);
     }
 
     public void OnGameRoomButtonClicked()
     {
-        SetPanel(Enum.GetName(typeof(PanelType), PanelType.RoomPanel));
+        SetPanel(PanelType.RoomPanel);
     }
     #endregion
 
     #region Utility
-    public void SetPanel(string panelName)
+    public void SetPanel(PanelType panelType)
     {
+        CurrentState = panelType;
+        string panelName = Enum.GetName(typeof(PanelType), PanelType.RoomPanel);
         LoginP.gameObject.SetActive(panelName.Equals(LoginP.name));
         MainLobbyP.gameObject.SetActive(panelName.Equals(MainLobbyP.name));
         //RoomP.SetActive(panelName.Equals(RoomP.name));
-        //TestLobbyP.SetActive(panelName.Equals(TestLobbyP.name));
+        TestLobbyP.gameObject.SetActive(panelName.Equals(TestLobbyP.name));
         //TestRoomP.SetActive(panelName.Equals(TestRoomP.name));
     }
     #endregion
