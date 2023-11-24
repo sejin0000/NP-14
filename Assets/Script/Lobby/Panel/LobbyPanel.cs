@@ -92,7 +92,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
     public Button CharacterSelectButtonInTestPanel;
     public Button CreateTestRoomButton;
     public Button BackButtonInTestPanel;
-    public TestPanel testPanel;
+    public TestLobbyPanel testPanel;
     public string selectedSceneInTestLobbyPanel;
 
     public Dictionary<string, RoomInfo> cachedTestRoomList;
@@ -133,7 +133,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
         playerDataSetting = Instantiate(Resources.Load<GameObject>("Prefabs/CharacterData/PlayerCharacterSetting"));
 
-        testPanel = TestLobbyPanel.GetComponent<TestPanel>();
+        testPanel = TestLobbyPanel.GetComponent<TestLobbyPanel>();
         testPanel.Initialize();
         CreateTestRoomButton.onClick.AddListener(OnCreateTestRoomButtonClicked);
         BackButtonInTestPanel.onClick.AddListener(OnBackButtonInTestPanelClicked);

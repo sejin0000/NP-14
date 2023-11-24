@@ -10,7 +10,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TestPanel : MonoBehaviourPun
+public class TestLobbyPanel : MonoBehaviourPun
 {
     [Header("Button")]
     public Button EnterTestRoomButton;
@@ -24,8 +24,8 @@ public class TestPanel : MonoBehaviourPun
     [Header("CreateRoomBoard")]
     [SerializeField] public TMP_InputField RoomNameSetup;
     [SerializeField] public TMP_InputField RoomMemberSetup;
-    [SerializeField] public GameObject SceneScrollViewContent;
-    [SerializeField] public GameObject SceneScrollView;
+    [SerializeField] private GameObject SceneScrollViewContent;
+    [SerializeField] private GameObject SceneScrollView;
 
     [Header("TestRoomInfo")]
     private string selectedRoomName;
@@ -115,7 +115,6 @@ public class TestPanel : MonoBehaviourPun
 
     public void OnSceneConnectButtonClicked(SceneConnectButton clickedButton)
     {
-        Debug.Log("ClickedInTestPanel");
         selectedSceneName = clickedButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text;
         SceneSelectStartButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = selectedSceneName;
         lobbyPanel.selectedSceneInTestLobbyPanel = selectedSceneName;
@@ -130,8 +129,7 @@ public class TestPanel : MonoBehaviourPun
 
     private void OnEnterTestRoomButtonClicked()
     {
-        // ¹ß°ß
-        foreach (GameObject entry in lobbyPanel.testRoomListEntries.Values)
+        foreach (GameObject entry in LobbyManager.Instance.testRoomListEntries.Values)
         {
             var entryInfo = entry.GetComponent<RoomListEntry>();
             if (entryInfo.isEntryClicked)
