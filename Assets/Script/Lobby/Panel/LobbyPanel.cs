@@ -172,6 +172,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         {
             cachedRoomList.Clear();
         }
+        Debug.Log("OnJoinedLobby : 로비진입중");
         SetPanel(MainLobbyPanel.name);
 
         if (playerContainer.transform.childCount == 0)
@@ -190,7 +191,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
                 CharacterSelectPopup.transform.SetParent(this.transform);
                 CharacterSelectPopup.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
 
-                var playerInfo = CharacterSelectPopup.GetComponent<PlayerInfo>();
+                var playerInfo = CharacterSelectPopup.GetComponent<CharacterSelectPopup>();
                 PlayerClassText = playerInfo.playerClassText;
                 SkillInfoText = playerInfo.playerSkillText;
                 playerInfo.playerDataSetting = playerDataSetting.GetComponent<PlayerDataSetting>();
@@ -254,7 +255,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         playerData.ownerPlayer = instantiatedPlayer;
         playerData.viewID = viewID;
 
-        var playerInfo = CharacterSelectPopup.GetComponent<PlayerInfo>();
+        var playerInfo = CharacterSelectPopup.GetComponent<CharacterSelectPopup>();
         playerInfo.Initialize();
         
         //
