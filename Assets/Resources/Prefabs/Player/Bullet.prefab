@@ -265,8 +265,10 @@ MonoBehaviour:
   burn: 0
   gravity: 0
   Penetrate: 0
-  dlsrhdwlsmdaltkdlf: 0
+  canresurrection: 0
+  sniperAtkBuff: 0
   _direction: {x: 0, y: 0}
+  layerMask: 0
   locator: 0
   sniping: 0
   BulletOwner: 0

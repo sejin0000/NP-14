@@ -89,7 +89,7 @@ MonoBehaviour:
   observableSearch: 0
   ObservedComponents:
   - {fileID: 0}
-  sceneViewId: 1
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &3275274409148455301
@@ -105,5 +105,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 0}
-  power: 0
-  oldPower: 0
+  AtkPower: 0
+  AtkSpeedPower: 0
+  BulletSpreadPower: 0
+  SpeedPower: 0
+  AtkOldPower: 0
+  AtkspeedOldPower: 0
+  BulletSpreadOldPower: 0
+  SpeedOldPower: 0
