@@ -8,9 +8,9 @@ using UnityEngine.UI;
 public class MainLobbyPanel : MonoBehaviourPunCallbacks
 {
     [Header("Button")]
-    private Button characterSelectButton;
-    private Button testLobbyButton;
-    private Button gameRoomButton;
+    [SerializeField] private Button characterSelectButton;
+    [SerializeField] private Button testLobbyButton;
+    [SerializeField] private Button gameRoomButton;
 
     [Header("CharacterSelectPopup")]
     private CharacterSelectPopup playerInfo;
@@ -42,10 +42,13 @@ public class MainLobbyPanel : MonoBehaviourPunCallbacks
 
         // DESC : instantiate Player
         InstantiatePlayer();
+
+        // DESC : 커스텀 프로퍼티 - Char_Class 추가
+        LobbyManager.Instance.ClassNum = playerInfo.GetCharClass();
     }
 
     private void InstantiatePlayer()
     {
-        LobbyManager.Instance.instantiatedPlayer = Instantiate(Resources.Load<GameObject>(PrefabPathes.PLAYER_PREFAB_PATH));
+        LobbyManager.Instance.instantiatedPlayer = Instantiate(Resources.Load<GameObject>(PrefabPathes.PLAYER_INLOBBY_PREFAB_PATH));
     }
 }

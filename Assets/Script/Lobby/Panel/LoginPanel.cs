@@ -9,13 +9,13 @@ using UnityEngine.UI;
 
 public class LoginPanel : MonoBehaviourPunCallbacks
 {
-    private TMP_InputField playerIdInput;
-    private TMP_InputField playerPswdInput;
-    private Button loginButton;
+    [SerializeField] private TMP_InputField playerIdInput;
+    [SerializeField] private TMP_InputField playerPswdInput;
+    [SerializeField] private Button loginButton;
 
     private void Awake()
     {
-        //loginButton.onClick.AddListener(OnLoginButtonClicked);
+        loginButton.onClick.AddListener(OnLoginButtonClicked);
     }
 
     private void OnLoginButtonClicked()
@@ -37,8 +37,9 @@ public class LoginPanel : MonoBehaviourPunCallbacks
 
         if (!PhotonNetwork.IsConnected)
         {
+            Debug.Log("방 연결중");
             PhotonNetwork.ConnectUsingSettings(); // OnJoinedLobby() 실행.
-            LobbyManager.Instance.SetPanel(Enum.GetName(typeof(PanelType), PanelType.MainLobbyPanel));                                                  
+            LobbyManager.Instance.SetPanel(PanelType.MainLobbyPanel);                                                  
         }
     }
 }

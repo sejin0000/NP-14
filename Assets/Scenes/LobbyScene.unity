@@ -746,7 +746,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1568722255}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: LobbyPanel, Assembly-CSharp
         m_MethodName: OnLoginButtonClicked
         m_Mode: 1
@@ -3549,7 +3549,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1568722255}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: LobbyPanel, Assembly-CSharp
         m_MethodName: OnStartButtonClicked
         m_Mode: 1
@@ -4026,7 +4026,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1568722255}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: LobbyPanel, Assembly-CSharp
         m_MethodName: OnJoinRandomRoomButtonClicked
         m_Mode: 1
@@ -4118,6 +4118,7 @@ GameObject:
   - component: {fileID: 598920343}
   - component: {fileID: 598920345}
   - component: {fileID: 598920344}
+  - component: {fileID: 598920346}
   m_Layer: 5
   m_Name: LoginPanel
   m_TagString: Untagged
@@ -4189,6 +4190,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 598920342}
   m_CullTransparentMesh: 1
+--- !u!114 &598920346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 598920342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f6ad87de708a734d872467d6ac024a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerIdInput: {fileID: 1001002916}
+  playerPswdInput: {fileID: 1524710933}
+  loginButton: {fileID: 149664851}
 --- !u!1 &608287640
 GameObject:
   m_ObjectHideFlags: 0
@@ -13190,41 +13206,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1568722250}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7e75f4e5c4ba71459e754b792bd58dd, type: 3}
+  m_Script: {fileID: 11500000, guid: 69bffe3595081e94abd04e69e17c5fae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LoginPanel: {fileID: 598920342}
-  PlayerIdInput: {fileID: 1001002916}
-  PlayerPswdInput: {fileID: 1524710933}
-  MainLobbyPanel: {fileID: 2099533330}
-  CharacterSelectButtonInLobby: {fileID: 176183776}
-  Gold: {fileID: 1221515335}
-  RoomPanel: {fileID: 1397847044}
-  PartyBox: {fileID: 1857915279}
-  PlayerInfo: {fileID: 3808765961053771845, guid: 512fd4d54a2dcb349b8780671b947ab3, type: 3}
-  CharacterSelectButtonInRoom: {fileID: 922569496}
-  StartButton: {fileID: 532767948}
-  ReadyButton: {fileID: 435969353}
-  ChatInput: {fileID: 1814743562}
-  ChatLogPrefab: {fileID: 1580934528868145059, guid: 8cabf84cabb8a8d47972021ec03c6462, type: 3}
-  ChatBoxScrollContent: {fileID: 376548891}
-  CharacterSelectPopup: {fileID: 0}
-  PlayerClassText: {fileID: 0}
-  StatInfo: {fileID: 7934161811500229392, guid: e35b10894d5452d49b52765900bb61a8, type: 3}
-  SkillInfoText: {fileID: 0}
-  Shop: {fileID: 548677836}
-  TestLobbyPanel: {fileID: 844653100}
-  CharacterSelectButtonInTestPanel: {fileID: 653759552}
-  CreateTestRoomButton: {fileID: 799684789}
-  BackButtonInTestPanel: {fileID: 1520668132}
-  testPanel: {fileID: 0}
-  selectedSceneInTestLobbyPanel: 
-  TestRoomPanel: {fileID: 700913422}
-  CharacterSelectButtonInTestRoomPanel: {fileID: 947599291}
-  playerDataSetting: {fileID: 0}
-  playerContainer: {fileID: 577453464}
+  LoginP: {fileID: 598920346}
+  MainLobbyP: {fileID: 2099533334}
+  CharacterSelect: {fileID: 8098123073854687256, guid: 2eb62e0eb4b23d545825f5ecd308edf7, type: 3}
+  _CharacterSelectPopup: {fileID: 7140342747673913957, guid: 2eb62e0eb4b23d545825f5ecd308edf7, type: 3}
+  IsCharacterSelectInitialized: 0
   instantiatedPlayer: {fileID: 0}
-  viewID: 0
+  ViewID: 0
+  ClassNum: 0
 --- !u!1 &1590945873
 GameObject:
   m_ObjectHideFlags: 0
@@ -17977,7 +17969,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1568722255}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: LobbyPanel, Assembly-CSharp
         m_MethodName: OnTestRoomButtonClicked
         m_Mode: 1
@@ -19431,6 +19423,7 @@ GameObject:
   - component: {fileID: 2099533331}
   - component: {fileID: 2099533333}
   - component: {fileID: 2099533332}
+  - component: {fileID: 2099533334}
   m_Layer: 5
   m_Name: MainLobbyPanel
   m_TagString: Untagged
@@ -19502,6 +19495,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2099533330}
   m_CullTransparentMesh: 1
+--- !u!114 &2099533334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2099533330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6d2a494e080ad04f9b7933572ae6c46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterSelectButton: {fileID: 176183776}
+  testLobbyButton: {fileID: 1804135416}
+  gameRoomButton: {fileID: 573244750}
+  Gold: {fileID: 0}
 --- !u!1 &2100752457
 GameObject:
   m_ObjectHideFlags: 0
