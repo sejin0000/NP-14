@@ -9,9 +9,10 @@ using UnityEngine.Audio;
 
 public enum ClipType
 {
+    NONE,
     BGM,
-    SE,
-    NONE
+    SE
+    
 }
 
 public class AudioManager : Singleton<AudioManager>
@@ -55,7 +56,6 @@ public class AudioManager : Singleton<AudioManager>
     // AudioManager의 자식으로 AudioSource 컴포넌트 오브젝트 추가, Mixer 설정
     public void InitializeObject()
     {
-        
         GameObject bgmPlayer = new GameObject("BGMPlayer");
         GameObject sePlayer = new GameObject("SEPlayer");
 
