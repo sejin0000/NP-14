@@ -16,7 +16,7 @@ public enum Char_Class_Kor
     Àú°Ý¼ö,
 }
 
-public class PlayerInfo : MonoBehaviourPun
+public class CharacterSelectPopup : MonoBehaviourPun
 {
     [Header("PlayerInfo")]
     public GameObject PlayerInfoPrefab;
@@ -44,9 +44,6 @@ public class PlayerInfo : MonoBehaviourPun
 
     public GameObject player;
     public int viewID;
-    //private PlayerSO soldierSO;
-    //public PlayerSO shotGunSO;
-    //public PlayerSO sniperSO;
 
     void Start()
     {
@@ -67,9 +64,6 @@ public class PlayerInfo : MonoBehaviourPun
     {
         player = playerDataSetting.ownerPlayer;
         viewID = playerDataSetting.viewID;
-        //soldierSO = playerDataSetting.soldierSO;
-        //shotGunSO = playerDataSetting.shotGunSO;
-        //sniperSO = playerDataSetting.sniperSO;
     }
         
     void Update()
