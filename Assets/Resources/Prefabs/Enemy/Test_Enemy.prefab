@@ -422,6 +422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CanFire: 0
+  CanWater: 0
   CanIce: 0
   currentHP: 0
   viewAngle: 57
@@ -454,6 +455,7 @@ MonoBehaviour:
   ViewDistanceThreshold: 0.2
   KnockbackLimitTime: 0.3
   knockbackDistance: 0
+  GroggyCount: 100
 --- !u!195 &7302048549800893148
 NavMeshAgent:
   m_ObjectHideFlags: 0
