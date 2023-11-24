@@ -10,7 +10,7 @@ public class DebuffControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _ParticleSystem=GetComponent<ParticleSystem>();
+        _ParticleSystem=GetComponentInChildren<ParticleSystem>();
         targetTime = _ParticleSystem.main.duration;
     }
 

@@ -31,7 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3111338751243810483
 MonoBehaviour:
@@ -45,6 +45,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa7691c5125943e468a64a57c08ddc6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debuffFirePrefab: {fileID: 5841480865693072410, guid: 3a0fde6525c5d8a44bf285180378909e, type: 3}
+  debuffWaterPrefab: {fileID: 4889116420223146657, guid: 380d12c728372ce4199b724c20cf5968, type: 3}
+  debuffIcePrefab: {fileID: 0}
+  debuffHealPrefab: {fileID: 0}
 --- !u!114 &980166947041678949
 MonoBehaviour:
   m_ObjectHideFlags: 0

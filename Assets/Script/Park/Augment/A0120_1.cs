@@ -12,14 +12,14 @@ public class A0120_1 : MonoBehaviourPun
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            Debuff.Instance.GiveIce(collision.gameObject);
+            Debuff.Instance.GiveWater(collision.gameObject);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         { 
-            Debuff.Instance.GiveIce(collision.gameObject);
+            Debuff.Instance.GiveWater(collision.gameObject);
         }
     }
     private void Update()

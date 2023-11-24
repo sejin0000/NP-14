@@ -167,7 +167,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
             }
             if (playerBullet.water)
             {
-                Debuff.Instance.GiveIce(this.gameObject);
+                Debuff.Instance.GiveWater(this.gameObject);
             }
             if (playerBullet.burn)
             {
