@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Android.Gradle;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public enum PanelType
 {
@@ -28,8 +29,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [Header("MainLobbyPanel")]
     public MainLobbyPanel MainLobbyP;
 
-    //[Header("MainRoomPanel")]
-    //public MainRoomPanel MainRoomP;
+    [Header("MainRoomPanel")]
+    public RoomPanel RoomP;
 
     [Header("CharaceterSelectPopup")]
     public CharacterSelectPopup CharacterSelect;
@@ -76,15 +77,24 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         }
     }
 
+    public override void OnConnectedToMaster()
+    {
+        PhotonNetwork.JoinLobby();
+    }
+
     public override void OnJoinedLobby()
     {
+        Debug.Log($"LobbyManager - Current State : {Enum.GetName(typeof(PanelType), CurrentState)}");
+
         if (cachedRoomList != null) 
         {
             cachedRoomList.Clear();
+            Debug.Log($"cahcedRoomList Cleared - Current State : {Enum.GetName(typeof(PanelType), CurrentState)}");
         }
         if (cachedTestRoomList != null)
         {
             cachedTestRoomList.Clear();
+            Debug.Log($"cachedTestRoomList Cleared - Current State : {Enum.GetName(typeof(PanelType), CurrentState)}");
         }
     }
 
@@ -95,18 +105,10 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
-    {
-        Debug.Log(PhotonNetwork.NetworkingClient.LoadBalancingPeer.DebugOut);
-        SetPanel(PanelType.MainLobbyPanel);
+    {        
+        SetPanel(PanelType.MainLobbyPanel);        
         PhotonNetwork.LeaveRoom();
     }
-
-    public override void OnJoinRoomFailed(short returnCode, string message)
-    {
-        SetPanel(PanelType.MainLobbyPanel);
-        PhotonNetwork.LeaveRoom();
-    }
-
 
     #region CharacterSelectPopup
     public void CheckCharacterSelectPopup()
@@ -135,25 +137,17 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     #endregion
 
     #region Button
-    public void OnTestLobbyButtonClicked()
-    {
-        SetPanel(PanelType.TestLobbyPanel);
-    }
 
-    public void OnGameRoomButtonClicked()
-    {
-        SetPanel(PanelType.RoomPanel);
-    }
     #endregion
 
     #region Utility
     public void SetPanel(PanelType panelType)
     {
         CurrentState = panelType;
-        string panelName = Enum.GetName(typeof(PanelType), PanelType.RoomPanel);
+        string panelName = Enum.GetName(typeof(PanelType), panelType);
         LoginP.gameObject.SetActive(panelName.Equals(LoginP.name));
         MainLobbyP.gameObject.SetActive(panelName.Equals(MainLobbyP.name));
-        //RoomP.SetActive(panelName.Equals(RoomP.name));
+        RoomP.gameObject.SetActive(panelName.Equals(RoomP.name));
         TestLobbyP.gameObject.SetActive(panelName.Equals(TestLobbyP.name));
         //TestRoomP.SetActive(panelName.Equals(TestRoomP.name));
     }

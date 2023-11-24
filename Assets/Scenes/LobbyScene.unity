@@ -11012,6 +11012,7 @@ MonoBehaviour:
   ReadyButton: {fileID: 435969353}
   StartButton: {fileID: 532767948}
   BackButton: {fileID: 504330570}
+  characterSelectButton: {fileID: 922569496}
   ChatInputField: {fileID: 1814743562}
   SubmitButton: {fileID: 771824549}
   ChatLog: {fileID: 1580934528868145059, guid: 429e494743d959644ae76b8ceb04fb82, type: 3}
@@ -13209,11 +13210,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69bffe3595081e94abd04e69e17c5fae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentState: 0
   LoginP: {fileID: 598920346}
   MainLobbyP: {fileID: 2099533334}
+  RoomP: {fileID: 1397847048}
   CharacterSelect: {fileID: 8098123073854687256, guid: 2eb62e0eb4b23d545825f5ecd308edf7, type: 3}
   _CharacterSelectPopup: {fileID: 7140342747673913957, guid: 2eb62e0eb4b23d545825f5ecd308edf7, type: 3}
   IsCharacterSelectInitialized: 0
+  TestLobbyP: {fileID: 844653104}
   instantiatedPlayer: {fileID: 0}
   ViewID: 0
   ClassNum: 0
