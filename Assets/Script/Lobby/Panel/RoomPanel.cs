@@ -9,9 +9,10 @@ using UnityEngine.UI;
 public class RoomPanel : MonoBehaviourPun
 {
     [Header("button")]
-    public Button ReadyButton;
-    public Button StartButton;
-    public Button BackButton;
+    [SerializeField] private Button ReadyButton;
+    [SerializeField] private Button StartButton;
+    [SerializeField] private Button BackButton;
+    [SerializeField] private Button characterSelectButton;
 
     [Header("Chat")]
     public TMP_InputField ChatInputField;
@@ -19,11 +20,16 @@ public class RoomPanel : MonoBehaviourPun
     public GameObject ChatLog;
     public GameObject ChatScrollContent;
 
+    [HideInInspector]
+    private string askReadyProp;
+    
     public void Start()
     {
-        if (!PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("IsPlayerReady", out object isPlayerReady))
+        askReadyProp = CustomProperyDefined.ASK_READY_PROPERTY;
+
+        if (!PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(askReadyProp, out object isPlayerReady))
         {
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "IsPlayerReady", false } });
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { askReadyProp, false } });
         }
 
         StartButton.gameObject.SetActive(false);
@@ -33,8 +39,12 @@ public class RoomPanel : MonoBehaviourPun
             ReadyButton.gameObject.SetActive(false);
         }
 
-        // 레디 버튼 적용
+        // DESC : 버튼 연결
         ReadyButton.onClick.AddListener(OnReadyButtonClicked);
+        StartButton.onClick.AddListener(OnStartButtonClicked);
+        BackButton.onClick.AddListener(OnBackButtonClicked);
+        SubmitButton.onClick.AddListener(OnSubmitButtonClicked);
+        characterSelectButton.onClick.AddListener(LobbyManager.Instance.CharacterSelect.OnCharacterButtonClicked);
     }
 
     public void SetPlayerReady(bool playerReady)
@@ -51,21 +61,10 @@ public class RoomPanel : MonoBehaviourPun
         }
     }
 
-    [PunRPC]
-    public void ChatInput(string inputText, string nickName)
-    {
-        GameObject chatPrefab = Instantiate(ChatLog, ChatScrollContent.transform, false);
-        ChatLog chatLog = chatPrefab.GetComponent<ChatLog>();
-
-        chatLog.NickNameText.text = nickName;
-        chatLog.ChatText.text = inputText;
-        chatPrefab.transform.SetParent(ChatScrollContent.transform, false);
-        chatLog.ConfirmTextSize(ChatInputField);
-    }
 
     public void OnReadyButtonClicked()
     {
-        if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("IsPlayerReady", out object isPlayerReady))
+        if (PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(askReadyProp, out object isPlayerReady))
         {
             isPlayerReady = !(bool)isPlayerReady;
             SetPlayerReady((bool)isPlayerReady);
@@ -75,13 +74,21 @@ public class RoomPanel : MonoBehaviourPun
             isPlayerReady = true;
             SetPlayerReady(true);
         }
-        var props = new Hashtable() { { "IsPlayerReady", isPlayerReady } };
+        var props = new Hashtable() { { askReadyProp, isPlayerReady } };
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+    }
+
+    public void OnStartButtonClicked()
+    {
+        PhotonNetwork.CurrentRoom.IsOpen = false;
+        PhotonNetwork.CurrentRoom.IsVisible = false;
+
+        PhotonNetwork.LoadLevel("MainGameScene");
     }
 
     public void OnBackButtonClicked()
     {
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable() { { "IsPlayerReady", false } });
+        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable() { { askReadyProp, false } });
         PhotonNetwork.LeaveRoom();
     }
 
@@ -92,5 +99,17 @@ public class RoomPanel : MonoBehaviourPun
         photonView.RPC("ChatInput", RpcTarget.All, inputText, nickName);
         ChatInputField.text = "";
         ChatInputField.ActivateInputField();
+    }
+
+    [PunRPC]
+    public void ChatInput(string inputText, string nickName)
+    {
+        GameObject chatPrefab = Instantiate(ChatLog, ChatScrollContent.transform, false);
+        ChatLog chatLog = chatPrefab.GetComponent<ChatLog>();
+
+        chatLog.NickNameText.text = nickName;
+        chatLog.ChatText.text = inputText;
+        chatPrefab.transform.SetParent(ChatScrollContent.transform, false);
+        chatLog.ConfirmTextSize(ChatInputField);
     }
 }
