@@ -40,8 +40,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     [Header("TestLobbyPanel")]
     public TestLobbyPanel TestLobbyP;
 
-    //[Header("TestRoomPanel")]
-    //public TestRoomPanel TestRoomP;
+    [Header("TestRoomPanel")]
+    public TestRoomPanel TestRoomP;
 
     [Header("ClientPlayer")]
     public GameObject instantiatedPlayer;
@@ -149,7 +149,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         MainLobbyP.gameObject.SetActive(panelName.Equals(MainLobbyP.name));
         RoomP.gameObject.SetActive(panelName.Equals(RoomP.name));
         TestLobbyP.gameObject.SetActive(panelName.Equals(TestLobbyP.name));
-        //TestRoomP.SetActive(panelName.Equals(TestRoomP.name));
+        TestRoomP.gameObject.SetActive(panelName.Equals(TestRoomP.name));
     }
     #endregion
 }

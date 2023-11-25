@@ -9,13 +9,16 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Net;
 
-public class TestLobbyPanel : MonoBehaviourPun
+public class TestLobbyPanel : MonoBehaviourPunCallbacks
 {
     [Header("Button")]
     public Button EnterTestRoomButton;
+    public Button CreateTestRoomButton;
     public Button SceneSelectButton;
     public Button SceneSelectStartButton;
+    public Button CharacterSelectButton;
 
 
     [Header("CurrentRoomBoard")]
@@ -28,6 +31,8 @@ public class TestLobbyPanel : MonoBehaviourPun
     [SerializeField] private GameObject SceneScrollView;
 
     [Header("TestRoomInfo")]
+    [SerializeField] private string selectedSceneName;
+    private string selectedScene;
     private string selectedRoomName;
     public string SelectedRoomName
     {
@@ -41,11 +46,8 @@ public class TestLobbyPanel : MonoBehaviourPun
             }
         }
     }
-    private string selectedSceneName;
-
-    [Header("RoomPanel")]    
-    public GameObject TestRoomPanel;
-
+    private Dictionary<string, GameObject> testRoomListEntries;
+    private Dictionary<string, RoomInfo> cachedTestRoomList;
 
     public event Action OnEntryClicked;
     public GameObject canvas;
@@ -55,15 +57,20 @@ public class TestLobbyPanel : MonoBehaviourPun
     [HideInInspector]
     private string folderPath;
     private string sceneEntryPath;
+    private string testOrNotRP;
+    private string testSCeneRP;
 
-    public void Initialize()
-    {        
-        EnterTestRoomButton.onClick.AddListener(OnEnterTestRoomButtonClicked);
-        SceneSelectButton.onClick.AddListener(OnSceneSelectButtonClicked);
-        SceneSelectStartButton.onClick.AddListener(OnSceneSelectStartButtonClicked);
+    public void Awake()
+    {
+        // DESC : get CustomProperty key
+        testOrNotRP = CustomProperyDefined.TEST_OR_NOT;
+        testSCeneRP = CustomProperyDefined.TEST_SCENE;
 
-        lobbyPanel = canvas.GetComponent<LobbyPanel>();
-        Debug.Log("lobbyPanel Instantiated");
+        // DESC : Initialize testRoomListEntries
+        testRoomListEntries = new Dictionary<string, GameObject>();
+        cachedTestRoomList = new Dictionary<string, RoomInfo>();
+
+        // DESC : get path
         if (folderPath == null)
         {
             folderPath = "Assets/Scenes/TestScenes";
@@ -74,7 +81,90 @@ public class TestLobbyPanel : MonoBehaviourPun
         }
         GetSceneArray(SceneScrollViewContent.transform);
         SceneScrollView.SetActive(false);
+
+        // DESC : connect buttons
+        EnterTestRoomButton.onClick.AddListener(OnEnterTestRoomButtonClicked);
+        SceneSelectButton.onClick.AddListener(OnSceneSelectButtonClicked);
+        SceneSelectStartButton.onClick.AddListener(OnSceneSelectStartButtonClicked);
+        CreateTestRoomButton.onClick.AddListener(OnCreateTestRoomButtonClicked);
+        SceneSelectButton.onClick.AddListener(LobbyManager.Instance.CharacterSelect.OnCharacterButtonClicked);
+
+        
     }
+
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+        if (LobbyManager.Instance.CurrentState != PanelType.TestLobbyPanel)
+        {
+            return;
+        }
+
+        ClearTestRoomListView();
+        UpdateCachedTestRoomList(roomList);
+        UpdateTestRoomListView();
+    }
+
+    #region TestRoomListUpdate
+
+    private void ClearTestRoomListView()
+    {
+        foreach (GameObject entry in testRoomListEntries.Values)
+        {
+            Destroy(entry.gameObject);
+        }
+
+        testRoomListEntries.Clear();
+    }
+
+    private void UpdateTestRoomListView()
+    {
+        var cachedTestRoomList = LobbyManager.Instance.cachedTestRoomList;
+        testRoomListEntries.Clear();
+
+        foreach (RoomInfo info in cachedTestRoomList.Values)
+        {
+            GameObject entry = Instantiate(Resources.Load<GameObject>("Prefabs/LobbyScene/TestRoomEntry"), RoomScrollViewContent.transform, false);
+            entry.transform.localScale = Vector3.one;
+            entry.GetComponent<RoomListEntry>().Initialize(info.Name, (byte)info.PlayerCount, (byte)info.MaxPlayers);
+            OnEntryClicked += entry.GetComponent<RoomListEntry>().OnSelectRoomButtonClicked;
+            testRoomListEntries[info.Name] = entry;
+        }
+    }
+
+    private void UpdateCachedTestRoomList(List<RoomInfo> roomList)
+    {
+        foreach (RoomInfo info in roomList)
+        {
+            if (info.CustomProperties.TryGetValue(testOrNotRP, out object testBool))
+            {
+                if (
+                    !info.IsOpen 
+                    || !info.IsVisible 
+                    || info.RemovedFromList 
+                    || info.PlayerCount == 0 
+                    || (testBool != null && !(bool)testBool)
+                    )
+                {
+                    if (cachedTestRoomList.ContainsKey(info.Name))
+                    {
+                        cachedTestRoomList.Remove(info.Name);
+                    }
+                    continue;
+                }
+            }
+
+            if (cachedTestRoomList.ContainsKey(info.Name))
+            {
+                cachedTestRoomList[info.Name] = info;
+            }
+            else
+            {
+                cachedTestRoomList.Add(info.Name, info);
+            }
+        }
+    }
+
+    #endregion
 
     public void GetSceneArray(Transform parentTransform)    
     {
@@ -137,8 +227,27 @@ public class TestLobbyPanel : MonoBehaviourPun
                 selectedRoomName = entryInfo.roomName;
             }
         }
-        PhotonNetwork.JoinRoom(selectedRoomName);
-        this.gameObject.SetActive(false);
+        PhotonNetwork.JoinRoom(selectedRoomName);        
+    }
+
+    private void OnCreateTestRoomButtonClicked()
+    {
+        string roomName = RoomMemberSetup.text;
+        roomName = (roomName.Equals(string.Empty)) ? "Room " + UnityEngine.Random.Range(1000, 10000) : roomName;
+
+        byte maxPlayers;
+        byte.TryParse(RoomMemberSetup.text, out maxPlayers);
+        maxPlayers = (byte)Mathf.Clamp(maxPlayers, 2, 8);
+
+        RoomOptions options = new RoomOptions { MaxPlayers = maxPlayers, PlayerTtl = 10000 };
+        if (selectedScene == null)
+        {
+            selectedScene = sceneConnectButtons[0].sceneNameText.text;
+        }
+        options.CustomRoomPropertiesForLobby = new string[] { testOrNotRP, testSCeneRP };
+        options.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { testOrNotRP, true }, { testSCeneRP, selectedScene } };
+
+        PhotonNetwork.CreateRoom(roomName, options);
     }
 
     #endregion

@@ -134,7 +134,7 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
         playerDataSetting = Instantiate(Resources.Load<GameObject>("Prefabs/CharacterData/PlayerCharacterSetting"));
 
         testPanel = TestLobbyPanel.GetComponent<TestLobbyPanel>();
-        testPanel.Initialize();
+        //testPanel.Initialize();
         CreateTestRoomButton.onClick.AddListener(OnCreateTestRoomButtonClicked);
         BackButtonInTestPanel.onClick.AddListener(OnBackButtonInTestPanelClicked);
 
