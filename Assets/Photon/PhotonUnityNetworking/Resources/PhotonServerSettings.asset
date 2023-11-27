@@ -236,6 +236,10 @@ MonoBehaviour:
   - ActiveAttackArea
   - View
   - GiveDamege
+  - EndPlayerCheck
+  - PunPortalSetting
+  - PunReadyCheck
+  - SetStateColor
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

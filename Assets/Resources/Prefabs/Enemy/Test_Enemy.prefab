@@ -429,6 +429,7 @@ MonoBehaviour:
   enemySO: {fileID: 11400000, guid: 3462c6ca5a0aec84eb2a06161ff250a7, type: 2}
   spriteRenderer: {fileID: 61385077797086651}
   anim: {fileID: 2620774945296316658}
+  originColor: {r: 0, g: 0, b: 0, a: 0}
   nav: {fileID: 7302048549800893148}
   navTargetPoint: {x: 0, y: 0, z: 0}
   PlayersTransform: []
@@ -454,6 +455,7 @@ MonoBehaviour:
   ViewDistanceThreshold: 0.2
   KnockbackLimitTime: 0.3
   knockbackDistance: 0
+  GroggyCount: 100
 --- !u!195 &7302048549800893148
 NavMeshAgent:
   m_ObjectHideFlags: 0

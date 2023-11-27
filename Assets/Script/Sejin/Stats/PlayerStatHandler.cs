@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XR;
@@ -430,5 +431,25 @@ public class PlayerStatHandler : MonoBehaviourPun
         PhotonView photonView = PhotonView.Find(pvid);
         WeaponSystem weapon = photonView.gameObject.GetComponent<WeaponSystem>();
         weapon.canresurrection = false;
+    }
+
+
+    //보스 패턴용 넉백 추가함 - 우민규
+    public IEnumerator Knockback(Vector3 direction, float distance)
+    {
+        Vector3 startPosition = transform.position;
+        Vector3 targetPosition = startPosition + direction * distance;
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < 0.1f)
+        {
+            transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / 0.1f);
+            elapsedTime += Time.deltaTime;
+            yield return null; // 1프레임 대기
+        }
+
+        // 최종 위치에 고정
+        transform.position = targetPosition;
     }
 }

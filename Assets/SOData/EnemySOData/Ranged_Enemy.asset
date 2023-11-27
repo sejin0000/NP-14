@@ -20,6 +20,7 @@ MonoBehaviour:
   atkDelay: 1.5
   patrolDelay: 10
   chaseTime: 4
+  groggyTiem: 1.5
   bulletLifeTime: 6
   enemyMoveSpeed: 3.5
   enemyChaseSpeed: 2.5

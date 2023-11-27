@@ -15,7 +15,7 @@ public class EnemySO : ScriptableObject
     public float atkDelay;        // 공격 딜레이
     public float patrolDelay;     // 순찰 딜레이
     public float chaseTime;       // 추적 유지시간
-
+    public float groggyTiem;      // 기절 시간
     public float bulletLifeTime;  // 총알 유지 시간
 
     public float enemyMoveSpeed;  // 기본 이동속도

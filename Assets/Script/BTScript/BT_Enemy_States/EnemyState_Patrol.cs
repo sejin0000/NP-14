@@ -38,7 +38,7 @@
     //노드 Start()
     public override void Initialize()
     {
-        SetStateColor();
+        enemyAI.PV.RPC("SetStateColor", RpcTarget.All, (int)EnemyStateColor.ColorOrigin, enemyAI.PV.ViewID);
 
         if (enemyAI.nav != null)
         {
@@ -50,24 +50,24 @@
 
     //노드 종료 순간 호출
     public override void Terminate()
-        {
+    {
+        //enemyAI.PV.RPC("SetStateColor", RpcTarget.All, (int)StateColor.ColorOrigin, enemyAI.PV.ViewID);
+    }
 
-        }
-
-        //노드 Update()
-        public override Status Update()
-        {       
-            Patrol();
-            //PatrolView();
-            ElapseTime();
+    //노드 Update()
+    public override Status Update()
+    {
+        Patrol();
+        //PatrolView();
+        ElapseTime();
 
 
-            //만약 탐지 범위에 플레이어가 들어왔다면 => 성공 반환으로 액션 끝내자
-            if (enemyAI.isChase)
-                return Status.BT_Success;
+        //만약 탐지 범위에 플레이어가 들어왔다면 => 성공 반환으로 액션 끝내자
+        if (enemyAI.isChase)
+            return Status.BT_Success;
 
-            return Status.BT_Running;
-        }
+        return Status.BT_Running;
+    }
 
 
     //목적지 리셋, 애니메이션, 액션타임, 스피드, 플립 등등 모두 초기화 관
@@ -127,10 +127,6 @@
         }
     }
 
-    private void SetStateColor()
-    {
-        enemyAI.spriteRenderer.color = Color.yellow;
-    }
 
     /*
 
