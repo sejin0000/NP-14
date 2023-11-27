@@ -69,11 +69,13 @@ public class GameManager : MonoBehaviour
         MS = _mansterSpawner.GetComponent<MonsterSpawner>();
 
         OnStageStartEvent += MG.MapMake;
+        OnStageStartEvent += MG.roomNodeInfo.CloseDoor;
         if (PhotonNetwork.IsMasterClient)
         {
             OnStageStartEvent += MG.NavMeshBakeRunTime;
             OnStageStartEvent += MS.MonsterSpawn;           
         }
+        //OnStageStartEvent += MG.roomNodeInfo.OpenDoor;
 
         CallInitEvent();
     }

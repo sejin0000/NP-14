@@ -76,8 +76,6 @@ public class MapGenerator : MonoBehaviour
             roomNodeInfo.ChooseRoom();
             roomNodeInfo.PlayerPositionSetting();
         }
-
-        setTile.doorTileMap.gameObject.SetActive(false);
     }
 
     public void RoomMake()
