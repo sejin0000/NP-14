@@ -1,12 +1,13 @@
 using ExitGames.Client.Photon;
 using Photon.Pun;
+using Photon.Realtime;
 //using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RoomPanel : MonoBehaviourPun
+public class RoomPanel : MonoBehaviourPunCallbacks
 {
     [Header("button")]
     [SerializeField] private Button ReadyButton;
@@ -20,12 +21,23 @@ public class RoomPanel : MonoBehaviourPun
     public GameObject ChatLog;
     public GameObject ChatScrollContent;
 
+    [Header("PartyBox")]
+    public GameObject PartyBox;
+
     [HideInInspector]
     private string askReadyProp;
-    
+    private Dictionary<int, GameObject> _playerPartyDict;
+
     public void Start()
     {
         askReadyProp = CustomProperyDefined.ASK_READY_PROPERTY;
+
+        // DESC : 버튼 연결
+        ReadyButton.onClick.AddListener(OnReadyButtonClicked);
+        StartButton.onClick.AddListener(OnStartButtonClicked);
+        BackButton.onClick.AddListener(OnBackButtonClicked);
+        SubmitButton.onClick.AddListener(OnSubmitButtonClicked);
+        characterSelectButton.onClick.AddListener(LobbyManager.Instance.CharacterSelect.OnCharacterButtonClicked);
 
         if (!PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(askReadyProp, out object isPlayerReady))
         {
@@ -38,13 +50,51 @@ public class RoomPanel : MonoBehaviourPun
         {
             ReadyButton.gameObject.SetActive(false);
         }
+    }
 
-        // DESC : 버튼 연결
-        ReadyButton.onClick.AddListener(OnReadyButtonClicked);
-        StartButton.onClick.AddListener(OnStartButtonClicked);
-        BackButton.onClick.AddListener(OnBackButtonClicked);
-        SubmitButton.onClick.AddListener(OnSubmitButtonClicked);
-        characterSelectButton.onClick.AddListener(LobbyManager.Instance.CharacterSelect.OnCharacterButtonClicked);
+    public void SetPartyPlayerInfo()
+    {
+        _playerPartyDict = LobbyManager.Instance.playerPartyDict;
+
+        if (_playerPartyDict == null)
+        {
+            _playerPartyDict = new Dictionary<int, GameObject>();
+        }
+
+        _playerPartyDict.Clear();
+
+        for (int i = 0; i < PartyBox.transform.childCount; i++)
+        {
+            if (PartyBox.transform.GetChild(i).childCount > 0)
+            {
+                Destroy(PartyBox.transform.GetChild(i).GetChild(0).gameObject);
+            }
+        }
+
+        int cnt = 0;
+        foreach (Player p in PhotonNetwork.PlayerList)
+        {
+            GameObject playerInfoPrefab = Instantiate(Resources.Load<GameObject>(PrefabPathes.PLAYER_INROOM_PARTY_ELEMENT), PartyBox.transform.GetChild(cnt), false);            
+            playerInfoPrefab.transform.localScale = Vector3.one;
+            playerInfoPrefab.GetComponent<PartyPlayerInfo>().Initialize(cnt, p);
+
+            _playerPartyDict.Add(p.ActorNumber, playerInfoPrefab);
+
+            cnt++;
+        }
+    }
+
+    public GameObject InstantiatePlayer()
+    {
+        string playerPath = PrefabPathes.PLAYER_INROOM_PREFAB_PATH;
+                
+        PlayerDataSetting playerData = LobbyManager.Instance.dataSetting;
+        GameObject player = PhotonNetwork.Instantiate(playerPath, Vector3.zero, Quaternion.identity);
+
+        PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(CustomProperyDefined.CLASS_PROPERTY, out object classNum);
+        playerData.SetClassType((int)classNum, player);
+
+        return player;
     }
 
     public void SetPlayerReady(bool playerReady)

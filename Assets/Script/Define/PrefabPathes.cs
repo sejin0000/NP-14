@@ -5,8 +5,10 @@ using UnityEngine;
 public class PrefabPathes
 {
     #region Player
-    public static readonly string PLAYER_INLOBBY_PREFAB_PATH = "pefabs/PlayerInLobby";
-    public static readonly string PLAYER_DATA_SETTING_PREFAB_PATH = "prefabs/CharacterData/PlayerCharacterSetting";
+    public static readonly string PLAYER_INLOBBY_PREFAB_PATH = "Pefabs/PlayerInLobby";
+    public static readonly string PLAYER_DATA_SETTING_PREFAB_PATH = "Prefabs/CharacterData/PlayerCharacterSetting";
+    public static readonly string PLAYER_INROOM_PREFAB_PATH = "Pefabs/Player";
+    public static readonly string PLAYER_INROOM_PARTY_ELEMENT = "Prefabs/LobbyScene/PlayerInfo";
     #endregion
 
     #region Lobby

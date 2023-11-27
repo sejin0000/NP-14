@@ -56,8 +56,6 @@ public class CharacterSelectPopup : MonoBehaviourPun
         Vector2 size = playerStatScrollRect.content.sizeDelta;
         size.y = 1000f;
         playerStatScrollRect.content.sizeDelta = size;
-
-
     }
 
     public void Initialize()

@@ -6167,14 +6167,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnterTestRoomButton: {fileID: 1487980740}
+  CreateTestRoomButton: {fileID: 799684789}
   SceneSelectButton: {fileID: 812492303}
   SceneSelectStartButton: {fileID: 1013383001}
+  CharacterSelectButton: {fileID: 653759552}
   RoomScrollViewContent: {fileID: 508085902}
   RoomNameSetup: {fileID: 982412576}
   RoomMemberSetup: {fileID: 380943691}
   SceneScrollViewContent: {fileID: 1758564141}
   SceneScrollView: {fileID: 1213612626}
-  TestRoomPanel: {fileID: 700913422}
+  selectedSceneName: 
   canvas: {fileID: 1568722250}
   sceneConnectButtons: []
 --- !u!1 &845489037
@@ -13218,6 +13220,7 @@ MonoBehaviour:
   _CharacterSelectPopup: {fileID: 7140342747673913957, guid: 2eb62e0eb4b23d545825f5ecd308edf7, type: 3}
   IsCharacterSelectInitialized: 0
   TestLobbyP: {fileID: 844653104}
+  TestRoomP: {fileID: 700913428}
   instantiatedPlayer: {fileID: 0}
   ViewID: 0
   ClassNum: 0
