@@ -136,10 +136,21 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         else
             nav.enabled = true;
 
-        //생성할 때, 모든 플레이어 Transform 정보를 담는다.
-        foreach (var _value in TestGameManager.Instance.playerInfoDictionary.Values)
+        if(TestGameManager.Instance != null)
         {
-            PlayersTransform.Add(_value);
+            //생성할 때, 모든 플레이어 Transform 정보를 담는다.
+            foreach (var _value in TestGameManager.Instance.playerInfoDictionary.Values)
+            {
+                PlayersTransform.Add(_value);
+            }
+        }
+        else
+        {
+            //생성할 때, 모든 플레이어 Transform 정보를 담는다.
+            foreach (var _value in GameManager.Instance.playerInfoDictionary.Values)
+            {
+                PlayersTransform.Add(_value);
+            }
         }
     }
     void Update()
