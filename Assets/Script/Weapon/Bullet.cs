@@ -2,7 +2,13 @@ using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Unity.Mathematics;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering.UI;
+using static UnityEngine.Rendering.DebugUI.Table;
 
 public enum BulletTarget
 {
@@ -15,8 +21,6 @@ public class Bullet : MonoBehaviour
 {
     //충돌할 면의 벡터
     Vector2 collisionVector;
-
-
 
 
     public float ATK;
@@ -48,17 +52,22 @@ public class Bullet : MonoBehaviour
 
     public int BulletOwner;
 
+    RaycastHit2D hit;
+    public bool canAngle;
+    Vector3 income;
+    Vector3 normal;
     private void Awake()
     {
         targets = new Dictionary<string, int>();
     }
-    void Start()
+    public void Init()
     {        
-        BulletLifeTime = Random.Range(BulletLifeTime * 0.15f, BulletLifeTime * 0.2f);
+        BulletLifeTime = UnityEngine.Random.Range(BulletLifeTime * 0.15f, BulletLifeTime * 0.2f);
         //Invoke("Destroy", BulletLifeTime);
-        _direction = Vector2.right;
+        _direction = transform.right;
         //to del 아래
         layerMask = 1 << LayerMask.NameToLayer("Wall");
+        canAngle = true;
     }
     public void MissileFire() 
     {
@@ -69,7 +78,7 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(_direction * BulletSpeed * Time.deltaTime);
+        transform.Translate(Vector3.right * BulletSpeed * Time.deltaTime);
         time += Time.deltaTime;
         if (time>= BulletLifeTime) 
         {
@@ -92,13 +101,48 @@ public class Bullet : MonoBehaviour
         Destroy(gameObject);
     }
 
+    private float GetAngle(Vector2 vec1, Vector2 vec2) 
+    {
+        float angle = (Mathf.Atan2(vec2.y,vec2.x))- Mathf.Atan2(vec1.y,vec1.x) * Mathf.Rad2Deg;
+        return angle;
+    }
+    public float CalculateAngle(Vector3 from, Vector3 to)
+    {
+        return Quaternion.FromToRotation(Vector3.up, to - from).eulerAngles.z;
+    }
+    public static float GetAngle2(Vector3 from, Vector3 to)
+    {
+        Vector3 v = to - from;
+        return Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
+    }
 
-    
+
+
+
     private void OnTriggerEnter2D(Collider2D collision)//TO DEL 이 부분은 스나이퍼1201을 고려하여 작성하여야 합니다
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Wall")) //만약벽이라면
         {
-            Invoke("Destroy", 0.01f);
+
+            if (canAngle)
+            {
+
+                hit = Physics2D.Raycast(this.transform.position, _direction, BulletSpeed * BulletLifeTime, layerMask);
+                Debug.DrawRay(this.transform.position, _direction, UnityEngine.Color.red, 3f);
+
+                Vector3 reflectVector = Vector3.Reflect(_direction, hit.normal).normalized;
+                float angle = Mathf.Atan2(reflectVector.y, reflectVector.x) * Mathf.Rad2Deg;
+
+
+                Quaternion rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+                this.transform.rotation = rotation;
+                _direction = reflectVector;
+                //Debug.DrawRay(this.transform.position, reflectVector, UnityEngine.Color.red, 3f);
+            }
+            else 
+            {
+                Invoke("Destroy", 0.01f);
+            }
             return;
         }
         //만약 팀킬이 아닌 몬스터의 총알이라면 몬스터가 아니라면 삭제
