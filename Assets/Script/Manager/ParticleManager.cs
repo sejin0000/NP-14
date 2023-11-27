@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
+using Photon.Pun;
+using UnityEditor.Rendering;
 
 public enum ParticleType
 {
@@ -9,8 +12,7 @@ public enum ParticleType
     SPECIAL
 }
 
-
-public class ParticleManager : LocalSingleton<ParticleManager>
+public class ParticleManager : LocalSingletonPun<ParticleManager>
 {
     [SerializeField] private List<GameObject> prefabs;
     [SerializeField] private Dictionary<string, GameObject> prefabDict;
@@ -31,12 +33,12 @@ public class ParticleManager : LocalSingleton<ParticleManager>
     }
 
     /// <summary>
-    /// <para>파티클 오브젝트를 불러옵니다.</para>
+    /// <para>파티클 오브젝트를 실행합니다.</para>
     /// <para>캐싱 경로는 Resources/Particle/... 입니다.</para>
     /// </summary>
     /// <param name="name"></param>
     /// <param name="parents"></param>
-    static public void PlayEffect(string name, Vector3 pos, Transform parents=null)
+    static public void PlayEffectLocal(string name, Vector3 pos, Transform parents)
     {
         var tempDict = Instance.prefabDict;
 
@@ -45,6 +47,70 @@ public class ParticleManager : LocalSingleton<ParticleManager>
 
         GameObject prefab = Instantiate(tempDict[name], parents);
         prefab.transform.position = pos;
+
+        prefab.GetComponent<ParticleSystem>().Play();
+    }
+
+    /// <summary>
+    /// <para>파티클 오브젝트를 실행합니다.</para>
+    /// <para>캐싱 경로는 Resources/Particle/... 입니다.</para>
+    /// <para>모든 플레이어에게 보이는 파티클입니다. </para>
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="pos"></param>
+    /// <param name="pViewID">부모가 될 오브젝트의 ViewID</param>
+    public void PlayEffect(string name, Vector3 pos, GameObject parent = null)
+    {
+        PhotonView pv = Instance.GetComponent<PhotonView>();
+
+        int viewID = pv.ViewID;
+        int pViewID = int.MinValue;
+
+        if (parent != null)
+            pViewID = parent.GetComponent<PhotonView>().ViewID;
+
+        if (!CheckContainKey(name))
+            return;
+
+        pv.RPC("SendEffect", RpcTarget.All, viewID, name, pos, pViewID);
+    }
+
+    public void PlayEffect(string name, Vector3 pos)
+    {
+        PhotonView pv = Instance.GetComponent<PhotonView>();
+
+        int viewID = pv.ViewID;
+
+        if (!CheckContainKey(name))
+            return;
+
+        pv.RPC("SendEffect", RpcTarget.All, viewID, name, pos);
+    }
+
+    [PunRPC]
+    public void SendEffect(int viewID, string name, Vector3 pos, int pViewID)
+    {
+        Debug.Log("[ParticleManager] SendEffect!");
+
+        var tempDict = Instance.prefabDict;
+        PhotonView pv = PhotonView.Find(viewID);
+
+        PhotonView pv_p = PhotonView.Find(pViewID);
+
+        GameObject prefab = Instantiate(tempDict[name], pos, Quaternion.identity, pv_p.transform);
+
+        prefab.GetComponent<ParticleSystem>().Play();
+    }
+
+    [PunRPC]
+    public void SendEffect(int viewID, string name, Vector3 pos)
+    {
+        Debug.Log("[ParticleManager] SendEffect!");
+
+        var tempDict = Instance.prefabDict;
+        PhotonView pv = PhotonView.Find(viewID);
+
+        GameObject prefab = Instantiate(tempDict[name], pos, Quaternion.identity);
 
         prefab.GetComponent<ParticleSystem>().Play();
     }
