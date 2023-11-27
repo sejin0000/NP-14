@@ -85,7 +85,7 @@ public class RoomNodeInfo : MonoBehaviour
 
     public void OpenDoor()
     {
-        PV.RPC("PunCloseDoor", RpcTarget.All);
+        PV.RPC("PunOpenDoor", RpcTarget.All);
     }
 
     [PunRPC]
