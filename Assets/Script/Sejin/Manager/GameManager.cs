@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
             OnStageStartEvent += MG.NavMeshBakeRunTime;
             OnStageStartEvent += MS.MonsterSpawn;           
         }
-        //OnStageStartEvent += MG.roomNodeInfo.OpenDoor;
+        OnStageStartEvent += MG.roomNodeInfo.OpenDoor;
 
         CallInitEvent();
     }
