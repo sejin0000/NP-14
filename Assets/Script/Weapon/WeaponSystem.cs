@@ -63,7 +63,6 @@ public class WeaponSystem : MonoBehaviour
         sizeBody = false;
         locator = false;
         sniping = false;
-        canAngle = false;
         fire = false;
         water = false;
         ice = false;
@@ -182,7 +181,6 @@ public class WeaponSystem : MonoBehaviour
         _bullet.targets = _targets;
         _bullet.IsDamage = _isDamage;
         _bullet.BulletOwner = _viewID;
-        _bullet.canAngle = canAngle;
         _object.GetComponent<SpriteRenderer>().sprite = _controller.playerStatHandler.BulletSprite;
         _bullet.fire = fire;
         _bullet.water = water;

@@ -26,16 +26,25 @@ public class GameManager : MonoBehaviour
     public event Action OnGameOverEvent;      //게임 오버
 
 
+
+
+    public StagerListInfoSO stageListInfo;
+    public int curStage = 0;
+
+
     public GameObject _mapGenerator;
     public MapGenerator MG;
+
     public GameObject _fadeInfadeOutPanel;
     private FadeInFadeOutPanel FF;
 
+    public GameObject _mansterSpawner;
+    private MonsterSpawner MS;
+
+
+
     public static GameManager Instance;
 
-
-    public StageDictSO StageInfo;
-    private int curStage;
 
     public GameObject clientPlayer;
     public Dictionary<int, Transform> playerInfoDictionary;
@@ -57,9 +66,14 @@ public class GameManager : MonoBehaviour
 
         MG = _mapGenerator.GetComponent<MapGenerator>();
         FF = _fadeInfadeOutPanel.GetComponent<FadeInFadeOutPanel>();
-
+        MS = _mansterSpawner.GetComponent<MonsterSpawner>();
 
         OnStageStartEvent += MG.MapMake;
+        if (PhotonNetwork.IsMasterClient)
+        {
+            OnStageStartEvent += MS.MonsterSpawn;
+        }
+
         CallInitEvent();
     }
     
@@ -128,6 +142,7 @@ public class GameManager : MonoBehaviour
 
     public void StageClear()
     {
+        curStage++;
         CallStageStartEvent();
     }
 

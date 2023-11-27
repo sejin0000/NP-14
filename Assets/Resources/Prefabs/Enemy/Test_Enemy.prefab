@@ -422,6 +422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CanFire: 0
+  CanWater: 0
   CanIce: 0
   currentHP: 0
   viewAngle: 57

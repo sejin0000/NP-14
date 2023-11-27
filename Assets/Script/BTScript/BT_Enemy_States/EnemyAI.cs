@@ -33,6 +33,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     private BTRoot TreeAIState;
 
     public bool CanFire;
+    public bool CanWater;
     public bool CanIce;
 
     public float currentHP;                  // 현재 체력 계산
@@ -115,8 +116,9 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         PV = GetComponent<PhotonView>();
-        CanIce = true;
+        CanWater = true;
         CanFire = true;
+        CanIce = true;
 
         originColor = spriteRenderer.color;
         //게임 오브젝트 활성화 시, 행동 트리 생성
@@ -146,10 +148,21 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         else
             nav.enabled = true;
 
-        //생성할 때, 모든 플레이어 Transform 정보를 담는다.
-        foreach (var _value in TestGameManager.Instance.playerInfoDictionary.Values)
+        if(TestGameManager.Instance != null)
         {
-            PlayersTransform.Add(_value);
+            //생성할 때, 모든 플레이어 Transform 정보를 담는다.
+            foreach (var _value in TestGameManager.Instance.playerInfoDictionary.Values)
+            {
+                PlayersTransform.Add(_value);
+            }
+        }
+        else
+        {
+            //생성할 때, 모든 플레이어 Transform 정보를 담는다.
+            foreach (var _value in GameManager.Instance.playerInfoDictionary.Values)
+            {
+                PlayersTransform.Add(_value);
+            }
         }
     }
     void Update()
@@ -236,7 +249,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             }
             if (playerBullet.water)
             {
-                Debuff.Instance.GiveIce(this.gameObject);
+                Debuff.Instance.GiveWater(this.gameObject);
             }
             if (playerBullet.ice) 
             {
@@ -244,6 +257,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
                 if (random < 90) 
                 {
                     isGroggy = true;
+                    Debug.Log("얼음체크");
+                    Debuff.Instance.GiveIce(this.gameObject);
                 }
             }
             if (playerBullet.burn)
