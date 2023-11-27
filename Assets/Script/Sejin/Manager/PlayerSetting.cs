@@ -10,6 +10,24 @@ public class PlayerSetting : MonoBehaviour
 
     public PlayerDataSetting characterSetting; // 플레이어의 정보
 
+
+    public bool RoomInPlayer
+    {
+        get { return RoomInPlayer; }
+        set { if (RoomInPlayer != value) { MapBaking(value); RoomInPlayer = value; } }
+    }//추적 타겟[Palyer]
+
+
+    private void MapBaking(bool _target)
+    {
+        //마스터 클라이언트가 몬스터를 소환하고, 해당 몬스터들이
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            //NavMeshBakeRunTime();
+        }
+    }
+
     private void Awake()
     {
         PV = GetComponent<PhotonView>();
@@ -79,7 +97,7 @@ public class PlayerSetting : MonoBehaviour
     private void PlayerPositionSetting(Vector2 roomInPlayer, Vector2 rectPos,Vector2 widthHeight)
     {
         Vector2 player = GameManager.Instance.clientPlayer.transform.position;
-        if (rectPos.x < player.x && rectPos.x + widthHeight.x > player.x &&
+        if (rectPos.x < player.x - 1 && rectPos.x + widthHeight.x > player.x - 1 &&
             rectPos.y < player.y && rectPos.y + widthHeight.y > player.y)
         {
             return;

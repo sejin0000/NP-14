@@ -17,6 +17,17 @@ using Unity.VisualScripting;
 
 //Enemy에 필요한 컴포넌트들 + 기타 요소들 여기에 다 추가
 
+enum EnemyStateColor
+{
+    ColorRed,
+    ColorYellow,
+    ColorBlue,
+    ColorBlack,
+    ColorOrigin,
+    ColorMagenta,
+}
+
+
 public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 {
     private BTRoot TreeAIState;
@@ -33,7 +44,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     public EnemySO enemySO;                  // Enemy 정보 [모든 Action Node에 owner로 획득시킴]
     public SpriteRenderer spriteRenderer;
     public Animator anim;
-
+    public Color originColor;
 
     private Transform target;
     public Transform Target { get { return target; } 
@@ -109,6 +120,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         CanFire = true;
         CanIce = true;
 
+        originColor = spriteRenderer.color;
         //게임 오브젝트 활성화 시, 행동 트리 생성
         CreateTreeAIState();
         currentHP = enemySO.hp;
@@ -380,8 +392,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         {
             return;
         }
-
-        SetStateColor();
+        PV.RPC("SetStateColor", RpcTarget.All, (int)EnemyStateColor.ColorRed, PV.ViewID);
         currentHP -= damage;
         GaugeUpdate();
         if (currentHP <= 0)
@@ -399,8 +410,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         {
             return;
         }
-
-        SetStateColor();
+        PV.RPC("SetStateColor", RpcTarget.All, (int)EnemyStateColor.ColorRed, PV.ViewID);
         currentHP -= damage;
         GaugeUpdate();
         if (currentHP <= 0)
@@ -526,8 +536,9 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         //받아온 모든 플레이어 트랜스폼을 받아온다.
         for (int i = 0; i < PlayersTransform.Count; i++)
         {
-            if (viewDistance >= Vector2.Distance(PlayersTransform[i].position, transform.position))
-            {
+            if (viewDistance >= Vector2.Distance(PlayersTransform[i].position, transform.position) &&
+                PlayersTransform[i].gameObject.layer == LayerMask.NameToLayer("Player"))
+            {                
                 //시야각 방향의 직선 Direction
                 Vector2 middleDirection = (_rightBoundary + _leftBoundary).normalized;
                 //Enemy와 Player 사이의 방향
@@ -542,6 +553,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
                     Debug.Log($"타겟 수집{Target}");
                     break;
                 }
+                else
+                    Target = null;
             }
 
         }
@@ -579,11 +592,44 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         Target = null;
     }
 
-
-    private void SetStateColor()
+    //1.이넘으로 칼라 세팅을 하고 해당 이넘에 대한 인트 보내기
+    //2.컬러 4색 요소를 다 보내기
+    [PunRPC]
+    private void SetStateColor(int colorNum, int viewID)
     {
-        spriteRenderer.color = Color.red;
+        //TODO
+        PV = PhotonView.Find(viewID);
+        PV.GetComponent<EnemyAI>().SetColor(colorNum);
     }
+
+    private void SetColor(int colorNum)
+    {
+        switch(colorNum)
+        {
+            case (int)EnemyStateColor.ColorRed:
+                spriteRenderer.color = Color.red;
+                Debug.Log($"지금 스프라이트 색상{spriteRenderer.color}");
+                break;
+            case (int)EnemyStateColor.ColorYellow:
+                spriteRenderer.color = Color.yellow;
+                break;
+            case (int)EnemyStateColor.ColorBlue:
+                spriteRenderer.color = Color.blue;
+                break;
+            case (int)EnemyStateColor.ColorBlack:
+                spriteRenderer.color = Color.black;
+                break;
+            case (int)EnemyStateColor.ColorOrigin:
+                spriteRenderer.color = originColor;
+                break;
+            case (int)EnemyStateColor.ColorMagenta:
+                spriteRenderer.color = Color.magenta;
+                break;
+        }
+    }
+
+
+
     #endregion
 
     #region player애니메이션 관련    

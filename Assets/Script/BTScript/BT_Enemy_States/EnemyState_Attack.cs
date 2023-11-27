@@ -26,7 +26,7 @@ public class EnemyState_Attack : BTAction
     public override void Initialize()
     {
         currentTime = enemySO.atkDelay;
-        SetStateColor();
+        enemyAI.PV.RPC("SetStateColor", RpcTarget.All, (int)EnemyStateColor.ColorBlack, enemyAI.PV.ViewID);
 
         target = enemyAI.Target;
     }
@@ -48,12 +48,12 @@ public class EnemyState_Attack : BTAction
 
         float distanceToTarget = Vector3.Distance(owner.transform.position, target.transform.position);
 
-        if (distanceToTarget > enemySO.attackRange)
+        if (distanceToTarget > enemySO.attackRange || target.gameObject.layer != LayerMask.NameToLayer("Player"))
         {
             enemyAI.isAttaking = false;
             return Status.BT_Failure; // 노드 종료
         }
-
+            
 
 
         //★★★수정함
@@ -83,10 +83,6 @@ public class EnemyState_Attack : BTAction
     }
     public override void Terminate()
     {
-    }
-
-    private void SetStateColor()
-    {
-       enemyAI.spriteRenderer.color = Color.black;
+        //enemyAI.PV.RPC("SetStateColor", RpcTarget.All, (int)StateColor.ColorOrigin, enemyAI.PV.ViewID);
     }
 }

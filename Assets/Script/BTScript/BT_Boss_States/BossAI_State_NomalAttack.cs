@@ -25,7 +25,7 @@ public class BossAI_State_NomalAttack : BTCondition
     public override void Initialize()
     {
         currentTime = enemySO.atkDelay;
-        SetStateColor();
+        enemyAI.PV.RPC("SetStateColor", RpcTarget.All, (int)EnemyStateColor.ColorBlack, enemyAI.PV.ViewID);
 
         target = enemyAI.Target;
     }
@@ -86,10 +86,6 @@ public class BossAI_State_NomalAttack : BTCondition
     }
     public override void Terminate()
     {
-    }
-
-    private void SetStateColor()
-    {
-        enemyAI.spriteRenderer.color = Color.black;
+        enemyAI.PV.RPC("SetStateColor", RpcTarget.All, (int)EnemyStateColor.ColorOrigin, enemyAI.PV.ViewID);
     }
 }

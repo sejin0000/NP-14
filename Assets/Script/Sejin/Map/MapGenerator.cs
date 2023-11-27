@@ -1,3 +1,4 @@
+using NavMeshPlus.Components;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
@@ -32,6 +33,7 @@ public class MapGenerator : MonoBehaviour
     public SetTile setTile;
     public RoomNodeInfo roomNodeInfo;
 
+    public NavMeshSurface Surface2D;
 
     Node root;
     private void Awake()
@@ -74,8 +76,6 @@ public class MapGenerator : MonoBehaviour
             roomNodeInfo.ChooseRoom();
             roomNodeInfo.PlayerPositionSetting();
         }
-
-        setTile.doorTileMap.gameObject.SetActive(false);
     }
 
     public void RoomMake()
@@ -289,5 +289,10 @@ public class MapGenerator : MonoBehaviour
         {
             Debug.LogError("맵 만들기 실패");
         }
+    }
+
+    public void NavMeshBakeRunTime()
+    {
+        Surface2D.BuildNavMeshAsync();
     }
 }

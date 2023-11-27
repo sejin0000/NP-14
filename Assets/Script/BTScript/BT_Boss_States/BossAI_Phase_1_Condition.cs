@@ -23,7 +23,7 @@ public class BossAI_Phase_1_Condition : BTCondition
 
     public override void Initialize()
     {
-        bossAI_Dragon.SetStateColor(Color.clear) ;
+        //bossAI_Dragon.SetStateColor(Color.clear) ;
         //패턴 간격처리
         currentTime = bossPatternTime;
         //수정됨

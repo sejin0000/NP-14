@@ -11,6 +11,7 @@ public class EnemyState_GroggyCondition : BTAction
     private EnemySO enemySO;
 
     private float currentTime;         // 시간 계산용
+
     public EnemyState_GroggyCondition(GameObject _owner)
     {
         owner = _owner;
@@ -22,7 +23,7 @@ public class EnemyState_GroggyCondition : BTAction
 
     public override void Initialize()
     {
-        currentTime = enemySO.chaseTime;
+        currentTime = enemySO.groggyTiem;
     }
 
     public override Status Update()
@@ -34,7 +35,7 @@ public class EnemyState_GroggyCondition : BTAction
             enemyAI.isGroggy = false;
             enemyAI.nav.isStopped = false;
             //여기에 RPC메서드
-            currentTime = enemySO.chaseTime;
+            currentTime = enemySO.groggyTiem;
         }
 
 
@@ -42,7 +43,7 @@ public class EnemyState_GroggyCondition : BTAction
 
         if (enemyAI.isGroggy) 
         {
-            SetStateColor();
+            enemyAI.PV.RPC("SetStateColor", RpcTarget.All, (int)EnemyStateColor.ColorBlue, enemyAI.PV.ViewID);
             return Status.BT_Running;
         }
         else
@@ -54,11 +55,7 @@ public class EnemyState_GroggyCondition : BTAction
 
     public override void Terminate()
     {
-        enemyAI.spriteRenderer.color = new Color(255 / 255f, 255 / 255f, 255 / 255f ,255/255f);
+        //enemyAI.PV.RPC("SetStateColor", RpcTarget.All, (int)StateColor.ColorOrigin, enemyAI.PV.ViewID);
     }
 
-    private void SetStateColor()
-    {
-        enemyAI.spriteRenderer.color = Color.blue;
-    }
 }

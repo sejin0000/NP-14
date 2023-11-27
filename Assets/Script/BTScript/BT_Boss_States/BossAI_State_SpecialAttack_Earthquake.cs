@@ -37,7 +37,7 @@ public class BossAI_State_SpecialAttack_Earthquake : BTAction
     public override void Initialize()
     {
         currentTime = enemySO.atkDelay;
-        SetStateColor();
+        enemyAI.PV.RPC("SetStateColor", RpcTarget.All, Color.red);
 
         target = enemyAI.Target;
     }
@@ -75,10 +75,5 @@ public class BossAI_State_SpecialAttack_Earthquake : BTAction
     public override void Terminate()
     {
 
-    }
-
-    private void SetStateColor()
-    {
-        enemyAI.spriteRenderer.color = Color.black;
     }
 }
