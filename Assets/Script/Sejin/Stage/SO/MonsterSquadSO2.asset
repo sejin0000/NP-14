@@ -9,15 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06c570c3099a5684f8d4b8b5f3922512, type: 3}
-  m_Name: StageSO_1_2
+  m_Script: {fileID: 11500000, guid: 95acb80495f00264e90da9f5cde41ae1, type: 3}
+  m_Name: MonsterSquadSO2
   m_EditorClassIdentifier: 
-  stageName: Stage_1_2
-  NumberOfMonstersToSpawn: 11
-  areaNum: 1
-  stageNum: 2
-  MonsterDatas:
-    stageTypr: 0
-    monsters:
-    - monsterType: Test_Enemy
-      monsterCount: 15
+  MonsterList: 0000000000000000
+  MonsterNum: 10

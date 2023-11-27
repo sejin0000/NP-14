@@ -27,7 +27,9 @@ public class StageMonsterData
 public class StageSO : ScriptableObject
 {
     [Header("StageInfo")]
+
     [SerializeField] private string stageName;
+    [SerializeField] private int NumberOfMonstersToSpawn; // 방 하나에 생성할 몬스터 수
     [SerializeField] private int areaNum;
     [SerializeField] private int stageNum;
 

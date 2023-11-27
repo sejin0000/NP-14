@@ -235,6 +235,10 @@ MonoBehaviour:
   - PunOpenDoor
   - ActiveAttackArea
   - View
+  - EndPlayerCheck
+  - GiveDamege
+  - PunPortalSetting
+  - PunReadyCheck
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
