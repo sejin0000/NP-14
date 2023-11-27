@@ -11,12 +11,6 @@ public class PlayerSetting : MonoBehaviour
     public PlayerDataSetting characterSetting; // 플레이어의 정보
 
 
-    public bool RoomInPlayer
-    {
-        get { return RoomInPlayer; }
-        set { if (RoomInPlayer != value) { MapBaking(value); RoomInPlayer = value; } }
-    }//추적 타겟[Palyer]
-
 
     private void MapBaking(bool _target)
     {

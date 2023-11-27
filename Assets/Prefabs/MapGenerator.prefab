@@ -704,7 +704,7 @@ Transform:
   m_Children:
   - {fileID: 1497170097040228547}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4282806665659269914
 MonoBehaviour:
@@ -730,6 +730,7 @@ MonoBehaviour:
   lastRoomList: []
   setTile: {fileID: 0}
   roomNodeInfo: {fileID: 0}
+  Surface2D: {fileID: 0}
 --- !u!114 &4520906855787015363
 MonoBehaviour:
   m_ObjectHideFlags: 0
