@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,8 @@ public class Node
     List<GameObject> roomInMoster = new List<GameObject>();
 
     public int roadCount = 0;
+
+
 
     public Vector2Int center
     {

@@ -71,8 +71,8 @@ public class GameManager : MonoBehaviour
         OnStageStartEvent += MG.MapMake;
         if (PhotonNetwork.IsMasterClient)
         {
-            OnStageStartEvent += MS.MonsterSpawn;
             OnStageStartEvent += MG.NavMeshBakeRunTime;
+            OnStageStartEvent += MS.MonsterSpawn;           
         }
 
         CallInitEvent();
