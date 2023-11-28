@@ -32,10 +32,6 @@ public class TestRoomPanel : MonoBehaviourPun
     public GameObject testRoomOptionPopupObject;
     public TestRoomOptionPopup testRoomOptionPopup;
 
-    [Header("LobbyPanel")]
-    public GameObject MainCanvas;
-    public LobbyPanel lobbyPanel;
-
     [Header("RoomInfo")]
     public string currentTestScene;
     public string currentRoomNameText;
@@ -54,11 +50,11 @@ public class TestRoomPanel : MonoBehaviourPun
         }
         currentRoomNameText = PhotonNetwork.CurrentRoom.Name;
         currentRoomMemberText = PhotonNetwork.CurrentRoom.MaxPlayers.ToString();
-        lobbyPanel = MainCanvas.GetComponent<LobbyPanel>();
-        if (lobbyPanel.selectedSceneInTestLobbyPanel != null)
+        
+        if (LobbyManager.Instance.SelectedSceneName != null)
         {
-            currentTestScene = lobbyPanel.selectedSceneInTestLobbyPanel;
-            ConnectedSceneText.text = $"Selected Scene : {lobbyPanel.selectedSceneInTestLobbyPanel}";
+            currentTestScene = LobbyManager.Instance.SelectedSceneName;
+            ConnectedSceneText.text = $"Selected Scene : {LobbyManager.Instance.SelectedSceneName}";
         }
         connectedScene = currentTestScene;
 
@@ -67,13 +63,19 @@ public class TestRoomPanel : MonoBehaviourPun
         testRoomOptionPopup.Initialize();
 
         // 로비 패널 연결
-        lobbyPanel = MainCanvas.GetComponent<LobbyPanel>();
+        // lobbyPanel = MainCanvas.GetComponent<LobbyPanel>();
 
         // 버튼 연결
         TestStartButton.onClick.AddListener(OnTestStartButtonClickedInTest);
-        BackButton.onClick.AddListener(OnTestBackButtonClickedInTest);
+        BackButton.onClick.AddListener(NetworkManager.Instance.OnBackButtonClickedInTestRoomPanel);
         OpenOptionButton.onClick.AddListener(OnOpenOptionButtonClicked);
     }
+
+    public void LeaveRoomSetting()
+    {
+        LobbyManager.Instance.SelectedSceneName = null;
+    }
+
     public string OnConnectedSceneChanged(string connectedScene)
     {
         return connectedScene;
@@ -83,16 +85,6 @@ public class TestRoomPanel : MonoBehaviourPun
     {
         testRoomOptionPopupObject.SetActive(true);
     }
-
-    public void OnTestBackButtonClickedInTest()
-    {
-        if (lobbyPanel == null)
-        {
-            Initialize();
-        }
-        lobbyPanel.SetPanel(lobbyPanel.TestLobbyPanel.name);
-    }
-
 
     public void OnTestStartButtonClickedInTest()
     {

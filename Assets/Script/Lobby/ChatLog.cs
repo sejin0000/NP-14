@@ -26,10 +26,6 @@ public class ChatLog : MonoBehaviour
         float maxWidth = ChatText.gameObject.GetComponent<RectTransform>().rect.width;
         float textWidth = textObject.preferredWidth;
 
-        Debug.Log($"chat : {ChatText.text}");
-        Debug.Log($"textWidth : {textWidth}");
-        Debug.Log($"maxWidth : {maxWidth}");
-
         if (textWidth > maxWidth)
         {            
             int sizeMultiplier = (int)(textWidth / (maxWidth * fontMultiplier)) + 1;

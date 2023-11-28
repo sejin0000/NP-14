@@ -19,6 +19,7 @@ public class TestLobbyPanel : MonoBehaviourPunCallbacks
     public Button SceneSelectButton;
     public Button SceneSelectStartButton;
     public Button CharacterSelectButton;
+    public Button BackButton;
 
 
     [Header("CurrentRoomBoard")]
@@ -32,7 +33,18 @@ public class TestLobbyPanel : MonoBehaviourPunCallbacks
 
     [Header("TestRoomInfo")]
     [SerializeField] private string selectedSceneName;
-    private string selectedScene;
+    public string SelectedSceneName
+    {
+        get { return selectedSceneName; } 
+        set 
+        {
+            if (selectedSceneName != value) 
+            {
+                LobbyManager.Instance.SelectedSceneName = value;
+                selectedSceneName = value;
+            }
+        }
+    }
     private string selectedRoomName;
     public string SelectedRoomName
     {
@@ -88,8 +100,7 @@ public class TestLobbyPanel : MonoBehaviourPunCallbacks
         SceneSelectStartButton.onClick.AddListener(OnSceneSelectStartButtonClicked);
         CreateTestRoomButton.onClick.AddListener(OnCreateTestRoomButtonClicked);
         SceneSelectButton.onClick.AddListener(LobbyManager.Instance.CharacterSelect.OnCharacterButtonClicked);
-
-        
+        BackButton.onClick.AddListener(LobbyManager.Instance.OnBackButtonClickedInTestLobbyPanel);
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
@@ -118,7 +129,7 @@ public class TestLobbyPanel : MonoBehaviourPunCallbacks
 
     private void UpdateTestRoomListView()
     {
-        var cachedTestRoomList = LobbyManager.Instance.cachedTestRoomList;
+        var cachedTestRoomList = NetworkManager.Instance.cachedTestRoomList;
         testRoomListEntries.Clear();
 
         foreach (RoomInfo info in cachedTestRoomList.Values)
@@ -135,14 +146,24 @@ public class TestLobbyPanel : MonoBehaviourPunCallbacks
     {
         foreach (RoomInfo info in roomList)
         {
+            if (cachedTestRoomList.ContainsKey(info.Name))
+            {
+                cachedTestRoomList[info.Name] = info;
+            }
+            else
+            {
+                cachedTestRoomList.Add(info.Name, info);
+            }
+
             if (info.CustomProperties.TryGetValue(testOrNotRP, out object testBool))
             {
                 if (
-                    !info.IsOpen 
-                    || !info.IsVisible 
-                    || info.RemovedFromList 
-                    || info.PlayerCount == 0 
-                    || (testBool != null && !(bool)testBool)
+                    testBool != null
+                    &&(!info.IsOpen 
+                        || !info.IsVisible 
+                        || info.RemovedFromList 
+                        || info.PlayerCount == 0 
+                        || (testBool != null && !(bool)testBool))
                     )
                 {
                     if (cachedTestRoomList.ContainsKey(info.Name))
@@ -153,14 +174,6 @@ public class TestLobbyPanel : MonoBehaviourPunCallbacks
                 }
             }
 
-            if (cachedTestRoomList.ContainsKey(info.Name))
-            {
-                cachedTestRoomList[info.Name] = info;
-            }
-            else
-            {
-                cachedTestRoomList.Add(info.Name, info);
-            }
         }
     }
 
@@ -207,7 +220,6 @@ public class TestLobbyPanel : MonoBehaviourPunCallbacks
     {
         selectedSceneName = clickedButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text;
         SceneSelectStartButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = selectedSceneName;
-        lobbyPanel.selectedSceneInTestLobbyPanel = selectedSceneName;
         foreach (SceneConnectButton button in sceneConnectButtons)
         {
             if (button != clickedButton)
@@ -219,7 +231,7 @@ public class TestLobbyPanel : MonoBehaviourPunCallbacks
 
     private void OnEnterTestRoomButtonClicked()
     {
-        foreach (GameObject entry in LobbyManager.Instance.testRoomListEntries.Values)
+        foreach (GameObject entry in NetworkManager.Instance.testRoomListEntries.Values)
         {
             var entryInfo = entry.GetComponent<RoomListEntry>();
             if (entryInfo.isEntryClicked)
@@ -240,12 +252,12 @@ public class TestLobbyPanel : MonoBehaviourPunCallbacks
         maxPlayers = (byte)Mathf.Clamp(maxPlayers, 2, 8);
 
         RoomOptions options = new RoomOptions { MaxPlayers = maxPlayers, PlayerTtl = 10000 };
-        if (selectedScene == null)
+        if (SelectedSceneName == null)
         {
-            selectedScene = sceneConnectButtons[0].sceneNameText.text;
+            SelectedSceneName = sceneConnectButtons[0].sceneNameText.text;
         }
         options.CustomRoomPropertiesForLobby = new string[] { testOrNotRP, testSCeneRP };
-        options.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { testOrNotRP, true }, { testSCeneRP, selectedScene } };
+        options.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { testOrNotRP, true }, { testSCeneRP, SelectedSceneName } };
 
         PhotonNetwork.CreateRoom(roomName, options);
     }

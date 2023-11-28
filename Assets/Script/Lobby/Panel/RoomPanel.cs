@@ -39,7 +39,7 @@ public class RoomPanel : MonoBehaviourPunCallbacks
         // DESC : 버튼 연결
         ReadyButton.onClick.AddListener(OnReadyButtonClicked);
         StartButton.onClick.AddListener(OnStartButtonClicked);
-        BackButton.onClick.AddListener(LobbyManager.Instance.OnBackButtonClickedInRoomPanel);        
+        BackButton.onClick.AddListener(NetworkManager.Instance.OnBackButtonClickedInRoomPanel);        
         SubmitButton.onClick.AddListener(OnSubmitButtonClicked);
         characterSelectButton.onClick.AddListener(LobbyManager.Instance.CharacterSelect.OnCharacterButtonClicked);
 

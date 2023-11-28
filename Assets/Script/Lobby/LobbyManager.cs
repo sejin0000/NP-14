@@ -40,6 +40,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     [Header("TestLobbyPanel")]
     public TestLobbyPanel TestLobbyP;
+    public string SelectedSceneName;
 
     [Header("TestRoomPanel")]
     public TestRoomPanel TestRoomP;
@@ -53,9 +54,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     
 
     // RoomEntries
-    public Dictionary<string, RoomInfo> cachedTestRoomList;
-    public Dictionary<string, GameObject> testRoomListEntries;
-    public Dictionary<string, RoomInfo> cachedRoomList;
     public Dictionary<int, GameObject> playerPartyDict;
 
     [HideInInspector]
@@ -69,19 +67,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             Instance = this;
         }
 
-        if (PhotonNetwork.NetworkClientState == ClientState.Joined)
-        {
-            Debug.Log("Joined");
-            SetPanel(PanelType.LoginPanel);            
-        }
-
-        // DESC : Current State
-        //CurrentState = PanelType.LoginPanel;
-
-        // DESC : Instantiate Dictionaries
-        cachedRoomList = new Dictionary<string, RoomInfo>();        
-        cachedTestRoomList = new Dictionary<string, RoomInfo>();
-        testRoomListEntries = new Dictionary<string, GameObject>();
+        // DESC : playerPartyDict 초기화
         playerPartyDict = new Dictionary<int, GameObject>();
 
         // DESC : CharacterSelectPopup 초기화
@@ -93,161 +79,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
         // DESC : DataSetting 초기화
         dataSetting = DataSettingPrefab.GetComponent<PlayerDataSetting>();
-    }
-
-    public override void OnConnectedToMaster()
-    {
-        PhotonNetwork.JoinLobby();
-    }
-
-    public override void OnJoinedLobby()
-    {
-        Debug.Log($"LobbyManager - Current State : {Enum.GetName(typeof(PanelType), CurrentState)}");
-
-        if (cachedRoomList != null) 
-        {
-            cachedRoomList.Clear();            
-        }
-        if (cachedTestRoomList != null)
-        {
-            cachedTestRoomList.Clear();
-            
-        }
-
-        if (CurrentState == PanelType.LoginPanel)
-        {
-            SetPanel(PanelType.MainLobbyPanel);
-        }
-    }
-
-    public override void OnLeftLobby()
-    {
-        cachedRoomList.Clear();
-        cachedTestRoomList.Clear();
-    }
-
-    public override void OnRoomListUpdate(List<RoomInfo> roomList)
-    {
-        foreach (RoomInfo info in roomList)
-        {
-            info.CustomProperties.TryGetValue(CustomProperyDefined.TEST_OR_NOT, out object testBool);
-
-            // DESC : 기존 룸인포 지우기
-            if (testBool == null)
-            {
-                info.CustomProperties.Add(CustomProperyDefined.TEST_OR_NOT, false);
-                cachedRoomList.Remove(info.Name);
-            }
-            else
-            {
-                cachedTestRoomList.Remove(info.Name);
-            }
-
-            if (cachedRoomList.ContainsKey(info.Name) && !(bool)testBool)
-            {
-                cachedRoomList[info.Name] = info;
-            }
-            if (cachedTestRoomList.ContainsKey(info.Name) && (bool)testBool)
-            {
-                cachedTestRoomList[info.Name] = info;
-            }
-
-            // DESC : 방이 존재하지 않을 조건일 시, 지우기.
-            if (testBool != null
-                && (!info.IsOpen || info.RemovedFromList || !info.IsVisible || info.PlayerCount == 0))
-            {
-                if ((bool)testBool || cachedRoomList.ContainsKey(info.Name))
-                {
-                    cachedRoomList.Remove(info.Name);
-                }
-                if (!(bool)testBool || cachedTestRoomList.ContainsKey(info.Name))
-                {
-                    cachedTestRoomList.Remove(info.Name);
-                }
-                continue;
-            }
-        }
-
-        UpdateTestRoomListView();
-    }
-
-    public override void OnJoinedRoom()
-    {
-        // DESC : 빠른 시작과 테스트룸 구분
-        PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(CustomProperyDefined.TEST_OR_NOT, out object testProperty);
-        if (!(bool)testProperty)
-        {
-            SetRoomPanel();
-            Debug.Log($"LobbyManager - OnJoinedRoom Current RoomName : {PhotonNetwork.CurrentRoom.Name}");
-            Debug.Log($"LobbyManager - OnJoinedRoom Current ClientState : {Enum.GetName(typeof(ClientState), PhotonNetwork.NetworkClientState)}");
-            
-        }
-        else
-        {
-            SetTestRoomPanel();
-        }
-    }
-
-    
-    public override void OnJoinRoomFailed(short returnCode, string message)
-    {
-        // DESC : 룸 생성
-        Debug.Log($"OnJoinRoomFailed");
-    }
-
-    // DESC : 랜덤룸 진입 (OnGameButton) 에 실패했을 경우, 방을 만듦.
-    public override void OnJoinRandomFailed(short returnCode, string message)
-    {
-        string roomName = $"RandRoom{Random.Range(1, 200)}";
-        RoomOptions options = new RoomOptions { MaxPlayers = 3 };
-        options.CustomRoomProperties = new Hashtable() { { CustomProperyDefined.TEST_OR_NOT, false } };
-        PhotonNetwork.CreateRoom(roomName, options, null);
-        Debug.Log($"LobbyManager - Room Created {roomName}");
-    }
-
-    public override void OnLeftRoom()
-    {
-        Debug.Log("LEAVING...");
-        if (PhotonNetwork.NetworkClientState == ClientState.Leaving)
-        {
-            StartCoroutine(WaitForLeaving());
-        }
-
-        if (CurrentState == PanelType.RoomPanel)
-        {
-            Debug.Log($"LobbyManager - LeftRoom : Client State : {PhotonNetwork.NetworkClientState}{Enum.GetName(typeof(ClientState), PhotonNetwork.NetworkClientState)}");
-            SetPanel(PanelType.MainLobbyPanel);
-            PhotonNetwork.ConnectUsingSettings();
-            Debug.Log($"LobbyManager - LeftRoom : Client State : {PhotonNetwork.NetworkClientState}{Enum.GetName(typeof(ClientState), PhotonNetwork.NetworkClientState)}");
-        }
-
-        playerPartyDict.Clear();
-    }
-
-    public IEnumerator WaitForLeaving()
-    {
-        while (PhotonNetwork.NetworkClientState == ClientState.Leaving)
-            yield return null;
-        SetPanel(PanelType.MainLobbyPanel);
-    }
-
-    public void CallLeaveRoomToMainLobby()
-    {
-        OnLeaveRoom?.Invoke(PanelType.MainLobbyPanel);        
-    }
-
-    private void UpdateTestRoomListView()
-    {
-        testRoomListEntries.Clear();
-
-        foreach (RoomInfo info in cachedTestRoomList.Values)
-        {
-            GameObject entry = Instantiate(Resources.Load<GameObject>("Prefabs/LobbyScene/TestRoomEntry"), TestLobbyP.RoomScrollViewContent.transform, false);
-            entry.transform.localScale = Vector3.one;
-            entry.GetComponent<RoomListEntry>().Initialize(info.Name, (byte)info.PlayerCount, (byte)info.MaxPlayers);
-            TestLobbyP.OnEntryClicked += entry.GetComponent<RoomListEntry>().OnSelectRoomButtonClicked;
-            testRoomListEntries[info.Name] = entry;
-        }
     }
 
     public void SetRoomPanel()
@@ -303,10 +134,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     #endregion
 
     #region Button
-    public void OnBackButtonClickedInRoomPanel()
+    public void OnBackButtonClickedInTestLobbyPanel()
     {
-        //PhotonNetwork.JoinLobby();
-        PhotonNetwork.LeaveRoom();
+        SetPanel(PanelType.MainLobbyPanel);
     }
     #endregion
 

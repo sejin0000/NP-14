@@ -498,7 +498,6 @@ public class LobbyPanel : MonoBehaviourPunCallbacks
 
         //SetPanel(TestRoomPanel.name);
         PhotonNetwork.CreateRoom(roomName, options );
-
     }
 
     private void OnBackButtonInTestPanelClicked()

@@ -65,8 +65,8 @@ public class MainLobbyPanel : MonoBehaviourPun
     {
         var CustomRoomProperties = new Hashtable() { { CustomProperyDefined.TEST_OR_NOT, false } };
 
-        if (LobbyManager.Instance.cachedRoomList == null
-            || LobbyManager.Instance.cachedRoomList.Count == 0)
+        if (NetworkManager.Instance.cachedRoomList == null
+            || NetworkManager.Instance.cachedRoomList.Count == 0)
         {
             Debug.Log("MainLobbyPanel : cachedRoomList is Null");
             string roomName = $"Room {Random.Range(0, 200)}";
