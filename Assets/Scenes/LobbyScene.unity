@@ -11019,6 +11019,7 @@ MonoBehaviour:
   SubmitButton: {fileID: 771824549}
   ChatLog: {fileID: 1580934528868145059, guid: 429e494743d959644ae76b8ceb04fb82, type: 3}
   ChatScrollContent: {fileID: 376548891}
+  PartyBox: {fileID: 1857915279}
 --- !u!114 &1397847049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13224,6 +13225,8 @@ MonoBehaviour:
   instantiatedPlayer: {fileID: 0}
   ViewID: 0
   ClassNum: 0
+  DataSettingPrefab: {fileID: 5202816797617736909, guid: aeaa042007b36a44894885df6729f270, type: 3}
+  dataSetting: {fileID: 4222933106460291288, guid: aeaa042007b36a44894885df6729f270, type: 3}
 --- !u!1 &1590945873
 GameObject:
   m_ObjectHideFlags: 0

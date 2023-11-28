@@ -60,8 +60,9 @@ public class CharacterSelectPopup : MonoBehaviourPun
 
     public void Initialize()
     {
-        player = playerDataSetting.ownerPlayer;
-        viewID = playerDataSetting.viewID;
+        var dataSetting = LobbyManager.Instance.dataSetting;
+        player = dataSetting.ownerPlayer;
+        viewID = dataSetting.viewID;
     }
         
     void Update()

@@ -1,11 +1,15 @@
 using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
+using System.Collections;
 //using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class RoomPanel : MonoBehaviourPunCallbacks
 {
@@ -35,7 +39,7 @@ public class RoomPanel : MonoBehaviourPunCallbacks
         // DESC : 버튼 연결
         ReadyButton.onClick.AddListener(OnReadyButtonClicked);
         StartButton.onClick.AddListener(OnStartButtonClicked);
-        BackButton.onClick.AddListener(OnBackButtonClicked);
+        BackButton.onClick.AddListener(LobbyManager.Instance.OnBackButtonClickedInRoomPanel);        
         SubmitButton.onClick.AddListener(OnSubmitButtonClicked);
         characterSelectButton.onClick.AddListener(LobbyManager.Instance.CharacterSelect.OnCharacterButtonClicked);
 
@@ -136,12 +140,6 @@ public class RoomPanel : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel("MainGameScene");
     }
 
-    public void OnBackButtonClicked()
-    {
-        PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable() { { askReadyProp, false } });
-        PhotonNetwork.LeaveRoom();
-    }
-
     public void OnSubmitButtonClicked()
     {
         string inputText = ChatInputField.text;
@@ -161,5 +159,16 @@ public class RoomPanel : MonoBehaviourPunCallbacks
         chatLog.ChatText.text = inputText;
         chatPrefab.transform.SetParent(ChatScrollContent.transform, false);
         chatLog.ConfirmTextSize(ChatInputField);
+    }
+
+    public void LeaveRoomSetting()
+    {
+        if (ChatScrollContent.transform.childCount > 0)
+        {
+            for (int i = 0; i < ChatScrollContent.transform.childCount; i++)
+            {
+                Destroy(ChatScrollContent.transform.GetChild(i).gameObject);
+            }
+        }
     }
 }
