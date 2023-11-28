@@ -40,6 +40,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     public float viewAngle;                  // 시야각 (기본120도)
     public float viewDistance;               // 시야 거리 (기본 10)
 
+    public int roomNum;                    // 방의 정보(클리어 조건을 위해 사용됨 -세진-)
+
     //컴포넌트 및 기타 외부요소(일부 할당은 하위 노드에서 진행)
     public EnemySO enemySO;                  // Enemy 정보 [모든 Action Node에 owner로 획득시킴]
     public SpriteRenderer spriteRenderer;
@@ -801,5 +803,23 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             spriteRenderer.flipX = (bool)stream.ReceiveNext();
             enemyAim.transform.rotation = (Quaternion)stream.ReceiveNext();
         }   
+    }
+
+    public override void OnDisable()
+    {
+        base.OnDisable();
+        Debug.Log("몬스터 죽음요");
+        PV.RPC("DeadSync", RpcTarget.MasterClient);
+    }
+
+    [PunRPC]
+    public void DeadSync()
+    {
+        GameManager.Instance.MG.roomNodeInfo.allRoomList[roomNum].roomInMoster--;
+        if (GameManager.Instance.MG.roomNodeInfo.allRoomList[roomNum].roomInMoster == 0)
+        {
+            GameManager.Instance.MG.roomNodeInfo.allRoomList[roomNum].thisRoomClear = true;
+            GameManager.Instance.CallRoomEndEvent();
+        }
     }
 }

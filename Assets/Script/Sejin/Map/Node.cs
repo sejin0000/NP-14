@@ -15,7 +15,7 @@ public class Node
     public bool thisRoomClear = false;
     public bool roomInPlayer = false;
 
-    List<GameObject> roomInMoster = new List<GameObject>();
+    public int roomInMoster = 0;
 
     public int roadCount = 0;
 

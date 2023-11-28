@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private PhotonView PV;
+    public PhotonView PV;
 
     public event Action OnInitEvent;          //초기세팅
 
@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
     public GameObject _mansterSpawner;
     private MonsterSpawner MS;
 
-
+    public Setting PS;
 
     public static GameManager Instance;
 
@@ -62,7 +62,9 @@ public class GameManager : MonoBehaviour
 
         playerInfoDictionary = new Dictionary<int, Transform>();
 
-        OnInitEvent += GetComponent<PlayerSetting>().InstantiatePlayer;
+        PS = GetComponent<Setting>();
+
+        OnInitEvent += PS.InstantiatePlayer;
 
         MG = _mapGenerator.GetComponent<MapGenerator>();
         FF = _fadeInfadeOutPanel.GetComponent<FadeInFadeOutPanel>();
@@ -78,13 +80,22 @@ public class GameManager : MonoBehaviour
         OnStageStartEvent += MG.roomNodeInfo.OpenDoor;
 
         CallInitEvent();
+        PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
+        MakeSetting.MakeManager();
     }
     
 
 
     private void Start()
     {
-        CallStageStartEvent();
+        if (stageListInfo.StagerList[curStage].stageType == StageType.normalStage)
+        {
+            CallStageStartEvent();
+        }
+        else if(stageListInfo.StagerList[curStage].stageType == StageType.bossStage)
+        {
+
+        }
     }
 
 
@@ -127,8 +138,9 @@ public class GameManager : MonoBehaviour
     }
     public void NextStageEndEvent()
     {
+        Debug.Log("OnStageEndEvent");
         OnStageEndEvent?.Invoke();
-        PV.RPC("EndPlayerCheck", RpcTarget.AllBuffered);
+        //PV.RPC("EndPlayerCheck", RpcTarget.AllBuffered);
     }
 
     int EndPlayer = 0;
@@ -136,7 +148,12 @@ public class GameManager : MonoBehaviour
     public void EndPlayerCheck()
     {
         EndPlayer++;
-        if (EndPlayer == 2)
+        //if (EndPlayer == 1)//?????
+        //{
+        //    StageClear();
+        //    EndPlayer = 0;
+        //}
+        if (EndPlayer == PhotonNetwork.CurrentRoom.PlayerCount) 
         {
             StageClear();
             EndPlayer = 0;
@@ -145,8 +162,15 @@ public class GameManager : MonoBehaviour
 
     public void StageClear()
     {
-        curStage++;
-        CallStageStartEvent();
+        if (stageListInfo.StagerList.Count == curStage)
+        {
+            curStage++;
+            Start();
+        }
+        else
+        {
+            CallGameClearEvent();
+        }
     }
 
     public void CallBossStageSettingEvent()

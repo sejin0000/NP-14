@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerSetting : MonoBehaviour
+public class Setting : MonoBehaviour
 {
     PhotonView PV;
 
@@ -77,9 +77,9 @@ public class PlayerSetting : MonoBehaviour
             if (_allRoomList[i].roomRect.x < playerPos.x && _allRoomList[i].roomRect.x + _allRoomList[i].roomRect.width > playerPos.x &&
                 _allRoomList[i].roomRect.y < playerPos.y && _allRoomList[i].roomRect.y + _allRoomList[i].roomRect.height > playerPos.y)
             {
-                _allRoomList[i].roomInPlayer = true;
-                if (_allRoomList[i].thisRoomClear == false)
+                if (_allRoomList[i].thisRoomClear == false && _allRoomList[i].roomInPlayer == false )
                 {
+                    _allRoomList[i].roomInPlayer = true;
                     GameManager.Instance.CallRoomStartEvent();
                     PV.RPC("PlayerPositionSetting", RpcTarget.All,playerPos,new Vector2(_allRoomList[i].roomRect.x, _allRoomList[i].roomRect.y),new Vector2(_allRoomList[i].roomRect.width, _allRoomList[i].roomRect.height));
                 }

@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67495ca0fa4f9f74580f4a969211d8be, type: 3}
-  m_Name: StageInfoSO
+  m_Name: StageInfoSO1
   m_EditorClassIdentifier: 
+  stageType: 0
   MonsterSquadList:
-  - {fileID: 11400000, guid: f2753931c25475d4f829622d0257f351, type: 2}
   - {fileID: 11400000, guid: f2753931c25475d4f829622d0257f351, type: 2}

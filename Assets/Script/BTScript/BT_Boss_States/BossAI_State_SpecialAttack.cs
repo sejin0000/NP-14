@@ -34,6 +34,13 @@ public class BossAI_State_SpecialAttack : BTAction
         //가깝다면? 특수 패턴 실행 ->멀다면? 실패 반환[노말 패턴으로 바로 넘어감]
         //헤드 피벗 위치를 넘어서 존재한다면? -> 랜덤 패턴값 비명으로 고정
 
+        //조건 부분 스페셜 어택 컨디션으로 이관할것 Failure 까지
+        float distanceToTarget = Vector2.Distance(owner.transform.position, target.transform.position);
+
+        if(distanceToTarget > 13f)
+        {
+            return Status.BT_Failure;
+        }            
 
         SetAim(); //특수패턴 시작 시 보스 머리 방향 => 항상 플레이어 쪽으로
 
@@ -66,19 +73,19 @@ public class BossAI_State_SpecialAttack : BTAction
             {
                 case 0:
                     //양 팔 공격
-                    bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 0);                  
-                    //bossAI_Dragon.PV.RPC("Fire", RpcTarget.All);
+                    bossAI_Dragon.PV.RPC("Fire", RpcTarget.All);
+                    //bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 0);                  
                     break;
                 case 1:
-                    bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 4);
-                    //bossAI_Dragon.PV.RPC("Fire", RpcTarget.All);
+                    bossAI_Dragon.PV.RPC("Fire", RpcTarget.All);
+                    //bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 4);
                     break;
                 case 2:
-                    bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 4);
-                    //bossAI_Dragon.PV.RPC("Fire", RpcTarget.All);
+                    bossAI_Dragon.PV.RPC("Fire", RpcTarget.All);
+                    //bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 4);
                     break;
                 case 3:
-                    bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 4);
+                    bossAI_Dragon.PV.RPC("Fire", RpcTarget.All);
                     break;
             }            
 
@@ -86,8 +93,7 @@ public class BossAI_State_SpecialAttack : BTAction
         }
 
 
-
-        //float distanceToTarget = Vector2.Distance(owner.transform.position, target.transform.position);
+        
 
         return Status.BT_Running;
     }
@@ -156,5 +162,6 @@ public class BossAI_State_SpecialAttack : BTAction
     public override void Terminate()
     {
         ReturnOriginRotate();
+        bossAI_Dragon.SetStateColor(bossAI_Dragon.originColor);
     }
 }
