@@ -67,7 +67,6 @@ public class Bullet : MonoBehaviour
         _direction = transform.right;
         //to del ¾Æ·¡
         layerMask = 1 << LayerMask.NameToLayer("Wall");
-        canAngle = true;
     }
     public void MissileFire() 
     {
