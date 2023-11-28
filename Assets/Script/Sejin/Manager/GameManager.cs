@@ -162,7 +162,7 @@ public class GameManager : MonoBehaviour
 
     public void StageClear()
     {
-        if (stageListInfo.StagerList.Count == curStage)
+        if (stageListInfo.StagerList.Count >= curStage)
         {
             curStage++;
             Start();
