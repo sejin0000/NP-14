@@ -12,7 +12,6 @@ public enum ClipType
     NONE,
     BGM,
     SE
-    
 }
 
 public class AudioManager : Singleton<AudioManager>
