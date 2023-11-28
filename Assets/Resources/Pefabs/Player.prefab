@@ -960,7 +960,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CanPayBack: 0
   CanSupport: 0
-  footCollider: {fileID: 0}
+  footCollider: {fileID: 2818698585101496412}
   rigidbody: {fileID: 0}
 --- !u!114 &216501136413859800
 MonoBehaviour:
