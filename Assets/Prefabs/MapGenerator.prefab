@@ -59,6 +59,7 @@ GameObject:
   - component: {fileID: 8217374331268874386}
   - component: {fileID: 4803778260667367534}
   - component: {fileID: 352438522611843839}
+  - component: {fileID: 1218223686866400970}
   m_Layer: 0
   m_Name: Door
   m_TagString: Untagged
@@ -204,6 +205,22 @@ TilemapCollider2D:
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
   m_UseDelaunayMesh: 0
+--- !u!114 &1218223686866400970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4143868688547827557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9809bf1345abc5648af68b3a82653f08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
 --- !u!1 &4323504389568728521
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,6 +233,7 @@ GameObject:
   - component: {fileID: 1719620161805068913}
   - component: {fileID: 4317602100031009886}
   - component: {fileID: 7666275234936192331}
+  - component: {fileID: 7837934986386569719}
   m_Layer: 0
   m_Name: Wall
   m_TagString: Untagged
@@ -451,6 +469,22 @@ TilemapCollider2D:
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
   m_UseDelaunayMesh: 0
+--- !u!114 &7837934986386569719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4323504389568728521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9809bf1345abc5648af68b3a82653f08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
 --- !u!1 &6786364992147502485
 GameObject:
   m_ObjectHideFlags: 0
@@ -462,6 +496,7 @@ GameObject:
   - component: {fileID: 5486524124540779281}
   - component: {fileID: 8741393242010535206}
   - component: {fileID: 1846515576243414741}
+  - component: {fileID: 961028962370237264}
   m_Layer: 0
   m_Name: Ground
   m_TagString: Untagged
@@ -619,6 +654,22 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
+--- !u!114 &961028962370237264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6786364992147502485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9809bf1345abc5648af68b3a82653f08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 0
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
 --- !u!1 &7079671553397028477
 GameObject:
   m_ObjectHideFlags: 0
@@ -653,7 +704,7 @@ Transform:
   m_Children:
   - {fileID: 1497170097040228547}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4282806665659269914
 MonoBehaviour:
@@ -677,6 +728,9 @@ MonoBehaviour:
   allRoomList: []
   loadRoomList: []
   lastRoomList: []
+  setTile: {fileID: 0}
+  roomNodeInfo: {fileID: 0}
+  Surface2D: {fileID: 0}
 --- !u!114 &4520906855787015363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -708,6 +762,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c96e49f32d8117c429d44c2dafe56c9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  porTal: {fileID: 0}
+  allRoomList: []
+  mapGenerator: {fileID: 0}
 --- !u!114 &1537674886660857620
 MonoBehaviour:
   m_ObjectHideFlags: 0

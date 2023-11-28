@@ -19,6 +19,7 @@
 
         float destinationX = 0f;
         float destinationY = 0f;
+        float patrolRadius = 5f;  // 이동 반경
 
     public EnemyState_Patrol(GameObject _owner)
     {
@@ -86,12 +87,13 @@
         //anim.SetBool("isRun", false); //anim.SetBool("Running", isRunning);
 
 
+        //원형 영역안에서 랜덤한 2D 벡터 생성 ==> insideUnitCircle
+        // == 목적지 지정
+        Vector2 randomOffset = Random.insideUnitCircle * patrolRadius;
+        destination = owner.transform.position + new Vector3(randomOffset.x, randomOffset.y, 0);
 
-        destinationX = Random.Range(-6f, 6f);
-        destinationY = Random.Range(-5f, 5f);
 
 
-        destination.Set(destinationX, destinationY, 0); // 목적지 지정
 
 
         //스프라이트 조정(anim = 최대 4방향[대각] + 4방향[정방향] 지정 가능)
