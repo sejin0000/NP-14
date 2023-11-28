@@ -503,9 +503,8 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     #region All2
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 공용2티어
     [PunRPC]
-    private void A201(int PlayerNumber)//포기
+    private void A201(int PlayerNumber)//탱탱볼 부활
     {
-        Debug.Log("현재포기한 증강");
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         playerstatHandler.BulletLifeTime.coefficient *= 2f;
         WeaponSystem a = targetPlayer.GetComponent<WeaponSystem>();
