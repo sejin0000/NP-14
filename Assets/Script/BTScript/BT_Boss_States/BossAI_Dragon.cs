@@ -291,28 +291,24 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void Fire()
     {
-        var _bullet = Instantiate(enemyBulletPrefab, bossAim.transform.position, bossAim.transform.rotation);
+        int numBullets = 5; // 부채꼴 내의 총알 수를 조절하세요
+        float AttackAngle = 120f; // 부채꼴의 각도를 조절하세요
+        float startAngle = -AttackAngle / 2f; // 부채꼴의 시작 각도 -60 == -60 ~ 120 즉 180도의 범위를 커버한다.
 
-        _bullet.IsDamage = true;
-        _bullet.ATK = bossSO.atk;
-        _bullet.BulletLifeTime = bossSO.bulletLifeTime;
-        _bullet.BulletSpeed = bossSO.bulletSpeed;
-        _bullet.targets["Player"] = (int)BulletTarget.Player;
+        for (int i = 0; i < numBullets; i++)
+        {
+            //-60 + 0 * (120/4) = 0 || -60 + 1 * (120/4)
+            float angle = startAngle + i * (AttackAngle / (numBullets - 1));
+            Quaternion bulletRotation = bossHead.transform.rotation * Quaternion.Euler(0f, 0f, angle - 90f);
 
-        /*
-        //수정 : gameObject 에서 Bullet으로 ->변수 형태와 용도를 통일함
-        Bullet _bullet = Instantiate<Bullet>(enemyBulletPrefab, enemyAim.transform.position, enemyAim.transform.rotation);
+            var _bullet = Instantiate(enemyBulletPrefab, bossAim.transform.position, bulletRotation);
 
-
-
-        _bullet.IsDamage = true;
-        _bullet.ATK = enemySO.atk;
-        _bullet.BulletLifeTime = enemySO.bulletLifeTime;
-        _bullet.BulletSpeed = enemySO.bulletSpeed;
-        _bullet.target = BulletTarget.Player;
-        */
-
-        //수정 : gameObject 에서 Bullet으로 ->변수 형태와 용도를 통일함      
+            _bullet.IsDamage = true;
+            _bullet.ATK = bossSO.atk;
+            _bullet.BulletLifeTime = bossSO.bulletLifeTime;
+            _bullet.BulletSpeed = bossSO.bulletSpeed;
+            _bullet.targets["Player"] = (int)BulletTarget.Player;
+        }
     }
 
     //상태이상
