@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private PhotonView PV;
+    public PhotonView PV;
 
     public event Action OnInitEvent;          //초기세팅
 
@@ -80,6 +80,8 @@ public class GameManager : MonoBehaviour
         OnStageStartEvent += MG.roomNodeInfo.OpenDoor;
 
         CallInitEvent();
+        PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
+        MakeSetting.MakeManager();
     }
     
 
@@ -138,7 +140,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("OnStageEndEvent");
         OnStageEndEvent?.Invoke();
-        PV.RPC("EndPlayerCheck", RpcTarget.AllBuffered);
+        //PV.RPC("EndPlayerCheck", RpcTarget.AllBuffered);
     }
 
     int EndPlayer = 0;
@@ -146,7 +148,12 @@ public class GameManager : MonoBehaviour
     public void EndPlayerCheck()
     {
         EndPlayer++;
-        if (EndPlayer == 1)
+        //if (EndPlayer == 1)//?????
+        //{
+        //    StageClear();
+        //    EndPlayer = 0;
+        //}
+        if (EndPlayer == PhotonNetwork.CurrentRoom.PlayerCount) 
         {
             StageClear();
             EndPlayer = 0;
