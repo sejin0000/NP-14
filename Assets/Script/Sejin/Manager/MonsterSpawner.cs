@@ -6,7 +6,12 @@ using UnityEngine;
 
 public class MonsterSpawner : MonoBehaviour
 {
+    public GameObject Case;
 
+    private void Start()
+    {
+        GameManager.Instance.OnStageEndEvent += StageMonsterClear;
+    }
 
     public void MonsterSpawn()
     {
@@ -48,6 +53,18 @@ public class MonsterSpawner : MonoBehaviour
     public void Spawn(string _name,int _nodeNum, Vector2 vector)
     {
         string testEnemy = $"Prefabs/Enemy/{_name}";
-        PhotonNetwork.Instantiate(testEnemy, vector, Quaternion.identity);
+        GameObject GO =  PhotonNetwork.Instantiate(testEnemy, vector, Quaternion.identity);
+        GO.GetComponent<EnemyAI>().roomNum = _nodeNum;
+        GO.transform.parent = Case.transform;
+        GameManager.Instance.MG.roomNodeInfo.allRoomList[_nodeNum].roomInMoster++;
+    }
+
+    public void StageMonsterClear()
+    {
+        Debug.Log("몬스터 전부 삭제");
+        foreach (Transform child in Case.transform)
+        {
+            Destroy(child.gameObject);
+        }
     }
 }

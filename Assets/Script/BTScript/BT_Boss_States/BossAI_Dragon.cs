@@ -293,10 +293,12 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     {
         int numBullets = 5; // 부채꼴 내의 총알 수를 조절하세요
         float AttackAngle = 120f; // 부채꼴의 각도를 조절하세요
-        float startAngle = -AttackAngle / 2f; // 부채꼴의 시작 각도 60~120
+
+        float startAngle = -AttackAngle / 2f; // 부채꼴의 시작 각도 -60 == -60 ~ 120 즉 180도의 범위를 커버한다.
 
         for (int i = 0; i < numBullets; i++)
         {
+            //-60 + 0 * (120/4) = 0 || -60 + 1 * (120/4)
             float angle = startAngle + i * (AttackAngle / (numBullets - 1));
             Quaternion bulletRotation = bossHead.transform.rotation * Quaternion.Euler(0f, 0f, angle - 90f);
 
