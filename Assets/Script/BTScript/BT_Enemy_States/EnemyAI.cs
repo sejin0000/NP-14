@@ -808,7 +808,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     public override void OnDisable()
     {
         base.OnDisable();
-        Debug.Log("몬스터 죽음요");
+        //Debug.Log("몬스터 죽음요");
         PV.RPC("DeadSync", RpcTarget.MasterClient);
     }
 
