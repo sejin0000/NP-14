@@ -21,7 +21,7 @@ public class FadeInFadeOutPanel : MonoBehaviour
     {
         while(image.color.a > 0)
         {
-            Debug.Log("FadeIn_");
+            //Debug.Log("FadeIn_");
             image.color -= new Color(image.color.r, image.color.g, image.color.b, 0.05f);
             yield return new WaitForSecondsRealtime(0.1f);
         }
