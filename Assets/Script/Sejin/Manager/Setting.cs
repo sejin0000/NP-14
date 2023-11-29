@@ -73,7 +73,6 @@ public class Setting : MonoBehaviour
 
         for (int i = 0; i < _allRoomList.Count; i++)
         {
-            _allRoomList[i].roomInPlayer = false;
             if (_allRoomList[i].roomRect.x < playerPos.x && _allRoomList[i].roomRect.x + _allRoomList[i].roomRect.width > playerPos.x &&
                 _allRoomList[i].roomRect.y < playerPos.y && _allRoomList[i].roomRect.y + _allRoomList[i].roomRect.height > playerPos.y)
             {
@@ -82,6 +81,7 @@ public class Setting : MonoBehaviour
                     _allRoomList[i].roomInPlayer = true;
                     GameManager.Instance.CallRoomStartEvent();
                     PV.RPC("PlayerPositionSetting", RpcTarget.All,playerPos,new Vector2(_allRoomList[i].roomRect.x, _allRoomList[i].roomRect.y),new Vector2(_allRoomList[i].roomRect.width, _allRoomList[i].roomRect.height));
+                    return;
                 }
             }
         }
