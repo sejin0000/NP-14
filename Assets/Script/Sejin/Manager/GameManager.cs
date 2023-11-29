@@ -124,13 +124,25 @@ public class GameManager : MonoBehaviour
     public void CallRoomStartEvent()
     {
         Debug.Log("룸 시작");
+        PV.RPC("PunCallRoomStartEvent",RpcTarget.AllBuffered);
+    }
+    [PunRPC]
+    public void PunCallRoomStartEvent()
+    {
         OnRoomStartEvent?.Invoke();
     }
+    [PunRPC]
     public void CallRoomEndEvent()
     {
         Debug.Log("룸 종료");
+        PV.RPC("PunCallRoomEndEvent", RpcTarget.AllBuffered);
+    }
+    [PunRPC]
+    public void PunCallRoomEndEvent()
+    {
         OnRoomEndEvent?.Invoke();
     }
+
     public void CallStageEndEvent()
     {
         Debug.Log("스테이지 종료");
@@ -153,6 +165,7 @@ public class GameManager : MonoBehaviour
         //    StageClear();
         //    EndPlayer = 0;
         //}
+        Debug.Log($"현재 레디 : {EndPlayer} 필요 레디 : {PhotonNetwork.CurrentRoom.PlayerCount}");
         if (EndPlayer == PhotonNetwork.CurrentRoom.PlayerCount) 
         {
             StageClear();
@@ -162,7 +175,7 @@ public class GameManager : MonoBehaviour
 
     public void StageClear()
     {
-        if (stageListInfo.StagerList.Count == curStage)
+        if (stageListInfo.StagerList.Count >= curStage)
         {
             curStage++;
             Start();

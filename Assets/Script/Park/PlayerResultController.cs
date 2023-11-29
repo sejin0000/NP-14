@@ -11,6 +11,6 @@ public class PlayerResultController : MonoBehaviour
         AugmentManager.Instance.startset(this.gameObject);
         MakeAugmentListManager.Instance.startset(this.gameObject);
         ResultManager.Instance.startset(this.gameObject);
-
+        Debug.Log("µé¾î¿È¼ÂÆÃ");
     }
 }

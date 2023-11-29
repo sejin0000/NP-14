@@ -12,10 +12,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
 {
     public static AugmentManager Instance;//싱긍톤
     public PlayerStatHandler playerstatHandler;//정확히는 이름을 타겟 플레이어 스탯 핸들러가 맞는 표현 같기도함 // 생각할수록 맞음
-    int atk = 5;//여기서부터 아래까지  티어별로 *n으로 사용중
+    int atk = 50;//여기서부터 아래까지  티어별로 *n으로 사용중
     int hp = 8;
-    float speed = 1;
-    float atkspeed = 1f;
+    float speed =3;
+    float atkspeed = 3f;
     float bulletSpread = -1f;
     int cooltime = -1;
     int critical = 5;
@@ -183,6 +183,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         playerstatHandler.AmmoMax.added += AmmoMax;
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@스탯3티어
+    [PunRPC]
     private void A921(int PlayerNumber)//스탯 공 티어 3
     {
         ChangePlayerStatHandler(PlayerNumber);
@@ -503,9 +504,8 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     #region All2
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 공용2티어
     [PunRPC]
-    private void A201(int PlayerNumber)//포기
+    private void A201(int PlayerNumber)//탱탱볼 부활
     {
-        Debug.Log("현재포기한 증강");
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         playerstatHandler.BulletLifeTime.coefficient *= 2f;
         WeaponSystem a = targetPlayer.GetComponent<WeaponSystem>();

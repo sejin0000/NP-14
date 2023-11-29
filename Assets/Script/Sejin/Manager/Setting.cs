@@ -68,7 +68,7 @@ public class Setting : MonoBehaviour
     [PunRPC]
     private void PunSendPlayerLocation(Vector2 playerPos)//호스트만 받음
     {
-        Debug.Log("PunSendPlayerLocation");
+        //Debug.Log("PunSendPlayerLocation");
         List<Node> _allRoomList = GameManager.Instance._mapGenerator.GetComponent<MapGenerator>().roomNodeInfo.allRoomList;
 
         for (int i = 0; i < _allRoomList.Count; i++)
@@ -91,8 +91,8 @@ public class Setting : MonoBehaviour
     private void PlayerPositionSetting(Vector2 roomInPlayer, Vector2 rectPos,Vector2 widthHeight)
     {
         Vector2 player = GameManager.Instance.clientPlayer.transform.position;
-        if (rectPos.x < player.x - 1 && rectPos.x + widthHeight.x > player.x - 1 &&
-            rectPos.y < player.y && rectPos.y + widthHeight.y > player.y)
+        if (rectPos.x < player.x && rectPos.x + widthHeight.x > player.x - 1 &&
+            rectPos.y < player.y && rectPos.y + widthHeight.y > player.y - 1)
         {
             return;
         }

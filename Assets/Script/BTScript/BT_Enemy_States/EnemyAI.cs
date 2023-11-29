@@ -610,7 +610,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         {
             case (int)EnemyStateColor.ColorRed:
                 spriteRenderer.color = Color.red;
-                Debug.Log($"지금 스프라이트 색상{spriteRenderer.color}");
+                //Debug.Log($"지금 스프라이트 색상{spriteRenderer.color}");
                 break;
             case (int)EnemyStateColor.ColorYellow:
                 spriteRenderer.color = Color.yellow;
@@ -808,7 +808,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     public override void OnDisable()
     {
         base.OnDisable();
-        Debug.Log("몬스터 죽음요");
+        //Debug.Log("몬스터 죽음요");
         PV.RPC("DeadSync", RpcTarget.MasterClient);
     }
 
@@ -819,7 +819,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         if (GameManager.Instance.MG.roomNodeInfo.allRoomList[roomNum].roomInMoster == 0)
         {
             GameManager.Instance.MG.roomNodeInfo.allRoomList[roomNum].thisRoomClear = true;
-            GameManager.Instance.CallRoomEndEvent();
+            //GameManager.Instance.CallRoomEndEvent();
+            GameManager.Instance.PV.RPC("CallRoomEndEvent", RpcTarget.All);
         }
     }
 }
