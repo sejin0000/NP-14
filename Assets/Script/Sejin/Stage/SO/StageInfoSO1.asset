@@ -15,3 +15,5 @@ MonoBehaviour:
   stageType: 0
   MonsterSquadList:
   - {fileID: 11400000, guid: f2753931c25475d4f829622d0257f351, type: 2}
+  - {fileID: 11400000, guid: f2753931c25475d4f829622d0257f351, type: 2}
+  - {fileID: 11400000, guid: 5d29e1932ef13974ba9f9109a6d1f79d, type: 2}
