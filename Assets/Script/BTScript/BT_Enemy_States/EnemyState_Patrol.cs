@@ -19,7 +19,7 @@
 
         float destinationX = 0f;
         float destinationY = 0f;
-        float patrolRadius = 5f;  // 이동 반경
+        float patrolRadius = 4f;  // 이동 반경
 
     public EnemyState_Patrol(GameObject _owner)
     {

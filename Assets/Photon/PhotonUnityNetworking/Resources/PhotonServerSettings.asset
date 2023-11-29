@@ -245,6 +245,8 @@ MonoBehaviour:
   - SendEffect
   - PunCallRoomEndEvent
   - PunCallRoomStartEvent
+  - CallRoomEndEvent
+  - A921
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
