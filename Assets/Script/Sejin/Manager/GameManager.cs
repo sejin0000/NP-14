@@ -124,14 +124,25 @@ public class GameManager : MonoBehaviour
     public void CallRoomStartEvent()
     {
         Debug.Log("룸 시작");
+        PV.RPC("PunCallRoomStartEvent",RpcTarget.AllBuffered);
+    }
+    [PunRPC]
+    public void PunCallRoomStartEvent()
+    {
         OnRoomStartEvent?.Invoke();
     }
     [PunRPC]
     public void CallRoomEndEvent()
     {
         Debug.Log("룸 종료");
+        PV.RPC("PunCallRoomEndEvent", RpcTarget.AllBuffered);
+    }
+    [PunRPC]
+    public void PunCallRoomEndEvent()
+    {
         OnRoomEndEvent?.Invoke();
     }
+
     public void CallStageEndEvent()
     {
         Debug.Log("스테이지 종료");

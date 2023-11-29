@@ -243,7 +243,8 @@ MonoBehaviour:
   - SetStateColor
   - DeadSync
   - SendEffect
-  - CallRoomEndEvent
+  - PunCallRoomEndEvent
+  - PunCallRoomStartEvent
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
