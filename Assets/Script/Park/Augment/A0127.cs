@@ -9,14 +9,16 @@ public class A0127 : MonoBehaviourPun
     //private TopDownCharacterController controller;
     private PlayerStatHandler playerStat;
     //private CoolTimeController coolTimeController;
-    int autoTime = 5;
-    float regenhp = 5f;
+    int time = 5;
+    float regenhp;
+    WaitForSeconds autoTime;
     private void Awake()
     {
         if (photonView.IsMine)
         {
             playerStat = GetComponent<PlayerStatHandler>();
             photonView.RPC("AutoHealingStart", RpcTarget.All);
+            autoTime = new WaitForSeconds(time);
         }
     }
     private void OnEnable()
@@ -46,8 +48,7 @@ public class A0127 : MonoBehaviourPun
                 yield return null;
             }
             playerStat.HPadd(regenhp);
-            yield return new WaitForSeconds(autoTime);
-            Debug.Log("코루틴 돌리는중 new 문제있으면 패치");
+            yield return autoTime;
         }
     }
 }

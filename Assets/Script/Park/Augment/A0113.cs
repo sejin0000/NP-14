@@ -17,10 +17,11 @@ public class A0113 : MonoBehaviourPun
         {
             controller = GetComponent<TopDownCharacterController>();
             playerStat = GetComponent<PlayerStatHandler>();
-            nowgold = MainGameManager.Instance.Gold;
+            //nowgold = MainGameManager.Instance.Gold;
             nowpower = nowgold * 0.1f;
             oldpower = 0;
-            MainGameManager.Instance.OnGameStartedEvent += setgold;//¿Ã∞… µ∑»πµÊ ¿Ã∫•∆Æø°∞À 
+            //MainGameManager.Instance.OnGameStartedEvent += setgold;//¿Ã∞… µ∑»πµÊ ¿Ã∫•∆Æø°∞À 
+
         }
     }
     // Update is called once per frame

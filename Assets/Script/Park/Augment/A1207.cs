@@ -27,7 +27,7 @@ public class A1207 : MonoBehaviourPun
             collision.rigidbody.bodyType = RigidbodyType2D.Kinematic;
 
             MainGameManager.Instance.OnGameStartedEvent += ImDie;
-            MainGameManager.Instance.OnPlayerDieEvent += TargetDieCheck;
+            //MainGameManager.Instance.OnPlayerDieEvent += TargetDieCheck;죽음이벤트없음
             playerinput = GetComponent<PlayerInput>();
 
             Dictionary<int, Transform> dic = MainGameManager.Instance.playerInfoDictionary;

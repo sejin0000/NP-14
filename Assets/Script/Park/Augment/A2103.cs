@@ -51,7 +51,7 @@ public class A2103 : MonoBehaviourPun
 
     private void PowerSet() 
     {
-        if (target.Count>=0) 
+        if (target.Count>=1) 
         {
             count = target.Count;
             Debug.Log(count);

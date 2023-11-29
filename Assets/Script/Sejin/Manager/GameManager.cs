@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
     public event Action OnGameOverEvent;      //게임 오버
 
 
-
+    public bool ClearStageCheck;//박민혁 추가 스테이지 클리어시 빈방 비울때 콜여부
 
     public StagerListInfoSO stageListInfo;
     public int curStage = 0;
@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
         }
+        ClearStageCheck = false;
 
         PV = GetComponent<PhotonView>();
 
@@ -108,6 +109,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("스테이지 시작");
         OnStageStartEvent?.Invoke();
+        ClearStageCheck = false;
         if (PhotonNetwork.IsMasterClient)
         {
             PV.RPC("PunReadyCheck", RpcTarget.AllBuffered);
@@ -135,7 +137,16 @@ public class GameManager : MonoBehaviour
     public void CallRoomEndEvent()
     {
         Debug.Log("룸 종료");
-        PV.RPC("PunCallRoomEndEvent", RpcTarget.AllBuffered);
+        if (!ClearStageCheck)
+        {
+            Debug.Log("스테이지 아직 미클리어");
+            PV.RPC("PunCallRoomEndEvent", RpcTarget.AllBuffered);
+        }
+        else 
+        {
+            Debug.Log("스테이지 클리어 상태이기에 발동하지 않습니다");
+        }
+
     }
     [PunRPC]
     public void PunCallRoomEndEvent()
@@ -151,7 +162,9 @@ public class GameManager : MonoBehaviour
     public void NextStageEndEvent()
     {
         Debug.Log("OnStageEndEvent");
+        ClearStageCheck = true;
         OnStageEndEvent?.Invoke();
+        
         //PV.RPC("EndPlayerCheck", RpcTarget.AllBuffered);
     }
 

@@ -16,12 +16,12 @@ public class A0106 : MonoBehaviourPun
             playerStat = GetComponent<PlayerStatHandler>();
             coolTimeController = GetComponent<CoolTimeController>();
 
-            playerStat.KillCatchEvent += DrainPower; // 중요한부분
+            playerStat.KillCatchEvent += DrainPower;
         }
     }
     // Update is called once per frame
     void DrainPower()
     {
-        playerStat.ATK.added += 0.01f; // 중요한 부분2
+        playerStat.ATK.added += 0.05f;
     }
 }

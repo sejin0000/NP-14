@@ -14,16 +14,17 @@ public class A0212 : MonoBehaviourPun
         {
             controller = GetComponent<TopDownCharacterController>();
             playerStat = GetComponent<PlayerStatHandler>();
-            bigPower = 0f;
-            MainGameManager.Instance.OnGameStartedEvent += PowerUp;
-            MainGameManager.Instance.OnGameEndedEvent += PowerDown;
+            bigPower = 0;
+            GameManager.Instance.OnStageStartEvent += PowerUp;
+            GameManager.Instance.OnBossStageStartEvent += PowerUp;
         }
 
     }
     void PowerUp()
     {
+        playerStat.ATK.added -= bigPower;
         Powerset();
-        playerStat.ATK.added += bigPower;
+        playerStat.ATK.added += bigPower; // 중요한 부분2
     }
     void PowerDown()
     {
@@ -31,7 +32,7 @@ public class A0212 : MonoBehaviourPun
     }
     void Powerset()
     {
-        int stage = MainGameManager.Instance.stageData.currentStage;
+        int stage = GameManager.Instance.curStage;
         switch (stage)
         {
             case 1:
@@ -43,19 +44,19 @@ public class A0212 : MonoBehaviourPun
                 break;
 
             case 3:
-                bigPower = 10;
+                bigPower = 5;
                 break;
 
             case 4:
-                bigPower = 20;
+                bigPower = 10;
                 break;
 
             case 5:
-                bigPower = 30;
+                bigPower = 15;
                 break;
 
             default:
-                bigPower = 30;
+                bigPower = 20;
                 break;
         }
     }
