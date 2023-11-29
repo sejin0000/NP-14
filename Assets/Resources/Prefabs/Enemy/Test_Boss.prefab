@@ -1511,9 +1511,9 @@ MonoBehaviour:
   AreaList: []
   PlayersTransform: []
   inToAreaPlayers: []
-  enemyBulletPrefab: {fileID: 0}
+  enemyBulletPrefab: {fileID: 7691614160748915792, guid: ffaf2c7e3b6a9714398653f89e5593ca, type: 3}
   bossHead: {fileID: 3294095377200291057}
-  bossAim: {fileID: 0}
+  bossAim: {fileID: 6100125845148993927}
   originColor: {r: 0, g: 0, b: 0, a: 0}
   targetMask:
     serializedVersion: 2
@@ -2299,7 +2299,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7592494673301777471}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -2.6, z: 0}
   m_LocalScale: {x: 0.10000001, y: 0.10000001, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

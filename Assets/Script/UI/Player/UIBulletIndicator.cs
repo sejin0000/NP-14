@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using System.Text;
 using UnityEngine.SceneManagement;
+using Photon.Pun;
 
 public class UIBulletIndicator : UIBase, ICommonUI
 {
@@ -44,6 +45,7 @@ public class UIBulletIndicator : UIBase, ICommonUI
         player.OnEndReloadEvent += ReloadBullets;
         playerStat.OnChangeAmmorEvent += ChangeValue;
         player.OnAttackEvent += ShootBullet;
+        player.OnAttackEvent += TestMethod;
 
     }
 
@@ -122,5 +124,12 @@ public class UIBulletIndicator : UIBase, ICommonUI
             bullets[i].SetActive(true);
             bullets[i].GetComponent<UIBullet>().PlayAnim("Idle");
         }
+    }
+
+    public void TestMethod()
+    {
+        //ParticleManager.PlayEffectLocal("Droplet_PS", player.transform.position);
+        int pviewID = player.GetComponent<PhotonView>().ViewID;
+        ParticleManager.Instance.PlayEffect("Droplet_PS", player.transform.position);
     }
 }
