@@ -15,7 +15,7 @@ public class ResultManager : MonoBehaviour//vs코드
     public ChoiceSlot[] picklist;
     public static ResultManager Instance;
     List<SpecialAugment> tempList = new List<SpecialAugment>();
-    bool IsStat;
+    private bool IsStat;
     public List<IAugment> stat1;
     public List<IAugment> stat2;
     public List<IAugment> stat3;
@@ -35,6 +35,7 @@ public class ResultManager : MonoBehaviour//vs코드
     public void startset(GameObject playerObj)
     {
         Player = playerObj;
+        IsStat = false; 
         //if (MainGameManager.Instance != null) TO DEL사실 죽은 부분 if문 전체를 지워도 된다고 판단됨
         //{
         //    gameManager = MainGameManager.Instance;
@@ -191,6 +192,7 @@ public class ResultManager : MonoBehaviour//vs코드
             list.RemoveAt(a);
         }
         IsStat = true;// 이걸로 리스트에서 제거인지 그대로인지 구별함
+        Debug.Log($"이즈스탯 노말 트루여야함 {IsStat}");
     }
 
     void PickSpecialList(List<SpecialAugment> origin) // 고른게 사라지는 타입 == 플레이변화 증강
@@ -206,6 +208,7 @@ public class ResultManager : MonoBehaviour//vs코드
             list.RemoveAt(a);
         }
         IsStat = false;
+        Debug.Log($"이즈스탯 스페셜 펄스여야함{IsStat}");
     }
     public void close()//목록에서 골랐다면 띄운 ui를 닫아줌
     {
@@ -222,10 +225,16 @@ public class ResultManager : MonoBehaviour//vs코드
             picklist[i].gameObject.SetActive(false);
             
         }
+        Debug.Log($"이즈스탯{IsStat}");
         //pv.RPC("ready",RpcTarget.All);
         //여기에 메인 게임매니저 콜 
-        if (!IsStat) 
+        if (IsStat)
         {
+            Debug.Log("스탯이라 안들어옴");
+        }
+        else 
+        {
+            Debug.Log("레디 들어옴");
             ready();
         }
 
