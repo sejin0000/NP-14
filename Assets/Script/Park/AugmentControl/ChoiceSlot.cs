@@ -14,7 +14,7 @@ public class ChoiceSlot : MonoBehaviour//눌러서 골르는 증강 슬롯 열렸을때 해당증
     public IAugment stat;
     public bool Ispick = false;
     public int listIndex;
-    
+    public ResultManager Parent;
     int rare;
 
     //[Range(1, 3)] int StatType;
@@ -50,6 +50,7 @@ public class ChoiceSlot : MonoBehaviour//눌러서 골르는 증강 슬롯 열렸을때 해당증
         //AugmentManager.Instance.Invoke(str, 0);
         Ispick = true;
         ResultManager.Instance.close();
+        Parent.SetActiveCheck = false;
     }
    
 }

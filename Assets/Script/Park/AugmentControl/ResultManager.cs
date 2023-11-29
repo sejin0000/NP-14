@@ -31,11 +31,12 @@ public class ResultManager : MonoBehaviour//vs코드
     public PhotonView pv;
 
     bool testsetting;
-
+    public bool SetActiveCheck;
     public void startset(GameObject playerObj)
     {
         Player = playerObj;
-        IsStat = false; 
+        IsStat = false;
+        SetActiveCheck = false;
         //if (MainGameManager.Instance != null) TO DEL사실 죽은 부분 if문 전체를 지워도 된다고 판단됨
         //{
         //    gameManager = MainGameManager.Instance;
@@ -139,7 +140,6 @@ public class ResultManager : MonoBehaviour//vs코드
     }
     public void CallStatResult() 
     {
-
         int tier = RandomTier();
 
         switch (tier) 
@@ -180,6 +180,11 @@ public class ResultManager : MonoBehaviour//vs코드
   
     void PickStatList(List<IAugment> origin)// 고른게 안사리지는 타입 = 일반스탯
     {
+        if (SetActiveCheck) 
+        {
+            Debug.Log($"안골라서 첫번재 선택");
+            picklist[0].pick();
+        }
         int Count = picklist.Length;
         //여기서 스탯증강인지 특수 증강인지에 따라투리스트할지 그냥 받을지
         List<IAugment> list = origin.ToList();
@@ -192,11 +197,16 @@ public class ResultManager : MonoBehaviour//vs코드
             list.RemoveAt(a);
         }
         IsStat = true;// 이걸로 리스트에서 제거인지 그대로인지 구별함
-        Debug.Log($"이즈스탯 노말 트루여야함 {IsStat}");
+        SetActiveCheck = true;
     }
 
     void PickSpecialList(List<SpecialAugment> origin) // 고른게 사라지는 타입 == 플레이변화 증강
     {
+        if (SetActiveCheck)
+        {
+            picklist[0].pick();
+            Debug.Log($"안골라서 첫번재 선택");
+        }
         int Count = picklist.Length;
         List<SpecialAugment> list = origin.ToList();
         tempList=origin;
@@ -207,8 +217,8 @@ public class ResultManager : MonoBehaviour//vs코드
             picklist[i].gameObject.SetActive(true);
             list.RemoveAt(a);
         }
+        SetActiveCheck = true;
         IsStat = false;
-        Debug.Log($"이즈스탯 스페셜 펄스여야함{IsStat}");
     }
     public void close()//목록에서 골랐다면 띄운 ui를 닫아줌
     {
@@ -225,26 +235,14 @@ public class ResultManager : MonoBehaviour//vs코드
             picklist[i].gameObject.SetActive(false);
             
         }
-        Debug.Log($"이즈스탯{IsStat}");
-        //pv.RPC("ready",RpcTarget.All);
-        //여기에 메인 게임매니저 콜 
-        if (IsStat)
+        if (!IsStat)
         {
-            Debug.Log("스탯이라 안들어옴");
-        }
-        else 
-        {
-            Debug.Log("레디 들어옴");
             ready();
         }
 
     }
     public void ready() 
     {
-        Debug.Log("레디 들어옴");
         GameManager.Instance.PV.RPC("EndPlayerCheck",RpcTarget.All);
-            //gameManager.Ready++;
-        
-            //gameManager.AllReady();
     }
 }

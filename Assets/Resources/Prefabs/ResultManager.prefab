@@ -501,6 +501,7 @@ MonoBehaviour:
   Info: {fileID: 6449106603021598455}
   Ispick: 0
   listIndex: 0
+  Parent: {fileID: 5567300475498277509}
 --- !u!114 &8998717850047183863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -923,6 +924,7 @@ MonoBehaviour:
   Info: {fileID: 8694596949434448895}
   Ispick: 0
   listIndex: 0
+  Parent: {fileID: 5567300475498277509}
 --- !u!114 &1740683509765384077
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1075,6 +1077,7 @@ MonoBehaviour:
   Info: {fileID: 8768974680970592495}
   Ispick: 0
   listIndex: 0
+  Parent: {fileID: 5567300475498277509}
 --- !u!114 &322436238568429701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1303,7 +1306,7 @@ RectTransform:
   - {fileID: 7601976797729078589}
   - {fileID: 1262226908305605769}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1391,6 +1394,7 @@ MonoBehaviour:
   - {fileID: 2303356046990228726}
   Player: {fileID: 0}
   pv: {fileID: 0}
+  SetActiveCheck: 0
 --- !u!114 &4595554537295491920
 MonoBehaviour:
   m_ObjectHideFlags: 0
