@@ -4169,7 +4169,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &598920343
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5449,8 +5449,6 @@ MonoBehaviour:
   connectedScene: 
   testRoomOptionPopupObject: {fileID: 1755200001}
   testRoomOptionPopup: {fileID: 0}
-  MainCanvas: {fileID: 1568722250}
-  lobbyPanel: {fileID: 0}
   currentTestScene: 
   currentRoomNameText: 
   currentRoomMemberText: 
@@ -13266,6 +13264,7 @@ MonoBehaviour:
   _CharacterSelectPopup: {fileID: 7140342747673913957, guid: 2eb62e0eb4b23d545825f5ecd308edf7, type: 3}
   IsCharacterSelectInitialized: 0
   TestLobbyP: {fileID: 844653104}
+  SelectedSceneName: 
   TestRoomP: {fileID: 700913428}
   instantiatedPlayer: {fileID: 0}
   ViewID: 0
@@ -17700,7 +17699,7 @@ MonoBehaviour:
   selectedRoomMemberText: 
   currentTestScene: 
   currentRoomMemberText: 
-  _TestRoomPanel: {fileID: 700913422}
+  _TestRoomPanel: {fileID: 0}
   testRoomPanel: {fileID: 0}
   sceneConnectButtons: []
 --- !u!1 &1758564141

@@ -7,6 +7,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using Unity.VisualScripting;
+using System.Linq;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
@@ -45,7 +46,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedLobby()
     {
+        // LoadingUI 생성후 파괴?
         Debug.Log($"LobbyManager - Current State : {Enum.GetName(typeof(PanelType), LobbyManager.Instance.CurrentState)}");
+        PhotonNetwork.AutomaticallySyncScene = true;
 
         if (cachedRoomList != null)
         {
@@ -65,46 +68,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        foreach (RoomInfo info in roomList)
-        {
-            info.CustomProperties.TryGetValue(CustomProperyDefined.TEST_OR_NOT, out object testBool);
+        UpdateCachedRoomList(roomList);
 
-            // DESC : 기존 룸인포 지우기
-            if (testBool == null)
-            {
-                info.CustomProperties.Add(CustomProperyDefined.TEST_OR_NOT, false);
-                cachedRoomList.Remove(info.Name);
-            }
-            else
-            {
-                cachedTestRoomList.Remove(info.Name);
-            }
+        ClearTestRoomListView();
 
-            if (cachedRoomList.ContainsKey(info.Name) && !(bool)testBool)
-            {
-                cachedRoomList[info.Name] = info;
-            }
-            if (cachedTestRoomList.ContainsKey(info.Name) && (bool)testBool)
-            {
-                cachedTestRoomList[info.Name] = info;
-            }
-
-            // DESC : 방이 존재하지 않을 조건일 시, 지우기.
-            if (testBool != null
-                && (!info.IsOpen || info.RemovedFromList || !info.IsVisible || info.PlayerCount == 0))
-            {
-                if ((bool)testBool || cachedRoomList.ContainsKey(info.Name))
-                {
-                    cachedRoomList.Remove(info.Name);
-                }
-                if (!(bool)testBool || cachedTestRoomList.ContainsKey(info.Name))
-                {
-                    cachedTestRoomList.Remove(info.Name);
-                }
-                continue;
-            }
-        }
-
+        UpdateCachedTestRoomList(roomList);
         UpdateTestRoomListView();
     }
 
@@ -128,15 +96,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         else
         {
             LobbyManager.Instance.SetTestRoomPanel();
-            Debug.Log($"LobbyManager - OnJoinedRoom Current RoomName : {PhotonNetwork.CurrentRoom.Name}");
-            Debug.Log($"LobbyManager - OnJoinedRoom Current ClientState : {Enum.GetName(typeof(ClientState), PhotonNetwork.NetworkClientState)}");
+            Debug.Log($"LobbyManager - OnJoinedTestRoom Current RoomName : {PhotonNetwork.CurrentRoom.Name}");
+            Debug.Log($"LobbyManager - OnJoinedTestRoom Current ClientState : {Enum.GetName(typeof(ClientState), PhotonNetwork.NetworkClientState)}");
         }
     }
 
 
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
-        // DESC : 룸 생성
         Debug.Log($"OnJoinRoomFailed");
     }
 
@@ -150,6 +117,24 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         Debug.Log($"LobbyManager - Room Created {roomName}");
     }
 
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(CustomProperyDefined.TEST_OR_NOT, out object testProperty);
+        LobbyManager.Instance.SetRoomPanelEntered();
+        if (!(bool)testProperty) 
+        {
+            LobbyManager.Instance.RoomP.SetPartyPlayerInfo();
+        }        
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(CustomProperyDefined.TEST_OR_NOT, out object testProperty);
+        if (!(bool)testProperty)
+        {
+            LobbyManager.Instance.SetRoomPanelLeft(otherPlayer);
+        }
+    }
     public override void OnLeftRoom()
     {
         Debug.Log("LEAVING...");
@@ -163,6 +148,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             Debug.Log($"LobbyManager - LeftRoom : Client State : {PhotonNetwork.NetworkClientState}{Enum.GetName(typeof(ClientState), PhotonNetwork.NetworkClientState)}");
             LobbyManager.Instance.SetPanel(PanelType.MainLobbyPanel);
             PhotonNetwork.ConnectUsingSettings();
+            // TODO : 클릭 비활성화 시작
             Debug.Log($"LobbyManager - LeftRoom : Client State : {PhotonNetwork.NetworkClientState}{Enum.GetName(typeof(ClientState), PhotonNetwork.NetworkClientState)}");
             LobbyManager.Instance.playerPartyDict.Clear();
         }
@@ -172,14 +158,101 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             Debug.Log($"LobbyManager - LeftTestRoom : Client State : {PhotonNetwork.NetworkClientState}{Enum.GetName(typeof(ClientState), PhotonNetwork.NetworkClientState)}");
             LobbyManager.Instance.SetPanel(PanelType.TestLobbyPanel);
             PhotonNetwork.ConnectUsingSettings();
+            // TODO : 클릭 비활성화 시작
             Debug.Log($"LobbyManager - LeftTestRoom : Client State : {PhotonNetwork.NetworkClientState}{Enum.GetName(typeof(ClientState), PhotonNetwork.NetworkClientState)}");
         }
+    }
 
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
+    {
+        var playerPartyDict = LobbyManager.Instance.playerPartyDict;
+        var _RoomP = LobbyManager.Instance.RoomP;
+
+
+        // DESC : 플레이어 파티 박스 최신화
+        _RoomP.SetPartyPlayerInfo();
+
+
+        // DESC : 레디 상황 최신화 
+        if (PhotonNetwork.IsMasterClient)
+        {
+            _RoomP.StartButton.gameObject.SetActive(_RoomP.CheckPlayersReady());
+        }
+    }
+
+
+    public void UpdateCachedRoomList(List<RoomInfo> roomList)
+    {
+        foreach (RoomInfo info in roomList)
+        {
+            info.CustomProperties.TryGetValue(CustomProperyDefined.TEST_OR_NOT, out object testBool);
+            if (testBool == null)
+            {
+                cachedRoomList.Remove(info.Name);
+            }
+            if (!info.IsOpen || info.RemovedFromList || !info.IsVisible || info.PlayerCount == 0 || (bool)testBool)
+            {
+                if (cachedRoomList.ContainsKey(info.Name))
+                {
+                    cachedRoomList.Remove(info.Name);
+                }
+
+                continue;
+            }
+
+            if (cachedRoomList.ContainsKey(info.Name) && !(bool)testBool)
+            {
+                cachedRoomList[info.Name] = info;
+            }
+            else if (!(bool)testBool)
+            {
+                cachedRoomList.Add(info.Name, info);
+            }
+        }
+    }
+
+    public void UpdateCachedTestRoomList(List<RoomInfo> roomList)
+    {
+        foreach (RoomInfo info in roomList)
+        {
+            info.CustomProperties.TryGetValue(CustomProperyDefined.TEST_OR_NOT, out object testBool);
+            if (testBool == null)
+            {
+                cachedTestRoomList.Remove(info.Name);
+            }
+            if (!info.IsOpen || info.RemovedFromList || !info.IsVisible || info.PlayerCount == 0 || !(bool)testBool)
+            {
+                if (cachedTestRoomList.ContainsKey(info.Name))
+                {
+                    cachedTestRoomList.Remove(info.Name);
+                }
+
+                continue;
+            }
+
+            if (cachedTestRoomList.ContainsKey(info.Name) && (bool)testBool)
+            {
+                cachedTestRoomList[info.Name] = info;
+            }
+            else if ((bool)testBool)
+            {
+                cachedTestRoomList.Add(info.Name, info);
+            }
+        }
+    }
+
+    private void ClearTestRoomListView()
+    {
+        foreach (GameObject entry in testRoomListEntries.Values)
+        {
+            Destroy(entry.gameObject);
+        }
+
+        testRoomListEntries.Clear();
     }
 
     private void UpdateTestRoomListView()
     {
-        testRoomListEntries.Clear();
         var testLobby = LobbyManager.Instance.TestLobbyP;
         foreach (RoomInfo info in cachedTestRoomList.Values)
         {

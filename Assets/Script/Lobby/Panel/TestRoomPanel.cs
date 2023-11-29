@@ -37,7 +37,7 @@ public class TestRoomPanel : MonoBehaviourPun
     public string currentRoomNameText;
     public string currentRoomMemberText;
 
-    private void Start()
+    private void OnEnable()
     {
         Initialize();
     }
@@ -54,7 +54,7 @@ public class TestRoomPanel : MonoBehaviourPun
         if (LobbyManager.Instance.SelectedSceneName != null)
         {
             currentTestScene = LobbyManager.Instance.SelectedSceneName;
-            ConnectedSceneText.text = $"Selected Scene : {LobbyManager.Instance.SelectedSceneName}";
+            ConnectedSceneText.text = $"TestRoomPanel - Selected Scene : {LobbyManager.Instance.SelectedSceneName}";
         }
         connectedScene = currentTestScene;
 

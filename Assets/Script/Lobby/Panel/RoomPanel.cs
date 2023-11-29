@@ -4,6 +4,7 @@ using Photon.Realtime;
 using System.Collections;
 //using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -15,7 +16,7 @@ public class RoomPanel : MonoBehaviourPunCallbacks
 {
     [Header("button")]
     [SerializeField] private Button ReadyButton;
-    [SerializeField] private Button StartButton;
+    [SerializeField] public Button StartButton;
     [SerializeField] private Button BackButton;
     [SerializeField] private Button characterSelectButton;
 
@@ -32,9 +33,22 @@ public class RoomPanel : MonoBehaviourPunCallbacks
     private string askReadyProp;
     private Dictionary<int, GameObject> _playerPartyDict;
 
+    public void Awake()
+    {
+        askReadyProp = CustomProperyDefined.ASK_READY_PROPERTY;        
+    }
+
+    public void OnEnable()
+    {
+        // DESC : 플레이어 레디 초기화
+        PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(askReadyProp, out object isPlayerReady);
+        if (isPlayerReady == null)
+        {
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { askReadyProp, false } });
+        }
+    }
     public void Start()
     {
-        askReadyProp = CustomProperyDefined.ASK_READY_PROPERTY;
 
         // DESC : 버튼 연결
         ReadyButton.onClick.AddListener(OnReadyButtonClicked);
@@ -43,13 +57,10 @@ public class RoomPanel : MonoBehaviourPunCallbacks
         SubmitButton.onClick.AddListener(OnSubmitButtonClicked);
         characterSelectButton.onClick.AddListener(LobbyManager.Instance.CharacterSelect.OnCharacterButtonClicked);
 
-        if (!PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(askReadyProp, out object isPlayerReady))
-        {
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { askReadyProp, false } });
-        }
-
+        // DESC : 스타트 버튼 비활성화 ( 모두 준비됬을 시, 활성화 )
         StartButton.gameObject.SetActive(false);
 
+        // DESC : 방장 레디 버튼 비활성화
         if (PhotonNetwork.IsMasterClient)
         {
             ReadyButton.gameObject.SetActive(false);
@@ -80,7 +91,16 @@ public class RoomPanel : MonoBehaviourPunCallbacks
         {
             GameObject playerInfoPrefab = Instantiate(Resources.Load<GameObject>(PrefabPathes.PLAYER_INROOM_PARTY_ELEMENT), PartyBox.transform.GetChild(cnt), false);            
             playerInfoPrefab.transform.localScale = Vector3.one;
-            playerInfoPrefab.GetComponent<PartyPlayerInfo>().Initialize(cnt, p);
+            var partyPlayerInfo = playerInfoPrefab.GetComponent<PartyPlayerInfo>();
+            partyPlayerInfo.Initialize(cnt, p);
+
+            p.CustomProperties.TryGetValue(askReadyProp, out object isReady);
+
+            if (isReady == null)
+            {
+                isReady = false;
+            }
+            partyPlayerInfo.SetReady((bool)isReady);
 
             _playerPartyDict.Add(p.ActorNumber, playerInfoPrefab);
 
@@ -114,7 +134,6 @@ public class RoomPanel : MonoBehaviourPunCallbacks
             ReadyButton.GetComponentInChildren<Image>().color = new Color(255 / 255f, 182 / 255f, 182 / 255f);
         }
     }
-
 
     public void OnReadyButtonClicked()
     {
@@ -170,5 +189,37 @@ public class RoomPanel : MonoBehaviourPunCallbacks
                 Destroy(ChatScrollContent.transform.GetChild(i).gameObject);
             }
         }
+
+        // DESC : 다시 준비 해제..
+        PhotonNetwork.LocalPlayer.CustomProperties[askReadyProp] = false;
+    }
+
+    public bool CheckPlayersReady()
+    {
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            return false;
+        }
+
+        if (PhotonNetwork.PlayerList.Count() < PhotonNetwork.CurrentRoom.MaxPlayers)
+        {
+            return false;
+        }
+        foreach (Player p in PhotonNetwork.PlayerList)
+        {
+            if (p.CustomProperties.TryGetValue(askReadyProp, out object isPlayerReady))
+            {
+                if (!(bool)isPlayerReady && !p.IsMasterClient)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

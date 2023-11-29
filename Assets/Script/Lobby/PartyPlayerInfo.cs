@@ -11,6 +11,7 @@ public class PartyPlayerInfo : MonoBehaviourPun
 {
     [Header("PlayerInfo")]
     public TextMeshProUGUI playerNickNameText;
+    public TextMeshProUGUI playerReadyText;
     public Image playerImage; 
 
     private bool isPlayerReady;    
@@ -59,5 +60,17 @@ public class PartyPlayerInfo : MonoBehaviourPun
     private void OnPlayerNumberingChanged()
     {
 
+    }
+
+    public void SetReady(bool isReady)
+    {
+        if (isReady) 
+        {
+            playerReadyText.text = "Ready";
+        }
+        else
+        {
+            playerReadyText.text = "";
+        }
     }
 }

@@ -41,6 +41,7 @@ public class TestLobbyPanel : MonoBehaviourPunCallbacks
             if (selectedSceneName != value) 
             {
                 LobbyManager.Instance.SelectedSceneName = value;
+                Debug.Log($"TestLobbyPanel - ConnectedScene : {LobbyManager.Instance.SelectedSceneName}");
                 selectedSceneName = value;
             }
         }
@@ -99,7 +100,7 @@ public class TestLobbyPanel : MonoBehaviourPunCallbacks
         SceneSelectButton.onClick.AddListener(OnSceneSelectButtonClicked);
         SceneSelectStartButton.onClick.AddListener(OnSceneSelectStartButtonClicked);
         CreateTestRoomButton.onClick.AddListener(OnCreateTestRoomButtonClicked);
-        SceneSelectButton.onClick.AddListener(LobbyManager.Instance.CharacterSelect.OnCharacterButtonClicked);
+        CharacterSelectButton.onClick.AddListener(LobbyManager.Instance.CharacterSelect.OnCharacterButtonClicked);
         BackButton.onClick.AddListener(LobbyManager.Instance.OnBackButtonClickedInTestLobbyPanel);
     }
 
@@ -218,7 +219,8 @@ public class TestLobbyPanel : MonoBehaviourPunCallbacks
 
     public void OnSceneConnectButtonClicked(SceneConnectButton clickedButton)
     {
-        selectedSceneName = clickedButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text;
+        SelectedSceneName = clickedButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text;
+        Debug.Log($"{SelectedSceneName} º±≈√µ .");
         SceneSelectStartButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = selectedSceneName;
         foreach (SceneConnectButton button in sceneConnectButtons)
         {
@@ -236,7 +238,7 @@ public class TestLobbyPanel : MonoBehaviourPunCallbacks
             var entryInfo = entry.GetComponent<RoomListEntry>();
             if (entryInfo.isEntryClicked)
             {
-                selectedRoomName = entryInfo.roomName;
+                SelectedRoomName = entryInfo.roomName;
             }
         }
         PhotonNetwork.JoinRoom(selectedRoomName);        

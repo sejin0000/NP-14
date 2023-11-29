@@ -71,8 +71,9 @@ public class MainLobbyPanel : MonoBehaviourPun
             Debug.Log("MainLobbyPanel : cachedRoomList is Null");
             string roomName = $"Room {Random.Range(0, 200)}";
 
-            RoomOptions options = new RoomOptions { MaxPlayers = 3, PlayerTtl = 10000 };            
+            RoomOptions options = new RoomOptions { MaxPlayers = 3, PlayerTtl = 1500 };            
             options.CustomRoomProperties = CustomRoomProperties;
+            options.CustomRoomPropertiesForLobby = new string[] { CustomProperyDefined.TEST_OR_NOT };
 
             PhotonNetwork.CreateRoom(roomName, options);            
         }

@@ -96,9 +96,37 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         RoomP.SetPartyPlayerInfo();
     }
 
+    public void SetRoomPanelEntered()
+    {
+        object classNum;
+        PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(CustomProperyDefined.CLASS_PROPERTY, out classNum);
+        instantiatedPlayer.GetComponent<PhotonView>().RPC("ApplyClassChange", RpcTarget.Others, (int)classNum, dataSetting.viewID);
+    }
+
+    public void SetRoomPanelLeft(Player otherPlayer)
+    {
+        if (playerPartyDict[otherPlayer.ActorNumber].gameObject != null)
+        {
+            Destroy(playerPartyDict[otherPlayer.ActorNumber].gameObject);
+        }
+        playerPartyDict.Remove(otherPlayer.ActorNumber);
+
+        Debug.Log($"{otherPlayer.NickName} Επΐε");
+
+        RoomP.SetPartyPlayerInfo();
+    }
+
     public void SetTestRoomPanel()
     {
         SetPanel(PanelType.TestRoomPanel);
+
+        instantiatedPlayer = RoomP.InstantiatePlayer();
+        ViewID = instantiatedPlayer.GetPhotonView().ViewID;
+        instantiatedPlayer.GetComponent<ClassIdentifier>().playerData = dataSetting;
+
+        dataSetting.ownerPlayer = instantiatedPlayer;
+        dataSetting.viewID = ViewID;
+        CharacterSelect.Initialize();
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
