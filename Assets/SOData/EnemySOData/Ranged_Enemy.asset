@@ -15,9 +15,9 @@ MonoBehaviour:
   enemyName: "\uC0C8\uB07C\uC6A9"
   type: 1
   atk: 5
-  hp: 40
+  hp: 60
   bulletSpeed: 5
-  atkDelay: 1.5
+  atkDelay: 0.5
   patrolDelay: 10
   chaseTime: 4
   groggyTiem: 1.5

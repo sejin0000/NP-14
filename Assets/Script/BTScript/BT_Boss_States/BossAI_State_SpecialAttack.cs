@@ -73,16 +73,16 @@ public class BossAI_State_SpecialAttack : BTAction
             {
                 case 0:
                     //¾ç ÆÈ °ø°Ý
-                    bossAI_Dragon.PV.RPC("Fire", RpcTarget.All);
-                    //bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 0);                  
+                    //bossAI_Dragon.PV.RPC("Fire", RpcTarget.All);
+                    bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 0);                  
                     break;
                 case 1:
-                    bossAI_Dragon.PV.RPC("Fire", RpcTarget.All);
-                    //bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 4);
+                    //bossAI_Dragon.PV.RPC("Fire", RpcTarget.All);
+                    bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 1);
                     break;
                 case 2:
-                    bossAI_Dragon.PV.RPC("Fire", RpcTarget.All);
-                    //bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 4);
+                    //bossAI_Dragon.PV.RPC("Fire", RpcTarget.All);
+                    bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 4);
                     break;
                 case 3:
                     bossAI_Dragon.PV.RPC("Fire", RpcTarget.All);
