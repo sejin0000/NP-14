@@ -16,9 +16,9 @@ public class A0124 : MonoBehaviourPun
             GameObject A0124Prefabs = Resources.Load<GameObject>("AugmentList/A1024");
             A0124Prefabs.transform.SetSiblingIndex(0);
             blindeye = Instantiate(A0124Prefabs);
-            DarkEnd();
-            MainGameManager.Instance.OnGameStartedEvent += DarkStart;
-            MainGameManager.Instance.OnGameEndedEvent += DarkEnd;
+            //DarkEnd();
+            GameManager.Instance.OnStageStartEvent += DarkStart;
+            GameManager.Instance.OnStageEndEvent += DarkEnd;
         }
 
     }

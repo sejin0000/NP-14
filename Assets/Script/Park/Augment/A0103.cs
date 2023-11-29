@@ -17,20 +17,15 @@ public class A0103 : MonoBehaviourPun
             playerStat = GetComponent<PlayerStatHandler>();
             nowCoolGAM = playerStat.BulletSpread.total * 0.2f;
             oldCoolGAM = 0;
-            MainGameManager.Instance.OnGameStartedEvent += SetCool;//이걸 돈획득 이벤트에검 
+            GameManager.Instance.OnStageStartEvent += SetCool; 
         }
     }
     // Update is called once per frame
     void SetCool()
     {
+        playerStat.ReloadCoolTime.added -= oldCoolGAM;
         nowCoolGAM = playerStat.BulletSpread.total * 0.2f;
         playerStat.ReloadCoolTime.added += nowCoolGAM;
-        playerStat.ReloadCoolTime.added -= oldCoolGAM;
         oldCoolGAM = nowCoolGAM;
-    }
-
-    void opserber() //타격시 탄퍼짐 ++ 뎀++ 이있었던거같은데 있으면 대응하는 함수 만들예정
-    {
-
     }
 }

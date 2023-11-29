@@ -405,25 +405,6 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         playerstatHandler.HP.coefficient *= 1.5f;
         playerstatHandler.ATK.coefficient *= 1.5f;
     }
-    //private void A119(int PlayerNumber)// 원시 고대 반전 보존
-    //{
-    //    ChangePlayerAndPlayerStatHandler(PlayerNumber);
-    //    if (targetPlayer.GetComponent<PlayerInput>() == null)
-    //    {
-    //        Debug.Log("널값임 비상비상비상비상비상비상");
-    //    }
-    //    playerInput = targetPlayer.GetComponent<PlayerInput>();
-    //    if (playerInput.currentActionMap.name == "Player")
-    //    {
-    //        playerInput.SwitchCurrentActionMap("Player1");
-    //    }
-    //    else
-    //    {
-    //        playerInput.SwitchCurrentActionMap("Player");
-    //    }
-    //    playerstatHandler.HP.coefficient *= 1.5f;
-    //    playerstatHandler.ATK.coefficient *= 1.5f;
-    //}
     [PunRPC]
     private void A120(int PlayerNumber)//워터 파크 개장 122의 물버전
     {
@@ -460,7 +441,6 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
             // 일단 무덤 : 업적 느낌으로 UI로 띄워주면 좋을 것 같은데,,,? : 도현님이 비명을 지르시겠지?
         }
     }
-    //테스트 완료 그러나 이벤트로 작동하여 추가 테스트가 필요
     [PunRPC]
     private void A124(int PlayerNumber)//눈먼총잡이 : 시야가 대폭 감소 하며 공격 속도, 재장전 속도가 증가합니다.<<애매모호한듯?
     {
@@ -582,7 +562,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     private void A212(int PlayerNumber)//강자멸시 현재 스테이지가 높을수록 공업
     {
         ChangeOnlyPlayer(PlayerNumber);
-        targetPlayer.AddComponent<A0104>();
+        targetPlayer.AddComponent<A0212>();
     }
     [PunRPC]
     private void A213(int PlayerNumber)//생존자 플레이어 혼자 남았을때 능력치업
@@ -748,7 +728,8 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A1103(int PlayerNumber)
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A1103>();
     }
     [PunRPC]
     private void A1104(int PlayerNumber)//플래시 
@@ -762,9 +743,9 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         playerInput.actions.FindAction("SiegeMode").Disable();
     }
     [PunRPC]
-    private void A1105(int PlayerNumber)//오토 쉬프트  //현재 코루틴 버그가 있음;
+    private void A1105(int PlayerNumber)//오토 쉬프트
     {
-        ChangePlayerStatHandler(PlayerNumber);
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
         targetPlayer.AddComponent<A1105>();
         playerInput = targetPlayer.GetComponent<PlayerInput>();
         playerInput.actions.FindAction("Skill").Disable();
@@ -782,15 +763,6 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
             photonView.RPC("FindMaster", RpcTarget.All, num);
             prefab.GetComponent<A1106>().Init();
         }
-    }
-
-    [PunRPC]
-    private void A1107_1(int PlayerNumber)//오브젝트 생성형 폐기된 디자인
-    {
-        ChangeOnlyPlayer(PlayerNumber);
-        GameObject Prefabs = Resources.Load<GameObject>("AugmentList/A1107");
-        GameObject go = Instantiate(Prefabs, targetPlayer.transform);
-        go.transform.SetParent(targetPlayer.transform);
     }
     [PunRPC]
     private void A1107(int PlayerNumber) //영역전개 최초의 대상에게 영구적으로 올려주는 타입 아직 세세한 오류가 있을것으로 예상된
@@ -843,7 +815,8 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A1206(int PlayerNumber)
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A1206>();
     }
     [PunRPC]
     private void A1207(int PlayerNumber)//>>이동다끔 콜리전끔 포지션업데이트로 다른플레이어값 받아서
@@ -879,7 +852,8 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A1303(int PlayerNumber)
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A1303>();
     }
     [PunRPC]
     private void A1304(int PlayerNumber)// 기회비용 힐모드 변경 x 딜모드 딜량증가
@@ -904,7 +878,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         targetPlayer.AddComponent<A2101>();
     }
     [PunRPC]
-    private void A2102(int PlayerNumber) ///와다다다ㅏ다다 테스트안함 근데 스탯이라 상관없을듯함
+    private void A2102(int PlayerNumber) ///와다다다ㅏ다다 
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.AtkSpeed.coefficient *= 2;
@@ -1047,17 +1021,20 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     private void A3103(int PlayerNumber)//시즈모드 구르기를 시즈모드로 변경 
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
-        targetPlayer.AddComponent<A3103>();
-        targetPlayer.GetComponent<PlayerInputController>().siegeMode = true;
-        playerInput = targetPlayer.GetComponent<PlayerInput>();
-        playerInput.actions.FindAction("Roll").Disable();
-        playerInput.actions.FindAction("SiegeMode").Enable();
-        playerInput.actions.FindAction("Flash").Disable();
+        if (targetPlayer.GetPhotonView().IsMine)
+        {
+            targetPlayer.AddComponent<A3103>();
+            targetPlayer.GetComponent<PlayerInputController>().siegeMode = true;
+            playerInput = targetPlayer.GetComponent<PlayerInput>();
+            playerInput.actions.FindAction("Roll").Disable();
+            playerInput.actions.FindAction("SiegeMode").Enable();
+        }
     }
     [PunRPC]
     private void A3104(int PlayerNumber)
     {
-        Debug.Log("미완성");
+        ChangeOnlyPlayer(PlayerNumber);
+        targetPlayer.AddComponent<A3104>();
     }
     [PunRPC]
     private void A3105(int PlayerNumber)//공격태세 스킬 사용시 다음 공격을 강화 시키는 스킬로 대체 #스킬대체 #다음공경
