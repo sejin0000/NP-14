@@ -2284,7 +2284,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 597.84}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &376548893
 MonoBehaviour:
@@ -2624,7 +2624,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 10
   m_Viewport: {fileID: 1752686108}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 608287642}
@@ -4332,8 +4332,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 787365580}
   m_HandleRect: {fileID: 787365579}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.568714
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5811,8 +5811,8 @@ RectTransform:
   m_Father: {fileID: 1849462178}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.43128598}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -10975,7 +10975,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1397847045
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11060,8 +11060,11 @@ MonoBehaviour:
   characterSelectButton: {fileID: 922569496}
   ChatInputField: {fileID: 1814743562}
   SubmitButton: {fileID: 771824549}
+  ChatBox: {fileID: 1798967822}
   ChatLog: {fileID: 1580934528868145059, guid: 429e494743d959644ae76b8ceb04fb82, type: 3}
   ChatScrollContent: {fileID: 376548891}
+  ChatScrollRect: {fileID: 429708782}
+  IsChatBoxActive: 0
   PartyBox: {fileID: 1857915279}
 --- !u!114 &1397847049
 MonoBehaviour:
@@ -17538,9 +17541,9 @@ RectTransform:
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1752686109
 MonoBehaviour:

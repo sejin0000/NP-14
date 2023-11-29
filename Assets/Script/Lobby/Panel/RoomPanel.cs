@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -15,7 +16,7 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class RoomPanel : MonoBehaviourPunCallbacks
 {
     [Header("button")]
-    [SerializeField] private Button ReadyButton;
+    [SerializeField] public Button ReadyButton;
     [SerializeField] public Button StartButton;
     [SerializeField] private Button BackButton;
     [SerializeField] private Button characterSelectButton;
@@ -23,8 +24,56 @@ public class RoomPanel : MonoBehaviourPunCallbacks
     [Header("Chat")]
     public TMP_InputField ChatInputField;
     public Button SubmitButton;
+    public GameObject ChatBox;
     public GameObject ChatLog;
     public GameObject ChatScrollContent;
+    public ScrollRect ChatScrollRect;
+    private bool isChatBoxActive;
+    public bool IsChatBoxActive
+    {
+        get { return  isChatBoxActive; }
+        set
+        {
+            ChatBox.SetActive(value);
+            isChatBoxActive = value;
+            if (value)
+            {
+                if (DeactiveChatBox != null)
+                {
+                    StopCoroutine(DeactiveChatBox);
+                    DeactiveChatBox = null;
+                }
+                DeactiveChatBox = StartCoroutine(DeActiveChatBox());
+            }
+        }
+    }
+    private bool isChatInputActive;
+    public bool IsChatInputActive
+    {
+        get { return isChatInputActive; }
+        set
+        {
+            if (LobbyManager.Instance == null)
+            {
+                isChatInputActive = false;
+                return;
+            }
+            var inputActions = LobbyManager.Instance.instantiatedPlayer.GetComponent<PlayerInput>().actions;
+            if (value)
+            {
+                ChatInputField.ActivateInputField();
+                isChatInputActive = value;
+                inputActions.Disable();
+            }
+            else
+            {
+                ChatInputField.DeactivateInputField();
+                isChatInputActive = value;
+                inputActions.Enable();
+                LobbyManager.Instance.instantiatedPlayer.GetComponent<PlayerInputController>().ResetSetting();
+            }
+        }
+    }
 
     [Header("PartyBox")]
     public GameObject PartyBox;
@@ -32,6 +81,8 @@ public class RoomPanel : MonoBehaviourPunCallbacks
     [HideInInspector]
     private string askReadyProp;
     private Dictionary<int, GameObject> _playerPartyDict;
+    private Coroutine DeactiveChatBox;
+
 
     public void Awake()
     {
@@ -46,16 +97,12 @@ public class RoomPanel : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { askReadyProp, false } });
         }
-    }
-    public void Start()
-    {
 
-        // DESC : 버튼 연결
-        ReadyButton.onClick.AddListener(OnReadyButtonClicked);
-        StartButton.onClick.AddListener(OnStartButtonClicked);
-        BackButton.onClick.AddListener(NetworkManager.Instance.OnBackButtonClickedInRoomPanel);        
-        SubmitButton.onClick.AddListener(OnSubmitButtonClicked);
-        characterSelectButton.onClick.AddListener(LobbyManager.Instance.CharacterSelect.OnCharacterButtonClicked);
+        // DESC : 마스터 클라이언트 여부 확인
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Debug.Log("RoomPanel - This is MasterClient");
+        }
 
         // DESC : 스타트 버튼 비활성화 ( 모두 준비됬을 시, 활성화 )
         StartButton.gameObject.SetActive(false);
@@ -64,6 +111,65 @@ public class RoomPanel : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             ReadyButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            ReadyButton.gameObject.SetActive(true);
+        }
+
+        // DESC : ChatBox 활성화
+        IsChatBoxActive = true;
+        IsChatInputActive = false;
+    }
+    public void Start()
+    {
+        // DESC : 버튼 연결
+        ReadyButton.onClick.AddListener(OnReadyButtonClicked);
+        StartButton.onClick.AddListener(OnStartButtonClicked);
+        BackButton.onClick.AddListener(NetworkManager.Instance.OnBackButtonClickedInRoomPanel);        
+        SubmitButton.onClick.AddListener(OnSubmitButtonClicked);
+        characterSelectButton.onClick.AddListener(LobbyManager.Instance.CharacterSelect.OnCharacterButtonClicked);
+    }
+
+    public void Update()
+    {        
+        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+        {
+            ActivateChatMode();
+        }
+    }
+
+    public void ActivateChatMode()
+    {
+        if (IsChatBoxActive)
+        {
+            if (!IsChatInputActive)
+            {                
+                IsChatInputActive = true;
+            }
+            else
+            {
+                OnSubmitButtonClicked();                
+                IsChatInputActive = false;
+            }
+        }
+        else
+        {
+            IsChatBoxActive = true;
+            IsChatInputActive = true;
+        }       
+    }
+
+    public IEnumerator DeActiveChatBox()
+    {
+        yield return new WaitForSeconds(5f);
+        if (!IsChatInputActive)
+        {
+            IsChatBoxActive = false;
+        }
+        else
+        {
+            StartCoroutine(DeActiveChatBox());
         }
     }
 
@@ -163,21 +269,40 @@ public class RoomPanel : MonoBehaviourPunCallbacks
     {
         string inputText = ChatInputField.text;
         string nickName = PhotonNetwork.LocalPlayer.NickName;
-        photonView.RPC("ChatInput", RpcTarget.All, inputText, nickName);
-        ChatInputField.text = "";
-        ChatInputField.ActivateInputField();
+
+        GameObject chatPrefab = Instantiate(ChatLog, ChatScrollContent.transform, false);
+        ChatLog chatLog = chatPrefab.GetComponent<ChatLog>();
+
+        chatLog.Initialize(nickName, inputText);
+
+        float increasedHeight = chatLog.ConfirmTextSize(ChatInputField);
+
+        photonView.RPC("ChatInput", RpcTarget.Others, inputText, nickName, increasedHeight);
+
+        ChatScrollContent.GetComponent<RectTransform>().sizeDelta += new Vector2(0, increasedHeight);
+        ChatScrollRect.verticalNormalizedPosition = 0f;
+                
+        ChatInputField.text = ""; 
     }
 
     [PunRPC]
-    public void ChatInput(string inputText, string nickName)
+    public void ChatInput(string inputText, string nickName, float increasedHeight)
     {
         GameObject chatPrefab = Instantiate(ChatLog, ChatScrollContent.transform, false);
         ChatLog chatLog = chatPrefab.GetComponent<ChatLog>();
 
-        chatLog.NickNameText.text = nickName;
-        chatLog.ChatText.text = inputText;
-        chatPrefab.transform.SetParent(ChatScrollContent.transform, false);
-        chatLog.ConfirmTextSize(ChatInputField);
+        chatLog.Initialize(nickName, inputText);
+
+        chatLog.GetCurrentAmount();
+        chatLog.GetComponent<RectTransform>().sizeDelta = new Vector2(chatLog.prefabWidth, increasedHeight);
+        chatLog.ChatText.GetComponent<RectTransform>().sizeDelta = new Vector2(chatLog.ChatText.gameObject.GetComponent<RectTransform>().rect.width, increasedHeight);
+        ChatScrollContent.GetComponent<RectTransform>().sizeDelta += new Vector2(0, increasedHeight);
+
+        // DESC : 타 클라이언트 채팅창 사라지지 않게
+        IsChatBoxActive = true;
+
+        // DESC : 채팅창 제일 아래(가장 최근 것)가 노출되게
+        ChatScrollRect.verticalNormalizedPosition = 0f;
     }
 
     public void LeaveRoomSetting()

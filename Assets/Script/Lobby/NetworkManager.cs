@@ -163,7 +163,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        if (PhotonNetwork.LocalPlayer == newMasterClient)
+        {
+            LobbyManager.Instance.RoomP.ReadyButton.gameObject.SetActive(false);
+        }
+    }
+
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
         var playerPartyDict = LobbyManager.Instance.playerPartyDict;
         var _RoomP = LobbyManager.Instance.RoomP;

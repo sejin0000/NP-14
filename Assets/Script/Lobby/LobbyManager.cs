@@ -83,14 +83,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public void SetRoomPanel()
     {
-        SetPanel(PanelType.RoomPanel);
-
         instantiatedPlayer = RoomP.InstantiatePlayer();
         ViewID = instantiatedPlayer.GetPhotonView().ViewID;
         instantiatedPlayer.GetComponent<ClassIdentifier>().playerData = dataSetting;
 
         dataSetting.ownerPlayer = instantiatedPlayer;
         dataSetting.viewID = ViewID;
+
+        SetPanel(PanelType.RoomPanel);
         CharacterSelect.Initialize();
 
         RoomP.SetPartyPlayerInfo();
