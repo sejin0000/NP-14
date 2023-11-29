@@ -37,7 +37,7 @@ public class UIBulletIndicator : UIBase, ICommonUI
         if (SceneManager.GetActiveScene().name == "Test_DoHyun")
             player = TestGameManagerDohyun.Instance.InstantiatedPlayer.GetComponent<PlayerInputController>();
         else
-            player = MainGameManager.Instance.InstantiatedPlayer.GetComponent<PlayerInputController>();
+            player = GameManager.Instance.clientPlayer.GetComponent<PlayerInputController>();
 
         playerStat = player.playerStatHandler;
         ammoMax = player.playerStatHandler.AmmoMax.total;
