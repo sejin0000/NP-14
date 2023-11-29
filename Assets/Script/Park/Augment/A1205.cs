@@ -24,9 +24,9 @@ public class A1205 : MonoBehaviourPun//스킬 사용시 스킬체크를 하여 성공시 데미지
             tempPower = 0;
             controller.OnSkillEvent += SkillCheck; // 중요한부분
 
-            GameObject A0124Prefabs = Resources.Load<GameObject>("AugmentList/A1205SkillCheckMaster");
-            A0124Prefabs.transform.SetSiblingIndex(0);
-            skillCheckPrefab = Instantiate(A0124Prefabs);
+            GameObject A0125Prefabs = Resources.Load<GameObject>("AugmentList/A1205SkillCheckMaster");
+            A0125Prefabs.transform.SetSiblingIndex(0);
+            skillCheckPrefab = Instantiate(A0125Prefabs);
 
             skillCheckobj = skillCheckPrefab.GetComponent<SkillCheckMaster>();
 

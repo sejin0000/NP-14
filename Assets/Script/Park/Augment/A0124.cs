@@ -18,7 +18,9 @@ public class A0124 : MonoBehaviourPun
             blindeye = Instantiate(A0124Prefabs);
             //DarkEnd();
             GameManager.Instance.OnStageStartEvent += DarkStart;
+            GameManager.Instance.OnBossStageStartEvent += DarkStart;
             GameManager.Instance.OnStageEndEvent += DarkEnd;
+            GameManager.Instance.OnBossStageStartEvent += DarkEnd;
         }
 
     }

@@ -16,11 +16,12 @@ public class A0104 : MonoBehaviourPun
             controller = GetComponent<TopDownCharacterController>();
             playerStat = GetComponent<PlayerStatHandler>();
             bigPower = 0;
-            GameManager.Instance.OnStageStartEvent += PowerUp;
+            GameManager.Instance.OnStageStartEvent += PowerSet;
+            GameManager.Instance.OnBossStageStartEvent += PowerSet;
         }
                 
      }
-        void PowerUp()
+        void PowerSet()
         {
             playerStat.ATK.added -= bigPower;
             Powerset();

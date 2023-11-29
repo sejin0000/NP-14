@@ -16,6 +16,7 @@ public class A0212 : MonoBehaviourPun
             playerStat = GetComponent<PlayerStatHandler>();
             bigPower = 0;
             GameManager.Instance.OnStageStartEvent += PowerUp;
+            GameManager.Instance.OnBossStageStartEvent += PowerUp;
         }
 
     }
@@ -31,7 +32,7 @@ public class A0212 : MonoBehaviourPun
     }
     void Powerset()
     {
-        int stage = MainGameManager.Instance.stageData.currentStage;
+        int stage = GameManager.Instance.curStage;
         switch (stage)
         {
             case 1:

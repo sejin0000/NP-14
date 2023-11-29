@@ -19,7 +19,8 @@ public class A0213 : MonoBehaviourPun
             coolTimeController = GetComponent<CoolTimeController>();
             statupdesuka = false;
             GameManager.Instance.OnStageStartEvent += startReset;
-            //GameManager.Instance.죽음이벤트 += IAmLegend;
+            GameManager.Instance.OnBossStageStartEvent += startReset;
+            //GameManager.Instance.죽음이벤트 += IAmLegend;아래도수정
         }
     }
     // Update is called once per frame

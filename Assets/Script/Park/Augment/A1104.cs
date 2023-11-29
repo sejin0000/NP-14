@@ -27,21 +27,13 @@ public class A1104 : MonoBehaviourPun
     // Update is called once per frame
     void Flash()
     {
-        //Vector2 player = transform.position;
-        //Vector2 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //Vector3 dir = (mouse - player).normalized * 1.5f;
-        //gameObject.transform.position = transform.position + dir;
-
-
         Vector2 player = transform.position;
         Vector2 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3 dir = (mouse - player).normalized;
         RaycastHit2D hit = Physics2D.Raycast(player, dir, 1.5f, layerMask);
-        Debug.DrawRay(player, dir * 1.5f, Color.red, 3f);
         Vector3 target = dir;
         if (hit)
         {
-            Debug.Log("È÷Æ®");
             target = dir * hit.distance;
         }
         else 

@@ -787,7 +787,6 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         playerstatHandler.AmmoMax.added -= playerstatHandler.AmmoMax.total - 1;
         playerstatHandler.ReloadCoolTime.coefficient *= 0.5f;
         playerstatHandler.ATK.added += 5f;
-        //playerstatHandler.ReloadCoolTime.coefficient *= 0.7f;
     }
     [PunRPC]
     private void A1202(int PlayerNumber)//최장거리 저격 로케이터의 반대버전

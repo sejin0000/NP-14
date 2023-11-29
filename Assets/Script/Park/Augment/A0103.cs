@@ -17,7 +17,8 @@ public class A0103 : MonoBehaviourPun
             playerStat = GetComponent<PlayerStatHandler>();
             nowCoolGAM = playerStat.BulletSpread.total * 0.2f;
             oldCoolGAM = 0;
-            GameManager.Instance.OnStageStartEvent += SetCool; 
+            GameManager.Instance.OnStageStartEvent += SetCool;
+            GameManager.Instance.OnBossStageStartEvent += SetCool;
         }
     }
     // Update is called once per frame

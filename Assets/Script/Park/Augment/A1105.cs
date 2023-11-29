@@ -24,7 +24,6 @@ public class A1105 : MonoBehaviourPun
             AutoChangeStart();
         }
     }
-    // Update is called once per frame
     void AutoChangeStart() 
     {
         if (photonView.IsMine) 
