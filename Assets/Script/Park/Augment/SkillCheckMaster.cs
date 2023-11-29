@@ -10,7 +10,7 @@ public class SkillCheckMaster : MonoBehaviour
     float angle;
     bool clickCheck;
     [HideInInspector] public A1205 target;
-    public int movepower = 200;
+    public int movepower = 1;
 
     public RectTransform targetTime;
     public RectTransform targetZone;
@@ -36,11 +36,11 @@ public class SkillCheckMaster : MonoBehaviour
             clickCheck = true;
             if (angle >= random - 20 && angle <= random + 20)
             {
-                target.endCall(5f);
+                //target.endCall(5f);
             }
             else
             {
-                target.endCall(-5f);
+                //target.endCall(-5f);
             }
             key = false;
         }
@@ -52,10 +52,13 @@ public class SkillCheckMaster : MonoBehaviour
         {
             angle += movepower * Time.deltaTime;
             targetTime.transform.rotation = Quaternion.Euler(0, 0, angle);
-            if (angle >= random - 20 && angle <= random + 20)
+            if (angle >= random - 30 && angle <= random +5)
             {
+
                 Debug.Log("지금이야");
+                //clickCheck = true;
             }
+
             if (angle>= 359) 
             {
                 clickCheck = true;

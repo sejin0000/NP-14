@@ -232,6 +232,7 @@ public class ResultManager : MonoBehaviour//vs코드
     }
     public void ready() 
     {
+        Debug.Log("레디 들어옴");
         GameManager.Instance.PV.RPC("EndPlayerCheck",RpcTarget.All);
             //gameManager.Ready++;
         

@@ -131,7 +131,7 @@ public class GameManager : MonoBehaviour
     {
         OnRoomStartEvent?.Invoke();
     }
-
+    [PunRPC]
     public void CallRoomEndEvent()
     {
         Debug.Log("룸 종료");
@@ -165,6 +165,7 @@ public class GameManager : MonoBehaviour
         //    StageClear();
         //    EndPlayer = 0;
         //}
+        Debug.Log($"현재 레디 : {EndPlayer} 필요 레디 : {PhotonNetwork.CurrentRoom.PlayerCount}");
         if (EndPlayer == PhotonNetwork.CurrentRoom.PlayerCount) 
         {
             StageClear();
