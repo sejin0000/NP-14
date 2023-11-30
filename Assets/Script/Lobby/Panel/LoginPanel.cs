@@ -4,19 +4,45 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class LoginPanel : MonoBehaviourPunCallbacks
 {
+    [Header("Login")]
+    public GameObject LoginBox;
     [SerializeField] private TMP_InputField playerIdInput;
     [SerializeField] private TMP_InputField playerPswdInput;
     [SerializeField] private Button loginButton;
 
+    [Header("Background Image")]
+    [SerializeField] private GameObject Trio;
+    [SerializeField] private GameObject Tower;
+
+    [Header("Start")]
+    [SerializeField] private GameObject StartLogo;
+    private bool isClicked;
+
     private void Awake()
     {
         loginButton.onClick.AddListener(OnLoginButtonClicked);
+        isClicked = false;
+    }
+
+    private void Update()
+    {
+        while (!isClicked)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                StartLogo.SetActive(false);
+                Trio.SetActive(true);
+                LoginBox.SetActive(true);
+                isClicked = true;
+            }
+        }
     }
 
     private void OnLoginButtonClicked()

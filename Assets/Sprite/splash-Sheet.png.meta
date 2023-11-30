@@ -227,6 +227,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: splash-Sheet_5
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 0
+        width: 120
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 36c5c8b6c5eb49d44896855b85bdece8
+      internalID: 2050798471
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -243,6 +264,7 @@ TextureImporter:
       splash-Sheet_2: 1498862917
       splash-Sheet_3: -835242189
       splash-Sheet_4: 1173704712
+      splash-Sheet_5: 2050798471
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
