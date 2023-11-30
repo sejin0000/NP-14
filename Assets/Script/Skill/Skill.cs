@@ -60,10 +60,15 @@ public class Skill : MonoBehaviourPun
 
     public void OnDestroy()
     {
+        if (NetworkManager.Instance != null)
+        {
+            return;
+        }
+
         if (photonView.IsMine)
         {
             controller.OnSkillEvent -= SkillStart;
             playerStats.CurSkillStack = playerStats.MaxSkillStack;
-        }
+        }        
     }
 }

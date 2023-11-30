@@ -2,21 +2,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioManagerTest : MonoBehaviour
 {
     GameObject player;
     [SerializeField] GameManager manager;
+    
 
     // Start is called before the first frame update
     void Start()
     {
-        //player = MainGameManager.Instance.gameObject;
-        player = manager.clientPlayer;
-        SetupBGM();
-        SetupSE();
-        //AudioManager.PlayBGM("TestBGM");
-        //Fire2();
+        GameManager.Instance.OnStageStartEvent += PlayStageBGM;
     }
 
     // Update is called once per frame
@@ -25,31 +22,12 @@ public class AudioManagerTest : MonoBehaviour
         
     }
 
-    void SetupBGM()
+    void PlayStageBGM()
     {
-        AudioManager.PlayBGM("Duty Cycle GB");
-    }
-
-    void SetupSE()
-    {
-        player.GetComponent<PlayerInputController>().OnAttackEvent += PlayShotSE;
-        player.GetComponent<PlayerInputController>().OnRollEvent += PlayRollingSE;
-        player.GetComponent<PlayerInputController>().OnEndReloadEvent += PlayReloadSE;
-    }
-
-    void PlayShotSE()
-    {
-        AudioManager.PlaySE("player_atk_soldier");
-    }
-
-    void PlayRollingSE()
-    {
-        AudioManager.PlaySE("player_rolling");
-    }
-
-    void PlayReloadSE()
-    {
-        AudioManager.PlaySE("player_reload_soldier");
+        if (GameManager.Instance.curStage == 0)
+            AudioManager.PlayBGM("Duty Cycle GB");
+        else if (GameManager.Instance.curStage >= 1)
+            AudioManager.PlayBGM("Strike Witches Get Bitches");
     }
 
     //private void Fire()

@@ -37,7 +37,7 @@ public class TestRoomOptionPopup : MonoBehaviour
 
     public void Initialize()
     {
-        testRoomPanel = _TestRoomPanel.GetComponent<TestRoomPanel>();
+        testRoomPanel = LobbyManager.Instance.TestRoomP;
         if (selectedTestScene == null && selectedRoomMemberText == null)
         {
             selectedTestScene = testRoomPanel.currentTestScene;
@@ -101,6 +101,7 @@ public class TestRoomOptionPopup : MonoBehaviour
             if (selectConnect.IsSelected)
             {
                 selectedTestScene = selectConnect.sceneNameText.text;
+                LobbyManager.Instance.SelectedSceneName = selectedTestScene;                
                 testRoomPanel.ConnectedSceneText.text = $"Selected Scene : {selectedTestScene}";
                 testRoomPanel.currentTestScene = selectedTestScene;
             }

@@ -271,6 +271,46 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924062456417362254, guid: ff46f3475da01914fb058b34e65a416b, type: 3}
+      propertyPath: loby
+      value: 
+      objectReference: {fileID: 8300000, guid: 2661c56113091224ab593bda9d2d0892, type: 3}
+    - target: {fileID: 5924062456417362254, guid: ff46f3475da01914fb058b34e65a416b, type: 3}
+      propertyPath: enemy_hit
+      value: 
+      objectReference: {fileID: 8300000, guid: d80d1af9b134d02439d06ab1cc48383d, type: 3}
+    - target: {fileID: 5924062456417362254, guid: ff46f3475da01914fb058b34e65a416b, type: 3}
+      propertyPath: player_hit
+      value: 
+      objectReference: {fileID: 8300000, guid: 0d8ddd3a840d3414784247f7dfe9a796, type: 3}
+    - target: {fileID: 5924062456417362254, guid: ff46f3475da01914fb058b34e65a416b, type: 3}
+      propertyPath: enemy_attack
+      value: 
+      objectReference: {fileID: 8300000, guid: 2c5adf58304de5946b512e4ea48194e9, type: 3}
+    - target: {fileID: 5924062456417362254, guid: ff46f3475da01914fb058b34e65a416b, type: 3}
+      propertyPath: player_rolling
+      value: 
+      objectReference: {fileID: 8300000, guid: a175481334333284a9903abf2c30daf9, type: 3}
+    - target: {fileID: 5924062456417362254, guid: ff46f3475da01914fb058b34e65a416b, type: 3}
+      propertyPath: boss.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924062456417362254, guid: ff46f3475da01914fb058b34e65a416b, type: 3}
+      propertyPath: stage.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924062456417362254, guid: ff46f3475da01914fb058b34e65a416b, type: 3}
+      propertyPath: boss.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: b526608e96b8c98449929f26d74e7336, type: 3}
+    - target: {fileID: 5924062456417362254, guid: ff46f3475da01914fb058b34e65a416b, type: 3}
+      propertyPath: stage.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: c077ce5c27e83c044abf1e78a8ac621a, type: 3}
+    - target: {fileID: 5924062456417362254, guid: ff46f3475da01914fb058b34e65a416b, type: 3}
+      propertyPath: stage.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: b5469ef5c65beaf41b82f0c3dd8c94a1, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1844,6 +1884,8 @@ MonoBehaviour:
   _mansterSpawner: {fileID: 1342027616}
   PS: {fileID: 0}
   clientPlayer: {fileID: 0}
+  PartyDeathCount: 0
+  TeamGold: 0
 --- !u!4 &1855578660
 Transform:
   m_ObjectHideFlags: 0

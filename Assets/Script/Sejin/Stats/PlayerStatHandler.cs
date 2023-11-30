@@ -2,8 +2,10 @@ using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XR;
@@ -28,6 +30,7 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     [SerializeField] private PlayerSO playerStats;
 
+
     public Stats ATK;                 // 공격력
     public Stats HP;                  // 체력
     public Stats Speed;               // 이동 속도
@@ -42,6 +45,10 @@ public class PlayerStatHandler : MonoBehaviourPun
     public Stats AmmoMax;             // 장탄수
     public float defense;
 
+    public Sprite indicatorSprite;
+    public AudioClip atkClip;
+    public AudioClip reloadStartClip;
+    public AudioClip reloadFinishClip;
 
     [HideInInspector] public SpriteLibraryAsset PlayerSprite; // 스프라이트
     [HideInInspector] public SpriteLibraryAsset WeaponSprite; // 스프라이트
@@ -146,12 +153,14 @@ public class PlayerStatHandler : MonoBehaviourPun
     public bool useSkill;
     public bool UseRoll;
     public bool ImGhost;
-
+    public bool IsInShield;
     int viewID;
     [HideInInspector] public bool IsChargeAttack;
     [HideInInspector] public bool CanReflect;
 
     public float ReflectCoeff;
+    public float InShieldHP;
+    
 
     private void Awake()
     {
@@ -208,7 +217,12 @@ public class PlayerStatHandler : MonoBehaviourPun
         defense = 1;
 
         IsChargeAttack = false;
+        
         _DebuffControl=GetComponent<PlayerDebuffControl>();
+        indicatorSprite = playerStats.indicatorSprite;
+        atkClip = playerStats.atkClip;
+        reloadStartClip = playerStats.reloadClip[0];
+        reloadFinishClip = playerStats.reloadClip[1];
     }
     private void OnEnable()
     {
@@ -281,10 +295,27 @@ public class PlayerStatHandler : MonoBehaviourPun
         Debug.Log("[PlayerStatHandler] " + "CharacterChange Done");
     }
     [PunRPC]
-    public void GiveDamege(float damege)
+    public void GiveDamege(float damage)
     {
-        Damage(damege);
+        Damage(damage);
     }
+
+    [PunRPC]
+    public void DirectDamage(float damage, int targetID)
+    {
+        if (IsInShield)
+        {
+            damage -= InShieldHP;
+        }
+        if (CanReflect)
+        {
+            CallReflectEvent(damage, targetID);
+            damage *= (1 - ReflectCoeff);
+        }
+        Damage(damage);
+    }
+
+
     public void Damage(float damage)
     {
         DamegeTemp = damage;
@@ -314,14 +345,12 @@ public class PlayerStatHandler : MonoBehaviourPun
                 //{
                 //    MainGameManager.Instance.DiedAfter();
                 //}
-                if (TestGameManager.Instance != null)
-                {
-                    TestGameManager.Instance.DiedAfter();
-                }
-                if (GameManager.Instance != null)
-                {
-                    GameManager.Instance.PlayerDie();
-                }
+
+                // 초창기에 캐싱을 해놓고 동작만 시키는 것 (안되면 체크 할수 있게)
+                // ?. 로 
+                // Awake에서 캐싱을 해두고 null체크를 하면 이후에 추가적으로 할 필요 없음
+                TestGameManager.Instance?.DiedAfter();
+                GameManager.Instance?.PlayerDie();
                 this.gameObject.layer = 12;
             }
 
@@ -471,6 +500,11 @@ public class PlayerStatHandler : MonoBehaviourPun
         weapon.canresurrection = false;
     }
 
+    [PunRPC]
+    public void StartKnockback(Vector3 direction, float distance)
+    {
+        StartCoroutine(Knockback(direction, distance));
+    }
 
     //보스 패턴용 넉백 추가함 - 우민규
     public IEnumerator Knockback(Vector3 direction, float distance)

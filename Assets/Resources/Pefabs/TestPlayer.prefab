@@ -200,7 +200,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3772300934133234701}
   - component: {fileID: 8627272025143738291}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: ShadowCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -229,7 +229,7 @@ CapsuleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5172257278926039612}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:

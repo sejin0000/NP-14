@@ -16,7 +16,7 @@ public enum Char_Class_Kor
     Àú°Ý¼ö,
 }
 
-public class PlayerInfo : MonoBehaviourPun
+public class CharacterSelectPopup : MonoBehaviourPun
 {
     [Header("PlayerInfo")]
     public GameObject PlayerInfoPrefab;
@@ -44,9 +44,6 @@ public class PlayerInfo : MonoBehaviourPun
 
     public GameObject player;
     public int viewID;
-    //private PlayerSO soldierSO;
-    //public PlayerSO shotGunSO;
-    //public PlayerSO sniperSO;
 
     void Start()
     {
@@ -59,17 +56,13 @@ public class PlayerInfo : MonoBehaviourPun
         Vector2 size = playerStatScrollRect.content.sizeDelta;
         size.y = 1000f;
         playerStatScrollRect.content.sizeDelta = size;
-
-
     }
 
     public void Initialize()
     {
-        player = playerDataSetting.ownerPlayer;
-        viewID = playerDataSetting.viewID;
-        //soldierSO = playerDataSetting.soldierSO;
-        //shotGunSO = playerDataSetting.shotGunSO;
-        //sniperSO = playerDataSetting.sniperSO;
+        var dataSetting = LobbyManager.Instance.dataSetting;
+        player = dataSetting.ownerPlayer;
+        viewID = dataSetting.viewID;
     }
         
     void Update()

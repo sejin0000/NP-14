@@ -15,6 +15,9 @@ public class PlayerSO : RangedUnitSO
     public int critical;                    // 크리티컬
     public SpriteLibraryAsset playerSprite;// 플레이어 스프라이트
     public SpriteLibraryAsset weaponSprite;// 무기 스프라이트
+    public Sprite indicatorSprite;
+    public AudioClip atkClip;
+    public AudioClip[] reloadClip;
 }
 
 enum characterClass
