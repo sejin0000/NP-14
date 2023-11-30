@@ -1028,6 +1028,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5674173202871627804}
     m_Modifications:
+    - target: {fileID: 850053165352688146, guid: 001a84ff939f2ca43ad0213ff21df836, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1085359459946122487, guid: 001a84ff939f2ca43ad0213ff21df836, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1085359459946122487, guid: 001a84ff939f2ca43ad0213ff21df836, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1471825093685195533, guid: 001a84ff939f2ca43ad0213ff21df836, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1471825093685195533, guid: 001a84ff939f2ca43ad0213ff21df836, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1660208688189891167, guid: 001a84ff939f2ca43ad0213ff21df836, type: 3}
       propertyPath: m_RootOrder
       value: -1
@@ -1075,6 +1095,14 @@ PrefabInstance:
     - target: {fileID: 6106525194279214496, guid: 001a84ff939f2ca43ad0213ff21df836, type: 3}
       propertyPath: m_Name
       value: PlayerBuffControl
+      objectReference: {fileID: 0}
+    - target: {fileID: 6106525194279214496, guid: 001a84ff939f2ca43ad0213ff21df836, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7595763714117642482, guid: 001a84ff939f2ca43ad0213ff21df836, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2467343890919976279, guid: 001a84ff939f2ca43ad0213ff21df836, type: 3}
