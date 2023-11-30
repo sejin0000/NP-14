@@ -28,6 +28,7 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     [SerializeField] private PlayerSO playerStats;
 
+
     public Stats ATK;                 // 공격력
     public Stats HP;                  // 체력
     public Stats Speed;               // 이동 속도
@@ -42,6 +43,10 @@ public class PlayerStatHandler : MonoBehaviourPun
     public Stats AmmoMax;             // 장탄수
     public float defense;
 
+    public Sprite indicatorSprite;
+    public AudioClip atkClip;
+    public AudioClip reloadStartClip;
+    public AudioClip reloadFinishClip;
 
     [HideInInspector] public SpriteLibraryAsset PlayerSprite; // 스프라이트
     [HideInInspector] public SpriteLibraryAsset WeaponSprite; // 스프라이트
@@ -208,6 +213,11 @@ public class PlayerStatHandler : MonoBehaviourPun
         defense = 1;
 
         IsChargeAttack = false;
+
+        indicatorSprite = playerStats.indicatorSprite;
+        atkClip = playerStats.atkClip;
+        reloadStartClip = playerStats.reloadClip[0];
+        reloadFinishClip = playerStats.reloadClip[1];
     }
     private void OnEnable()
     {

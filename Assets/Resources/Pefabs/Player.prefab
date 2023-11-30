@@ -652,6 +652,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerStats: {fileID: 11400000, guid: f71119c9b3c3aa14ca2eaeb140545241, type: 2}
   defense: 0
+  indicatorSprite: {fileID: 0}
+  atkClip: {fileID: 0}
+  reloadStartClip: {fileID: 0}
+  reloadFinishClip: {fileID: 0}
   PlayerSprite: {fileID: 0}
   WeaponSprite: {fileID: 0}
   BulletSprite: {fileID: 0}
