@@ -55,7 +55,6 @@ public class PlayerDebuffControl : MonoBehaviour
         if (readySpeed)
         {
             checkSpeedTime += Time.deltaTime;
-            Debug.Log($"지속시간앞으로 { checkSpeedTime}");
             if (checkSpeedTime >= speedTime)
             {
                 SpeedOff();
