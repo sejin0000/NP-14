@@ -15,7 +15,7 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     int hp = 8;
     float speed = 1;
     float atkspeed = 0.1f;
-    float bulletSpread = -0.1f;
+    float bulletSpread = -1f;
     int cooltime = -1;
     int critical = 5;
     int AmmoMax = 1;

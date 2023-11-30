@@ -12,14 +12,15 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
 {
     public static AugmentManager Instance;//싱긍톤
     public PlayerStatHandler playerstatHandler;//정확히는 이름을 타겟 플레이어 스탯 핸들러가 맞는 표현 같기도함 // 생각할수록 맞음
-    int atk = 50;//여기서부터 아래까지  티어별로 *n으로 사용중
+    int atk = 5;
     int hp = 8;
-    float speed =3;
-    float atkspeed = 3f;
-    float bulletSpread = -4f;
+    float speed = 1;
+    float atkspeed = 0.1f;
+    float bulletSpread = -1f;
     int cooltime = -1;
     int critical = 5;
     int AmmoMax = 1;
+
     public PlayerInput playerInput;//이것도 사실 타켓플레이어 인풋 잘안쓰기에 함수가 따로 만들지 않음
     public GameObject targetPlayer;//실제 적용되는 타켓 플레이어 99% 경우 이걸 사용함 진짜 진짜 중요함
     public PhotonView PlayerPv;//현재플레이어의 포톤뷰값== 증강매니저의 포톤뷰가 아님 (중요)
