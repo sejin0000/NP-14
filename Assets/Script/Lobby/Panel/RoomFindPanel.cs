@@ -83,7 +83,7 @@ public class RoomFindPanel : MonoBehaviour
         AllowRandomButton.onClick.AddListener(OnAllowRandomButtonClicked);
         CancelCreateButton.onClick.AddListener(OnCancelCreateButtonClicked);
         RoomSearchButton.onClick.AddListener(OnRoomSearchButtonClicked);
-        ResetButton.onClick.AddListener(OnRoomSearchButtonClicked);
+        ResetButton.onClick.AddListener(OnResetButtonClicked);
     }
 
     public void OnEnable()

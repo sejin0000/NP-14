@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,7 +8,8 @@ public class Shield : MonoBehaviour
 {
     [HideInInspector] PlayerStatHandler playerStat;
     [HideInInspector] Player2Skill playerSkill;
-    List<PlayerStatHandler> target = new List<PlayerStatHandler>();
+    public List<PlayerStatHandler> target = new List<PlayerStatHandler>();
+    public List<int> InShieldViewIDList;
     private float buffAmount;
 
     [Header("ShieldInfo")]
@@ -23,11 +25,13 @@ public class Shield : MonoBehaviour
                 Debug.Log($"쉴드 받은 데미지 : {shieldHP - value}");
                 ShieldDamage = shieldHP - value;
                 shieldHP = value;
+                SendShieldHP();
             }
             else if (value > shieldHP)
             {
                 Debug.Log($"쉴드 생성 : {value}");
                 shieldHP = value;
+                SendShieldHP();
             }
         }
     }
@@ -46,11 +50,12 @@ public class Shield : MonoBehaviour
     public float ShieldDamage;
     private float reflectCoeff;
     //public float shieldPower;//커밋에서 내가 넣었다고 뜨는데 내가 넣은 기억이 없음 일단 주석처리후 나중에 확인해서 지우기
-    private float time = 0;
-
+    private float time = 0;    
 
     private void Start()
     {
+        target = new List<PlayerStatHandler>();
+        InShieldViewIDList = new List<int>();
         playerStat = transform.parent.GetComponent<PlayerStatHandler>();
         playerSkill = transform.parent.GetComponent<Player2Skill>();
         if (transform.parent.GetComponent<A3302>() != null)
@@ -72,6 +77,7 @@ public class Shield : MonoBehaviour
         transform.localScale =new Vector3(scale, scale, 0);
         ShieldHP= hp;
         shieldSurvivalTime = time;
+        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -96,28 +102,63 @@ public class Shield : MonoBehaviour
             }
             Destroy(collision.gameObject);   
         }
-        if (collision.tag == "Player" && !target.Contains(collision.GetComponent<PlayerStatHandler>())
-            && transform.parent.GetComponent<A3302>() != null)
+        //if (collision.tag == "Player" && !target.Contains(collision.GetComponent<PlayerStatHandler>())
+        //    && transform.parent.GetComponent<A3302>() != null)
+        //{
+        //    PlayerStatHandler targetstat = collision.GetComponent<PlayerStatHandler>();
+        //    target.Add(targetstat);
+        //    buffAmount = transform.parent.GetComponent<A3302>().BuffAmount;
+        //    targetstat.AtkSpeed.added += buffAmount;
+        //    targetstat.Speed.added += buffAmount;
+        //    Debug.Log("플레이어입장");
+        //}
+
+        PlayerStatHandler targetstat = collision.GetComponent<PlayerStatHandler>();
+        
+        if (targetstat != null)
         {
-            PlayerStatHandler targetstat = collision.GetComponent<PlayerStatHandler>();
             target.Add(targetstat);
-            buffAmount = transform.parent.GetComponent<A3302>().BuffAmount;
-            targetstat.AtkSpeed.added += buffAmount;
-            targetstat.Speed.added += buffAmount;
+            SendShieldHP();
+            targetstat.IsInShield = true;
+            int targetViewID = collision.gameObject.GetPhotonView().ViewID;
+
+            A3302 a3302 = transform.parent.GetComponent<A3302>();
+            if (a3302 != null)
+            {
+                buffAmount = a3302.BuffAmount;
+                targetstat.AtkSpeed.added += buffAmount;
+                targetstat.Speed.added += buffAmount;
+            }
             Debug.Log("플레이어입장");
         }
     }
 
+    public void SendShieldHP()
+    {
+        foreach (PlayerStatHandler playerStat in target)
+        {
+            playerStat.InShieldHP = ShieldHP;
+        }
+    }
+
+
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Player" && target.Contains(collision.GetComponent<PlayerStatHandler>())
-            && transform.parent.GetComponent<A3302>() != null)
+        PlayerStatHandler targetstat = collision.GetComponent<PlayerStatHandler>();
+        if (targetstat != null)
         {
-            PlayerStatHandler targetstat = collision.GetComponent<PlayerStatHandler>();
             target.Remove(targetstat);
-            buffAmount = transform.parent.GetComponent<A3302>().BuffAmount;
-            targetstat.AtkSpeed.added -= buffAmount;
-            targetstat.Speed.added -= buffAmount;
+            targetstat.InShieldHP = 0;
+            targetstat.IsInShield = false;
+            int targetViewID = collision.gameObject.GetPhotonView().ViewID;
+
+            A3302 a3302 = transform.parent.GetComponent<A3302>();
+            if (a3302 != null)
+            {
+                buffAmount = a3302.BuffAmount;
+                targetstat.AtkSpeed.added -= buffAmount;
+                targetstat.Speed.added -= buffAmount;
+            }
             Debug.Log("플레이어퇴장");
         }
     }
@@ -136,5 +177,4 @@ public class Shield : MonoBehaviour
         }
         Destroy(gameObject);
     }
-
 }

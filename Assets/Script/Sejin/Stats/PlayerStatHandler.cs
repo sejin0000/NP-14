@@ -2,6 +2,7 @@ using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using UnityEngine;
@@ -146,12 +147,14 @@ public class PlayerStatHandler : MonoBehaviourPun
     public bool useSkill;
     public bool UseRoll;
     public bool ImGhost;
-
+    public bool IsInShield;
     int viewID;
     [HideInInspector] public bool IsChargeAttack;
     [HideInInspector] public bool CanReflect;
 
     public float ReflectCoeff;
+    public float InShieldHP;
+    
 
     private void Awake()
     {
@@ -280,10 +283,27 @@ public class PlayerStatHandler : MonoBehaviourPun
         Debug.Log("[PlayerStatHandler] " + "CharacterChange Done");
     }
     [PunRPC]
-    public void GiveDamege(float damege)
+    public void GiveDamege(float damage)
     {
-        Damage(damege);
+        Damage(damage);
     }
+
+    [PunRPC]
+    public void DirectDamage(float damage, int targetID)
+    {
+        if (IsInShield)
+        {
+            damage -= InShieldHP;
+        }
+        if (CanReflect)
+        {
+            CallReflectEvent(damage, targetID);
+            damage *= (1 - ReflectCoeff);
+        }
+
+    }
+
+
     public void Damage(float damage)
     {
         DamegeTemp = damage;
@@ -313,14 +333,12 @@ public class PlayerStatHandler : MonoBehaviourPun
                 //{
                 //    MainGameManager.Instance.DiedAfter();
                 //}
-                if (TestGameManager.Instance != null)
-                {
-                    TestGameManager.Instance.DiedAfter();
-                }
-                if (GameManager.Instance != null)
-                {
-                    GameManager.Instance.PlayerDie();
-                }
+
+                // 초창기에 캐싱을 해놓고 동작만 시키는 것 (안되면 체크 할수 있게)
+                // ?. 로 
+                // Awake에서 캐싱을 해두고 null체크를 하면 이후에 추가적으로 할 필요 없음
+                TestGameManager.Instance?.DiedAfter();
+                GameManager.Instance?.PlayerDie();
                 this.gameObject.layer = 12;
             }
 

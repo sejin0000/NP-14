@@ -24,6 +24,7 @@ public class LoadingPanel : MonoBehaviourPun
         InitPos = PlayerRolling.GetComponent<RectTransform>().localPosition;
         InitPosX = InitPos.x;
         rollSpeed = 1.5f;
+        elapsedRad = 0f;
         StartCoroutine(LoadEnd());
     }
     private void Start()
@@ -53,6 +54,7 @@ public class LoadingPanel : MonoBehaviourPun
     {
         yield return new WaitForSeconds(loadingTime);
         PlayerRolling.GetComponent<RectTransform>().localPosition = InitPos;
+        Debug.Log($"InitPos : {PlayerRolling.GetComponent<RectTransform>().localPosition.x}, {PlayerRolling.GetComponent<RectTransform>().localPosition.y}");
         this.gameObject.SetActive(false);
     }
 }
