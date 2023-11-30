@@ -45,7 +45,7 @@ public class MainLobbyPanel : MonoBehaviourPun
         // DESC : connect buttons        
         characterSelectButton.onClick.AddListener(playerInfo.OnCharacterButtonClicked);
         testLobbyButton.onClick.AddListener(OnTestLobbyButtonClicked);
-        gameRoomButton.onClick.AddListener(OnGameRoomButtonClicked);
+        gameRoomButton.onClick.AddListener(OnQuickStartButtonClicked);
 
         // DESC : instantiate Player
         //InstantiatePlayer();
@@ -61,7 +61,7 @@ public class MainLobbyPanel : MonoBehaviourPun
   
 
     #region Buttons
-    private void OnGameRoomButtonClicked()
+    private void OnQuickStartButtonClicked()
     {
         var CustomRoomProperties = new Hashtable() { { CustomProperyDefined.TEST_OR_NOT, false } };
 
@@ -79,7 +79,7 @@ public class MainLobbyPanel : MonoBehaviourPun
         }
         else
         {
-            Debug.Log("MainLobbyPanel : cachedRoomList is Not Null");            
+            Debug.Log("MainLobbyPanel : cachedRoomList is Not Null");
             PhotonNetwork.JoinRandomRoom(CustomRoomProperties, 3);            
         }
     }
