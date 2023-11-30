@@ -31,7 +31,6 @@ public class A3103 : MonoBehaviourPun
         if (!IsSiegeMode) 
         {
             IsSiegeMode = !IsSiegeMode;
-            Debug.Log($"현재 시즈 모드 {IsSiegeMode}");
 
             playerInput.actions.FindAction("Move2").Disable();
             playerInput.actions.FindAction("Move").Disable();
