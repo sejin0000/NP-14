@@ -8,13 +8,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using UnityEngine.EventSystems;
 
 public class MainLobbyPanel : MonoBehaviourPun
 {
     [Header("Button")]
     [SerializeField] private Button characterSelectButton;
     [SerializeField] private Button testLobbyButton;
-    [SerializeField] private Button gameRoomButton;
+    [SerializeField] private Button quickStartButton;
+    [SerializeField] private Button findRoomButton;
+    [SerializeField] private Button settingButton;
+    private List<Button> ButtonList;
 
     [Header("CharacterSelectPopup")]
     private CharacterSelectPopup playerInfo;
@@ -25,6 +29,8 @@ public class MainLobbyPanel : MonoBehaviourPun
     private string playerPrefabPath;
 
     public TextMeshProUGUI Gold; // TODO : 뒤끝베이스에 골드량 추가 예정
+
+    private GraphicRaycaster raycaster;
 
     private void Start()
     {
@@ -45,20 +51,63 @@ public class MainLobbyPanel : MonoBehaviourPun
         // DESC : connect buttons        
         characterSelectButton.onClick.AddListener(playerInfo.OnCharacterButtonClicked);
         testLobbyButton.onClick.AddListener(OnTestLobbyButtonClicked);
-        gameRoomButton.onClick.AddListener(OnQuickStartButtonClicked);
-
+        quickStartButton.onClick.AddListener(OnQuickStartButtonClicked);
+        ButtonList = new List<Button>
+        {           
+            findRoomButton,
+            quickStartButton,
+            settingButton,
+        };
         // DESC : instantiate Player
         //InstantiatePlayer();
 
         // DESC : 커스텀 프로퍼티 - Char_Class 추가
         LobbyManager.Instance.ClassNum = playerInfo.GetCharClass();
+
+        // DESC : GraphicRaycaster 컴포넌트
+        raycaster = GetComponent<GraphicRaycaster>();
     }
 
+    private void Update()
+    {
+        PointerEventData eventData = new PointerEventData(EventSystem.current);
+        eventData.position = Input.mousePosition;
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        raycaster.Raycast(eventData, results);
+
+        if (results.Count > 0)
+        {
+            Button hitButton = results[0].gameObject.transform.parent.GetComponent<Button>();
+            
+            if (hitButton != null)
+            {
+                foreach (Button button in ButtonList)
+                {
+                    if (button == hitButton)
+                    {
+                        button.transform.GetChild(1).gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        button.transform.GetChild(1).gameObject.SetActive(false);
+                    }
+                }                
+            }
+        }
+        else
+        {
+            foreach (Button button in ButtonList)
+            {
+                button.transform.GetChild(1).gameObject.SetActive(false);
+            }
+        }
+    }
     private void InstantiatePlayer()
     {
         LobbyManager.Instance.instantiatedPlayer = Instantiate(Resources.Load<GameObject>(PrefabPathes.PLAYER_INLOBBY_PREFAB_PATH));
     }
-  
+
 
     #region Buttons
     private void OnQuickStartButtonClicked()
