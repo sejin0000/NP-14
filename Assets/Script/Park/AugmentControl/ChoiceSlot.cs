@@ -37,7 +37,7 @@ public class ChoiceSlot : MonoBehaviour//눌러서 골르는 증강 슬롯 열렸을때 해당증
         Ispick = false;
         Info.text = stat.func;
         rare = stat.Rare;
-        symbolNum = stat.Code % 1000;
+        symbolNum = stat.Code / 1000;
         Debug.Log($"심볼 넘버 {symbolNum}");
         bodyImage = gameObject.GetComponent<Image>();
         
