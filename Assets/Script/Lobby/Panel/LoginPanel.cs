@@ -33,7 +33,7 @@ public class LoginPanel : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        while (!isClicked)
+        if (!isClicked)
         {
             if (Input.GetMouseButtonDown(0))
             {
