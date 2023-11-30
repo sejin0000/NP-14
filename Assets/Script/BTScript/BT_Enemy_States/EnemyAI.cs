@@ -820,7 +820,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         {
             GameManager.Instance.MG.roomNodeInfo.allRoomList[roomNum].thisRoomClear = true;
             //GameManager.Instance.CallRoomEndEvent();
-            GameManager.Instance.PV.RPC("CallRoomEndEvent", RpcTarget.All);
+            GameManager.Instance.PV.RPC("CallRoomEndEvent", RpcTarget.MasterClient);
         }
     }
 }

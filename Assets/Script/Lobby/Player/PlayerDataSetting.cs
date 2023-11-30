@@ -23,31 +23,26 @@ public class PlayerDataSetting : MonoBehaviourPun
         PlayerStatHandler statSO;
         if (playerGo != null)
         {
-            //Debug.Log($"적용 오브젝트 : {playerGo.name}");
             statSO = playerGo.GetComponent<PlayerStatHandler>();
         }
         else
         {
-            //Debug.Log($"적용 오브젝트 : PlayerContainer");
             statSO = playerContainer.GetComponentInChildren<PlayerStatHandler>();
         }
 
         switch (charType)
         {
-            case (int)LobbyPanel.CharClass.Soldier:
-                Debug.Log("솔져로 변환");
+            case (int)LobbyPanel.CharClass.Soldier:                
                 statSO.CharacterChange(soldierSO);
                 DelComponent(statSO.gameObject);
                 statSO.gameObject.AddComponent<Player1Skill>();               
                 break;
-            case (int)LobbyPanel.CharClass.Shotgun:
-                Debug.Log("샷건으로 변환");
+            case (int)LobbyPanel.CharClass.Shotgun:                
                 statSO.CharacterChange(shotGunSO);
                 DelComponent(statSO.gameObject);
                 statSO.gameObject.AddComponent<Player2Skill>();
                 break;
-            case (int)LobbyPanel.CharClass.Sniper:
-                Debug.Log("스나이퍼로 변환");
+            case (int)LobbyPanel.CharClass.Sniper:                
                 statSO.CharacterChange(sniperSO);
                 DelComponent(statSO.gameObject);
                 statSO.gameObject.AddComponent<Player3Skill>();

@@ -1,8 +1,10 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using UnityEngine;
 
-public class PlayerDebuffControl : MonoBehaviour
+public class PlayerDebuffControl : MonoBehaviourPun
 {
     public ParticleSystem _speedParticle;
     public ParticleSystem _TwoMoonParticle;
@@ -22,7 +24,7 @@ public class PlayerDebuffControl : MonoBehaviour
     {
         if (0 == i)
         {
-            _speedParticle.gameObject.SetActive(true);
+            photonView.RPC("TwoMoonBuffOn", RpcTarget.All);
             if (speedTime >= 0 && speedTime <= time)
             {
                 speedTime = time;
@@ -32,7 +34,7 @@ public class PlayerDebuffControl : MonoBehaviour
         }
         else 
         {
-            _TwoMoonParticle.gameObject.SetActive(true);
+            photonView.RPC("SpeedBuffOn", RpcTarget.All);
             if (twoMoonTIME > 0 && twoMoonTIME <= time)
             {
                 speedTime = time;
@@ -64,16 +66,38 @@ public class PlayerDebuffControl : MonoBehaviour
     }
     private void SpeedOff() 
     {
+        photonView.RPC("SpeedBuffOff", RpcTarget.All);
         _speedParticle.gameObject.SetActive(false);
-        checkSpeedTime = -1f;
-        speedTime = -1f;
+        checkSpeedTime = 0f;
+        speedTime = 0f;
         readySpeed = false;
     }
     private void TwoMoonOff()
     {
-        _speedParticle.gameObject.SetActive(false);
-        checkMoonTime = -1f;
-        twoMoonTIME = -1f;
+        photonView.RPC("TwoMoonBuffOff", RpcTarget.All);
+        checkMoonTime = 0f;
+        twoMoonTIME = 0f;
         readyMoon = false;
+    }
+
+    [PunRPC]
+    private void SpeedBuffOn() 
+    {
+        _speedParticle.gameObject.SetActive(true);
+    }
+    [PunRPC]
+    private void SpeedBuffOff()
+    {
+        _speedParticle.gameObject.SetActive(true);
+    }
+    [PunRPC]
+    private void TwoMoonBuffOn()
+    {
+        _TwoMoonParticle.gameObject.SetActive(true);
+    }
+    [PunRPC]
+    private void TwoMoonBuffOff()
+    {
+        _TwoMoonParticle.gameObject.SetActive(true);
     }
 }
