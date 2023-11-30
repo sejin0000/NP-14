@@ -36,8 +36,6 @@ public class UIPlayerMiniHUD : UIBase
 
         if (SceneManager.GetActiveScene().name == "Test_DoHyun")
             player = TestGameManagerDohyun.Instance.InstantiatedPlayer.gameObject;
-        else if (MainGameManager.Instance != null)
-            player = MainGameManager.Instance.InstantiatedPlayer.gameObject;
         else
             player = GameManager.Instance.clientPlayer.gameObject;
 

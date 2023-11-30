@@ -13,7 +13,7 @@ public class UIMainGame : UIBase
         if (SceneManager.GetActiveScene().name == "Test_DoHyun")
             Open();
         else
-            MainGameManager.Instance.OnPlayingStateChanged += Open;
+            GameManager.Instance.OnStageStartEvent += Open;
     }
 
     // Start is called before the first frame update
