@@ -71,7 +71,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     public LayerMask targetMask;             // 타겟 레이어(Player)
 
     public float SpeedCoefficient = 1f;      // 이동속도 계수
-    public float BreathAttackDelay = 2f;
+    public float breathAttackDelay;
     public float currentTime;
 
     public bool isLive;
@@ -79,6 +79,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     public bool isGroggy;
     public bool patternRunning;
     public bool isBreathInProgress; // 브레스 실행여부 판별, 중복실행 방지
+    public bool isRunningBreath;    // 브레스 발사중
     //플레이어 정보
 
     public int lastAttackPlayer;
@@ -121,7 +122,8 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         currentHP = bossSO.hp;
         viewAngle = bossSO.viewAngle;
         viewDistance = bossSO.viewDistance;
-        currentTime = BreathAttackDelay;
+        breathAttackDelay = bossSO.breathAttackDelay;
+        currentTime = breathAttackDelay;
         isLive = true;
 
         originColor = spriteRenderers[0].color;
@@ -171,11 +173,10 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
             AreaList[6].transform.position = bossAim.transform.position;
             AreaList[6].transform.rotation = bossHead.transform.rotation;
 
-            if (inToAreaPlayers.Count == 0)
+            if (!isRunningBreath || inToAreaPlayers.Count == 0)
                 return;
 
-            UpdateBreath1();
-            //StartCoroutine(UpdateBreath());
+            UpdateBreath();
         }
 
 
@@ -354,16 +355,21 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         BreathParticleObject.Play();
 
 
+        //여기다 브레스 업데이트용 bool
+        isRunningBreath = true;
+
         //브레스 종료 시간 도달 (2+4f)
         yield return new WaitForSeconds(4f);
         isBreathInProgress = false;
         AreaList[6].gameObject.SetActive(false);
         SetAnim("isBreathAttack", false);
         BreathParticleObject.Stop();
-        currentTime = BreathAttackDelay;
+        isRunningBreath = false;
+
+        currentTime = breathAttackDelay;
     }
 
-    public void UpdateBreath1()
+    public void UpdateBreath()
     {
         currentTime -= Time.deltaTime;
 
@@ -400,83 +406,33 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
                         // 넉백거리
                         float knockbackDistance = 1f;
 
-                        // 실제 넉백
-
-                        player.photonView.RPC("StartKnockback", RpcTarget.All, directionToPlayer, knockbackDistance);
-                        //StartCoroutine(player.Knockback(directionToPlayer, knockbackDistance));
 
                         // 실제 피해
                         player.GiveDamege(bossSO.atk);
+                        // 실제 넉백
+                        player.photonView.RPC("StartKnockback", RpcTarget.All, directionToPlayer, knockbackDistance);
+                        //StartCoroutine(player.Knockback(directionToPlayer, knockbackDistance));
+                    
                         Debug.Log($"2나오면 안됨 : {inToAreaPlayers.Count} 데미지는 이만큼 받음 :{bossSO.atk}");
+                        Debug.Log($"플레이어 현재 체력은 : {player.CurHP}");
                     }
                 }
             }
 
-            currentTime = BreathAttackDelay;
+            currentTime = breathAttackDelay;
         }
+       
     }
-
-
-    IEnumerator UpdateBreath()
-    {
-        //에어리어 리스트가 비어있는 경우 리턴
-
-        //어차피 intToAreaPlayers의 리스트가 바뀌는걸 유동적으로 알아야하기 때문에
-        //업데이트로 가져가야할듯
-
-        Debug.Log("업데이트 브레스 들어옴");
-
-        //에어리어 리스트에 사람이 하나라도 있다면?
-        //리스트 내 모든 대상에게 레이캐스트 발사
-        //업데이트하고 있지 않으므로 위에서 리턴 날 가능성이 큼 이 부분은 역시 업데이트 조지는게 맞음 아오 졸려죽겠다
-
-        for (int i = 0; i < inToAreaPlayers.Count; i++)
-        {
-            Debug.Log("반복문 들어옴");
-            // 플레이어의 위치
-            PlayerStatHandler player = inToAreaPlayers[i];
-            Vector3 playerPosition = player.transform.position;
-            // 플레이어<->보스에임 방향 구하기
-            Vector3 directionToPlayer = (playerPosition - bossAim.position).normalized;
-            Debug.DrawLine(bossAim.position, player.transform.position, Color.white);
-
-            // 레이 발사
-            RaycastHit2D hit = Physics2D.Raycast(bossAim.position, directionToPlayer, Mathf.Infinity, breathTargetLayer);
-
-            if (hit.transform.tag != "Wall" || inToAreaPlayers.Count != 0) // hit 대상이 있거나, 벽이 아닌 경우에만 작동
-            {
-                if (hit.transform.tag == "Player")
-                {
-                    //일정 주기로 피해를 주기
-                    yield return new WaitForSeconds(2f);
-
-                    // 플레이어와 공격 영역의 방향 벡터
-
-
-                    // 넉백거리
-                    float knockbackDistance = 1f;
-
-                    // 실제 넉백
-
-                    StartCoroutine(player.Knockback(directionToPlayer, knockbackDistance));
-
-                    player.transform.position = hostKnckbackPosition;
-
-                    // 실제 피해
-                    player.GiveDamege(bossSO.atk);
-
-                    Debug.Log("여그까지 들어옴");
-                }
-            }
-        }
-    }
-
     //양팔 공격은 [두 메서드 동시에 실행함]
     public void RightArmAttack()
     {
 
     }
     public void LeftArmAttack() 
+    {
+
+    }
+    public void TwoHandAttack()
     {
 
     }
@@ -566,9 +522,6 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
                 break;
             case 5:
                 ;//모든 플레이어를 추적하는 원형(3,4,5)
-                break;
-            case 6:
-                AreaList[6].gameObject.SetActive(false); // 브레스 범위 표시(방법이 상이함)
                 break;
         }
     }
@@ -781,15 +734,15 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         BTSelector BTMainSelector = new BTSelector();
 
 
-        /*
+        
         //Enemy 생존 체크
         //컨디션 체크 -> 사망 시 필요한 액션들(오브젝트 제거....)
         BTSquence BTDead = new BTSquence();
-        EnemyState_Dead_DeadCondition deadCondition = new EnemyState_Dead_DeadCondition(gameObject);
+        BossAI_State_Dead_DeadCondition deadCondition = new BossAI_State_Dead_DeadCondition(gameObject);
         BTDead.AddChild(deadCondition);
-        EnemyState_Dead state_Dead = new EnemyState_Dead(gameObject);
+        BossAI_State_Dead state_Dead = new BossAI_State_Dead(gameObject);
         BTDead.AddChild(state_Dead);
-        */
+        
 
 
         /*
@@ -864,7 +817,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         //셀렉터는 우선순위 높은 순서로 배치 : 생존 여부 -> 특수 패턴 -> 플레이어 체크(공격 여부) -> 이동 여부 순서로 셀렉터 배치 
         //메인 셀렉터 : Squence를 Selector의 자식으로 추가(자식 순서 중요함) 
 
-        //BTMainSelector.AddChild(BTDead);
+        BTMainSelector.AddChild(BTDead);
         //BTMainSelector.AddChild(BTAbnormal);
 
         //메인(페이즈) 셀렉터

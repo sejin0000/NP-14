@@ -2133,7 +2133,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   SpeedCoefficient: 1
-  BreathAttackDelay: 2
+  BreathAttackDelay: 0
   currentTime: 0
   isLive: 0
   isAttaking: 0
