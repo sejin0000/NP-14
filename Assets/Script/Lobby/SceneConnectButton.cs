@@ -12,7 +12,7 @@ public class SceneConnectButton : MonoBehaviour
 
     public List<SceneConnectButton> allButtons;
 
-    public void Initialize(string sceneName, bool isSelected, TestRoomOptionPopup popup = null, TestPanel panel = null)
+    public void Initialize(string sceneName, bool isSelected, TestRoomOptionPopup popup = null, TestLobbyPanel panel = null)
     {
         sceneNameText.text = sceneName;
         IsSelected = isSelected;

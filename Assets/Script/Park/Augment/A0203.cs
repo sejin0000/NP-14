@@ -21,7 +21,7 @@ public class A0203 : MonoBehaviourPun//ÇöÀçÃ¼·Âºñ·Ê °ø°İ·Â
             oldPower = 0;
             nowSpeed = 0;
             oldSpeed = 0;
-            playerStat.HitEvent += SetPower;//ÀÌ°É µ·È¹µæ ÀÌº¥Æ®¿¡°Ë 
+            playerStat.HitEvent += SetPower;
         }
     }
     // Update is called once per frame
@@ -66,19 +66,19 @@ public class A0203 : MonoBehaviourPun//ÇöÀçÃ¼·Âºñ·Ê °ø°İ·Â
         float speed = 0;
         if (hpPercentage >= 40)
         {
-            speed = 1.5f;
+            speed = 0.1f;
         }
         else if (hpPercentage >= 30)
         {
-            speed = 2.0f;
+            speed = 0.5f;
         }
         else if (hpPercentage >= 20)
         {
-            speed = 2.5f;
+            speed = 1f;
         }
         else if (hpPercentage >= 10)
         {
-            speed = 3;
+            speed = 1.5f;
         }
         return speed;
     }

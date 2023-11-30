@@ -18,8 +18,9 @@ public class A0213 : MonoBehaviourPun
             playerStat = GetComponent<PlayerStatHandler>();
             coolTimeController = GetComponent<CoolTimeController>();
             statupdesuka = false;
-            MainGameManager.Instance.OnGameStartedEvent += startReset;
-            MainGameManager.Instance.OnOverCheckEvent += IAmLegend;
+            GameManager.Instance.OnStageStartEvent += startReset;
+            GameManager.Instance.OnBossStageStartEvent += startReset;
+            GameManager.Instance.PlayerLifeCheckEvent += IAmLegend;
         }
     }
     // Update is called once per frame
@@ -28,26 +29,25 @@ public class A0213 : MonoBehaviourPun
         if (statupdesuka) 
         {
             playerStat.ATK.added -= 10f;
-            playerStat.HP.added -= 10f;
-            playerStat.Speed.added -= 10f;
-            playerStat.AtkSpeed.added -= 10f;
+            playerStat.Speed.added -= 0.3f;
+            playerStat.AtkSpeed.added -= 0.5f;
             playerStat.BulletSpread.added -= 5f;
-            playerStat.SkillCoolTime.added -= 10f;
+            playerStat.SkillCoolTime.added -= 2f;
             playerStat.Critical.added -= 20f;
         }
         statupdesuka=false;
     }
     void IAmLegend() 
     {
-        if (MainGameManager.Instance.PartyDeathCount == 2) 
+        if (GameManager.Instance.PartyDeathCount == PhotonNetwork.CurrentRoom.PlayerCount-1) //데스카운터없음
         {
             statupdesuka = true;
+
             playerStat.ATK.added += 10f;
-            playerStat.HP.added += 10f;
-            playerStat.Speed.added += 10f;
-            playerStat.AtkSpeed.added += 10f;
+            playerStat.Speed.added += 0.3f;
+            playerStat.AtkSpeed.added += 0.5f;
             playerStat.BulletSpread.added += 5f;
-            playerStat.SkillCoolTime.added += 10f;
+            playerStat.SkillCoolTime.added += 2f;
             playerStat.Critical.added += 20f;
         }
     }

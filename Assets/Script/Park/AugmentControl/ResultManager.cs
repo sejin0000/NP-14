@@ -30,12 +30,15 @@ public class ResultManager : MonoBehaviour//vs코드
 
     public PhotonView pv;
 
-    bool testsetting;
+    public bool statChance;
 
+    bool testsetting;
+    public bool SetActiveCheck;
     public void startset(GameObject playerObj)
     {
         Player = playerObj;
-        IsStat = false; 
+        IsStat = false;
+        SetActiveCheck = false;
         //if (MainGameManager.Instance != null) TO DEL사실 죽은 부분 if문 전체를 지워도 된다고 판단됨
         //{
         //    gameManager = MainGameManager.Instance;
@@ -43,6 +46,7 @@ public class ResultManager : MonoBehaviour//vs코드
         //}
         GameManager.Instance.OnRoomEndEvent += CallStatResult;
         GameManager.Instance.OnStageEndEvent += SpecialResult;
+        GameManager.Instance.OnBossStageStartEvent += SpecialResult;
 
         pv = GetComponent<PhotonView>();
     }
@@ -86,6 +90,7 @@ public class ResultManager : MonoBehaviour//vs코드
         Debug.Log($"증강3 개수{SpecialAugment3.Count}");
         ProtoList = MakeAugmentListManager.Instance.Prototype;
         Debug.Log("배포전 프로토타입 주석처리");
+        statChance = false;
     }
     public void SpecialResult()
     {
@@ -105,18 +110,21 @@ public class ResultManager : MonoBehaviour//vs코드
     private int RandomTier() 
     {
         int tier = GameManager.Instance.curStage;
-        int random = Random.Range(1, 11); // 현재 층수에 비례하여 티어 가중치 타겟3도 있었는데 필요없어서 지움 10-나머지 값
+        int random = Random.Range(1, 12); // 현재 층수에 비례하여 티어 가중치 타겟3도 있었는데 필요없어서 지움 10-나머지 값
         int target1 = 5;
         int target2 = 3;
+        int target3 = 2;
         if (tier <= 6 && tier >= 4)
         {
             target1 = 3;
             target2 = 5;
+            target3 = 2;
         }
         else if (tier >= 6)
         {
             target1 = 2;
             target2 = 3;
+            target3 = 5;
         }
         int type = 0;
         Debug.Log($"랜덤 수 : {random}");
@@ -130,16 +138,19 @@ public class ResultManager : MonoBehaviour//vs코드
             type = 2;
             Debug.Log($"대상 타겟 가중치 {target1 + target2}대상 티어  2티어 ");
         }
-        else
+        else if (random <= target1 + target2 + target3)
         {
             type = 3;
             Debug.Log($"대상 티어 3티어 ");
+        }
+        else 
+        {
+            type = 4;
         }
         return type;
     }
     public void CallStatResult() 
     {
-
         int tier = RandomTier();
 
         switch (tier) 
@@ -155,8 +166,12 @@ public class ResultManager : MonoBehaviour//vs코드
                 case 3:
                     PickStatList(stat3);
                     break;
+                 case 4:
+                statChance = true;
+                PickSpecialList(SpecialAugment1);
+                break;
 
-            }
+        }
     }
     public void CallSpecialResult()
     {
@@ -174,12 +189,23 @@ public class ResultManager : MonoBehaviour//vs코드
             case 3:
                 PickSpecialList(SpecialAugment3);
                 break;
+            case 4:
+                PickSpecialList(SpecialAugment3);
+                break;
+
+            default:
+                PickSpecialList(SpecialAugment1);
+                break;
 
         }
     }
   
     void PickStatList(List<IAugment> origin)// 고른게 안사리지는 타입 = 일반스탯
     {
+        if (SetActiveCheck) 
+        {
+            picklist[0].pick();
+        }
         int Count = picklist.Length;
         //여기서 스탯증강인지 특수 증강인지에 따라투리스트할지 그냥 받을지
         List<IAugment> list = origin.ToList();
@@ -192,11 +218,15 @@ public class ResultManager : MonoBehaviour//vs코드
             list.RemoveAt(a);
         }
         IsStat = true;// 이걸로 리스트에서 제거인지 그대로인지 구별함
-        Debug.Log($"이즈스탯 노말 트루여야함 {IsStat}");
+        SetActiveCheck = true;
     }
 
     void PickSpecialList(List<SpecialAugment> origin) // 고른게 사라지는 타입 == 플레이변화 증강
     {
+        if (SetActiveCheck)
+        {
+            picklist[0].pick();
+        }
         int Count = picklist.Length;
         List<SpecialAugment> list = origin.ToList();
         tempList=origin;
@@ -207,8 +237,9 @@ public class ResultManager : MonoBehaviour//vs코드
             picklist[i].gameObject.SetActive(true);
             list.RemoveAt(a);
         }
+        SetActiveCheck = true;
         IsStat = false;
-        Debug.Log($"이즈스탯 스페셜 펄스여야함{IsStat}");
+        
     }
     public void close()//목록에서 골랐다면 띄운 ui를 닫아줌
     {
@@ -225,26 +256,14 @@ public class ResultManager : MonoBehaviour//vs코드
             picklist[i].gameObject.SetActive(false);
             
         }
-        Debug.Log($"이즈스탯{IsStat}");
-        //pv.RPC("ready",RpcTarget.All);
-        //여기에 메인 게임매니저 콜 
-        if (IsStat)
+        if (!IsStat && !statChance)
         {
-            Debug.Log("스탯이라 안들어옴");
-        }
-        else 
-        {
-            Debug.Log("레디 들어옴");
             ready();
         }
-
+        statChance = false;
     }
     public void ready() 
     {
-        Debug.Log("레디 들어옴");
         GameManager.Instance.PV.RPC("EndPlayerCheck",RpcTarget.All);
-            //gameManager.Ready++;
-        
-            //gameManager.AllReady();
     }
 }

@@ -2,6 +2,7 @@ using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using Unity.VisualScripting;
@@ -29,6 +30,7 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     [SerializeField] private PlayerSO playerStats;
 
+
     public Stats ATK;                 // 공격력
     public Stats HP;                  // 체력
     public Stats Speed;               // 이동 속도
@@ -43,6 +45,10 @@ public class PlayerStatHandler : MonoBehaviourPun
     public Stats AmmoMax;             // 장탄수
     public float defense;
 
+    public Sprite indicatorSprite;
+    public AudioClip atkClip;
+    public AudioClip reloadStartClip;
+    public AudioClip reloadFinishClip;
 
     [HideInInspector] public SpriteLibraryAsset PlayerSprite; // 스프라이트
     [HideInInspector] public SpriteLibraryAsset WeaponSprite; // 스프라이트
@@ -54,6 +60,7 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     public GameObject _PlayerSprite;
     public GameObject _WeaponSprite;
+    public PlayerDebuffControl _DebuffControl;
 
     public bool isNoramlMove;
     public bool isCanSkill;
@@ -145,12 +152,15 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     public bool useSkill;
     public bool UseRoll;
-
+    public bool ImGhost;
+    public bool IsInShield;
     int viewID;
     [HideInInspector] public bool IsChargeAttack;
     [HideInInspector] public bool CanReflect;
 
     public float ReflectCoeff;
+    public float InShieldHP;
+    
 
     private void Awake()
     {
@@ -191,6 +201,7 @@ public class PlayerStatHandler : MonoBehaviourPun
         isCanAtk = true;
         evasionPersent = 0;
         isRegen = false;
+        ImGhost = false;
 
         kill = 0;
         MaxSkillStack = 1;
@@ -206,15 +217,24 @@ public class PlayerStatHandler : MonoBehaviourPun
         defense = 1;
 
         IsChargeAttack = false;
+
+        indicatorSprite = playerStats.indicatorSprite;
+        atkClip = playerStats.atkClip;
+        reloadStartClip = playerStats.reloadClip[0];
+        reloadFinishClip = playerStats.reloadClip[1];
     }
     private void OnEnable()
     {
-        if (!CanSpeedBuff) 
+        stageBuffReset();
+    }
+    private void stageBuffReset() 
+    {
+        if (!CanSpeedBuff)
         {
             Speed.added -= 3f;
             CanSpeedBuff = true;
         }
-        if (!CanLowSteam) 
+        if (!CanLowSteam)
         {
             CanSpeedBuff = true;
             AtkSpeed.added -= 0.5f;
@@ -229,19 +249,37 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     private void Start()
     {
-        if (MainGameManager.Instance != null)
-        {
-            MainGameManager.Instance.OnGameStartedEvent += RefillCoin;
-            viewID = photonView.ViewID;
-            OnChangeCurHPEvent += SendSyncHP;
-        }
+        //if (MainGameManager.Instance != null)
+        //{
+        //    MainGameManager.Instance.OnGameStartedEvent += RefillCoin;
+        //    viewID = photonView.ViewID;
+        //    OnChangeCurHPEvent += SendSyncHP;
+        //}
 
         if (TestGameManager.Instance != null) 
         {
             viewID = photonView.ViewID;
             OnChangeCurHPEvent += SendSyncHP;
         }
+        if (GameManager.Instance != null)
+        {
+            StageStartSet();
+        }
 
+    }
+    public void StageStartSet() 
+    {
+        GameManager.Instance.OnStageStartEvent += RefillCoin;
+        GameManager.Instance.OnStageStartEvent += startHp;
+        GameManager.Instance.OnBossStageStartEvent += RefillCoin;
+        GameManager.Instance.OnBossStageStartEvent += startHp;
+        GameManager.Instance.OnStageStartEvent += stageBuffReset;
+        GameManager.Instance.OnBossStageStartEvent += stageBuffReset;
+        viewID = photonView.ViewID;
+        OnChangeCurHPEvent += SendSyncHP;
+        this.gameObject.layer = 12;
+        if (ImGhost) 
+        { this.gameObject.layer = 13; }
     }
     public override string ToString()
     {
@@ -256,10 +294,27 @@ public class PlayerStatHandler : MonoBehaviourPun
         Debug.Log("[PlayerStatHandler] " + "CharacterChange Done");
     }
     [PunRPC]
-    public void GiveDamege(float damege)
+    public void GiveDamege(float damage)
     {
-        Damage(damege);
+        Damage(damage);
     }
+
+    [PunRPC]
+    public void DirectDamage(float damage, int targetID)
+    {
+        if (IsInShield)
+        {
+            damage -= InShieldHP;
+        }
+        if (CanReflect)
+        {
+            CallReflectEvent(damage, targetID);
+            damage *= (1 - ReflectCoeff);
+        }
+        Damage(damage);
+    }
+
+
     public void Damage(float damage)
     {
         DamegeTemp = damage;
@@ -285,14 +340,16 @@ public class PlayerStatHandler : MonoBehaviourPun
                     Regen(HP.total);
                     return;
                 }
-                if (MainGameManager.Instance != null) 
-                {
-                    MainGameManager.Instance.DiedAfter();
-                }
-                if (TestGameManager.Instance != null)
-                {
-                    TestGameManager.Instance.DiedAfter();
-                }
+                //if (MainGameManager.Instance != null)  메인게임매니저가 현재 안씀
+                //{
+                //    MainGameManager.Instance.DiedAfter();
+                //}
+
+                // 초창기에 캐싱을 해놓고 동작만 시키는 것 (안되면 체크 할수 있게)
+                // ?. 로 
+                // Awake에서 캐싱을 해두고 null체크를 하면 이후에 추가적으로 할 필요 없음
+                TestGameManager.Instance?.DiedAfter();
+                GameManager.Instance?.PlayerDie();
                 this.gameObject.layer = 12;
             }
 
@@ -315,10 +372,14 @@ public class PlayerStatHandler : MonoBehaviourPun
         HPadd(HP);
         OnRegenEvent?.Invoke();
         OnRegenCalculateEvent?.Invoke(RegenHP);
-        PlayerInputController tempInputControl = this.gameObject.GetComponent<PlayerInputController>();
-        tempInputControl.ResetSetting();
+        if (photonView.IsMine) 
+        {
+            PlayerInputController tempInputControl = this.gameObject.GetComponent<PlayerInputController>();
+            tempInputControl.ResetSetting();
+        }
         isDie = false;
         isRegen = true;
+        _DebuffControl.Init(PlayerDebuffControl.buffName.TwoMoon, 5f);
         photonView.RPC("SendRegenBool", RpcTarget.All, viewID);
         Debug.Log("부활 무적 시작");
         // 부활 파티클이 켜져야 하는 시점
@@ -357,6 +418,10 @@ public class PlayerStatHandler : MonoBehaviourPun
     public void RefillCoin()
     {
         CurRegenCoin = MaxRegenCoin;
+    }
+    public void startHp()
+    {
+        curHP = HP.total;
     }
 
     public void SendSyncHP()

@@ -13,10 +13,10 @@ public class UIBullet : UIBase
         bulletAni = GetComponent<Animation>();
     }
 
-    public override void Initialize()
+    private void Start()
     {
         // Change bullet's sprite depend on class.
-        // bullet.sprite =
+        bullet.GetComponentInChildren<Image>().sprite = GameManager.Instance.clientPlayer.GetComponent<PlayerStatHandler>().indicatorSprite;
     }
 
     public void PlayAnim(string clipName)

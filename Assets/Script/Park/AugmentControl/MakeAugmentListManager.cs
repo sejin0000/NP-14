@@ -21,6 +21,7 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
     public  List<SpecialAugment> SpecialAugment2 = new List<SpecialAugment>();
     public  List<SpecialAugment> SpecialAugment3 = new List<SpecialAugment>();
 
+
     public List<SpecialAugment> test = new List<SpecialAugment>();
     public List<SpecialAugment> test2 = new List<SpecialAugment>();
     public List<SpecialAugment> Prototype = new List<SpecialAugment>();
@@ -93,6 +94,9 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
         SpecialAugmentSetting(SpecialAugment1, Ptype + "1");
         SpecialAugmentSetting(SpecialAugment2, Ptype + "2");
         SpecialAugmentSetting(SpecialAugment3, Ptype + "3");
+        SpecialAugmentSetting(SpecialAugment1, "All1");
+        SpecialAugmentSetting(SpecialAugment2, "All2");
+        SpecialAugmentSetting(SpecialAugment3, "All3");
     }
     public static void StatAugmentSetting(List<IAugment> list, string str)
     {

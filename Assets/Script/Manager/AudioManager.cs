@@ -120,6 +120,21 @@ public class AudioManager : Singleton<AudioManager>
         }
     }
 
+    static public void PlayClip(AudioClip clip, float volume = 1f)
+    {
+        foreach (var player in Instance.SEPlayer)
+        {
+            if (!player.isPlaying)
+            {
+                player.clip = clip;
+                player.volume = volume;
+                player.loop = false;
+                player.Play();
+                return;
+            }
+        }
+    }
+
     static private bool CheckContainKey(string clipName, ClipType clipType)
     {
         var clipDict = Instance.clipDict;

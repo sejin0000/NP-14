@@ -40,18 +40,20 @@ public class A2103 : MonoBehaviourPun
     }
     private void Update()
     {
-        setTime += Time.deltaTime;
-        if (setTime >= 1f) 
+        if (photonView.IsMine) 
         {
-            PowerSet();
-            setTime = 0f;
+            setTime += Time.deltaTime;
+            if (setTime >= 1f && photonView.IsMine)
+            {
+                PowerSet();
+                setTime = 0f;
+            }
         }
-
     }
 
     private void PowerSet() 
     {
-        if (target.Count>=0) 
+        if (target.Count>=1) 
         {
             count = target.Count;
             Debug.Log(count);

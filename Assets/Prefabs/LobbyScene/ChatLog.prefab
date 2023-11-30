@@ -53,7 +53,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NickNameText: {fileID: 3916327918151569460}
   ChatText: {fileID: 111259762092702737}
-  ChatScrollContent: {fileID: 0}
+  prefabHeight: 0
+  prefabWidth: 0
 --- !u!1 &2907601735515499999
 GameObject:
   m_ObjectHideFlags: 0
@@ -129,8 +130,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4280953386
+  m_fontColor: {r: 0.16470589, g: 0.16470589, b: 0.16470589, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -265,8 +266,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4280953386
+  m_fontColor: {r: 0.16470589, g: 0.16470589, b: 0.16470589, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
