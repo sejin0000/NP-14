@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using myBehaviourTree;
 using Photon.Pun;
 using System.Collections;
@@ -26,7 +27,7 @@ enum PatternArea
     TwoSideArea,
     AllArea,
     TargetCircleArea,
-    TriangleArea,
+    BreathArea,
 }
 public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 {
@@ -40,6 +41,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     public EnemySO bossSO;                  // Enemy 정보 [모든 Action Node에 owner로 획득시킴]
     public SpriteRenderer[] spriteRenderers;
     public Animator anim;
+    public ParticleSystem BreathParticleObject;
 
     public GameObject Show_AttackArea;
     public Collider2D[] AreaList;
@@ -50,6 +52,9 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         get { return target; }
         set { if (target != value) { OnTargetChaged(value); target = value; } }
     }
+    public LayerMask breathTargetLayer;
+
+
     //public Collider2D target;
     public List<Transform> PlayersTransform;
 
@@ -60,17 +65,21 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     public Bullet enemyBulletPrefab;
     public Transform bossHead;
     public Transform bossAim;
+    public Collider2D[] bossHitBox;
     public Color originColor;
 
     public LayerMask targetMask;             // 타겟 레이어(Player)
 
     public float SpeedCoefficient = 1f;      // 이동속도 계수
-
+    public float breathAttackDelay;
+    public float currentTime;
 
     public bool isLive;
     public bool isAttaking;
     public bool isGroggy;
-
+    public bool patternRunning;
+    public bool isBreathInProgress; // 브레스 실행여부 판별, 중복실행 방지
+    public bool isRunningBreath;    // 브레스 발사중
     //플레이어 정보
 
     public int lastAttackPlayer;
@@ -82,14 +91,16 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
 
     [SerializeField]
-    private Image images_Gauge;              //몬스터 UI : Status
-
+    private Image image_Gauge;              //몬스터 UI : Status
+    [SerializeField]
+    private TextMeshProUGUI txt_Gauge;
 
 
     //동기화
     public PhotonView PV;
-    private Vector3 hostPosition;
+    private Vector3 hostAimPosition;
     private Quaternion hostRotation;
+    private Vector2 hostKnckbackPosition;
     public float lerpSpeed = 10f; // 보간시 필요한 수치(조정 필요)
 
 
@@ -111,6 +122,8 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         currentHP = bossSO.hp;
         viewAngle = bossSO.viewAngle;
         viewDistance = bossSO.viewDistance;
+        breathAttackDelay = bossSO.breathAttackDelay;
+        currentTime = breathAttackDelay;
         isLive = true;
 
         originColor = spriteRenderers[0].color;
@@ -134,25 +147,18 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         currentTarget = PlayersTransform[randomTarget]; 
     }
     void Update()
-    {
+    {       
         if (!PhotonNetwork.IsMasterClient)
         {
             //$추가됨 : 동기화된 머리 위치에 대한 보간 처리
-            transform.position = Vector3.Lerp(transform.position, hostPosition, Time.deltaTime * lerpSpeed);
             bossHead.transform.rotation = Quaternion.Slerp(bossHead.transform.rotation, hostRotation, Time.deltaTime * lerpSpeed);
+
+            AreaList[6].transform.position = hostAimPosition;
+            AreaList[6].transform.rotation = Quaternion.Slerp(bossHead.transform.rotation, hostRotation, Time.deltaTime * lerpSpeed);          
             return;
-        }
+        }  
 
-        
-        for (int i = 0; i < inToAreaPlayers.Count; i++)
-        {
-            Debug.Log($"리스트 안에 들어온 플레이어{inToAreaPlayers[i]}");           
-        }
-        Debug.Log($"리스트 개수{inToAreaPlayers.Count} 개");
-        
-
-
-        hostPosition = transform.position;
+        hostAimPosition = bossAim.transform.position;
         hostRotation = bossHead.transform.rotation;
 
         //AI트리의 노드 상태를 매 프레임 마다 얻어옴
@@ -160,6 +166,18 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
         if (!isLive)
             return;
+
+
+        if (isBreathInProgress)
+        {
+            AreaList[6].transform.position = bossAim.transform.position;
+            AreaList[6].transform.rotation = bossHead.transform.rotation;
+
+            if (!isRunningBreath || inToAreaPlayers.Count == 0)
+                return;
+
+            UpdateBreath();
+        }
 
 
         /*
@@ -179,82 +197,10 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
     #region Enemy 피격, 사망, 넉백, 공격 관련
     //★맞음 & 죽음
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        //호스트에서만 충돌 처리됨
-        if (!PhotonNetwork.IsMasterClient)
-            return;
-
-        Bullet playerBullet = collision.gameObject.GetComponent<Bullet>();
-
-
-        if (collision.gameObject.tag == "Bullet" && playerBullet.targets.ContainsValue((int)BulletTarget.Enemy) && playerBullet.IsDamage)
-        {
-            float atk = collision.transform.GetComponent<Bullet>().ATK;
-            int ViewID = playerBullet.BulletOwner;
-            PhotonView PlayerPv = PhotonView.Find(ViewID);
-            PlayerStatHandler player = PlayerPv.gameObject.GetComponent<PlayerStatHandler>();
-            player.EnemyHitCall();
-
-
-            if (playerBullet.fire)
-            {
-                Debuff.Instance.GiveFire(this.gameObject, atk, ViewID);
-            }
-            if (playerBullet.water)
-            {
-                Debuff.Instance.GiveWater(this.gameObject);
-            }
-            if (playerBullet.burn)
-            {
-                PhotonNetwork.Instantiate("AugmentList/A0122", transform.localPosition, Quaternion.identity);
-            }
-            if (playerBullet.gravity)
-            {
-                int a = UnityEngine.Random.Range(0, 10);
-                if (a >= 8)
-                {
-                    PhotonNetwork.Instantiate("AugmentList/A0218", transform.localPosition, Quaternion.identity);
-                }
-            }
-            //모든 플레이어에게 현재 적의 체력 동기화
-            PV.RPC("DecreaseHP", RpcTarget.All, atk);
-
-
-
-            //여기다 불렛 모시깽이 얻기
-            lastAttackPlayer = playerBullet.BulletOwner;
-
-            // 뷰ID를 사용하여 포톤 플레이어 찾기&해당 플레이어로 타겟 변경
-            PhotonView photonView = PhotonView.Find(playerBullet.BulletOwner);
-            if (photonView != null)
-            {
-                Transform playerTransform = photonView.transform;
-
-                currentTarget = playerTransform;
-            }
-            if (!playerBullet.Penetrate)
-            {
-                Destroy(collision.gameObject);
-            }
-        }
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if ((knockbackDistance == 0 || collision.gameObject.tag != "player")
-            && collision.gameObject.GetComponent<A0126>() == null)
-            return;
-
-        Transform PlayersTransform = collision.gameObject.transform;
-
-
-        //TODO : 계수 수정 - 0.15f
-        PV.RPC("DecreaseHP", RpcTarget.All, collision.transform.GetComponent<PlayerStatHandler>().HP.total * 0.15f);
-    }
     private void GaugeUpdate()
     {
-        images_Gauge.fillAmount = (float)currentHP / bossSO.hp;
+        image_Gauge.fillAmount = (float)currentHP / bossSO.hp;
+        txt_Gauge.text = currentHP + " / " + bossSO.hp; // 현재 체력 / 최대 체력 표시
     }
 
     [PunRPC]
@@ -268,16 +214,36 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         GaugeUpdate();
     }
 
+
     [PunRPC]
     public void DecreaseHP(float damage)
     {
-        PV.RPC("SetStateColor", RpcTarget.All, Color.red);
+        if (!isLive)
+        {
+            return;
+        }
+        //PV.RPC("SetStateColor", RpcTarget.All, (int)EnemyStateColor.ColorRed, PV.ViewID);
         currentHP -= damage;
         GaugeUpdate();
         if (currentHP <= 0)
         {
-            //플레이어의 뷰 아이디 여깄어요
-            //lastAttackPlayer
+            isLive = false;
+        }
+    }
+
+    [PunRPC]
+    public void DecreaseHPByObject(float damage, int viewID)
+    {
+        if (!isLive)
+        {
+            return;
+        }
+        //PV.RPC("SetStateColor", RpcTarget.All, (int)EnemyStateColor.ColorRed, PV.ViewID);
+        currentHP -= damage;
+        GaugeUpdate();
+        if (currentHP <= 0)
+        {
+            lastAttackPlayer = viewID;
             isLive = false;
         }
     }
@@ -335,67 +301,138 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         // 벡터를 radAngle값을 x,y 방향으로 계산하여 2D 벡터로 반환
         return new Vector2(Mathf.Cos(radAngle), Mathf.Sin(radAngle));
     }
-
-
-    //특수 패턴 시, 대상 플레이어를 바라보도록 설정
-    private void ChaseView()
-    {
-        if (currentTarget == null)
-        {
-            isAttaking = false;
-            return;
-        }
-
-        //머리와 타겟의 방향
-        Vector2 directionToTarget = (currentTarget.position - bossHead.transform.position).normalized;
-
-        //브레스 범위
-        Vector2 rightBoundary = Quaternion.Euler(0, 0, -viewAngle * 0.5f) * directionToTarget;
-        Vector2 leftBoundary = Quaternion.Euler(0, 0, viewAngle * 0.5f) * directionToTarget;
-
-        Debug.DrawRay(transform.position, rightBoundary * viewDistance, Color.red);
-        Debug.DrawRay(transform.position, leftBoundary * viewDistance, Color.red);
-
-        LookPlayer(rightBoundary, leftBoundary);
-    }
-
-    //특수 패턴 시, 대상 플레이어를 바라보도록 설정
-    private void LookPlayer(Vector2 _rightBoundary, Vector2 _leftBoundary)
-    {
-        if (!PhotonNetwork.IsMasterClient || currentTarget != null)
-            return;
-        //viewDistance > Vector2.Distance(playerTransform.position, transform.position
-
-
-        //Debug.DrawRay(transform.position, middleDirection * viewDistance, Color.green);
-
-
-        //시야각 방향의 직선 Direction
-        Vector2 middleDirection = (_rightBoundary + _leftBoundary).normalized;
-        //Enemy와 Player 사이의 방향
-        Vector2 directionToPlayer = (currentTarget.position - transform.position).normalized;
-
-        float angle = Vector3.Angle(directionToPlayer, middleDirection);
-        if (angle < viewAngle * 0.5f)
-        {
-            Debug.DrawRay(transform.position, directionToPlayer * viewDistance, Color.red);
-        }
-
-    }
     #endregion
 
     #region 실제 액션[브레스]
 
     public void Breath()
     {
+
+        //과정 1 완료        
+        //브레스 상태 변수를 통해 제어
+        //브레스 워닝사인의 포지션을 용 머리에 y - n 만큼의 포지션 위치에 활성화 시킴 v
+        //브레스 워닝사인의 로테이션 값도 동일하게 돌려준다. v (업데이트에서 보간 진행중)
+        //범위 내의 플레이어는 워닝사인 내부에서 알아서 처리함 v
+        //브레스 워닝사인의 경우는 다 차올라도 사라지지 않는다. v
+        
+
+        //브레스 파티클을 aim의 포지션에 활성화(혹은 생성) - 파티클을  아예 머리에 달아서 굳이 로테이션 값 조절이 필요없도록 하자 v
+        //브레스는 콜리전 처리를 on 해서 트리거가 아닌 콜라이더에 부딫힐 경우, 튕겨나가도록 처리한다. v
+        //브레스 파티클 자체는 플레이어와 부딫혀도 아무런 상호작용도 하지 않는다. v 
+
+        //과정 2
+        //워닝 사인이 다 차오른 경우 브레스 파티클을 실행한다. (2.0f 초 뒤에 모두 차오름)
+
+
+        //브레스 진행 중 : 약간의 시간(0.1f ~0.2f) 이후, 어택 에어리어 내부 리스트에 있는 플레이어를 대상으로만 레이캐스트를 발사한다.
+        //레이캐스트는 최초 hit 대상이 wall인 경우 리턴한다.
+        //최초 hit 대상이 리스트 내에 있는 플레이어인 경우에는, 해당 플레이어를 대상으로 피해와 넉백을 주도록한다.
+        //4~5초 후 파티클과 어택 에어리어를 동시에 비활성화 시킨다.
+
+        //약간의 시간 이후이므로 
+
+
     }
 
+    [PunRPC]
+    public void StartBreathCoroutine()
+    {
+        StartCoroutine(StartBreath());
+    }
+
+
+    public IEnumerator StartBreath()
+    {
+        //브레스 중복실행 방지
+        if (isBreathInProgress)
+            yield break;
+
+        isBreathInProgress = true;
+        AreaList[6].gameObject.SetActive(true);
+        SetAnim("isBreathAttack", true);
+        //워닝 사인 차오르는거 대기 후 브레스 파티클을 플레이
+        yield return new WaitForSeconds(2f);
+        BreathParticleObject.Play();
+
+
+        //여기다 브레스 업데이트용 bool
+        isRunningBreath = true;
+
+        //브레스 종료 시간 도달 (2+4f)
+        yield return new WaitForSeconds(4f);
+        isBreathInProgress = false;
+        AreaList[6].gameObject.SetActive(false);
+        SetAnim("isBreathAttack", false);
+        BreathParticleObject.Stop();
+        isRunningBreath = false;
+
+        currentTime = breathAttackDelay;
+    }
+
+    public void UpdateBreath()
+    {
+        currentTime -= Time.deltaTime;
+
+        if (currentTime <= 0)
+        {
+            Debug.Log("업데이트 브레스 들어옴");
+
+            //에어리어 리스트에 사람이 하나라도 있다면?
+            //리스트 내 모든 대상에게 레이캐스트 발사
+            //업데이트하고 있지 않으므로 위에서 리턴 날 가능성이 큼 이 부분은 역시 업데이트 조지는게 맞음 아오 졸려죽겠다
+
+            for (int i = 0; i < inToAreaPlayers.Count; i++)
+            {
+                Debug.Log("반복문 들어옴");
+                // 플레이어의 위치
+                PlayerStatHandler player = inToAreaPlayers[i];
+                Vector3 playerPosition = player.transform.position;
+                // 플레이어<->보스에임 방향 구하기
+                Vector3 directionToPlayer = (playerPosition - bossAim.position).normalized;
+                Debug.DrawLine(bossAim.position, player.transform.position, Color.white);
+
+                // 레이 발사
+                RaycastHit2D hit = Physics2D.Raycast(bossAim.position, directionToPlayer, Mathf.Infinity, breathTargetLayer);
+
+                if (hit.transform.tag != "Wall" || inToAreaPlayers.Count != 0) // hit 대상이 있거나, 벽이 아닌 경우에만 작동
+                {
+                    if (hit.transform.tag == "Player")
+                    {
+                        //일정 주기로 피해를 주기
+
+                        // 플레이어와 공격 영역의 방향 벡터
+
+
+                        // 넉백거리
+                        float knockbackDistance = 1f;
+
+
+                        // 실제 피해
+                        player.GiveDamege(bossSO.atk);
+                        // 실제 넉백
+                        player.photonView.RPC("StartKnockback", RpcTarget.All, directionToPlayer, knockbackDistance);
+                        //StartCoroutine(player.Knockback(directionToPlayer, knockbackDistance));
+                    
+                        Debug.Log($"2나오면 안됨 : {inToAreaPlayers.Count} 데미지는 이만큼 받음 :{bossSO.atk}");
+                        Debug.Log($"플레이어 현재 체력은 : {player.CurHP}");
+                    }
+                }
+            }
+
+            currentTime = breathAttackDelay;
+        }
+       
+    }
     //양팔 공격은 [두 메서드 동시에 실행함]
     public void RightArmAttack()
     {
 
     }
     public void LeftArmAttack() 
+    {
+
+    }
+    public void TwoHandAttack()
     {
 
     }
@@ -486,9 +523,6 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
             case 5:
                 ;//모든 플레이어를 추적하는 원형(3,4,5)
                 break;
-            case 6:
-                AreaList[6].gameObject.SetActive(false); // 브레스 범위 표시(방법이 상이함)
-                break;
         }
     }
 
@@ -519,7 +553,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     //진짜 진짜 공격&넉백임
     public void AttackTargetsInArea(int areaIndex)
     {
-        if (inToAreaPlayers == null || areaIndex < 0 || areaIndex >= AreaList.Length)
+        if (inToAreaPlayers == null || areaIndex < 0 || areaIndex > AreaList.Length)
             return;
 
         Transform attackAreaTransform = AreaList[areaIndex].transform;
@@ -548,8 +582,6 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
             // 실제 피해
             player.GiveDamege(bossSO.atk);
-
-
         }
     }
 
@@ -702,15 +734,15 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         BTSelector BTMainSelector = new BTSelector();
 
 
-        /*
+        
         //Enemy 생존 체크
         //컨디션 체크 -> 사망 시 필요한 액션들(오브젝트 제거....)
         BTSquence BTDead = new BTSquence();
-        EnemyState_Dead_DeadCondition deadCondition = new EnemyState_Dead_DeadCondition(gameObject);
+        BossAI_State_Dead_DeadCondition deadCondition = new BossAI_State_Dead_DeadCondition(gameObject);
         BTDead.AddChild(deadCondition);
-        EnemyState_Dead state_Dead = new EnemyState_Dead(gameObject);
+        BossAI_State_Dead state_Dead = new BossAI_State_Dead(gameObject);
         BTDead.AddChild(state_Dead);
-        */
+        
 
 
         /*
@@ -785,7 +817,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         //셀렉터는 우선순위 높은 순서로 배치 : 생존 여부 -> 특수 패턴 -> 플레이어 체크(공격 여부) -> 이동 여부 순서로 셀렉터 배치 
         //메인 셀렉터 : Squence를 Selector의 자식으로 추가(자식 순서 중요함) 
 
-        //BTMainSelector.AddChild(BTDead);
+        BTMainSelector.AddChild(BTDead);
         //BTMainSelector.AddChild(BTAbnormal);
 
         //메인(페이즈) 셀렉터
@@ -804,7 +836,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         if (stream.IsWriting)
         {
             // 데이터를 전송
-            stream.SendNext(hostPosition);
+            stream.SendNext(hostAimPosition);
             //stream.SendNext(navTargetPoint);
             stream.SendNext(hostRotation);
 
@@ -812,7 +844,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         else if (stream.IsReading)
         {
             // 데이터를 수신
-            hostPosition = (Vector3)stream.ReceiveNext();
+            hostAimPosition = (Vector3)stream.ReceiveNext();
             //navTargetPoint = (Vector3)stream.ReceiveNext();
             hostRotation = (Quaternion)stream.ReceiveNext();
         }

@@ -74,7 +74,7 @@ public class CollisionController : MonoBehaviourPun
             //³Ë¹é
 
             float Boss_Dragon_atk = collision.gameObject.GetComponentInParent<BossAI_Dragon>().bossSO.atk;
-            playerStat.GiveDamege(Boss_Dragon_atk);
+            //playerStat.GiveDamege(Boss_Dragon_atk);
         }
 
         if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet") 

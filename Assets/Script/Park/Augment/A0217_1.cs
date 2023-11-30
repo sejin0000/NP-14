@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -11,9 +12,9 @@ public class A0217_1 : MonoBehaviour
     List<PlayerStatHandler> target = new List<PlayerStatHandler>();
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player" && !target.Contains(collision.GetComponent<PlayerStatHandler>()))
+        PlayerStatHandler targetstat = collision.GetComponent<PlayerStatHandler>();
+        if (targetstat != null)
         {
-            PlayerStatHandler targetstat = collision.GetComponent<PlayerStatHandler>();
             target.Add(targetstat);
             buffAmount = 1.5f;
             targetstat.AtkSpeed.added += buffAmount;
@@ -23,9 +24,9 @@ public class A0217_1 : MonoBehaviour
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Player" && target.Contains(collision.GetComponent<PlayerStatHandler>()))
+        PlayerStatHandler targetstat = collision.GetComponent<PlayerStatHandler>();
+        if (targetstat != null)
         {
-            PlayerStatHandler targetstat = collision.GetComponent<PlayerStatHandler>();
             target.Remove(targetstat);
             targetstat.AtkSpeed.added -= buffAmount;
             targetstat.Speed.added -= buffAmount;

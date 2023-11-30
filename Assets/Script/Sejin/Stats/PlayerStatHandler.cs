@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XR;
@@ -216,7 +217,8 @@ public class PlayerStatHandler : MonoBehaviourPun
         defense = 1;
 
         IsChargeAttack = false;
-
+        
+        _DebuffControl=GetComponent<PlayerDebuffControl>();
         indicatorSprite = playerStats.indicatorSprite;
         atkClip = playerStats.atkClip;
         reloadStartClip = playerStats.reloadClip[0];
@@ -498,6 +500,11 @@ public class PlayerStatHandler : MonoBehaviourPun
         weapon.canresurrection = false;
     }
 
+    [PunRPC]
+    public void StartKnockback(Vector3 direction, float distance)
+    {
+        StartCoroutine(Knockback(direction, distance));
+    }
 
     //보스 패턴용 넉백 추가함 - 우민규
     public IEnumerator Knockback(Vector3 direction, float distance)

@@ -38,13 +38,11 @@ public class A0128 : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet"))
+        Bullet _Bullet = collision.GetComponent<Bullet>();
+        if (_Bullet != null)
         {
-            Debug.Log("¡¢√À1111");
-            Bullet a = collision.GetComponent<Bullet>();
-            if (collision.gameObject.GetComponent<Bullet>().targets.ContainsValue((int)BulletTarget.Enemy))
+            if (_Bullet.targets.ContainsValue((int)BulletTarget.Enemy))
             {
-                Debug.Log("¡¢√À222");
                 Destroy(collision.gameObject);
             }
 

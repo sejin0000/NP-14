@@ -38,7 +38,6 @@ public class A1205 : MonoBehaviourPun//스킬 사용시 스킬체크를 하여 성공시 데미지
     // Update is called once per frame
     void SkillCheck()
     {
-        Debug.Log("스킬체킁ㅇ");
         playerInput.actions.FindAction("Attack").Disable();
         skillCheckPrefab.SetActive(true);
     }

@@ -20,19 +20,19 @@ public class A2203 : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player")
-            && collision.gameObject.GetComponent<PlayerStatHandler>()) 
+        PlayerStatHandler handler = collision.gameObject.GetComponent<PlayerStatHandler>();
+        if (handler != null) 
         {
-            target.Add(collision.GetComponent<PlayerStatHandler>());
+            target.Add(handler);
             Debug.Log("플레이어입장");
         }    
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player")
-            && collision.gameObject.GetComponent<PlayerStatHandler>())
+        PlayerStatHandler handler = collision.gameObject.GetComponent<PlayerStatHandler>();
+        if (handler != null)
         {
-            target.Remove(collision.GetComponent<PlayerStatHandler>());
+            target.Remove(handler);
             Debug.Log("플레이어퇴장");
         }
     }

@@ -14,8 +14,8 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     public PlayerStatHandler playerstatHandler;//정확히는 이름을 타겟 플레이어 스탯 핸들러가 맞는 표현 같기도함 // 생각할수록 맞음
     int atk = 5;
     int hp = 8;
-    float speed = 1;
-    float atkspeed = 0.1f;
+    float speed = 0.1f;
+    float atkspeed = 0.05f;
     float bulletSpread = -1f;
     int cooltime = -1;
     int critical = 5;
@@ -873,9 +873,9 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         playerstatHandler.AmmoMax.added -= 5;
-        if (targetPlayer.GetComponent<Player1Skill>()) 
+        Player1Skill skill = targetPlayer.GetComponent<Player1Skill>();
+        if (skill != null) 
         {
-            Player1Skill skill = targetPlayer.GetComponent<Player1Skill>();
             skill.applicationAtkSpeed += 2f;
             skill.applicationspeed += 2f;
         }
@@ -969,9 +969,9 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         playerInput=targetPlayer.GetComponent<PlayerInput>();
         playerInput.actions.FindAction("Skill").Disable();
         playerstatHandler.isCanSkill = false;
-        if (targetPlayer.GetComponent<Player1Skill>())
+        Player1Skill skill = targetPlayer.GetComponent<Player1Skill>();
+        if (skill != null)
         {
-            Player1Skill skill = targetPlayer.GetComponent<Player1Skill>();
             skill.applicationAtkSpeed *= 0.5f;
             skill.applicationspeed *= 0.5f;
         }
@@ -1086,9 +1086,9 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     private void A3207(int PlayerNumber)//보호 모드
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
-        if (targetPlayer.GetComponent<Player2Skill>())
+        Player2Skill player2 = targetPlayer.GetComponent<Player2Skill>();
+        if (player2 != null)
         {
-            Player2Skill player2 = targetPlayer.GetComponent<Player2Skill>();
             player2.shieldScale += 0.5f;
         }
         playerstatHandler.HP.coefficient *= 0.8f;
@@ -1105,9 +1105,9 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     private void A3302(int PlayerNumber)//쉴드 범위 증가, 쉴드량 증가,  평타 약화,  쉴드 안에 아군 버프
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
-        if (targetPlayer.GetComponent<Player2Skill>())
+        Player2Skill player2 = targetPlayer.GetComponent<Player2Skill>();
+        if (player2 != null)
         {
-            Player2Skill player2 = targetPlayer.GetComponent<Player2Skill>();
             player2.shieldScale *= 2f;
             player2.shieldHP += 20f;
         }

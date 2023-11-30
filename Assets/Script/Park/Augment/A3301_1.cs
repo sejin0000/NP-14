@@ -16,7 +16,6 @@ public class A3301_1 : MonoBehaviour
     public void Init(int viewid)
     {
         viewID=viewid;
-        Debug.Log(viewID);
         shieldHP = 1f;
         shieldSurvivalTime = 0.75f;
     }
@@ -34,11 +33,10 @@ public class A3301_1 : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet")
-            && collision.gameObject.GetComponent<Bullet>().targets.ContainsValue((int)BulletTarget.Player))
+        Bullet _bullet = collision.gameObject.GetComponent<Bullet>();
+        if (_bullet != null
+            && _bullet.targets.ContainsValue((int)BulletTarget.Player))
         { 
-            Bullet _bullet = collision.GetComponent<Bullet>();
-
             _bullet.BulletLifeTime = 10f;//시간 받아와야겠는데 모르겠으니까 걍 10초때린다 불만없제
             _bullet.targets.Remove("Player");            
             _bullet.targets["Enemy"] = (int)BulletTarget.Enemy;
