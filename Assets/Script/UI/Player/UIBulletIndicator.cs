@@ -5,11 +5,13 @@ using TMPro;
 using System.Text;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
+using UnityEngine.UI;
+using System;
 
 public class UIBulletIndicator : UIBase, ICommonUI
 {
     [SerializeField] private TMP_Text ammo;
-    [SerializeField] private GameObject[] bullets;
+    [SerializeField] private List<GameObject> bullets;
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private GameObject bulletParents;
 
@@ -41,12 +43,12 @@ public class UIBulletIndicator : UIBase, ICommonUI
 
         playerStat = player.playerStatHandler;
         ammoMax = player.playerStatHandler.AmmoMax.total;
-        
+
+        //subscribe event
         player.OnEndReloadEvent += ReloadBullets;
         playerStat.OnChangeAmmorEvent += ChangeValue;
         player.OnAttackEvent += ShootBullet;
-        player.OnAttackEvent += TestMethod;
-
+        //player.OnAttackEvent += TestMethod;
     }
 
     public override void Initialize()
@@ -79,11 +81,13 @@ public class UIBulletIndicator : UIBase, ICommonUI
     public void InitializeBullets()
     {
         Debug.Log("[InitializeBullets] AKAKAKAKAAKAKAK");
-        bullets = new GameObject[(int)ammoMax];
+
+        bullets = new List<GameObject>((int)ammoMax);
         for (int i = 0; i < ammoMax; ++i)
         {
             GameObject temp = Instantiate(bulletPrefab, bulletParents.transform);
-            bullets[i] = temp;
+            //bullets[i] = temp;
+            bullets.Add(temp);
 
             if (i > 0)
             {
@@ -93,13 +97,33 @@ public class UIBulletIndicator : UIBase, ICommonUI
             }
         }
     }
+    public void ResizeBullets()
+    {
+        bullets.Capacity = (int)ammoMax;
+        int prevCount = bullets.Count;
+        int newCount = bullets.Capacity;
+
+        for (int i=prevCount; i < newCount; ++i)
+        {
+            GameObject temp = Instantiate(bulletPrefab, bulletParents.transform);
+            bullets.Add(temp);
+
+            if (i > 0)
+            {
+                Vector3 pos = bullets[i - 1].transform.position;
+                pos.x += ((spriteWidth) + spriteSpace);
+                bullets[i].transform.position = pos;
+            }     
+        }
+    }
 
     public void UpdateAmmoMax()
     {
         if (ammoMax != playerStat.AmmoMax.total)
         {
             ammoMax = playerStat.AmmoMax.total;
-            InitializeBullets();
+            ResizeBullets();
+            Debug.Log("[UIBulletIndicator] ammoMax: " + ammoMax);
         }
     }
 
@@ -128,8 +152,6 @@ public class UIBulletIndicator : UIBase, ICommonUI
 
     public void TestMethod()
     {
-        //ParticleManager.PlayEffectLocal("Droplet_PS", player.transform.position);
-        int pviewID = player.GetComponent<PhotonView>().ViewID;
-        ParticleManager.Instance.PlayEffect("Droplet_PS", player.transform.position);
+
     }
 }

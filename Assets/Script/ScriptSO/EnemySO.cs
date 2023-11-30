@@ -17,6 +17,7 @@ public class EnemySO : ScriptableObject
     public float chaseTime;       // 추적 유지시간
     public float groggyTiem;      // 기절 시간
     public float bulletLifeTime;  // 총알 유지 시간
+    public float breathAttackDelay; // 브레스 공격 판정
 
     public float enemyMoveSpeed;  // 기본 이동속도
     public float enemyChaseSpeed; // 기본 추적속도
@@ -25,7 +26,7 @@ public class EnemySO : ScriptableObject
     public float viewAngle;       // 탐지 범위
     public float viewDistance;     // 탐지 길이
     public float attackRange;     // 공격 범위
-
+    
 
     public int dropGold;          // 주는 재화의 양
 

@@ -29,3 +29,8 @@ MonoBehaviour:
   critical: 0
   playerSprite: {fileID: 7108339969198208228, guid: b7fdc512bf354b24782ea6f25690faed, type: 3}
   weaponSprite: {fileID: 7108339969198208228, guid: 59893e07cf53b3a4c8b44a03fce58890, type: 3}
+  indicatorSprite: {fileID: -1300239365, guid: 3e13a281babafac46ae629833aeb247e, type: 3}
+  atkClip: {fileID: 8300000, guid: 6393b97f3f845cb49a1c3aea87c48c91, type: 3}
+  reloadClip:
+  - {fileID: 8300000, guid: 0f9a07ece1b9d4f43ba7008966650b12, type: 3}
+  - {fileID: 8300000, guid: b0046466af59e844ba9e234c3b706666, type: 3}
