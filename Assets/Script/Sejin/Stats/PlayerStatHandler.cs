@@ -343,8 +343,11 @@ public class PlayerStatHandler : MonoBehaviourPun
         HPadd(HP);
         OnRegenEvent?.Invoke();
         OnRegenCalculateEvent?.Invoke(RegenHP);
-        PlayerInputController tempInputControl = this.gameObject.GetComponent<PlayerInputController>();
-        tempInputControl.ResetSetting();
+        if (photonView.IsMine) 
+        {
+            PlayerInputController tempInputControl = this.gameObject.GetComponent<PlayerInputController>();
+            tempInputControl.ResetSetting();
+        }
         isDie = false;
         isRegen = true;
         _DebuffControl.Init(PlayerDebuffControl.buffName.TwoMoon, 5f);
