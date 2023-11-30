@@ -51,7 +51,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public int ClassNum;
     public GameObject DataSettingPrefab;
     public PlayerDataSetting dataSetting;
-    
+
+    [Header("LoadingPanel")]
+    public LoadingPanel LoadP;
 
     // RoomEntries
     public Dictionary<int, GameObject> playerPartyDict;

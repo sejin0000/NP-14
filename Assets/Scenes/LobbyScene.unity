@@ -4169,7 +4169,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &598920343
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5812,7 +5812,7 @@ RectTransform:
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -11073,7 +11073,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1397847045
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11202,7 +11202,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1408580853
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13584,6 +13584,7 @@ MonoBehaviour:
   ClassNum: 0
   DataSettingPrefab: {fileID: 5202816797617736909, guid: aeaa042007b36a44894885df6729f270, type: 3}
   dataSetting: {fileID: 4222933106460291288, guid: aeaa042007b36a44894885df6729f270, type: 3}
+  LoadP: {fileID: 0}
 --- !u!1 &1590945873
 GameObject:
   m_ObjectHideFlags: 0
@@ -17698,7 +17699,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1742439081
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17774,7 +17775,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TipText: {fileID: 1509784796}
   PlayerRolling: {fileID: 1326698034}
-  VibrationSpeed: 0
 --- !u!1 &1748189136
 GameObject:
   m_ObjectHideFlags: 0
@@ -17946,9 +17946,9 @@ RectTransform:
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -17, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1752686109
 MonoBehaviour:

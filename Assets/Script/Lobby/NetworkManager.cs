@@ -84,6 +84,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
+        LobbyManager.Instance.LoadP.Initialize(1.5f);
         // DESC : 빠른 시작과 테스트룸 구분
         PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(CustomProperyDefined.TEST_OR_NOT, out object testProperty);
         if (!(bool)testProperty)
@@ -148,7 +149,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             Debug.Log($"LobbyManager - LeftRoom : Client State : {PhotonNetwork.NetworkClientState}{Enum.GetName(typeof(ClientState), PhotonNetwork.NetworkClientState)}");
             LobbyManager.Instance.SetPanel(PanelType.MainLobbyPanel);
             PhotonNetwork.ConnectUsingSettings();
-            // TODO : 클릭 비활성화 시작
+
+            // DESC : 로딩패널 ON
+            LobbyManager.Instance.LoadP.Initialize(1.5f);
+            
             Debug.Log($"LobbyManager - LeftRoom : Client State : {PhotonNetwork.NetworkClientState}{Enum.GetName(typeof(ClientState), PhotonNetwork.NetworkClientState)}");
             LobbyManager.Instance.playerPartyDict.Clear();
         }
@@ -158,7 +162,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             Debug.Log($"LobbyManager - LeftTestRoom : Client State : {PhotonNetwork.NetworkClientState}{Enum.GetName(typeof(ClientState), PhotonNetwork.NetworkClientState)}");
             LobbyManager.Instance.SetPanel(PanelType.TestLobbyPanel);
             PhotonNetwork.ConnectUsingSettings();
-            // TODO : 클릭 비활성화 시작
+            
+            // DESC : 로딩패널 ON
+            LobbyManager.Instance.LoadP.Initialize(1.5f);
+            
             Debug.Log($"LobbyManager - LeftTestRoom : Client State : {PhotonNetwork.NetworkClientState}{Enum.GetName(typeof(ClientState), PhotonNetwork.NetworkClientState)}");
         }
     }
