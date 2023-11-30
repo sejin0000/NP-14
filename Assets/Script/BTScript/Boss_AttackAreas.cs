@@ -11,10 +11,6 @@ public class Boss_AttackAreas : MonoBehaviour
 
     }
 
-    private void OnEnable()
-    {
-        owner.inToAreaPlayers.Clear();
-    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -24,7 +20,7 @@ public class Boss_AttackAreas : MonoBehaviour
             PlayerStatHandler player = collision.gameObject.GetComponent<PlayerStatHandler>();
 
             //TODO 플레이어가 죽어있는 경우도 확인[나중에 바꾸셈]
-            if (player != null)
+            if (owner.inToAreaPlayers != null)
             {
                 // 리스트에 플레이어 추가
                 owner.inToAreaPlayers.Add(player);
@@ -38,7 +34,7 @@ public class Boss_AttackAreas : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             PlayerStatHandler player = collision.gameObject.GetComponent<PlayerStatHandler>();
-            if (player != null)
+            if (owner.inToAreaPlayers != null)
             {
                 owner.inToAreaPlayers.Remove(player);
             }

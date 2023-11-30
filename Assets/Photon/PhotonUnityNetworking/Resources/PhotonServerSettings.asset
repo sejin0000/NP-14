@@ -246,6 +246,9 @@ MonoBehaviour:
   - PunCallRoomEndEvent
   - PunCallRoomStartEvent
   - CallRoomEndEvent
+  - A921
+  - StartBreathCoroutine
+  - StartKnockback
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

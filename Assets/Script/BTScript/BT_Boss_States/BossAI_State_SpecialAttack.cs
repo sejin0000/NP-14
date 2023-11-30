@@ -11,7 +11,6 @@ public class BossAI_State_SpecialAttack : BTAction
     private GameObject owner;
     private BossAI_Dragon bossAI_Dragon;
     private EnemySO bossSO;
-    private Transform target;
 
     private float currentTime;         // 시간 계산용   
     public BossAI_State_SpecialAttack(GameObject _owner)
@@ -25,7 +24,6 @@ public class BossAI_State_SpecialAttack : BTAction
     {
         currentTime = bossSO.atkDelay;
         bossAI_Dragon.SetStateColor(Color.yellow);
-        target = bossAI_Dragon.currentTarget; //루트에서 받은 임의의 타겟 지정
     }
 
     public override Status Update()
@@ -33,12 +31,33 @@ public class BossAI_State_SpecialAttack : BTAction
         //맨처음에 할거 -> 모든 플레이어의 위치를 받아서, 내가 지정한 피벗과 가까운지 확인
         //가깝다면? 특수 패턴 실행 ->멀다면? 실패 반환[노말 패턴으로 바로 넘어감]
         //헤드 피벗 위치를 넘어서 존재한다면? -> 랜덤 패턴값 비명으로 고정
+        float minDistance = float.MaxValue;
+
+
+        //가장 가까운 타겟 서치
+        for (int i = 0; i < bossAI_Dragon.PlayersTransform.Count; i++)
+        {
+            if (bossAI_Dragon.PlayersTransform[i] == null)
+                continue;
+
+            float distanceToAllTarget = Vector2.Distance(owner.transform.position, bossAI_Dragon.PlayersTransform[i].transform.position);
+
+            if(distanceToAllTarget < minDistance)
+            {
+                minDistance = distanceToAllTarget;
+                bossAI_Dragon.currentTarget = bossAI_Dragon.PlayersTransform[i];
+            }
+
+
+        }
+
 
         //조건 부분 스페셜 어택 컨디션으로 이관할것 Failure 까지
-        float distanceToTarget = Vector2.Distance(owner.transform.position, target.transform.position);
+        float distanceToTarget = Vector2.Distance(owner.transform.position, bossAI_Dragon.currentTarget.transform.position);
 
         if(distanceToTarget > 13f)
         {
+            bossAI_Dragon.currentTarget = null;
             return Status.BT_Failure;
         }            
 
@@ -73,20 +92,20 @@ public class BossAI_State_SpecialAttack : BTAction
             {
                 case 0:
                     //양 팔 공격
-                    bossAI_Dragon.PV.RPC("Fire", RpcTarget.All);
+                    bossAI_Dragon.PV.RPC("StartBreathCoroutine", RpcTarget.All);                   
                    // bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 0);                  
                     break;
                 case 1:
-                    //bossAI_Dragon.PV.RPC("Fire", RpcTarget.All);
-                    bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 0);
+                    bossAI_Dragon.PV.RPC("StartBreathCoroutine", RpcTarget.All);
+                    //bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 0);
                     break;
                 case 2:
-                    //bossAI_Dragon.PV.RPC("Fire", RpcTarget.All);
-                    bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 1);
-                    break;
+                    bossAI_Dragon.PV.RPC("StartBreathCoroutine", RpcTarget.All);
+                    //bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 1);
+                    break;  
                 case 3:
-                    bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 2);
-                    //bossAI_Dragon.PV.RPC("Fire", RpcTarget.All);
+                    bossAI_Dragon.PV.RPC("StartBreathCoroutine", RpcTarget.All);
+                    //bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 2);
                     break;
             }            
 
@@ -105,7 +124,7 @@ public class BossAI_State_SpecialAttack : BTAction
         //anim.SetTrigger("Attack"); // 공격 애니메이션
 
         //대상과 머리의 방향을 구한 뒤 해당 방향으로 RotateArm
-        Vector3 direction = (target.transform.position - bossAI_Dragon.bossHead.transform.position).normalized;
+        Vector3 direction = (bossAI_Dragon.currentTarget.transform.position - bossAI_Dragon.bossHead.transform.position).normalized;
 
 
 
