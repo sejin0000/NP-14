@@ -30,6 +30,8 @@ public class ResultManager : MonoBehaviour//vs코드
 
     public PhotonView pv;
 
+    public bool statChance;
+
     bool testsetting;
     public bool SetActiveCheck;
     public void startset(GameObject playerObj)
@@ -44,6 +46,7 @@ public class ResultManager : MonoBehaviour//vs코드
         //}
         GameManager.Instance.OnRoomEndEvent += CallStatResult;
         GameManager.Instance.OnStageEndEvent += SpecialResult;
+        GameManager.Instance.OnBossStageStartEvent += SpecialResult;
 
         pv = GetComponent<PhotonView>();
     }
@@ -87,6 +90,7 @@ public class ResultManager : MonoBehaviour//vs코드
         Debug.Log($"증강3 개수{SpecialAugment3.Count}");
         ProtoList = MakeAugmentListManager.Instance.Prototype;
         Debug.Log("배포전 프로토타입 주석처리");
+        statChance = false;
     }
     public void SpecialResult()
     {
@@ -106,18 +110,21 @@ public class ResultManager : MonoBehaviour//vs코드
     private int RandomTier() 
     {
         int tier = GameManager.Instance.curStage;
-        int random = Random.Range(1, 11); // 현재 층수에 비례하여 티어 가중치 타겟3도 있었는데 필요없어서 지움 10-나머지 값
+        int random = Random.Range(1, 12); // 현재 층수에 비례하여 티어 가중치 타겟3도 있었는데 필요없어서 지움 10-나머지 값
         int target1 = 5;
         int target2 = 3;
+        int target3 = 2;
         if (tier <= 6 && tier >= 4)
         {
             target1 = 3;
             target2 = 5;
+            target3 = 2;
         }
         else if (tier >= 6)
         {
             target1 = 2;
             target2 = 3;
+            target3 = 5;
         }
         int type = 0;
         Debug.Log($"랜덤 수 : {random}");
@@ -131,10 +138,14 @@ public class ResultManager : MonoBehaviour//vs코드
             type = 2;
             Debug.Log($"대상 타겟 가중치 {target1 + target2}대상 티어  2티어 ");
         }
-        else
+        else if (random <= target1 + target2 + target3)
         {
             type = 3;
             Debug.Log($"대상 티어 3티어 ");
+        }
+        else 
+        {
+            type = 4;
         }
         return type;
     }
@@ -155,8 +166,12 @@ public class ResultManager : MonoBehaviour//vs코드
                 case 3:
                     PickStatList(stat3);
                     break;
+                 case 4:
+                statChance = true;
+                PickSpecialList(SpecialAugment1);
+                break;
 
-            }
+        }
     }
     public void CallSpecialResult()
     {
@@ -174,6 +189,13 @@ public class ResultManager : MonoBehaviour//vs코드
             case 3:
                 PickSpecialList(SpecialAugment3);
                 break;
+            case 4:
+                PickSpecialList(SpecialAugment3);
+                break;
+
+            default:
+                PickSpecialList(SpecialAugment1);
+                break;
 
         }
     }
@@ -182,7 +204,6 @@ public class ResultManager : MonoBehaviour//vs코드
     {
         if (SetActiveCheck) 
         {
-            Debug.Log($"안골라서 첫번재 선택");
             picklist[0].pick();
         }
         int Count = picklist.Length;
@@ -205,7 +226,6 @@ public class ResultManager : MonoBehaviour//vs코드
         if (SetActiveCheck)
         {
             picklist[0].pick();
-            Debug.Log($"안골라서 첫번재 선택");
         }
         int Count = picklist.Length;
         List<SpecialAugment> list = origin.ToList();
@@ -219,6 +239,7 @@ public class ResultManager : MonoBehaviour//vs코드
         }
         SetActiveCheck = true;
         IsStat = false;
+        
     }
     public void close()//목록에서 골랐다면 띄운 ui를 닫아줌
     {
@@ -235,11 +256,11 @@ public class ResultManager : MonoBehaviour//vs코드
             picklist[i].gameObject.SetActive(false);
             
         }
-        if (!IsStat)
+        if (!IsStat && !statChance)
         {
             ready();
         }
-
+        statChance = false;
     }
     public void ready() 
     {

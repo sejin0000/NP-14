@@ -299,7 +299,7 @@ RectTransform:
   m_Children:
   - {fileID: 1334001118495698896}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -386,6 +386,11 @@ MonoBehaviour:
   targetZone: {fileID: 4908081615333734145}
   nonePushBtn: {fileID: 1221703937177113628}
   pushBtn: {fileID: 1035972213486931132}
+  controlcheck: 0
+  time: 0
+  btnControlBool: 0
+  givePower: 0
+  oldPower: 0
 --- !u!114 &70507814931864471
 MonoBehaviour:
   m_ObjectHideFlags: 0
