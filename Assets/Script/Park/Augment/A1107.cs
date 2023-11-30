@@ -28,21 +28,19 @@ public class A1107 : MonoBehaviourPun //주변힐
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player")
-            && collision.gameObject.GetComponent<PlayerStatHandler>()) 
+        PlayerStatHandler target = collision.gameObject.GetComponent<PlayerStatHandler>();
+        if (target != null) 
         {
-            colleagueList.Add(collision.GetComponent<PlayerStatHandler>());
-            Debug.Log($"플레이어 입장 - 현재 플레이어 수 : {colleagueList.Count()}");
+            colleagueList.Add(target);
         }
         
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player")
-            && collision.gameObject.GetComponent<PlayerStatHandler>())
+        PlayerStatHandler target = collision.gameObject.GetComponent<PlayerStatHandler>();
+        if (target != null)
         {
-            colleagueList.Remove(collision.GetComponent<PlayerStatHandler>());
-            Debug.Log($"플레이어 퇴장 - 현재 플레이어 수 : {colleagueList.Count()}");
+            colleagueList.Remove(target);
         }
 
     }
