@@ -24,9 +24,9 @@ public class GameManager : MonoBehaviour
 
     public event Action OnGameClearEvent;     //게임 클리어
     public event Action OnGameOverEvent;      //게임 오버
-    public event Action PlayerLifeCheckEvent;       //플레이어 죽음
+    public event Action PlayerLifeCheckEvent; //플레이어 죽음
 
-
+    public event Action ChangeGoldEvent;
     public bool ClearStageCheck;//박민혁 추가 스테이지 클리어시 빈방 비울때 콜여부
 
     public StagerListInfoSO stageListInfo;
@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
     public Dictionary<int, Transform> playerInfoDictionary;
 
     public int PartyDeathCount;
+    public int TeamGold;
 
 
 
@@ -86,6 +87,7 @@ public class GameManager : MonoBehaviour
         CallInitEvent();
         PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
         MakeSetting.MakeManager();
+        TeamGold = 0;
     }
     
 
@@ -261,6 +263,16 @@ public class GameManager : MonoBehaviour
     public void CallPlayerLifeCheckEvent()
     {
         PlayerLifeCheckEvent?.Invoke();
+    }
+    [PunRPC]
+    public void ChangeGold(int i)
+    {
+        CallChangeGoldEvent();
+        TeamGold += i;
+    }
+    public void CallChangeGoldEvent()
+    {
+        ChangeGoldEvent?.Invoke();
     }
 
 }
