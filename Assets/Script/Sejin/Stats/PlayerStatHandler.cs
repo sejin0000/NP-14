@@ -53,6 +53,7 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     public GameObject _PlayerSprite;
     public GameObject _WeaponSprite;
+    public PlayerDebuffControl _DebuffControl;
 
     public bool isNoramlMove;
     public bool isCanSkill;
@@ -346,6 +347,7 @@ public class PlayerStatHandler : MonoBehaviourPun
         tempInputControl.ResetSetting();
         isDie = false;
         isRegen = true;
+        _DebuffControl.Init(PlayerDebuffControl.buffName.TwoMoon, 5f);
         photonView.RPC("SendRegenBool", RpcTarget.All, viewID);
         Debug.Log("부활 무적 시작");
         // 부활 파티클이 켜져야 하는 시점

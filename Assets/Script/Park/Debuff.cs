@@ -131,6 +131,7 @@ public class Debuff : MonoBehaviourPun
             targetPlayer.CanLowSteam = false;
             targetPlayer.AtkSpeed.added += 0.5f;
             targetPlayer.Speed.added += 0.5f;
+            targetPlayer._DebuffControl.Init(PlayerDebuffControl.buffName.Speed, endtime);
             yield return new WaitForSeconds(endtime);
             targetPlayer.AtkSpeed.added -= 0.5f;
             targetPlayer.Speed.added -= 0.5f;
@@ -164,6 +165,7 @@ public class Debuff : MonoBehaviourPun
             Debug.Log("스피드.... ");
             targetPlayer.CanSpeedBuff = false;
             targetPlayer.Speed.added += 3f;
+            targetPlayer._DebuffControl.Init(PlayerDebuffControl.buffName.Speed, endtime);
             Debug.Log($"현재 속도 1: {targetPlayer.Speed.total}");
             yield return new WaitForSeconds(endtime);
             targetPlayer.Speed.added -= 3f;
