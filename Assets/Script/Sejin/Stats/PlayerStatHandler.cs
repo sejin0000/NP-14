@@ -208,6 +208,7 @@ public class PlayerStatHandler : MonoBehaviourPun
         defense = 1;
 
         IsChargeAttack = false;
+        _DebuffControl=GetComponent<PlayerDebuffControl>();
     }
     private void OnEnable()
     {
