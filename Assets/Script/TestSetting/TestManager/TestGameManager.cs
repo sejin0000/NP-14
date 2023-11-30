@@ -209,4 +209,9 @@ public class TestGameManager : MonoBehaviourPun
     {
         PartyDeathCount++;
     }
+    [PunRPC]
+    public void MinusPartyDeathCount()
+    {
+        PartyDeathCount--;
+    }
 }

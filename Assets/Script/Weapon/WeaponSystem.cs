@@ -1,8 +1,10 @@
 using Photon.Pun;
+using Photon.Realtime;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using static UnityEngine.Rendering.DebugUI.Table;
 using Random = UnityEngine.Random;
 
@@ -63,7 +65,6 @@ public class WeaponSystem : MonoBehaviour
         sizeBody = false;
         locator = false;
         sniping = false;
-        canAngle = false;
         fire = false;
         water = false;
         ice = false;
@@ -73,6 +74,7 @@ public class WeaponSystem : MonoBehaviour
         pivotSet = false;
         canresurrection = false;
         sniperAtkBuff=false;
+        canAngle=false;
         weaponType = WeaponType.Shooting;
         finalAttackCoeff = 1;
         humanAttackintelligentmissile = false;
@@ -90,7 +92,6 @@ public class WeaponSystem : MonoBehaviour
         {
             Quaternion rot = muzzleOfAGun.transform.rotation;
             rot.eulerAngles += new Vector3(0, 0, Random.Range(-1 * _controller.playerStatHandler.BulletSpread.total, _controller.playerStatHandler.BulletSpread.total));// 중요함
-
             float _ATK = _controller.playerStatHandler.ATK.total;
             float _BLT = _controller.playerStatHandler.BulletLifeTime.total;
             var _targets = targets;
@@ -113,7 +114,6 @@ public class WeaponSystem : MonoBehaviour
         {
             Quaternion rot = muzzleOfAGun.transform.rotation;
             rot.eulerAngles += new Vector3(0, 0, Random.Range(-1 * _controller.playerStatHandler.BulletSpread.total, _controller.playerStatHandler.BulletSpread.total));// 중요함
-
             float _ATK = _controller.playerStatHandler.ATK.total * finalAttackCoeff;
             float _BLT = _controller.playerStatHandler.BulletLifeTime.total;
             var _targets = targets;
@@ -155,17 +155,19 @@ public class WeaponSystem : MonoBehaviour
         {
             size *= 1.3f;
         }
- 
-        Vector3 bulletPositon= muzzleOfAGun.transform.position;
-        if (pivotSet) 
-        {
-            bulletPositon=this.gameObject.transform.localPosition;
-        }
 
-        GameObject _object =  Instantiate(bullet, bulletPositon, rot);
+
+        Vector3 bulletPositon = muzzleOfAGun.transform.position;
+
+        Vector3 eulerRotation = rot.eulerAngles;
+        if (pivotSet)
+        {
+            bulletPositon = this.gameObject.transform.localPosition;
+        }
+        GameObject _object =  Instantiate(bullet, bulletPositon, Quaternion.identity);
+        _object.transform.rotation = Quaternion.Euler(eulerRotation);
         Bullet _bullet = _object.GetComponent<Bullet>();
 
-        
         _object.transform.localScale = new Vector2(size, size);
         if (locator)
         {
@@ -182,7 +184,6 @@ public class WeaponSystem : MonoBehaviour
         _bullet.targets = _targets;
         _bullet.IsDamage = _isDamage;
         _bullet.BulletOwner = _viewID;
-        _bullet.canAngle = canAngle;
         _object.GetComponent<SpriteRenderer>().sprite = _controller.playerStatHandler.BulletSprite;
         _bullet.fire = fire;
         _bullet.water = water;
@@ -192,7 +193,9 @@ public class WeaponSystem : MonoBehaviour
         _bullet.Penetrate = Penetrate;
         _bullet.canresurrection = canresurrection;
         _bullet.sniperAtkBuff = sniperAtkBuff;
-        if (humanAttackintelligentmissile) 
+        _bullet.canAngle = canAngle;
+        _object.GetComponent<Bullet>().Init();
+        if (humanAttackintelligentmissile)
         {
             _bullet.MissileFire();
         }

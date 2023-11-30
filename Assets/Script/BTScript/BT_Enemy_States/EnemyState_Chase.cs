@@ -34,7 +34,7 @@ public class EnemyState_Chase : BTAction
 
     public override void Initialize()
     {
-        SetStateColor();
+        enemyAI.PV.RPC("SetStateColor", RpcTarget.All, (int)EnemyStateColor.ColorYellow, enemyAI.PV.ViewID);
         enemyAI.ChangeSpeed(enemySO.enemyChaseSpeed);
         currentTime = chaseTime;
         //¼öÁ¤µÊ
@@ -43,6 +43,7 @@ public class EnemyState_Chase : BTAction
 
     public override void Terminate()
     {
+        //enemyAI.PV.RPC("SetStateColor", RpcTarget.All, (int)StateColor.ColorOrigin, enemyAI.PV.ViewID);
     }
 
     public override Status Update()
@@ -80,7 +81,7 @@ public class EnemyState_Chase : BTAction
 
         float distanceToTarget = Vector3.Distance(owner.transform.position, enemyAI.Target.position);
 
-        if (distanceToTarget < enemySO.attackRange)
+        if (distanceToTarget < enemySO.attackRange && enemyAI.Target.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             enemyAI.isAttaking = true;
             //¼öÁ¤µÊ
@@ -110,12 +111,4 @@ public class EnemyState_Chase : BTAction
         */
     }
 
-
-
-
-
-    private void SetStateColor()
-    {
-        enemyAI.spriteRenderer.color = Color.gray;
-    }
 }

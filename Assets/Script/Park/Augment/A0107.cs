@@ -14,7 +14,6 @@ public class A0107 : MonoBehaviourPun
     public float oldpower;
     bool Ismove;
     float powerTime = 0f;
-    float magnification = 0.1f;
     private void Awake()
     {
         if (photonView.IsMine)//알맞은 타이밍 //가만히 있는 시간에 비례하여 공업
@@ -26,7 +25,6 @@ public class A0107 : MonoBehaviourPun
             playerStat.MoveEndEvent += MoveEndEvent;
             power = 0;
             oldpower = 0;
-            magnification = 0.1f;
             powerTime = 0f;
             Ismove =false;
         }
@@ -38,10 +36,7 @@ public class A0107 : MonoBehaviourPun
             playerStat.ATK.added += (Time.deltaTime) * 0.1f;
             power += Time.deltaTime * 0.1f;
             powerTime += Time.deltaTime;
-            if (powerTime >= 30f)
-            {
-                magnification = 0.2f;
-            }
+
         }
 
     }
@@ -56,7 +51,6 @@ public class A0107 : MonoBehaviourPun
     void MoveEndEvent() 
     {
         Ismove=false;
-        magnification = 0.1f;
         powerTime = 0f;
     }
 }

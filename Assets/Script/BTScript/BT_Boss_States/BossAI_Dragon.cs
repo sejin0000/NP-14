@@ -2,11 +2,32 @@ using myBehaviourTree;
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Burst.Intrinsics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 
+enum BossStateColor
+{
+    ColorRed,
+    ColorYellow,
+    ColorBlue,
+    ColorBlack,
+    ColorOrigin,
+    ColorMagenta,
+}
+
+enum PatternArea
+{
+    RightArea,
+    LeftArea,
+    TwoSideArea,
+    AllArea,
+    TargetCircleArea,
+    TriangleArea,
+}
 public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 {
     private BTRoot TreeAIState;
@@ -32,9 +53,14 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     //public Collider2D target;
     public List<Transform> PlayersTransform;
 
+    //공격 범위 안에 들어온 플레이어 리스트
+    public List<PlayerStatHandler> inToAreaPlayers = new List<PlayerStatHandler>();
+
+
     public Bullet enemyBulletPrefab;
     public Transform bossHead;
     public Transform bossAim;
+    public Color originColor;
 
     public LayerMask targetMask;             // 타겟 레이어(Player)
 
@@ -87,6 +113,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         viewDistance = bossSO.viewDistance;
         isLive = true;
 
+        originColor = spriteRenderers[0].color;
 
         //★싱글 테스트 시 if else 주석처리 할것
         //쫓는 플레이어도 호스트가 판별?
@@ -115,6 +142,15 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
             bossHead.transform.rotation = Quaternion.Slerp(bossHead.transform.rotation, hostRotation, Time.deltaTime * lerpSpeed);
             return;
         }
+
+        
+        for (int i = 0; i < inToAreaPlayers.Count; i++)
+        {
+            Debug.Log($"리스트 안에 들어온 플레이어{inToAreaPlayers[i]}");           
+        }
+        Debug.Log($"리스트 개수{inToAreaPlayers.Count} 개");
+        
+
 
         hostPosition = transform.position;
         hostRotation = bossHead.transform.rotation;
@@ -167,7 +203,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
             }
             if (playerBullet.water)
             {
-                Debuff.Instance.GiveIce(this.gameObject);
+                Debuff.Instance.GiveWater(this.gameObject);
             }
             if (playerBullet.burn)
             {
@@ -235,7 +271,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void DecreaseHP(float damage)
     {
-        SetStateColor(Color.red);
+        PV.RPC("SetStateColor", RpcTarget.All, Color.red);
         currentHP -= damage;
         GaugeUpdate();
         if (currentHP <= 0)
@@ -255,28 +291,25 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void Fire()
     {
-        var _bullet = Instantiate(enemyBulletPrefab, bossAim.transform.position, bossAim.transform.rotation);
+        int numBullets = 5; // 부채꼴 내의 총알 수를 조절하세요
+        float AttackAngle = 120f; // 부채꼴의 각도를 조절하세요
 
-        _bullet.IsDamage = true;
-        _bullet.ATK = bossSO.atk;
-        _bullet.BulletLifeTime = bossSO.bulletLifeTime;
-        _bullet.BulletSpeed = bossSO.bulletSpeed;
-        _bullet.targets["Player"] = (int)BulletTarget.Player;
+        float startAngle = -AttackAngle / 2f; // 부채꼴의 시작 각도 -60 == -60 ~ 120 즉 180도의 범위를 커버한다.
 
-        /*
-        //수정 : gameObject 에서 Bullet으로 ->변수 형태와 용도를 통일함
-        Bullet _bullet = Instantiate<Bullet>(enemyBulletPrefab, enemyAim.transform.position, enemyAim.transform.rotation);
+        for (int i = 0; i < numBullets; i++)
+        {
+            //-60 + 0 * (120/4) = 0 || -60 + 1 * (120/4)
+            float angle = startAngle + i * (AttackAngle / (numBullets - 1));
+            Quaternion bulletRotation = bossHead.transform.rotation * Quaternion.Euler(0f, 0f, angle - 90f);
 
+            var _bullet = Instantiate(enemyBulletPrefab, bossAim.transform.position, bulletRotation);
 
-
-        _bullet.IsDamage = true;
-        _bullet.ATK = enemySO.atk;
-        _bullet.BulletLifeTime = enemySO.bulletLifeTime;
-        _bullet.BulletSpeed = enemySO.bulletSpeed;
-        _bullet.target = BulletTarget.Player;
-        */
-
-        //수정 : gameObject 에서 Bullet으로 ->변수 형태와 용도를 통일함      
+            _bullet.IsDamage = true;
+            _bullet.ATK = bossSO.atk;
+            _bullet.BulletLifeTime = bossSO.bulletLifeTime;
+            _bullet.BulletSpeed = bossSO.bulletSpeed;
+            _bullet.targets["Player"] = (int)BulletTarget.Player;
+        }
     }
 
     //상태이상
@@ -378,7 +411,8 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
                 AreaList[0].gameObject.SetActive(true); //우측 공격영역 (좌측 팔)
                 SetAnim("isLeftAttack", true); //트리거로 하려고 했으나 팀원이 에러가 가끔 생긴다고 해서 bool로 animSet
                 StartCoroutine(SetAnimFalse("isLeftAttack"));
-                StartCoroutine(SetAreaLayers(0));
+                //이 부분에 플레이어 피해&넉백 판정주는 코루틴 실행
+                StartCoroutine(TryAttackAreaTargets(0));
 
                 //공격 이후
                 StartCoroutine(LaterInActiveAttackArea(0));
@@ -387,7 +421,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
                 AreaList[1].gameObject.SetActive(true); ; //좌측 공격영역 (우측 팔)
                 SetAnim("isRightAttack", true);
                 StartCoroutine(SetAnimFalse("isRightAttack"));
-                StartCoroutine(SetAreaLayers(1));
+                StartCoroutine(TryAttackAreaTargets(1));
 
 
                 StartCoroutine(LaterInActiveAttackArea(1));
@@ -397,39 +431,32 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
                 AreaList[1].gameObject.SetActive(true); ;
                 SetAnim("isTwoArmAttack", true);
                 StartCoroutine(SetAnimFalse("isTwoArmAttack"));
-                StartCoroutine(SetAreaLayers(0));
-                StartCoroutine(SetAreaLayers(1));
 
+                // 각 Area에 대해 처리
+                StartCoroutine(TryAttackAreaTargets(2));
 
                 StartCoroutine(LaterInActiveAttackArea(2)); // 2 : 둘 다 꺼짐
                 break;
             case 3:
                 AreaList[2].gameObject.SetActive(true); ; // 모든 범위 실행
-                StartCoroutine(SetAreaLayers(2));
+                StartCoroutine(TryAttackAreaTargets(2));
 
 
                 StartCoroutine(LaterInActiveAttackArea(3));               
                 break;
             case 4:
                 AreaList[3].gameObject.SetActive(true); ; // 타겟 플레이어에 원형 실행
-                StartCoroutine(SetAreaLayers(3));
-
+                StartCoroutine(ChaseArea());
+                StartCoroutine(TryAttackAreaTargets(3));               
 
                 StartCoroutine(LaterInActiveAttackArea(4));             
                 break;
             case 5:
-                for (int i = 0; i < PlayersTransform.Count; i++)
-                {
-                    AreaList[3].gameObject.SetActive(true); ; // 모든 플레이어에 원형 실행
-                    StartCoroutine(SetAreaLayers(3));
-
-
-                    StartCoroutine(LaterInActiveAttackArea(5));                    
-                }              
+                // 모든 플레이어에 원형 실행(3,4,5)
                 break;
             case 6:
-                AreaList[4].gameObject.SetActive(true); ; // 브레스 범위 표시(방법이 상이함)
-                StartCoroutine(SetAreaLayers(4));
+                AreaList[6].gameObject.SetActive(true); ; // 브레스 범위 표시(방법이 상이함)
+                StartCoroutine(TryAttackAreaTargets(4));
 
                 StartCoroutine(LaterInActiveAttackArea(6));                
                 break; 
@@ -457,13 +484,10 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
                 AreaList[3].gameObject.SetActive(false); // 타겟 플레이어에 원형 실행
                 break;
             case 5:
-                for (int i = 0; i < PlayersTransform.Count; i++)
-                {
-                    AreaList[3].gameObject.SetActive(false); // 모든 플레이어에 원형 실행
-                }
+                ;//모든 플레이어를 추적하는 원형(3,4,5)
                 break;
             case 6:
-                AreaList[4].gameObject.SetActive(false); // 브레스 범위 표시(방법이 상이함)
+                AreaList[6].gameObject.SetActive(false); // 브레스 범위 표시(방법이 상이함)
                 break;
         }
     }
@@ -484,30 +508,85 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         SetAnim(boolName, false);
     }
 
-    public void ChangeAreaLayers(int targetArea)
+
+    //실제 공격 판정 타이밍
+    IEnumerator TryAttackAreaTargets(int areaIndex)
     {
-        if (AreaList[targetArea].gameObject.layer == 14)
-            AreaList[targetArea].gameObject.layer = 15;
-        else
-            AreaList[targetArea].gameObject.layer = 14;
+        yield return new WaitForSeconds(2.0f);
+        AttackTargetsInArea(areaIndex);
     }
 
-    //영역이 다 차오르면, 잠시 공격레이어로 변환 후 다시 원래 레이어로 복귀
-    IEnumerator SetAreaLayers(int targetArea)
+    //진짜 진짜 공격&넉백임
+    public void AttackTargetsInArea(int areaIndex)
     {
-        yield return new WaitForSeconds(2f);
-        ChangeAreaLayers(targetArea);
+        if (inToAreaPlayers == null || areaIndex < 0 || areaIndex >= AreaList.Length)
+            return;
 
-        yield return new WaitForSeconds(0.3f);
-        ChangeAreaLayers(targetArea);
+        Transform attackAreaTransform = AreaList[areaIndex].transform;
+
+        for (int i = 0; i < inToAreaPlayers.Count; i++)
+        {
+
+            PlayerStatHandler player = inToAreaPlayers[i];
+
+            // 플레이어와 공격 영역의 방향 벡터
+            Vector3 playerPosition = player.transform.position;
+            Vector3 areaPosition = attackAreaTransform.position;
+
+            if (areaIndex == 2)
+                areaPosition = new Vector3(0, 5, 0);
+
+            Vector3 directionToPlayer = (playerPosition - areaPosition).normalized;
+
+
+            // 넉백거리
+            float knockbackDistance = 1.5f;
+
+            // 실제 넉백
+
+            StartCoroutine(player.Knockback(directionToPlayer, knockbackDistance));
+
+            // 실제 피해
+            player.GiveDamege(bossSO.atk);
+
+
+        }
     }
+
+    //일정 시간 이후에 멈추도록(추적 속도를 0으로 변경)
+    IEnumerator ChaseArea()
+    {
+        if (AreaList[3].gameObject.activeSelf)
+        {
+            // 추적 시작 위치 저장
+            Vector3 areaStartPosition = currentTarget.position;
+
+            AreaList[3].transform.position = areaStartPosition;
+
+            // 일정 시간 동안 천천히 타겟을 쫓음
+            float elapsedTime = 0f;
+            float chaseDuration = 3.5f; // 추적 시간
+
+            while (elapsedTime < chaseDuration)
+            {
+                // 타겟 쪽으로 천천히 이동
+                AreaList[3].transform.position = Vector3.Lerp(areaStartPosition, currentTarget.position, elapsedTime / chaseDuration);
+
+                elapsedTime += Time.deltaTime;
+                yield return null; // 한 프레임 대기
+            }
+        }
+
+    }
+
+
+
+
     #endregion
 
     #region 타겟(Player) 관련 
     private void OnTargetChaged(Transform _target)
     {
-        //마스터 클라이언트가 몬스터를 소환하고, 해당 몬스터들이
-
         if (PhotonNetwork.IsMasterClient)
         {
             if (_target == null)
@@ -534,7 +613,35 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         currentTarget = null;
     }
 
+    private void SetColor(int colorNum)
+    {
+        for (int i = 0; i < spriteRenderers.Length; i++)
+        {
+            switch (colorNum)
+            {
+                case (int)BossStateColor.ColorRed:
+                    spriteRenderers[i].color = Color.red;
+                    break;
+                case (int)BossStateColor.ColorYellow:
+                    spriteRenderers[i].color = Color.yellow;
+                    break;
+                case (int)BossStateColor.ColorBlue:
+                    spriteRenderers[i].color = Color.blue;
+                    break;
+                case (int)BossStateColor.ColorBlack:
+                    spriteRenderers[i].color = Color.black;
+                    break;
+                case (int)BossStateColor.ColorOrigin:
+                    spriteRenderers[i].color = originColor;
+                    break;
+                case (int)BossStateColor.ColorMagenta:
+                    spriteRenderers[i].color = Color.magenta;
+                    break;
+            }
+        }
+    }
 
+    [PunRPC]
     public void SetStateColor(Color _color)
     {
         for (int i = 0; i < spriteRenderers.Length; i++)
@@ -713,5 +820,4 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     #endregion
-
 }

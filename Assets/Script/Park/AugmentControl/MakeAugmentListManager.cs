@@ -21,6 +21,7 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
     public  List<SpecialAugment> SpecialAugment2 = new List<SpecialAugment>();
     public  List<SpecialAugment> SpecialAugment3 = new List<SpecialAugment>();
 
+
     public List<SpecialAugment> test = new List<SpecialAugment>();
     public List<SpecialAugment> test2 = new List<SpecialAugment>();
     public List<SpecialAugment> Prototype = new List<SpecialAugment>();
@@ -40,7 +41,11 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
 
     private void Awake()
     {
-         stat1 = new List<IAugment>();
+        Instance = this;
+        DontDestroyOnLoad(this);
+
+
+        stat1 = new List<IAugment>();
          stat2 = new List<IAugment>();
          stat3 = new List<IAugment>();
 
@@ -48,26 +53,20 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
          SpecialAugment2 = new List<SpecialAugment>();
          SpecialAugment3 = new List<SpecialAugment>();
 
-        test = new List<SpecialAugment>();
-        test2 = new List<SpecialAugment>();
-        Prototype = new List<SpecialAugment>();
-        Instance=this;
-        DontDestroyOnLoad(this);
+
+
         StatAugmentSetting(stat1, "stat1");
         StatAugmentSetting(stat2, "stat2");
         StatAugmentSetting(stat3, "stat3");
         //playerType = playerStatHandler.CharacterType;
-        
-        SpecialAugmentSetting(test, "Test111"); //@만든증강적용테스트용 
-        SpecialAugmentSetting(test2, "Test222"); //@만든증강적용테스트용 
-        //SpecialAugmentSetting(Prototype, "Test222");
-        //SpecialAugmentSetting(Prototype, "Test111");
+
+        Prototype = new List<SpecialAugment>();
         SpecialAugmentSetting(Prototype, "test_Proto");
 
     }
     private void Start()
     {
-        ResultManager.Instance.startset();
+        ResultManager.Instance.StartSet();
     }
     public void makeLisk() 
     {
@@ -76,8 +75,8 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
         //구별값으로 이게맞나?
         playerType = (int)classNum;
         Debug.Log("이부분 코드 수정해야함");
-        playerType = 1;
-        string Ptype = "a" ;
+        //playerType = 1;
+        string Ptype = "a";
         switch (playerType)
         {
             case 0:
@@ -95,6 +94,9 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
         SpecialAugmentSetting(SpecialAugment1, Ptype + "1");
         SpecialAugmentSetting(SpecialAugment2, Ptype + "2");
         SpecialAugmentSetting(SpecialAugment3, Ptype + "3");
+        SpecialAugmentSetting(SpecialAugment1, "All1");
+        SpecialAugmentSetting(SpecialAugment2, "All2");
+        SpecialAugmentSetting(SpecialAugment3, "All3");
     }
     public static void StatAugmentSetting(List<IAugment> list, string str)
     {

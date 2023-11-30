@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5005106523934818402}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.14349303, y: 0.05022845, z: 0.0029268973}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -122,6 +122,7 @@ GameObject:
   - component: {fileID: 8887858406777451807}
   - component: {fileID: 7691614160748915792}
   - component: {fileID: -8600854552173727201}
+  - component: {fileID: 918776554866348313}
   m_Layer: 10
   m_Name: Bullet
   m_TagString: Bullet
@@ -258,18 +259,20 @@ MonoBehaviour:
   BulletLifeTime: 0
   BulletSpeed: 20
   IsDamage: 0
-  canAngle: 0
   fire: 0
   water: 0
   ice: 0
   burn: 0
   gravity: 0
   Penetrate: 0
-  dlsrhdwlsmdaltkdlf: 0
+  canresurrection: 0
+  sniperAtkBuff: 0
   _direction: {x: 0, y: 0}
+  layerMask: 0
   locator: 0
   sniping: 0
   BulletOwner: 0
+  canAngle: 0
 --- !u!50 &-8600854552173727201
 Rigidbody2D:
   serializedVersion: 4
@@ -297,3 +300,38 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!58 &918776554866348313
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8703405332802933773}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.25

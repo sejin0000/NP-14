@@ -19,6 +19,7 @@
 
         float destinationX = 0f;
         float destinationY = 0f;
+        float patrolRadius = 4f;  // 이동 반경
 
     public EnemyState_Patrol(GameObject _owner)
     {
@@ -38,7 +39,7 @@
     //노드 Start()
     public override void Initialize()
     {
-        SetStateColor();
+        enemyAI.PV.RPC("SetStateColor", RpcTarget.All, (int)EnemyStateColor.ColorOrigin, enemyAI.PV.ViewID);
 
         if (enemyAI.nav != null)
         {
@@ -50,24 +51,24 @@
 
     //노드 종료 순간 호출
     public override void Terminate()
-        {
+    {
+        //enemyAI.PV.RPC("SetStateColor", RpcTarget.All, (int)StateColor.ColorOrigin, enemyAI.PV.ViewID);
+    }
 
-        }
-
-        //노드 Update()
-        public override Status Update()
-        {       
-            Patrol();
-            //PatrolView();
-            ElapseTime();
+    //노드 Update()
+    public override Status Update()
+    {
+        Patrol();
+        //PatrolView();
+        ElapseTime();
 
 
-            //만약 탐지 범위에 플레이어가 들어왔다면 => 성공 반환으로 액션 끝내자
-            if (enemyAI.isChase)
-                return Status.BT_Success;
+        //만약 탐지 범위에 플레이어가 들어왔다면 => 성공 반환으로 액션 끝내자
+        if (enemyAI.isChase)
+            return Status.BT_Success;
 
-            return Status.BT_Running;
-        }
+        return Status.BT_Running;
+    }
 
 
     //목적지 리셋, 애니메이션, 액션타임, 스피드, 플립 등등 모두 초기화 관
@@ -86,12 +87,13 @@
         //anim.SetBool("isRun", false); //anim.SetBool("Running", isRunning);
 
 
+        //원형 영역안에서 랜덤한 2D 벡터 생성 ==> insideUnitCircle
+        // == 목적지 지정
+        Vector2 randomOffset = Random.insideUnitCircle * patrolRadius;
+        destination = owner.transform.position + new Vector3(randomOffset.x, randomOffset.y, 0);
 
-        destinationX = Random.Range(-6f, 6f);
-        destinationY = Random.Range(-5f, 5f);
 
 
-        destination.Set(destinationX, destinationY, 0); // 목적지 지정
 
 
         //스프라이트 조정(anim = 최대 4방향[대각] + 4방향[정방향] 지정 가능)
@@ -127,10 +129,6 @@
         }
     }
 
-    private void SetStateColor()
-    {
-        enemyAI.spriteRenderer.color = Color.yellow;
-    }
 
     /*
 

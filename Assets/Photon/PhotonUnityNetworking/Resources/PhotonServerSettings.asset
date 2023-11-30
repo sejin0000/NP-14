@@ -240,6 +240,16 @@ MonoBehaviour:
   - PunPortalSetting
   - PunReadyCheck
   - WaterGive
+  - SetStateColor
+  - DeadSync
+  - SendEffect
+  - PunCallRoomEndEvent
+  - PunCallRoomStartEvent
+  - CallRoomEndEvent
+  - A921
+  - MinusPartyDeathCount
+  - ChangeGold
+  - PunCallStageEndEvent
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

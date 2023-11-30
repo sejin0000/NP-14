@@ -9,8 +9,7 @@ public class PlayerResultController : MonoBehaviour
     public void MakeManager() 
     {
         AugmentManager.Instance.startset(this.gameObject);
-        ResultManager.Instance.startset(this.gameObject);
         MakeAugmentListManager.Instance.startset(this.gameObject);
-
+        ResultManager.Instance.startset(this.gameObject);
     }
 }

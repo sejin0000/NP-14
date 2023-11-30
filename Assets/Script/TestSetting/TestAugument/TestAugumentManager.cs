@@ -15,7 +15,7 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     int hp = 8;
     float speed = 1;
     float atkspeed = 0.1f;
-    float bulletSpread = -0.1f;
+    float bulletSpread = -1f;
     int cooltime = -1;
     int critical = 5;
     int AmmoMax = 1;
@@ -183,6 +183,7 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
         playerstatHandler.AmmoMax.added += AmmoMax;
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@스탯3티어
+    [PunRPC]
     private void A921(int PlayerNumber)//스탯 공 티어 3
     {
         ChangePlayerStatHandler(PlayerNumber);
@@ -404,25 +405,6 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
         playerstatHandler.HP.coefficient *= 1.5f;
         playerstatHandler.ATK.coefficient *= 1.5f;
     }
-    //private void A119(int PlayerNumber)// 원시 고대 반전 보존
-    //{
-    //    ChangePlayerAndPlayerStatHandler(PlayerNumber);
-    //    if (targetPlayer.GetComponent<PlayerInput>() == null)
-    //    {
-    //        Debug.Log("널값임 비상비상비상비상비상비상");
-    //    }
-    //    playerInput = targetPlayer.GetComponent<PlayerInput>();
-    //    if (playerInput.currentActionMap.name == "Player")
-    //    {
-    //        playerInput.SwitchCurrentActionMap("Player1");
-    //    }
-    //    else
-    //    {
-    //        playerInput.SwitchCurrentActionMap("Player");
-    //    }
-    //    playerstatHandler.HP.coefficient *= 1.5f;
-    //    playerstatHandler.ATK.coefficient *= 1.5f;
-    //}
     [PunRPC]
     private void A120(int PlayerNumber)//워터 파크 개장 122의 물버전
     {
@@ -459,7 +441,6 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
             // 일단 무덤 : 업적 느낌으로 UI로 띄워주면 좋을 것 같은데,,,? : 도현님이 비명을 지르시겠지?
         }
     }
-    //테스트 완료 그러나 이벤트로 작동하여 추가 테스트가 필요
     [PunRPC]
     private void A124(int PlayerNumber)//눈먼총잡이 : 시야가 대폭 감소 하며 공격 속도, 재장전 속도가 증가합니다.<<애매모호한듯?
     {
@@ -503,7 +484,7 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     #region All2
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 공용2티어
     [PunRPC]
-    private void A201(int PlayerNumber)//탱탱볼
+    private void A201(int PlayerNumber)//탱탱볼 부활
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         playerstatHandler.BulletLifeTime.coefficient *= 2f;
@@ -756,10 +737,14 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A1104>();
-        playerInput = targetPlayer.GetComponent<PlayerInput>();
-        playerInput.actions.FindAction("Flash").Enable();
-        playerInput.actions.FindAction("Roll").Disable();
-        playerInput.actions.FindAction("SiegeMode").Disable();
+        if (targetPlayer.GetPhotonView().IsMine) 
+        {
+            targetPlayer.GetComponent<PlayerInputController>().Flash = true;
+            playerInput = targetPlayer.GetComponent<PlayerInput>();
+            playerInput.actions.FindAction("Flash").Enable();
+            playerInput.actions.FindAction("Roll").Disable();
+            playerInput.actions.FindAction("SiegeMode").Disable();
+        }
     }
     [PunRPC]
     private void A1105(int PlayerNumber)//오토 쉬프트  //현재 코루틴 버그가 있음;
@@ -843,14 +828,17 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         targetPlayer.AddComponent<A1207>();
-        PlayerInputController inputController = targetPlayer.GetComponent<PlayerInputController>();
-        inputController.cantMove = true;
-        inputController.cantSpacebar = true;
-        playerInput = targetPlayer.GetComponent<PlayerInput>();
-        playerInput.actions.FindAction("Move2").Disable();
-        playerInput.actions.FindAction("Move").Disable();
-        playerInput.actions.FindAction("SiegeMode").Disable();
-        playerInput.actions.FindAction("Flash").Disable();
+        if (targetPlayer.GetPhotonView().IsMine)
+        {
+            PlayerInputController inputController = targetPlayer.GetComponent<PlayerInputController>();
+            inputController.cantMove = true;
+            inputController.cantSpacebar = true;
+            playerInput = targetPlayer.GetComponent<PlayerInput>();
+            playerInput.actions.FindAction("Move2").Disable();
+            playerInput.actions.FindAction("Move").Disable();
+            playerInput.actions.FindAction("SiegeMode").Disable();
+            playerInput.actions.FindAction("Flash").Disable();
+        }
     }
     #endregion
     #region Sniper3
@@ -1002,12 +990,10 @@ public class TestAugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강을 
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         targetPlayer.GetComponent<WeaponSystem>().humanAttackintelligentmissile = true;
         playerstatHandler.ATK.coefficient *= 0.9f;
-        //targetPlayer.GetComponent<WeaponSystem>().humanAttackintelligentmissile = true;
     }
     [PunRPC]
     private void A2303(int PlayerNumber)
     {
-        Debug.Log("미완성");
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A2303>();
     }

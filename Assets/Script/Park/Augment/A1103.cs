@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class A1103 : MonoBehaviour
+public class A1103 : MonoBehaviourPun
 {
     [SerializeField] private float convertCoeff;        // 전환 계수
     [SerializeField] public float healTotal;            // 전체 회복된 HP
@@ -13,16 +13,13 @@ public class A1103 : MonoBehaviour
 
     private void Awake()
     {
-        controller = GetComponent<CollisionController>();
-        controller.OnHealedEvent += ConvertHealToHeal;
-        convertCoeff = 0.3f;
-
-        foreach (var target in TestGameManager.Instance.playerInfoDictionary.Values)
+        if (photonView.IsMine) 
         {
-            target.gameObject.GetComponent<CollisionController>().CanPayBack = true;
+            controller = GetComponent<CollisionController>();
+            controller.OnHealedEvent += ConvertHealToHeal;
+            convertCoeff = 0.3f;
+            statHandler = GetComponent<PlayerStatHandler>();
         }
-
-        statHandler = GetComponent<PlayerStatHandler>();
     }
     private void ConvertHealToHeal(float healed, int viewID)
     {

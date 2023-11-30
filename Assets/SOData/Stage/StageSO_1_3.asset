@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: StageSO_1_3
   m_EditorClassIdentifier: 
   stageName: Stage_1_3
+  NumberOfMonstersToSpawn: 12
   areaNum: 1
   stageNum: 3
   MonsterDatas:
+    stageTypr: 0
     monsters:
     - monsterType: "\uBAAC\uC2A4\uD1301"
       monsterCount: 20
