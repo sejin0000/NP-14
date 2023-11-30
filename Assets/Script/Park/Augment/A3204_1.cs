@@ -21,15 +21,11 @@ public class A3204_1 : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.GetComponent<Bullet>()) 
-        {
-            Bullet bullet = collision.gameObject.GetComponent<Bullet>();
-            if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet")
-            && bullet.targets.ContainsValue((int)BulletTarget.Player))
-            {
+        Bullet bullet = collision.gameObject.GetComponent<Bullet>();
+        if (bullet!=null && bullet.targets.ContainsValue((int)BulletTarget.Player)) 
+        {     
                 deadcheck(bullet.ATK);
                 Destroy(collision.gameObject);
-            }
         }
 
     }
@@ -41,7 +37,4 @@ public class A3204_1 : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-    // Update is called once per frame
-    //局档傍规 秦出具摆绰单
 }
