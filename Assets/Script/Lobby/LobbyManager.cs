@@ -12,6 +12,7 @@ public enum PanelType
 {
     LoginPanel,
     MainLobbyPanel,
+    RoomFindPanel,
     RoomPanel,
     TestLobbyPanel,
     TestRoomPanel,
@@ -29,6 +30,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     [Header("MainLobbyPanel")]
     public MainLobbyPanel MainLobbyP;
+
+    [Header("RoomFindPanel")]
+    public RoomFindPanel RoomFindP;
 
     [Header("MainRoomPanel")]
     public RoomPanel RoomP;
@@ -177,6 +181,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         string panelName = Enum.GetName(typeof(PanelType), panelType);
         LoginP.gameObject.SetActive(panelName.Equals(LoginP.name));
         MainLobbyP.gameObject.SetActive(panelName.Equals(MainLobbyP.name));
+        RoomFindP.gameObject.SetActive(panelName.Equals(RoomFindP.name));
         RoomP.gameObject.SetActive(panelName.Equals(RoomP.name));
         TestLobbyP.gameObject.SetActive(panelName.Equals(TestLobbyP.name));
         TestRoomP.gameObject.SetActive(panelName.Equals(TestRoomP.name));

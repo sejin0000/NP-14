@@ -17,6 +17,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public Dictionary<string, RoomInfo> cachedTestRoomList;
     public Dictionary<string, GameObject> testRoomListEntries;
     public Dictionary<string, RoomInfo> cachedRoomList;
+    public Dictionary<string, GameObject> RoomFindEntriesList;
 
     private void Awake()
     {
@@ -37,6 +38,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         cachedRoomList = new Dictionary<string, RoomInfo>();
         cachedTestRoomList = new Dictionary<string, RoomInfo>();
         testRoomListEntries = new Dictionary<string, GameObject>();
+        RoomFindEntriesList = new Dictionary<string, GameObject>();
     }
 
     public override void OnConnectedToMaster()
@@ -74,6 +76,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
         UpdateCachedTestRoomList(roomList);
         UpdateTestRoomListView();
+        LobbyManager.Instance.RoomFindP.UpdateFindRoomListView();
     }
 
     public override void OnLeftLobby()
@@ -264,6 +267,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         }
 
         testRoomListEntries.Clear();
+        RoomFindEntriesList.Clear();
     }
 
     private void UpdateTestRoomListView()
@@ -278,6 +282,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             testRoomListEntries[info.Name] = entry;
         }
     }
+
 
     public IEnumerator WaitForLeaving()
     {

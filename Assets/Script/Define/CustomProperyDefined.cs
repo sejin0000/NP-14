@@ -11,6 +11,7 @@ public class CustomProperyDefined
 
     #region RoomCustomProperties
     public static readonly string TEST_OR_NOT = "IsTest";
+    public static readonly string RANDOM_OR_NOT = "IsRandom";
     public static readonly string TEST_SCENE = "Scene";
     #endregion
 }

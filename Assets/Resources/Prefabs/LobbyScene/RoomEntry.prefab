@@ -205,7 +205,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: -4313611400051238305, guid: d0a323e2a864b904eae64f13691384b1, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -271,9 +271,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 594df1ca5ba91604282eed5683062905, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RoomEntryButton: {fileID: 0}
-  RoomNameText: {fileID: 0}
-  RoomMemberText: {fileID: 0}
+  RoomEntryButton: {fileID: 7221212434897260202}
+  RoomNameText: {fileID: 2893289669709043289}
+  RoomMemberText: {fileID: 1316138753341525895}
 --- !u!1 &7124367185900102774
 GameObject:
   m_ObjectHideFlags: 0

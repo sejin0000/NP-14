@@ -18,6 +18,7 @@ public class MainLobbyPanel : MonoBehaviourPun
     [SerializeField] private Button quickStartButton;
     [SerializeField] private Button findRoomButton;
     [SerializeField] private Button settingButton;
+    [SerializeField] private Button backButton;
     private List<Button> ButtonList;
 
     [Header("CharacterSelectPopup")]
@@ -52,6 +53,7 @@ public class MainLobbyPanel : MonoBehaviourPun
         characterSelectButton.onClick.AddListener(playerInfo.OnCharacterButtonClicked);
         testLobbyButton.onClick.AddListener(OnTestLobbyButtonClicked);
         quickStartButton.onClick.AddListener(OnQuickStartButtonClicked);
+        findRoomButton.onClick.AddListener(OnFindRoomButtonClicked);
         ButtonList = new List<Button>
         {           
             findRoomButton,
@@ -112,7 +114,7 @@ public class MainLobbyPanel : MonoBehaviourPun
     #region Buttons
     private void OnQuickStartButtonClicked()
     {
-        var CustomRoomProperties = new Hashtable() { { CustomProperyDefined.TEST_OR_NOT, false } };
+        var CustomRoomProperties = new Hashtable() { { CustomProperyDefined.TEST_OR_NOT, false }, { CustomProperyDefined.RANDOM_OR_NOT, true } };
 
         if (NetworkManager.Instance.cachedRoomList == null
             || NetworkManager.Instance.cachedRoomList.Count == 0)
@@ -122,7 +124,7 @@ public class MainLobbyPanel : MonoBehaviourPun
 
             RoomOptions options = new RoomOptions { MaxPlayers = 3, PlayerTtl = 1500 };            
             options.CustomRoomProperties = CustomRoomProperties;
-            options.CustomRoomPropertiesForLobby = new string[] { CustomProperyDefined.TEST_OR_NOT };
+            options.CustomRoomPropertiesForLobby = new string[] { CustomProperyDefined.TEST_OR_NOT, CustomProperyDefined.RANDOM_OR_NOT };
 
             PhotonNetwork.CreateRoom(roomName, options);            
         }
@@ -131,6 +133,11 @@ public class MainLobbyPanel : MonoBehaviourPun
             Debug.Log("MainLobbyPanel : cachedRoomList is Not Null");
             PhotonNetwork.JoinRandomRoom(CustomRoomProperties, 3);            
         }
+    }
+
+    private void OnFindRoomButtonClicked()
+    {
+        LobbyManager.Instance.SetPanel(PanelType.RoomFindPanel);
     }
 
     public void OnTestLobbyButtonClicked()
