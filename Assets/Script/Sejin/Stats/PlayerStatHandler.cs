@@ -300,7 +300,7 @@ public class PlayerStatHandler : MonoBehaviourPun
             CallReflectEvent(damage, targetID);
             damage *= (1 - ReflectCoeff);
         }
-
+        Damage(damage);
     }
 
 
