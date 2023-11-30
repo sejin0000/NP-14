@@ -19,10 +19,10 @@ public class A3206_1 : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet"))
+        Bullet _bullet = collision.GetComponent<Bullet>();
+        if (_bullet != null)
         {
-            Bullet _bullet = collision.GetComponent<Bullet>();
-            if (collision.GetComponent<Bullet>().targets.ContainsValue((int)BulletTarget.Player)) 
+            if (_bullet.targets.ContainsValue((int)BulletTarget.Player)) 
             {
                 shieldHP -= collision.gameObject.GetComponent<Bullet>().ATK;
                 Debug.Log($"½¯µåÃ¼·Â{shieldHP}");

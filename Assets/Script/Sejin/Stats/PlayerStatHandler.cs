@@ -217,7 +217,8 @@ public class PlayerStatHandler : MonoBehaviourPun
         defense = 1;
 
         IsChargeAttack = false;
-
+        
+        _DebuffControl=GetComponent<PlayerDebuffControl>();
         indicatorSprite = playerStats.indicatorSprite;
         atkClip = playerStats.atkClip;
         reloadStartClip = playerStats.reloadClip[0];

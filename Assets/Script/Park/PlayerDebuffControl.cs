@@ -22,9 +22,9 @@ public class PlayerDebuffControl : MonoBehaviourPun
     }
     public void Init(buffName i,float time)
     {
-        if (0 == i)
+        if (0 == (int)i)
         {
-            photonView.RPC("TwoMoonBuffOn", RpcTarget.All);
+            photonView.RPC("SpeedBuffOn", RpcTarget.All);
             if (speedTime >= 0 && speedTime <= time)
             {
                 speedTime = time;
@@ -34,10 +34,10 @@ public class PlayerDebuffControl : MonoBehaviourPun
         }
         else 
         {
-            photonView.RPC("SpeedBuffOn", RpcTarget.All);
+            photonView.RPC("TwoMoonBuffOn", RpcTarget.All);
             if (twoMoonTIME > 0 && twoMoonTIME <= time)
             {
-                speedTime = time;
+                twoMoonTIME = time;
                 checkMoonTime = 0;
                 readyMoon = true;
             }
@@ -81,23 +81,23 @@ public class PlayerDebuffControl : MonoBehaviourPun
     }
 
     [PunRPC]
-    private void SpeedBuffOn() 
+    public void SpeedBuffOn() 
     {
         _speedParticle.gameObject.SetActive(true);
     }
     [PunRPC]
-    private void SpeedBuffOff()
+    public void SpeedBuffOff()
     {
-        _speedParticle.gameObject.SetActive(true);
+        _speedParticle.gameObject.SetActive(false);
     }
     [PunRPC]
-    private void TwoMoonBuffOn()
+    public void TwoMoonBuffOn()
     {
         _TwoMoonParticle.gameObject.SetActive(true);
     }
     [PunRPC]
-    private void TwoMoonBuffOff()
+    public void TwoMoonBuffOff()
     {
-        _TwoMoonParticle.gameObject.SetActive(true);
+        _TwoMoonParticle.gameObject.SetActive(false);
     }
 }

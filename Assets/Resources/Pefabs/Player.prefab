@@ -611,6 +611,7 @@ GameObject:
   - component: {fileID: 216501136413859800}
   - component: {fileID: 6315678254743216955}
   - component: {fileID: 7564274348363360787}
+  - component: {fileID: 2512666008385423343}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -636,7 +637,7 @@ Transform:
   - {fileID: 9128620294467032156}
   - {fileID: 4807003358785677878}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3012830528697824806
 MonoBehaviour:
@@ -663,7 +664,7 @@ MonoBehaviour:
   WeaponSpriteCase: {fileID: 0}
   _PlayerSprite: {fileID: 554290144144741705}
   _WeaponSprite: {fileID: 7639390929974933696}
-  _DebuffControl: {fileID: 8611466488581662014}
+  _DebuffControl: {fileID: 0}
   isNoramlMove: 0
   isCanSkill: 0
   isCanAtk: 0
@@ -689,9 +690,11 @@ MonoBehaviour:
   useSkill: 0
   UseRoll: 0
   ImGhost: 0
+  IsInShield: 0
   IsChargeAttack: 0
   CanReflect: 0
   ReflectCoeff: 0
+  InShieldHP: 0
 --- !u!114 &7295784485177987548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1013,6 +1016,20 @@ MonoBehaviour:
   applicationTime: 5
   applicationspeed: 2
   applicationAtkSpeed: 2
+--- !u!114 &2512666008385423343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8735806354994587177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073067358f4b20a4c87afee81f0b0c9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speedParticle: {fileID: 1952749043820446558}
+  _TwoMoonParticle: {fileID: 2802370339389916276}
 --- !u!1001 &6178893709339576425
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1085,6 +1102,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2467343890919976279, guid: 001a84ff939f2ca43ad0213ff21df836, type: 3}
+      propertyPath: PV
+      value: 
+      objectReference: {fileID: 7295784485177987548}
     - target: {fileID: 6106525194279214496, guid: 001a84ff939f2ca43ad0213ff21df836, type: 3}
       propertyPath: m_Name
       value: PlayerBuffControl
@@ -1093,27 +1114,27 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2467343890919976279, guid: 001a84ff939f2ca43ad0213ff21df836, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 001a84ff939f2ca43ad0213ff21df836, type: 3}
+--- !u!198 &1952749043820446558 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5667316135770590007, guid: 001a84ff939f2ca43ad0213ff21df836, type: 3}
+  m_PrefabInstance: {fileID: 6178893709339576425}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &2802370339389916276 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8312470558721281053, guid: 001a84ff939f2ca43ad0213ff21df836, type: 3}
+  m_PrefabInstance: {fileID: 6178893709339576425}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4807003358785677878 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1660208688189891167, guid: 001a84ff939f2ca43ad0213ff21df836, type: 3}
   m_PrefabInstance: {fileID: 6178893709339576425}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8611466488581662014 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2467343890919976279, guid: 001a84ff939f2ca43ad0213ff21df836, type: 3}
-  m_PrefabInstance: {fileID: 6178893709339576425}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 073067358f4b20a4c87afee81f0b0c9c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &7349556988077420125
 PrefabInstance:
   m_ObjectHideFlags: 0

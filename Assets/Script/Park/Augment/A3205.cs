@@ -45,17 +45,18 @@ public class A3205 : MonoBehaviourPun//설계시 2204참고
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player" && !target.Contains(collision.GetComponent<PlayerStatHandler>()) && (collision.GetComponent<PlayerStatHandler>() != null))
+        PlayerStatHandler targetP = collision.GetComponent<PlayerStatHandler>();
+        if (targetP!=null)
         {
             target.Add(collision.GetComponent<PlayerStatHandler>());
-            Debug.Log("플레이어입장");
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Player" && target.Contains(collision.GetComponent<PlayerStatHandler>()))
+        PlayerStatHandler targetP = collision.GetComponent<PlayerStatHandler>();
+        if (targetP != null)
         {
-            target.Remove(collision.GetComponent<PlayerStatHandler>());
+            target.Remove(targetP);
             Debug.Log("플레이어퇴장");
         }
     }
