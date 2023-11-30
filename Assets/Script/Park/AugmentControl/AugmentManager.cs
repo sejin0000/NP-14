@@ -66,15 +66,12 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         PhotonView photonView = PhotonView.Find(PlayerNumber);
         targetPlayer = photonView.gameObject;
     }
-    //PhotonView photonView = PhotonView.Find(PlayerNumber);
-    //playerstatHandler = photonView.gameObject.GetComponent<PlayerStatHandler>();
     [PunRPC]
     private void FindMaster(int num)
     {
         PhotonView a = PhotonView.Find(num);
         a.transform.SetParent(targetPlayer.transform);
         a.transform.localPosition = Vector3.zero;
-        //Prefabs.transform.SetParent(targetPlayer.transform);
     }
 
     #region stat
@@ -83,49 +80,42 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.ATK.added += atk;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 공격력증가");
     }
     [PunRPC]
     private void A902(int PlayerNumber)//스탯 체 티어 1
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.HP.added += hp;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 방어력증가");
     }
     [PunRPC]
     private void A903(int PlayerNumber)//스탯 이속 티어 1
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.Speed.added += speed;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 이속증가");
     }
     [PunRPC]
     private void A904(int PlayerNumber)//스탯 공속 티어 1
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.AtkSpeed.added += atkspeed;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 공속증가");
     }
     [PunRPC]
     private void A905(int PlayerNumber)//스탯 정밀도 티어 1 탄퍼짐이 이상해서 정밀도로 바꿨는데 괜찮겠지? 어차피바꿔도됨
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.BulletSpread.added += bulletSpread;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 정밀도증가");
     }
     [PunRPC]
     private void A906(int PlayerNumber)//스탯 스킬쿨타임 티어1
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.SkillCoolTime.added += cooltime;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 쿨타임증가");
     }
     [PunRPC]
     private void A907(int PlayerNumber)//스탯 치명타 티어1
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.Critical.added += critical;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 치명타증가");
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@스탯티어2
     [PunRPC]
@@ -133,49 +123,42 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.ATK.added += atk * 2;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 공격력증가");
     }
     [PunRPC]
     private void A912(int PlayerNumber)//스탯 체 티어 2
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.HP.added += hp * 2;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 방어력증가");
     }
     [PunRPC]
     private void A913(int PlayerNumber)//스탯 이속 티어 2
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.Speed.added += speed * 2;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 이속증가");
     }
     [PunRPC]
     private void A914(int PlayerNumber)//스탯 공속 티어 2
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.AtkSpeed.added += atkspeed * 2;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 공속증가");
     }
     [PunRPC]
     private void A915(int PlayerNumber)//스탯 정밀도 티어 1 탄퍼짐이 이상해서 정밀도로 바꿨는데 괜찮겠지? 어차피바꿔도됨
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.BulletSpread.added += bulletSpread * 2;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 정밀도증가");
     }
     [PunRPC]
     private void A916(int PlayerNumber)//스탯 스킬쿨타임 티어2
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.SkillCoolTime.added += cooltime * 2;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 쿨타임증가");
     }
     [PunRPC]
     private void A917(int PlayerNumber)//스탯 치명타 티어2
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.Critical.added += critical * 2;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 치명타증가");
     }
     [PunRPC]
     private void A918(int PlayerNumber)//스탯 장탄수 티어2
@@ -189,49 +172,42 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.ATK.added += atk * 3;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 공격력증가");
     }
     [PunRPC]
     private void A922(int PlayerNumber)//스탯 체 티어 3
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.HP.added += hp * 3;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 방어력증가");
     }
     [PunRPC]
     private void A923(int PlayerNumber)//스탯 이속 티어 3
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.Speed.added += speed * 3;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 이속증가");
     }
     [PunRPC]
     private void A924(int PlayerNumber)//스탯 공속 티어 3
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.AtkSpeed.added += atkspeed * 3;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 공속증가");
     }
     [PunRPC]
     private void A925(int PlayerNumber)//스탯 정밀도 티어 3
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.BulletSpread.added += bulletSpread * 3;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 정밀도증가");
     }
     [PunRPC]
     private void A926(int PlayerNumber)//스탯 스킬쿨타임 티어3
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.SkillCoolTime.added += cooltime * 3;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 쿨타임증가");
     }
     [PunRPC]
     private void A927(int PlayerNumber)//스탯 치명타 티어3
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.Critical.added += critical * 3;
-        Debug.Log($"{playerstatHandler.gameObject.GetPhotonView().ViewID}의 치명타증가");
     }
     [PunRPC]
     private void A928(int PlayerNumber)//스탯 장탄수 티어3
@@ -247,7 +223,6 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     {
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.defense *= 0.9f;
-        Debug.Log($"({playerstatHandler.gameObject.GetPhotonView().ViewID}의 현재 계수 {playerstatHandler.defense})");
     }
     [PunRPC]
     private void A102(int PlayerNumber)//인파이터 사거리 계수 -0.3 공 계수 +0.3
@@ -255,8 +230,6 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.BulletLifeTime.coefficient *= 0.7f;
         playerstatHandler.ATK.coefficient *= 1.3f;
-        Debug.Log($"({playerstatHandler.gameObject.GetPhotonView().ViewID}의 현재 장전 계수 {playerstatHandler.BulletLifeTime.coefficient})");
-        Debug.Log($"({playerstatHandler.gameObject.GetPhotonView().ViewID}의 현재 공 계수 {playerstatHandler.ATK.coefficient})");
     }
     [PunRPC]
     private void A103(int PlayerNumber)//난사//탄퍼짐이 높을수록 장전시간 감소 //스테이지 시작시 탄퍼짐*0.2f 쿨감
@@ -376,14 +349,12 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         {
             BreakDownMk Mk3 = targetPlayer.GetComponent<BreakDownMk>();
             Mk3.PercentUp(10);
-            Debug.Log($"{Mk3.percent}");
         }
         else
         {
             targetPlayer.AddComponent<BreakDownMk>();
             BreakDownMk Mk3 = targetPlayer.GetComponent<BreakDownMk>();
             Mk3.PercentUp(10);
-            Debug.Log($"{Mk3.percent}");
         }
     }
     [PunRPC]
@@ -615,14 +586,12 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         {
             BreakDownMk Mk3 = targetPlayer.GetComponent<BreakDownMk>();
             Mk3.PercentUp(30);
-            Debug.Log($"{Mk3.percent}");
         }
         else
         {
             targetPlayer.AddComponent<BreakDownMk>();
             BreakDownMk Mk3 = targetPlayer.GetComponent<BreakDownMk>();
             Mk3.PercentUp(30);
-            Debug.Log($"{Mk3.percent}");
         }
     }
     [PunRPC]
@@ -632,8 +601,6 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         targetPlayer.AddComponent<A0220>();
         A0220 drainComponent = targetPlayer.GetComponent<A0220>();
         drainComponent.PercentUp(20);
-        Debug.Log($"{drainComponent.percent}%의 확률로 흡혈 중");
-
     }
     [PunRPC]
     private void A221(int PlayerNumber)
@@ -665,14 +632,12 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         {
             BreakDownMk Mk3 = targetPlayer.GetComponent<BreakDownMk>();
             Mk3.PercentUp(60);
-            Debug.Log($"{Mk3.percent}");
         }
         else
         {
             targetPlayer.AddComponent<BreakDownMk>();
             BreakDownMk Mk3 = targetPlayer.GetComponent<BreakDownMk>();
             Mk3.PercentUp(60);
-            Debug.Log($"{Mk3.percent}");
         }
     }
     [PunRPC]
@@ -737,11 +702,14 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A1104>();
-        targetPlayer.GetComponent<PlayerInputController>().Flash = true;
-        playerInput = targetPlayer.GetComponent<PlayerInput>();
-        playerInput.actions.FindAction("Flash").Enable();
-        playerInput.actions.FindAction("Roll").Disable();
-        playerInput.actions.FindAction("SiegeMode").Disable();
+        if (photonView.IsMine)
+        {
+            targetPlayer.GetComponent<PlayerInputController>().Flash = true;
+            playerInput = targetPlayer.GetComponent<PlayerInput>();
+            playerInput.actions.FindAction("Flash").Enable();
+            playerInput.actions.FindAction("Roll").Disable();
+            playerInput.actions.FindAction("SiegeMode").Disable();
+        }
     }
     [PunRPC]
     private void A1105(int PlayerNumber)//오토 쉬프트
@@ -824,15 +792,18 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         targetPlayer.AddComponent<A1207>();
-        PlayerInputController inputController= targetPlayer.GetComponent<PlayerInputController>();
-        inputController.cantMove = true;
-        inputController.cantSpacebar = true;
-        playerInput = targetPlayer.GetComponent<PlayerInput>();
-        playerInput.actions.FindAction("Move2").Disable();
-        playerInput.actions.FindAction("Move").Disable();
-        playerInput.actions.FindAction("SiegeMode").Disable();
-        playerInput.actions.FindAction("Flash").Disable();
-        playerstatHandler.ImGhost = true;
+        if (targetPlayer.GetPhotonView().IsMine) 
+        {
+            PlayerInputController inputController = targetPlayer.GetComponent<PlayerInputController>();
+            inputController.cantMove = true;
+            inputController.cantSpacebar = true;
+            playerInput = targetPlayer.GetComponent<PlayerInput>();
+            playerInput.actions.FindAction("Move2").Disable();
+            playerInput.actions.FindAction("Move").Disable();
+            playerInput.actions.FindAction("SiegeMode").Disable();
+            playerInput.actions.FindAction("Flash").Disable();
+            playerstatHandler.ImGhost = true;
+        }
     }
     #endregion
     #region Sniper3
