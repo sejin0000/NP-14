@@ -689,9 +689,11 @@ MonoBehaviour:
   useSkill: 0
   UseRoll: 0
   ImGhost: 0
+  IsInShield: 0
   IsChargeAttack: 0
   CanReflect: 0
   ReflectCoeff: 0
+  InShieldHP: 0
 --- !u!114 &7295784485177987548
 MonoBehaviour:
   m_ObjectHideFlags: 0

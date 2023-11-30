@@ -11,6 +11,7 @@ public class TestRoomPanel : MonoBehaviourPun
     public Button TestStartButton;
     public Button BackButton;
     public Button OpenOptionButton;
+    public Button CharacterSelectButton;
 
     [Header("SceneStatus")]
     public TextMeshProUGUI ConnectedSceneText;
@@ -69,6 +70,7 @@ public class TestRoomPanel : MonoBehaviourPun
         TestStartButton.onClick.AddListener(OnTestStartButtonClickedInTest);
         BackButton.onClick.AddListener(NetworkManager.Instance.OnBackButtonClickedInTestRoomPanel);
         OpenOptionButton.onClick.AddListener(OnOpenOptionButtonClicked);
+        CharacterSelectButton.onClick.AddListener(LobbyManager.Instance.CharacterSelect.OnCharacterButtonClicked);
     }
 
     public void LeaveRoomSetting()

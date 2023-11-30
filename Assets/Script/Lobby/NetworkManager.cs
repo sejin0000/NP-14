@@ -188,7 +188,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
 
         // DESC : 플레이어 파티 박스 최신화
-        _RoomP.SetPartyPlayerInfo();
+        if (LobbyManager.Instance.CurrentState == PanelType.RoomPanel)
+        {
+            _RoomP.SetPartyPlayerInfo();
+        }
 
 
         // DESC : 레디 상황 최신화 

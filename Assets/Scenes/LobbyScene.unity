@@ -7361,6 +7361,7 @@ MonoBehaviour:
   TestStartButton: {fileID: 641997868}
   BackButton: {fileID: 124233683}
   OpenOptionButton: {fileID: 1215076895}
+  CharacterSelectButton: {fileID: 947599291}
   ConnectedSceneText: {fileID: 676937920}
   connectedScene: 
   testRoomOptionPopupObject: {fileID: 1755200001}

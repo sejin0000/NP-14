@@ -250,6 +250,11 @@ MonoBehaviour:
   - MinusPartyDeathCount
   - ChangeGold
   - PunCallStageEndEvent
+  - SpeedBuffOff
+  - SpeedBuffOn
+  - TwoMoonBuffOff
+  - TwoMoonBuffOn
+  - DirectDamage
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
