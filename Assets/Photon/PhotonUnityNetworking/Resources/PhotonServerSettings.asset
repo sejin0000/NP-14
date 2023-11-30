@@ -247,6 +247,7 @@ MonoBehaviour:
   - PunCallRoomStartEvent
   - CallRoomEndEvent
   - A921
+  - MinusPartyDeathCount
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

@@ -682,6 +682,7 @@ MonoBehaviour:
   Invincibility: 0
   useSkill: 0
   UseRoll: 0
+  ImGhost: 0
   IsChargeAttack: 0
   CanReflect: 0
   ReflectCoeff: 0

@@ -20,7 +20,7 @@ public class A0213 : MonoBehaviourPun
             statupdesuka = false;
             GameManager.Instance.OnStageStartEvent += startReset;
             GameManager.Instance.OnBossStageStartEvent += startReset;
-            //GameManager.Instance.죽음이벤트 += IAmLegend;아래도수정
+            GameManager.Instance.PlayerLifeCheckEvent += IAmLegend;
         }
     }
     // Update is called once per frame
@@ -39,7 +39,7 @@ public class A0213 : MonoBehaviourPun
     }
     void IAmLegend() 
     {
-        if (MainGameManager.Instance.PartyDeathCount == PhotonNetwork.CurrentRoom.PlayerCount-1) //데스카운터없음
+        if (GameManager.Instance.PartyDeathCount == PhotonNetwork.CurrentRoom.PlayerCount-1) //데스카운터없음
         {
             statupdesuka = true;
 

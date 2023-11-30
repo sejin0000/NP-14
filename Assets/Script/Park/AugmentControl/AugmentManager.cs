@@ -16,7 +16,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     int hp = 8;
     float speed =3;
     float atkspeed = 3f;
-    float bulletSpread = -1f;
+    float bulletSpread = -4f;
     int cooltime = -1;
     int critical = 5;
     int AmmoMax = 1;
@@ -831,6 +831,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         playerInput.actions.FindAction("Move").Disable();
         playerInput.actions.FindAction("SiegeMode").Disable();
         playerInput.actions.FindAction("Flash").Disable();
+        playerstatHandler.ImGhost = true;
     }
     #endregion
     #region Sniper3

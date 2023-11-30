@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
 
     public event Action OnGameClearEvent;     //게임 클리어
     public event Action OnGameOverEvent;      //게임 오버
+    public event Action PlayerLifeCheckEvent;       //플레이어 죽음
 
 
     public bool ClearStageCheck;//박민혁 추가 스테이지 클리어시 빈방 비울때 콜여부
@@ -48,6 +49,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject clientPlayer;
     public Dictionary<int, Transform> playerInfoDictionary;
+
+    public int PartyDeathCount;
 
 
 
@@ -109,6 +112,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("스테이지 시작");
         OnStageStartEvent?.Invoke();
+        PartyDeathCount = 0;
         ClearStageCheck = false;
         if (PhotonNetwork.IsMasterClient)
         {
@@ -222,7 +226,7 @@ public class GameManager : MonoBehaviour
         OnGameClearEvent?.Invoke();
     }
 
-    public void CallGameOverEvent()
+    public void CallGameOverEvent()//맵지워지는 시간 벌기
     {
         Debug.Log("게임 오버");
         FF.FadeOut(3);
@@ -232,5 +236,31 @@ public class GameManager : MonoBehaviour
         OnGameOverEvent?.Invoke();
     }
 
+    public void PlayerDie()
+    {
+        PV.RPC("AddPartyDeathCount", RpcTarget.All);
+        Debug.Log("현재 죽은수 PartyDeath : " + PartyDeathCount.ToString());
+    }
+
+    [PunRPC]
+    public void AddPartyDeathCount()
+    {
+        PartyDeathCount++;
+        CallPlayerLifeCheckEvent();
+        if (PartyDeathCount == PhotonNetwork.CurrentRoom.PlayerCount) 
+        {
+            CallGameOverEvent();
+        }
+    }
+    [PunRPC]
+    public void RemovePartyDeathCount()
+    {
+        CallPlayerLifeCheckEvent();
+        PartyDeathCount--;
+    }
+    public void CallPlayerLifeCheckEvent()
+    {
+        PlayerLifeCheckEvent?.Invoke();
+    }
 
 }
