@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class Boss_Body : MonoBehaviour
 {
+    [SerializeField]
+    private float bodyDamageCoeff; //부위별 데미지 계수 
+
+
     private BossAI_Dragon owner;
     private void Awake()
     {
@@ -36,35 +40,17 @@ public class Boss_Body : MonoBehaviour
             {
                 Debuff.Instance.GiveFire(this.gameObject, atk, ViewID);
             }
-            if (playerBullet.water)
-            {
-                Debuff.Instance.GiveWater(this.gameObject);
-            }
-            if (playerBullet.ice)
-            {
-                int random = UnityEngine.Random.Range(0, 100);
-                if (random < 90)
-                {
-                    //isGroggy = true;
-                    Debug.Log("얼음체크");
-                    Debuff.Instance.GiveIce(this.gameObject);
-                }
-            }
             if (playerBullet.burn)
             {
                 GameObject firezone = PhotonNetwork.Instantiate("AugmentList/A0122", transform.localPosition, Quaternion.identity);
                 firezone.GetComponent<A0122_1>().Init(playerBullet.BulletOwner, atk);
             }
-            if (playerBullet.gravity)
-            {
-                int a = UnityEngine.Random.Range(0, 10);
-                if (a >= 8)
-                {
-                    PhotonNetwork.Instantiate("AugmentList/A0218", transform.localPosition, Quaternion.identity);
-                }
-            }
+
+            float finalAtk = atk * bodyDamageCoeff;
+
+
             //모든 플레이어에게 현재 적의 체력 동기화
-            owner.PV.RPC("DecreaseHP", RpcTarget.All, atk);
+            owner.PV.RPC("DecreaseHP", RpcTarget.All, finalAtk);
 
 
 
@@ -93,17 +79,27 @@ public class Boss_Body : MonoBehaviour
         // 계수 조정
         float damageCoeff = 0;
 
+
         if (collision.gameObject.GetComponent<A0126>() != null)
         {
             damageCoeff += collision.gameObject.GetComponent<A0126>().DamageCoeff;
-            int viewID = collision.gameObject.GetPhotonView().ViewID;
-            owner.PV.RPC("DecreaseHPByObject", RpcTarget.All, collision.transform.GetComponent<PlayerStatHandler>().HP.total * damageCoeff, viewID);
         }
         if (collision.gameObject.GetComponent<A3104>().isRoll)
         {
             damageCoeff += collision.gameObject.GetComponent<A3104>().DamageCoeff;
+        }
+        float finalAtk = damageCoeff * bodyDamageCoeff;
+
+
+        if (collision.gameObject.GetComponent<A0126>() != null)
+        {
             int viewID = collision.gameObject.GetPhotonView().ViewID;
-            owner.PV.RPC("DecreaseHPByObject", RpcTarget.All, collision.transform.GetComponent<PlayerStatHandler>().HP.total * damageCoeff, viewID);
+            owner.PV.RPC("DecreaseHPByObject", RpcTarget.All, collision.transform.GetComponent<PlayerStatHandler>().HP.total * finalAtk, viewID);
+        }
+        if (collision.gameObject.GetComponent<A3104>().isRoll)
+        {
+            int viewID = collision.gameObject.GetPhotonView().ViewID;
+            owner.PV.RPC("DecreaseHPByObject", RpcTarget.All, collision.transform.GetComponent<PlayerStatHandler>().HP.total * finalAtk, viewID);
         }
     }
 }

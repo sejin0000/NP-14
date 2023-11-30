@@ -154,12 +154,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
             AreaList[6].transform.position = hostAimPosition;
             AreaList[6].transform.rotation = Quaternion.Slerp(bossHead.transform.rotation, hostRotation, Time.deltaTime * lerpSpeed);          
             return;
-        }
-        for (int i = 0; i < inToAreaPlayers.Count; i++)
-        {
-            Debug.Log($"리스트 안에 들어온 플레이어{inToAreaPlayers[i]}");           
-        }
-        Debug.Log($"리스트 개수{inToAreaPlayers.Count} 개");
+        }  
 
         hostAimPosition = bossAim.transform.position;
         hostRotation = bossHead.transform.rotation;
@@ -412,8 +407,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
                         // 실제 피해
                         player.GiveDamege(bossSO.atk);
-
-                        Debug.Log("여그까지 들어옴");
+                        Debug.Log($"2나오면 안됨 : {inToAreaPlayers.Count} 데미지는 이만큼 받음 :{bossSO.atk}");
                     }
                 }
             }

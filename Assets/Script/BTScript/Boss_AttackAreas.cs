@@ -24,6 +24,7 @@ public class Boss_AttackAreas : MonoBehaviour
             {
                 // 리스트에 플레이어 추가
                 owner.inToAreaPlayers.Add(player);
+                Debug.Log($"리스트 개수{owner.inToAreaPlayers.Count} 개");
             }
         }
     }
@@ -37,6 +38,7 @@ public class Boss_AttackAreas : MonoBehaviour
             if (owner.inToAreaPlayers != null)
             {
                 owner.inToAreaPlayers.Remove(player);
+                Debug.Log($"리스트 개수{owner.inToAreaPlayers.Count} 개");
             }
         }
     }
@@ -45,5 +47,6 @@ public class Boss_AttackAreas : MonoBehaviour
     private void OnDisable()
     {
         owner.inToAreaPlayers.Clear();
+        Debug.Log($"리스크 클리어 됨 리스트 개수{owner.inToAreaPlayers.Count} 개");
     }
 }
