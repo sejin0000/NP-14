@@ -22,13 +22,20 @@ public class ChoiceSlot : MonoBehaviour//눌러서 골르는 증강 슬롯 열렸을때 해당증
     public Sprite tier2;
     public Sprite tier3;
 
+    public Sprite symbolStat;
     public Sprite symbolAll;
     public Sprite symbolSniper;
     public Sprite symbolShotgun;
     public Sprite symbolsoldier;
 
+    public Sprite symbolSniperOption;
+    public Sprite symbolShotgunOption;
+    public Sprite symbolsoldierOption;
+
     public Image bodyImage;
     public Image symbolImage;
+    public Image symbolImageOption;
+    public GameObject symbolOptionObj;
     //[Range(1, 3)] int StatType;
 
     private void OnEnable()// 이름,정보,색 업데이트
@@ -38,9 +45,16 @@ public class ChoiceSlot : MonoBehaviour//눌러서 골르는 증강 슬롯 열렸을때 해당증
         Info.text = stat.func;
         rare = stat.Rare;
         symbolNum = stat.Code / 1000;
-        Debug.Log($"심볼 넘버 {symbolNum}");
+        if (symbolNum == 0) 
+        {
+            if (stat.Code >= 900) 
+            {
+                symbolNum = 9;
+            }
+        }
         bodyImage = gameObject.GetComponent<Image>();
-        
+        symbolOptionObj.SetActive(true);
+
         switch (rare)
         {
             case 1:
@@ -59,17 +73,25 @@ public class ChoiceSlot : MonoBehaviour//눌러서 골르는 증강 슬롯 열렸을때 해당증
         {
             case 0:
                 symbolImage.sprite = symbolAll;
+                symbolOptionObj.SetActive(false);
                 break;
             case 1:
                 symbolImage.sprite= symbolSniper;
+                symbolImageOption.sprite = symbolSniperOption;
                 break;
 
             case 2:
                 symbolImage.sprite = symbolsoldier;
+                symbolImageOption.sprite = symbolsoldierOption;
                 break;
 
             case 3:
                 symbolImage.sprite = symbolShotgun;
+                symbolImageOption.sprite = symbolShotgunOption;
+                break;
+            case 9:
+                symbolImage.sprite = symbolStat;
+                symbolOptionObj.SetActive(false);
                 break;
         }
     }

@@ -142,11 +142,6 @@ public class GameManager : MonoBehaviour
             Debug.Log("스테이지 아직 미클리어");
             PV.RPC("PunCallRoomEndEvent", RpcTarget.AllBuffered);
         }
-        else 
-        {
-            Debug.Log("스테이지 클리어 상태이기에 발동하지 않습니다");
-        }
-
     }
     [PunRPC]
     public void PunCallRoomEndEvent()
