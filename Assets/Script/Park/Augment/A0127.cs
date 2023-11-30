@@ -19,6 +19,7 @@ public class A0127 : MonoBehaviourPun
             playerStat = GetComponent<PlayerStatHandler>();
             photonView.RPC("AutoHealingStart", RpcTarget.All);
             autoTime = new WaitForSeconds(time);
+            StartCoroutine("AutoHealing");
         }
     }
     private void OnEnable()

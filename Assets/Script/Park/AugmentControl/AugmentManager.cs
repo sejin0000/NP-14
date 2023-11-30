@@ -737,11 +737,14 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A1104>();
-        targetPlayer.GetComponent<PlayerInputController>().Flash = true;
-        playerInput = targetPlayer.GetComponent<PlayerInput>();
-        playerInput.actions.FindAction("Flash").Enable();
-        playerInput.actions.FindAction("Roll").Disable();
-        playerInput.actions.FindAction("SiegeMode").Disable();
+        if (photonView.IsMine)
+        {
+            targetPlayer.GetComponent<PlayerInputController>().Flash = true;
+            playerInput = targetPlayer.GetComponent<PlayerInput>();
+            playerInput.actions.FindAction("Flash").Enable();
+            playerInput.actions.FindAction("Roll").Disable();
+            playerInput.actions.FindAction("SiegeMode").Disable();
+        }
     }
     [PunRPC]
     private void A1105(int PlayerNumber)//오토 쉬프트
@@ -824,15 +827,18 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         targetPlayer.AddComponent<A1207>();
-        PlayerInputController inputController= targetPlayer.GetComponent<PlayerInputController>();
-        inputController.cantMove = true;
-        inputController.cantSpacebar = true;
-        playerInput = targetPlayer.GetComponent<PlayerInput>();
-        playerInput.actions.FindAction("Move2").Disable();
-        playerInput.actions.FindAction("Move").Disable();
-        playerInput.actions.FindAction("SiegeMode").Disable();
-        playerInput.actions.FindAction("Flash").Disable();
-        playerstatHandler.ImGhost = true;
+        if (targetPlayer.GetPhotonView().IsMine) 
+        {
+            PlayerInputController inputController = targetPlayer.GetComponent<PlayerInputController>();
+            inputController.cantMove = true;
+            inputController.cantSpacebar = true;
+            playerInput = targetPlayer.GetComponent<PlayerInput>();
+            playerInput.actions.FindAction("Move2").Disable();
+            playerInput.actions.FindAction("Move").Disable();
+            playerInput.actions.FindAction("SiegeMode").Disable();
+            playerInput.actions.FindAction("Flash").Disable();
+            playerstatHandler.ImGhost = true;
+        }
     }
     #endregion
     #region Sniper3

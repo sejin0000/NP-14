@@ -11,9 +11,13 @@ public class A1302 : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            weaponSystem=GetComponent<WeaponSystem>();
-            GameManager.Instance.OnStageStartEvent += reloaing;
-            GameManager.Instance.OnBossStageStartEvent += reloaing;
+            weaponSystem = GetComponent<WeaponSystem>();
+            if (GameManager.Instance != null) 
+            {
+
+                GameManager.Instance.OnStageStartEvent += reloaing;
+                GameManager.Instance.OnBossStageStartEvent += reloaing;
+            }
         }
     }
     // Update is called once per frame
