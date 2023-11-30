@@ -408,7 +408,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
 
                         // 실제 피해
-                        player.GiveDamege(bossSO.atk);
+                        player.DirectDamage(bossSO.atk, PV.ViewID);
                         // 실제 넉백
                         player.photonView.RPC("StartKnockback", RpcTarget.All, directionToPlayer, knockbackDistance);
                         //StartCoroutine(player.Knockback(directionToPlayer, knockbackDistance));
@@ -464,7 +464,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
                 StartCoroutine(LaterInActiveAttackArea(1));
                 break;
             case 2:
-                AreaList[0].gameObject.SetActive(true); ; // 좌측 우측 동시 실행             
+                AreaList[0].gameObject.SetActive(true); ; // 좌측 우측 동시 실행 이거 어캐함?             
                 AreaList[1].gameObject.SetActive(true); ;
                 SetAnim("isTwoArmAttack", true);
                 StartCoroutine(SetAnimFalse("isTwoArmAttack"));
@@ -581,7 +581,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
             StartCoroutine(player.Knockback(directionToPlayer, knockbackDistance));
 
             // 실제 피해
-            player.GiveDamege(bossSO.atk);
+            player.DirectDamage(bossSO.atk, PV.ViewID);
         }
     }
 
