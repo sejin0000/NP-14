@@ -59,7 +59,13 @@ public class CollisionController : MonoBehaviourPun
                     {
                         MainGameManager.Instance.photonView.RPC("RemovePartyDeathCount", RpcTarget.All);
                     }
+
+                    if (GameManager.Instance != null)
+                    {
+                        GameManager.Instance.PV.RPC("RemovePartyDeathCount", RpcTarget.All);
+                    }
                 }
+                Destroy(collision.gameObject);
             }
         }
 

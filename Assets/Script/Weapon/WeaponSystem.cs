@@ -92,7 +92,6 @@ public class WeaponSystem : MonoBehaviour
         {
             Quaternion rot = muzzleOfAGun.transform.rotation;
             rot.eulerAngles += new Vector3(0, 0, Random.Range(-1 * _controller.playerStatHandler.BulletSpread.total, _controller.playerStatHandler.BulletSpread.total));// 중요함
-
             float _ATK = _controller.playerStatHandler.ATK.total;
             float _BLT = _controller.playerStatHandler.BulletLifeTime.total;
             var _targets = targets;
@@ -115,7 +114,6 @@ public class WeaponSystem : MonoBehaviour
         {
             Quaternion rot = muzzleOfAGun.transform.rotation;
             rot.eulerAngles += new Vector3(0, 0, Random.Range(-1 * _controller.playerStatHandler.BulletSpread.total, _controller.playerStatHandler.BulletSpread.total));// 중요함
-
             float _ATK = _controller.playerStatHandler.ATK.total * finalAttackCoeff;
             float _BLT = _controller.playerStatHandler.BulletLifeTime.total;
             var _targets = targets;

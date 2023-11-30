@@ -53,6 +53,7 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     public GameObject _PlayerSprite;
     public GameObject _WeaponSprite;
+    public PlayerDebuffControl _DebuffControl;
 
     public bool isNoramlMove;
     public bool isCanSkill;
@@ -144,6 +145,7 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     public bool useSkill;
     public bool UseRoll;
+    public bool ImGhost;
 
     int viewID;
     [HideInInspector] public bool IsChargeAttack;
@@ -190,6 +192,7 @@ public class PlayerStatHandler : MonoBehaviourPun
         isCanAtk = true;
         evasionPersent = 0;
         isRegen = false;
+        ImGhost = false;
 
         kill = 0;
         MaxSkillStack = 1;
@@ -208,12 +211,16 @@ public class PlayerStatHandler : MonoBehaviourPun
     }
     private void OnEnable()
     {
-        if (!CanSpeedBuff) 
+        stageBuffReset();
+    }
+    private void stageBuffReset() 
+    {
+        if (!CanSpeedBuff)
         {
             Speed.added -= 3f;
             CanSpeedBuff = true;
         }
-        if (!CanLowSteam) 
+        if (!CanLowSteam)
         {
             CanSpeedBuff = true;
             AtkSpeed.added -= 0.5f;
@@ -228,19 +235,37 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     private void Start()
     {
-        if (MainGameManager.Instance != null)
-        {
-            MainGameManager.Instance.OnGameStartedEvent += RefillCoin;
-            viewID = photonView.ViewID;
-            OnChangeCurHPEvent += SendSyncHP;
-        }
+        //if (MainGameManager.Instance != null)
+        //{
+        //    MainGameManager.Instance.OnGameStartedEvent += RefillCoin;
+        //    viewID = photonView.ViewID;
+        //    OnChangeCurHPEvent += SendSyncHP;
+        //}
 
         if (TestGameManager.Instance != null) 
         {
             viewID = photonView.ViewID;
             OnChangeCurHPEvent += SendSyncHP;
         }
+        if (GameManager.Instance != null)
+        {
+            StageStartSet();
+        }
 
+    }
+    public void StageStartSet() 
+    {
+        GameManager.Instance.OnStageStartEvent += RefillCoin;
+        GameManager.Instance.OnStageStartEvent += startHp;
+        GameManager.Instance.OnBossStageStartEvent += RefillCoin;
+        GameManager.Instance.OnBossStageStartEvent += startHp;
+        GameManager.Instance.OnStageStartEvent += stageBuffReset;
+        GameManager.Instance.OnBossStageStartEvent += stageBuffReset;
+        viewID = photonView.ViewID;
+        OnChangeCurHPEvent += SendSyncHP;
+        this.gameObject.layer = 12;
+        if (ImGhost) 
+        { this.gameObject.layer = 13; }
     }
     public override string ToString()
     {
@@ -284,13 +309,17 @@ public class PlayerStatHandler : MonoBehaviourPun
                     Regen(HP.total);
                     return;
                 }
-                if (MainGameManager.Instance != null) 
-                {
-                    MainGameManager.Instance.DiedAfter();
-                }
+                //if (MainGameManager.Instance != null)  메인게임매니저가 현재 안씀
+                //{
+                //    MainGameManager.Instance.DiedAfter();
+                //}
                 if (TestGameManager.Instance != null)
                 {
                     TestGameManager.Instance.DiedAfter();
+                }
+                if (GameManager.Instance != null)
+                {
+                    GameManager.Instance.PlayerDie();
                 }
                 this.gameObject.layer = 12;
             }
@@ -318,6 +347,7 @@ public class PlayerStatHandler : MonoBehaviourPun
         tempInputControl.ResetSetting();
         isDie = false;
         isRegen = true;
+        _DebuffControl.Init(PlayerDebuffControl.buffName.TwoMoon, 5f);
         photonView.RPC("SendRegenBool", RpcTarget.All, viewID);
         Debug.Log("부활 무적 시작");
         // 부활 파티클이 켜져야 하는 시점
@@ -356,6 +386,10 @@ public class PlayerStatHandler : MonoBehaviourPun
     public void RefillCoin()
     {
         CurRegenCoin = MaxRegenCoin;
+    }
+    public void startHp()
+    {
+        curHP = HP.total;
     }
 
     public void SendSyncHP()

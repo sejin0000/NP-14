@@ -17,19 +17,18 @@ public class A0113 : MonoBehaviourPun
         {
             controller = GetComponent<TopDownCharacterController>();
             playerStat = GetComponent<PlayerStatHandler>();
-            //nowgold = MainGameManager.Instance.Gold;
-            nowpower = nowgold * 0.1f;
+            nowgold = GameManager.Instance.TeamGold;
             oldpower = 0;
-            //MainGameManager.Instance.OnGameStartedEvent += setgold;//이걸 돈획득 이벤트에검 
+            GameManager.Instance.ChangeGoldEvent += setgold; 
 
         }
     }
     // Update is called once per frame
     void setgold()
     {
-        nowpower = nowgold * 0.1f;
-        playerStat.ATK.added += nowpower; // 중요한 부분2
-        playerStat.ATK.added -= oldpower; // 중요한 부분2
+        nowpower = nowgold * 0.05f;
+        playerStat.ATK.added += nowpower; 
+        playerStat.ATK.added -= oldpower; 
         oldpower = nowpower;
     }
 }

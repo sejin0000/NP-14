@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem.XR;
+using static PlayerDebuffControl;
 
 public class Player1Skill : Skill
 {
     public int applicationTime = 5;
     public float applicationspeed = 2f;
     public float applicationAtkSpeed =2f;
+    private PlayerStatHandler statHandler;
+    private PlayerDebuffControl debuffControl;
     //디버프 클래스 안에 절반효과를 주는 열광전염이 있음 1f기준으로 설계되있기에 수정시 같이 수정바람
     public void Start()
     {
@@ -17,6 +20,7 @@ public class Player1Skill : Skill
             controller.OnSkillEvent += SkillStart;
             isLink = true;
             controller.SkillMinusEvent += SkillLinkOff;
+            debuffControl= GetComponent<PlayerStatHandler>()._DebuffControl;
         }
     }
     public override void SkillStart()
@@ -24,6 +28,7 @@ public class Player1Skill : Skill
         base.SkillStart();        
         playerStats.Speed.added += applicationspeed;
         playerStats.AtkSpeed.added += applicationAtkSpeed;
+        debuffControl.Init(PlayerDebuffControl.buffName.Speed, applicationTime);
         Invoke("SkillEnd", applicationTime);
     }
 

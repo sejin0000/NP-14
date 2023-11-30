@@ -26,11 +26,12 @@ public class A1207 : MonoBehaviourPun
             collision.footCollider.isTrigger = true;
             collision.rigidbody.bodyType = RigidbodyType2D.Kinematic;
 
-            MainGameManager.Instance.OnGameStartedEvent += ImDie;
-            //MainGameManager.Instance.OnPlayerDieEvent += TargetDieCheck;죽음이벤트없음
+            GameManager.Instance.OnStageStartEvent += ImDie;
+            GameManager.Instance.OnBossStageStartEvent += ImDie;
+            GameManager.Instance.PlayerLifeCheckEvent += TargetDieCheck;
             playerinput = GetComponent<PlayerInput>();
 
-            Dictionary<int, Transform> dic = MainGameManager.Instance.playerInfoDictionary;
+            Dictionary<int, Transform> dic = GameManager.Instance.playerInfoDictionary;
                 foreach (KeyValuePair<int, Transform> kv in dic)
             {
                 if (kv.Key != gameObject.GetPhotonView().ViewID) 
@@ -78,8 +79,6 @@ public class A1207 : MonoBehaviourPun
     // Update is called once per frame
     void ImDie()
     {
-        //MainGameManager.Instance.AddPartyDeathCount();
-        MainGameManager.Instance.photonView.RPC("AddPartyDeathCount", RpcTarget.All);
-        this.gameObject.layer = 13; 
+        GameManager.Instance.PV.RPC("AddPartyDeathCount", RpcTarget.All);
     }
 }
