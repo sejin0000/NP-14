@@ -14,8 +14,8 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     public PlayerStatHandler playerstatHandler;//정확히는 이름을 타겟 플레이어 스탯 핸들러가 맞는 표현 같기도함 // 생각할수록 맞음
     int atk = 5;
     int hp = 8;
-    float speed = 1;
-    float atkspeed = 0.1f;
+    float speed = 0.1f;
+    float atkspeed = 0.05f;
     float bulletSpread = -1f;
     int cooltime = -1;
     int critical = 5;
