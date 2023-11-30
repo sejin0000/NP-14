@@ -26,16 +26,18 @@ public class A2204 : MonoBehaviourPun
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player") && !target.Contains(collision.GetComponent<PlayerStatHandler>()) && (collision.GetComponent<PlayerStatHandler>()!=null))
+        PlayerStatHandler player = collision.GetComponent<PlayerStatHandler>();
+        if (player != null)
         {
-            target.Add(collision.GetComponent<PlayerStatHandler>());
+            target.Add(player);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player") && target.Contains(collision.GetComponent<PlayerStatHandler>()))
+        PlayerStatHandler player = collision.GetComponent<PlayerStatHandler>();
+        if (player != null)
         {
-            target.Remove(collision.GetComponent<PlayerStatHandler>());
+            target.Remove(player);
         }
     }
 }

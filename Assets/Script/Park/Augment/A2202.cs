@@ -25,6 +25,5 @@ public class A2202 : MonoBehaviourPun
     void Cooltime()
     {
         coolTimeController.curSkillCool -= 2f;
-        Debug.Log("±¼·¶±â¿¡ ÄðÅ¸ÀÓ 1ÃÊ °¨¼Ò");
     }
 }

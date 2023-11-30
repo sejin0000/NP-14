@@ -6,9 +6,10 @@ public class A0128_1 : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet") && collision.GetComponent<Bullet>().targets.ContainsValue((int)BulletTarget.Player)) 
+        Bullet targetB = collision.GetComponent<Bullet>();
+        if (targetB.targets.ContainsValue((int)BulletTarget.Player)) 
         {
-            Destroy(collision.gameObject);
+            Destroy(targetB);
         }
     }
 }
