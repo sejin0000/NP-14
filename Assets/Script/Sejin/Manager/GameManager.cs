@@ -158,8 +158,15 @@ public class GameManager : MonoBehaviour
     public void CallStageEndEvent()
     {
         Debug.Log("스테이지 종료");
+        PV.RPC("PunCallStageEndEvent",RpcTarget.AllBuffered);
+    }
+
+    [PunRPC]
+    public void PunCallStageEndEvent()
+    {
         FF.FadeOut(1);
     }
+
     public void NextStageEndEvent()
     {
         Debug.Log("OnStageEndEvent");
@@ -189,7 +196,7 @@ public class GameManager : MonoBehaviour
 
     public void StageClear()
     {
-        if (stageListInfo.StagerList.Count >= curStage)
+        if (stageListInfo.StagerList.Count > curStage)
         {
             curStage++;
             Start();

@@ -249,6 +249,7 @@ MonoBehaviour:
   - A921
   - MinusPartyDeathCount
   - ChangeGold
+  - PunCallStageEndEvent
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
