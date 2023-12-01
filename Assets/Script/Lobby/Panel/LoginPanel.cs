@@ -38,7 +38,7 @@ public class LoginPanel : MonoBehaviourPunCallbacks
             if (Input.GetMouseButtonDown(0))
             {
                 StartLogo.SetActive(false);
-                Trio.SetActive(true);
+                Trio.SetActive(false);
                 LoginBox.SetActive(true);
                 isClicked = true;
             }
