@@ -52,7 +52,7 @@ public class PlayerDataSetting : MonoBehaviourPun
 
     public void DelComponent(GameObject GO)
     {
-        GO.GetComponent<TopDownCharacterController>().SkillReset();
+        GO.GetComponent<PlayerInputController>().SkillReset();
         if (GO.GetComponent<Player1Skill>())
         {            
             Destroy(GO.GetComponent<Player1Skill>());
