@@ -191,13 +191,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         if (LobbyManager.Instance.CurrentState == PanelType.RoomPanel)
         {
             _RoomP.SetPartyPlayerInfo();
-        }
 
-
-        // DESC : 레디 상황 최신화 
-        if (PhotonNetwork.IsMasterClient)
-        {
-            _RoomP.StartButton.gameObject.SetActive(_RoomP.CheckPlayersReady());
+            // DESC : 레디 상황 최신화 
+            if (PhotonNetwork.IsMasterClient)
+            {
+                _RoomP.StartButton.gameObject.SetActive(_RoomP.CheckPlayersReady());
+            }
         }
     }
 
