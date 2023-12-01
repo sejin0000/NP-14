@@ -18,13 +18,14 @@ public class A1207 : MonoBehaviourPun
 
     private void Awake()
     {
+        collision.footCollider.isTrigger = true;
+        collision.rigidbody.bodyType = RigidbodyType2D.Kinematic;
         if (photonView.IsMine)
         {
             collision= GetComponent<CollisionController>();
             playerStatHandler=GetComponent<PlayerStatHandler>();
-
-            collision.footCollider.isTrigger = true;
-            collision.rigidbody.bodyType = RigidbodyType2D.Kinematic;
+            target = new List<Transform>();
+     
 
             GameManager.Instance.OnStageStartEvent += ImDie;
             GameManager.Instance.OnBossStageStartEvent += ImDie;
@@ -32,15 +33,19 @@ public class A1207 : MonoBehaviourPun
             playerinput = GetComponent<PlayerInput>();
 
             Dictionary<int, Transform> dic = GameManager.Instance.playerInfoDictionary;
-                foreach (KeyValuePair<int, Transform> kv in dic)
+            Debug.Log($"µñ¼Å³Ê¸® ¼ýÀÚ {dic.Count}");
+            foreach (KeyValuePair<int, Transform> kv in dic)
             {
+                Debug.Log($"Å¸°ÙÅ° {kv.Key}");
+                Debug.Log($"Å¸°Ù¹ë·ù {kv.Key}");
                 if (kv.Key != gameObject.GetPhotonView().ViewID) 
                 {
                     target.Add(kv.Value);
+
                 }
-                targetOne = target[0];
-                targetPlayerStatHandler = targetOne.GetComponent <PlayerStatHandler >();
             }
+            targetOne = target[0];
+            targetPlayerStatHandler = targetOne.GetComponent<PlayerStatHandler>();
 
         }
     }

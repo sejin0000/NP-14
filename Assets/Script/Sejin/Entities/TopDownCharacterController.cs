@@ -116,9 +116,9 @@ public class TopDownCharacterController : MonoBehaviourPun
 
     public void CallRollEvent()
     {
-        if (gameObject.GetComponent<A1207>()) 
+        A1207 a1207 = gameObject.GetComponent<A1207>();
+        if (a1207 != null) 
         {
-            A1207 a1207 = gameObject.GetComponent<A1207>();
             a1207.Change();
         }
         else if (playerStatHandler.CanRoll)

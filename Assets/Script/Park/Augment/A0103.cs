@@ -16,7 +16,9 @@ public class A0103 : MonoBehaviourPun
             controller = GetComponent<TopDownCharacterController>();
             playerStat = GetComponent<PlayerStatHandler>();
             nowCoolGAM = playerStat.BulletSpread.total * 0.2f;
-            oldCoolGAM = 0;
+            playerStat.ReloadCoolTime.added += nowCoolGAM;
+            oldCoolGAM = nowCoolGAM;
+            Debug.Log($"재장전 시간 {oldCoolGAM} 감소");
             GameManager.Instance.OnStageStartEvent += SetCool;
             GameManager.Instance.OnBossStageStartEvent += SetCool;
         }
@@ -28,5 +30,6 @@ public class A0103 : MonoBehaviourPun
         nowCoolGAM = playerStat.BulletSpread.total * 0.2f;
         playerStat.ReloadCoolTime.added += nowCoolGAM;
         oldCoolGAM = nowCoolGAM;
+        
     }
 }
