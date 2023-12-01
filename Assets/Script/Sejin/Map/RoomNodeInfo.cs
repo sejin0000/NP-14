@@ -32,16 +32,11 @@ public class RoomNodeInfo : MonoBehaviour
         mapGenerator.lastRoomList[0].thisRoomClear = true;
         endRoom = mapGenerator.lastRoomList[mapGenerator.lastRoomList.Count - 1];
 
-        if(porTal == null)
-        {
-            porTal = PhotonNetwork.Instantiate("prefabs/portal", new Vector3(endRoom.roomRect.x + endRoom.roomRect.width / 2, endRoom.roomRect.y + endRoom.roomRect.height / 2),Quaternion.identity);
-        }
-        else
-        {
-            PV.RPC("PunPortalSetting",RpcTarget.AllBuffered);
-            porTal.SetActive(true);
-            porTal.transform.position = new Vector3(endRoom.roomRect.x + endRoom.roomRect.width / 2, endRoom.roomRect.y + endRoom.roomRect.height / 2);
-        }
+        PV.RPC("PunPortalSetting", RpcTarget.AllBuffered);
+        porTal.SetActive(true);
+        porTal.transform.position = new Vector3(endRoom.roomRect.x + endRoom.roomRect.width / 2, endRoom.roomRect.y + endRoom.roomRect.height / 2);
+
+
         mapGenerator.lastRoomList[mapGenerator.lastRoomList.Count - 1].thisRoomClear = true;
 
         allRoomList = mapGenerator.allRoomList;
