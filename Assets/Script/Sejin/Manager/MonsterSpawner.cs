@@ -64,7 +64,7 @@ public class MonsterSpawner : MonoBehaviour
         Debug.Log("몬스터 전부 삭제");
         foreach (Transform child in Case.transform)
         {
-            Destroy(child.gameObject);
+            PhotonNetwork.Destroy(child.gameObject);
         }
     }
 }
