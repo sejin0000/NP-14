@@ -27,8 +27,9 @@ public class SetupPopup : MonoBehaviour
     [SerializeField] private SetupIndex setupState;
     [SerializeField] private GameObject SetupBoxScrollContent;
 
-    [Header("SoundSetupContents")]
-    [SerializeField] private GameObject SoundControlPrefab;
+    [Header("SetupAnnouncePopup")]
+    private GameObject setupAnnouncePopup;
+    public SetupAnnouncePopup _setupAnnouncePopup;
 
     public SetupIndex SetupState
     {
@@ -45,10 +46,22 @@ public class SetupPopup : MonoBehaviour
     
     private void Awake()
     {
-        SetupState = SetupIndex.Sound;
         backButton.onClick.AddListener(OnBackButtonClicked);
+        SoundIndexButton.onClick.AddListener(OnSoundIndexButtonClicked);
+        AccountIndexButton.onClick.AddListener(OnAccountIndexButtonClicked);
+
         SetupBoxRect = SetupBoxScrollContent.GetComponent<RectTransform>();
         SetupBoxRectWidth = SetupBoxRect.sizeDelta.x;
+
+        SetAnnouncePopup();
+    }
+
+    private void OnEnable()
+    {
+        SetupState = SetupIndex.Sound;
+        ClearSetupBox();
+        SetSubjectText(SetupState);
+        SetSetupPrefab(PrefabPathes.SOUND_CONTROL_PREFAB_PATH);
     }
     private void SetSubjectText(SetupIndex index)
     {
@@ -62,6 +75,12 @@ public class SetupPopup : MonoBehaviour
                 break;
         }
     }
+    private void SetAnnouncePopup()
+    {
+        setupAnnouncePopup = Instantiate(Resources.Load<GameObject>(PrefabPathes.SETUP_ANNOUNCE_POPUP), transform, false);
+        _setupAnnouncePopup = setupAnnouncePopup.GetComponent<SetupAnnouncePopup>();
+        setupAnnouncePopup.SetActive(false);
+    }
 
     private void OnBackButtonClicked()
     {
@@ -70,14 +89,38 @@ public class SetupPopup : MonoBehaviour
 
     private void OnSoundIndexButtonClicked()
     {
-        SetupBoxRect.sizeDelta = new Vector2(SetupBoxRectWidth, 0);
+        if (SetupState == SetupIndex.Sound) 
+        {
+            return;
+        }
+        SetupState = SetupIndex.Sound;
+        ClearSetupBox();
         SetSetupPrefab(PrefabPathes.SOUND_CONTROL_PREFAB_PATH);
+    }
+
+    private void OnAccountIndexButtonClicked()
+    {
+        if (SetupState == SetupIndex.Account)
+        {
+            return;
+        }
+        SetupState = SetupIndex.Account;
+        ClearSetupBox();
+        SetSetupPrefab(PrefabPathes.NICKNAME_CHANGE_PREFAB_PATH);
     }
 
     private void SetSetupPrefab(string path)
     {
-        var prefab = Resources.Load<GameObject>(path);
-        Instantiate(prefab, SetupBoxScrollContent.transform, false);
+        var prefab = Instantiate(Resources.Load<GameObject>(path), SetupBoxScrollContent.transform, false);
         SetupBoxRect.sizeDelta += new Vector2(0, prefab.GetComponent<RectTransform>().sizeDelta.y);
+    }
+
+    private void ClearSetupBox()
+    {
+        for (int i = 0; i < SetupBoxScrollContent.transform.childCount; i++) 
+        {
+            Destroy(SetupBoxScrollContent.transform.GetChild(i).gameObject);
+        }
+        SetupBoxRect.sizeDelta = new Vector2(SetupBoxRectWidth, 0);
     }
 }

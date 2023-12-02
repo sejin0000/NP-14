@@ -30,7 +30,7 @@ public class MainLobbyPanel : MonoBehaviourPun
     private string playerPrefabPath;
 
     [Header("SetupPopup")]
-    [SerializeField] private GameObject SetupPopupPrefab;
+    [SerializeField] public GameObject SetupPopup;
     //
 
     public TextMeshProUGUI Gold; // TODO : 뒤끝베이스에 골드량 추가 예정
@@ -153,7 +153,7 @@ public class MainLobbyPanel : MonoBehaviourPun
     private void OnSettingButtonClicked()
     {
         //TODO : 테스트용
-        SetupPopupPrefab.SetActive(true);
+        SetupPopup.SetActive(true);
     }
     #endregion
 }

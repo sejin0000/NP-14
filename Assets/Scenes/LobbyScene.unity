@@ -26667,7 +26667,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2089042468
 RectTransform:
   m_ObjectHideFlags: 0
@@ -26711,8 +26711,8 @@ MonoBehaviour:
   AccountIndexButton: {fileID: 1636199093}
   SetupBox: {fileID: 1767768887}
   setupState: 0
-  SetupBoxScrollContent: {fileID: 0}
-  SoundControlPrefab: {fileID: 5234172296914358300, guid: af5258a70639c5541b8da08a8bd29ba5, type: 3}
+  SetupBoxScrollContent: {fileID: 1948046617}
+  _setupAnnouncePopup: {fileID: 0}
 --- !u!114 &2089042470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26992,7 +26992,7 @@ MonoBehaviour:
   findRoomButton: {fileID: 1981259259}
   settingButton: {fileID: 525797080}
   backButton: {fileID: 1954548457}
-  SetupPopupPrefab: {fileID: 2089042467}
+  SetupPopup: {fileID: 2089042467}
   Gold: {fileID: 1221515335}
 --- !u!114 &2099533335
 MonoBehaviour:
