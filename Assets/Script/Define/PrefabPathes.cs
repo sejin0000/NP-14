@@ -13,5 +13,6 @@ public class PrefabPathes
 
     #region Lobby
     public static readonly string CHARACTER_SELECT_POPUP = "Prefabs/LobbyScene/CharacterSelectPopup";
+    public static readonly string SOUND_CONTROL_PREFAB_PATH = "Prefabs/Setup/SoundControlPrefab";
     #endregion
 }

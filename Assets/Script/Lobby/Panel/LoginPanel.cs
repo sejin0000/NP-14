@@ -30,8 +30,9 @@ public class LoginPanel : MonoBehaviourPunCallbacks, IPointerClickHandler
     [SerializeField] private GameObject StartLogo;
     private bool isClicked;
 
-    private void Awake()
+    private void OnEnable()
     {
+        AudioManager.PlayBGM(BGMList.Strike_Witches_Get_Bitches);
         loginButton.onClick.AddListener(OnLoginButtonClicked);
         isClicked = false;
     }

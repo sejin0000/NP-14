@@ -16,12 +16,20 @@ public class SetupPopup : MonoBehaviour
     [SerializeField] private Button backButton;
 
     [Header("Index")]
+    [SerializeField] private TextMeshProUGUI setupSubjectText;
     [SerializeField] private Button SoundIndexButton;
     [SerializeField] private Button AccountIndexButton;
 
     [Header("SetupBox")]
     [SerializeField] private GameObject SetupBox;
+    private RectTransform SetupBoxRect;
+    private float SetupBoxRectWidth;
     [SerializeField] private SetupIndex setupState;
+    [SerializeField] private GameObject SetupBoxScrollContent;
+
+    [Header("SoundSetupContents")]
+    [SerializeField] private GameObject SoundControlPrefab;
+
     public SetupIndex SetupState
     {
         get { return setupState; } 
@@ -34,12 +42,13 @@ public class SetupPopup : MonoBehaviour
             }
         }
     }
-    [SerializeField] private TextMeshProUGUI setupSubjectText;
     
     private void Awake()
     {
         SetupState = SetupIndex.Sound;
         backButton.onClick.AddListener(OnBackButtonClicked);
+        SetupBoxRect = SetupBoxScrollContent.GetComponent<RectTransform>();
+        SetupBoxRectWidth = SetupBoxRect.sizeDelta.x;
     }
     private void SetSubjectText(SetupIndex index)
     {
@@ -57,5 +66,18 @@ public class SetupPopup : MonoBehaviour
     private void OnBackButtonClicked()
     {
         this.gameObject.SetActive(false);
+    }
+
+    private void OnSoundIndexButtonClicked()
+    {
+        SetupBoxRect.sizeDelta = new Vector2(SetupBoxRectWidth, 0);
+        SetSetupPrefab(PrefabPathes.SOUND_CONTROL_PREFAB_PATH);
+    }
+
+    private void SetSetupPrefab(string path)
+    {
+        var prefab = Resources.Load<GameObject>(path);
+        Instantiate(prefab, SetupBoxScrollContent.transform, false);
+        SetupBoxRect.sizeDelta += new Vector2(0, prefab.GetComponent<RectTransform>().sizeDelta.y);
     }
 }
