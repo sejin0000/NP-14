@@ -17,11 +17,13 @@ MonoBehaviour:
   atk: 5
   hp: 100
   bulletSpeed: 5
-  atkDelay: 7
+  atkDelay: 5
+  SpecialAttackDelay: 5
   patrolDelay: 0
   chaseTime: 0
   groggyTiem: 0
   bulletLifeTime: 2
+  breathAttackDelay: 0.2
   enemyMoveSpeed: 0
   enemyChaseSpeed: 0
   viewAngle: 55

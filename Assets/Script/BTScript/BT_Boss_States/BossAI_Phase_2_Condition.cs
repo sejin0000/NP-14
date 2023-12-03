@@ -35,7 +35,7 @@ public class BossAI_Phase_2_Condition : BTCondition
 
     public override Status Update()
     {
-        if (percentHP >= 50)//(현재 체력이 50% 미만) => 다음 페이즈로
+        if (percentHP <= 50)//(현재 체력이 50% 미만) => 다음 페이즈로
             return Status.BT_Failure;
 
         currentTime -= Time.deltaTime;

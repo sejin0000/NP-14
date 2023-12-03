@@ -170,6 +170,7 @@ public class Shield : MonoBehaviour
             foreach (PlayerStatHandler playerStat in target)
             {
                 playerStat.InShieldHP = 0;
+                playerStat.IsInShield = false;
             }
             buffAmount = transform.parent.GetComponent<A3302>().BuffAmount;
             for (int i = 0; i < target.Count; ++i)

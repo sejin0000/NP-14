@@ -23,25 +23,22 @@ public class BossAI_Phase_1_Condition : BTCondition
 
     public override void Initialize()
     {
-        //bossAI_Dragon.SetStateColor(Color.clear) ;
-        //패턴 간격처리
         currentTime = bossPatternTime;
-        //수정됨
-        //enemyAI.nav.enabled = true;
     }
 
     public override Status Update()
     {
-        if (percentHP < 50)//(현재 체력이 50% 미만) => 다음 페이즈로
-            return Status.BT_Failure;
-
         currentTime -= Time.deltaTime;
 
         percentHP = (bossAI_Dragon.currentHP / bossSO.hp * 100);
 
 
+        if (percentHP > 50)//(현재 체력이 50% 미만) => 다음 페이즈로
+            return Status.BT_Failure;
 
-        //패턴 주기
+
+
+        //1페이즈의 패턴 주기(패턴 간 최소 대기시간 : 0.3f)
 
         if (currentTime <= 0.3f)
         {

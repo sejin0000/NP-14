@@ -22,7 +22,7 @@ public class BossAI_State_SpecialAttack : BTAction
 
     public override void Initialize()
     {
-        currentTime = bossSO.atkDelay;
+        currentTime = bossSO.SpecialAttackDelay;
         bossAI_Dragon.SetStateColor(Color.yellow);
     }
 
@@ -92,20 +92,20 @@ public class BossAI_State_SpecialAttack : BTAction
             {
                 case 0:
                     //¾ç ÆÈ °ø°Ý
-                    bossAI_Dragon.PV.RPC("StartBreathCoroutine", RpcTarget.All);                   
-                   // bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 0);                  
+                    //bossAI_Dragon.PV.RPC("StartBreathCoroutine", RpcTarget.All);                   
+                    bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 3);                  
                     break;
                 case 1:
-                    bossAI_Dragon.PV.RPC("StartBreathCoroutine", RpcTarget.All);
-                    //bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 0);
+                    //bossAI_Dragon.PV.RPC("StartBreathCoroutine", RpcTarget.All);
+                    bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 3);
                     break;
                 case 2:
-                    bossAI_Dragon.PV.RPC("StartBreathCoroutine", RpcTarget.All);
-                    //bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 1);
+                    //bossAI_Dragon.PV.RPC("StartBreathCoroutine", RpcTarget.All);
+                    bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 3);
                     break;  
                 case 3:
-                    bossAI_Dragon.PV.RPC("StartBreathCoroutine", RpcTarget.All);
-                    //bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 2);
+                    //bossAI_Dragon.PV.RPC("StartBreathCoroutine", RpcTarget.All);
+                    bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 3);
                     break;
             }            
 

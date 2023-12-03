@@ -74,15 +74,15 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     public float breathAttackDelay;
     public float currentTime;
 
-    public bool isLive;
-    public bool isAttaking;
-    public bool isGroggy;
-    public bool patternRunning;
-    public bool isBreathInProgress; // 브레스 실행여부 판별, 중복실행 방지
-    public bool isRunningBreath;    // 브레스 발사중
+    public bool isLive = true;
+    public bool isAttaking = false;
+    public bool isGroggy = false;
+    public bool isBreathInProgress = false; // 브레스 실행여부 판별, 중복실행 방지
+    public bool isRunningBreath = false;    // 브레스 발사중
     //플레이어 정보
 
     public int lastAttackPlayer;
+    public int currentNomalAttackSquence; // 노말어택 시퀀스 랜덤 난수(0~3) : 3종
 
     //게임매니저에서(어디든) 관리하는 플레이어들 정보를 요청해서 사용
 
@@ -140,14 +140,24 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         {
             PlayersTransform.Add(_value);           
         }
-       
+
+
+        currentNomalAttackSquence = Random.Range(0, 3);
+
         //생성 시 랜덤 타겟 지정
         int randomTarget = Random.Range(0, PlayersTransform.Count);
 
         currentTarget = PlayersTransform[randomTarget]; 
     }
     void Update()
-    {       
+    {
+        //AI트리의 노드 상태를 매 프레임 마다 얻어옴
+        TreeAIState.Tick();
+
+        if (!isLive)
+            return;
+
+
         if (!PhotonNetwork.IsMasterClient)
         {
             //$추가됨 : 동기화된 머리 위치에 대한 보간 처리
@@ -160,12 +170,8 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
         hostAimPosition = bossAim.transform.position;
         hostRotation = bossHead.transform.rotation;
+        
 
-        //AI트리의 노드 상태를 매 프레임 마다 얻어옴
-        TreeAIState.Tick();
-
-        if (!isLive)
-            return;
 
 
         if (isBreathInProgress)
@@ -447,56 +453,50 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
             case 0:
                 AreaList[0].gameObject.SetActive(true); //우측 공격영역 (좌측 팔)
                 SetAnim("isLeftAttack", true); //트리거로 하려고 했으나 팀원이 에러가 가끔 생긴다고 해서 bool로 animSet
-                StartCoroutine(SetAnimFalse("isLeftAttack"));
+                LocalSetAnimFalse("isLeftAttack");
                 //이 부분에 플레이어 피해&넉백 판정주는 코루틴 실행
-                StartCoroutine(TryAttackAreaTargets(0));
+                LocalTryAttackAreaTargets(0);
 
                 //공격 이후
-                StartCoroutine(LaterInActiveAttackArea(0));
+                LocalLaterInActiveAttackArea(0);
                 break;
             case 1:
                 AreaList[1].gameObject.SetActive(true); ; //좌측 공격영역 (우측 팔)
                 SetAnim("isRightAttack", true);
-                StartCoroutine(SetAnimFalse("isRightAttack"));
-                StartCoroutine(TryAttackAreaTargets(1));
+                LocalSetAnimFalse("isRightAttack");
+                LocalTryAttackAreaTargets(1);
 
 
-                StartCoroutine(LaterInActiveAttackArea(1));
+                LocalLaterInActiveAttackArea(1);
                 break;
             case 2:
                 AreaList[0].gameObject.SetActive(true); ; // 좌측 우측 동시 실행 이거 어캐함?             
                 AreaList[1].gameObject.SetActive(true); ;
                 SetAnim("isTwoArmAttack", true);
-                StartCoroutine(SetAnimFalse("isTwoArmAttack"));
+                LocalSetAnimFalse("isTwoArmAttack");
 
                 // 각 Area에 대해 처리
-                StartCoroutine(TryAttackAreaTargets(2));
+                LocalTryAttackAreaTargets(2);
 
-                StartCoroutine(LaterInActiveAttackArea(2)); // 2 : 둘 다 꺼짐
+                LocalLaterInActiveAttackArea(2);  // 2 : 둘 다 꺼짐
                 break;
             case 3:
                 AreaList[2].gameObject.SetActive(true); ; // 모든 범위 실행
-                StartCoroutine(TryAttackAreaTargets(2));
+                LocalTryAttackAreaTargets(2);
 
 
-                StartCoroutine(LaterInActiveAttackArea(3));               
+                LocalLaterInActiveAttackArea(3);
                 break;
             case 4:
                 AreaList[3].gameObject.SetActive(true); ; // 타겟 플레이어에 원형 실행
-                StartCoroutine(ChaseArea());
-                StartCoroutine(TryAttackAreaTargets(3));               
+                LocalChaseArea();
+                LocalTryAttackAreaTargets(3);
 
-                StartCoroutine(LaterInActiveAttackArea(4));             
+                LocalLaterInActiveAttackArea(4);
                 break;
             case 5:
                 // 모든 플레이어에 원형 실행(3,4,5)
                 break;
-            case 6:
-                AreaList[6].gameObject.SetActive(true); ; // 브레스 범위 표시(방법이 상이함)
-                StartCoroutine(TryAttackAreaTargets(4));
-
-                StartCoroutine(LaterInActiveAttackArea(6));                
-                break; 
         }
     }
 
@@ -534,12 +534,22 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         InActiveAttackArea(patternNum);
     }
 
+    public void LocalLaterInActiveAttackArea(int patternNum)
+    {
+        StartCoroutine(LaterInActiveAttackArea(patternNum));
+    }
+
     //애니메이션 종료용 코루틴(여기서 예고 레이어 일반 영역 => 타격 영역으로 교체)
     IEnumerator SetAnimFalse(string boolName)
     {
         yield return new WaitForSeconds(0.5f);
 
         SetAnim(boolName, false);
+    }
+
+    public void LocalSetAnimFalse(string boolName)
+    {
+        StartCoroutine(SetAnimFalse(boolName));
     }
 
 
@@ -549,6 +559,11 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         yield return new WaitForSeconds(2.0f);
         AttackTargetsInArea(areaIndex);
     }
+    public void LocalTryAttackAreaTargets(int areaIndex)
+    {
+        StartCoroutine(TryAttackAreaTargets(areaIndex));
+    }
+
 
     //진짜 진짜 공격&넉백임
     public void AttackTargetsInArea(int areaIndex)
@@ -609,6 +624,11 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
             }
         }
 
+    }
+
+    public void LocalChaseArea()
+    {
+        StartCoroutine(ChaseArea());
     }
 
 
@@ -742,60 +762,103 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         BTDead.AddChild(deadCondition);
         BossAI_State_Dead state_Dead = new BossAI_State_Dead(gameObject);
         BTDead.AddChild(state_Dead);
-        
 
 
-        /*
-        //상태이상 체크 [스턴....]
-        BTSquence BTAbnormal = new BTSquence();
-        EnemyState_GroggyCondition groggyConditon = new EnemyState_GroggyCondition(gameObject);
-        BTAbnormal.AddChild(groggyConditon);
-        */
+
+        //액션 노드들
 
 
         //페이즈 판별 <셀렉터 겸 컨디션>[기본 = 1페이즈  ||  체력 50% '미만' = 2페이즈]
         BTSelector Phase_One = new BTSelector();
-        //페이즈 컨디션
+        //페이즈 컨디션(이거 잘못됨)
+        /*
+        BossAI_Phase_1_Condition phaseOne = new BossAI_Phase_1_Condition(gameObject);
+        Phase_One.AddChild(phaseOne);
+        */
 
 
-        BossAI_State_SpecialAttack specialAttack = new BossAI_State_SpecialAttack(gameObject);
-        //패턴 컨디션 -> 컨디션
-        Phase_One.AddChild(specialAttack);
 
-        //여기에서 노말액션 시퀀스에 사용할 랜덤 난수  쏴주기
+        //BossAI_State_SpecialAttack specialAttack = new BossAI_State_SpecialAttack(gameObject);
+        //Phase_One.AddChild(specialAttack);
+
+        //첫 노말패턴 시퀀스의 컨디션에서 노말액션 시퀀스에 사용할 랜덤 난수 쏴주기
+
+        //1페이즈
         BTSelector nomalAttack_Selector = new BTSelector();
-        //패턴 컨디션 -> 컨디션
         Phase_One.AddChild(nomalAttack_Selector);
 
 
+        //노말 패턴 시퀀스1 번
         BTSquence nomalAttack_Squence_1 = new BTSquence();
-        //노말 패턴 시퀀스의 컨디션 1
-        //실제 노말 패턴 1
-        //실제 노말 패턴 2
-        //예시
-        //BossAI_State_NomalAttackSequence_1 nomalAttack_Sequence_1 = new BossAI_State_NomalAttackSequence_1(gameObject);
-        //nomalAttack_Squence_1.AddChild(액션노드 변수명);
+        nomalAttack_Selector.AddChild(nomalAttack_Squence_1);
+
+        BossAI_State_Choice_1_Condition nomalChoice_1 = new BossAI_State_Choice_1_Condition(gameObject);
+        nomalAttack_Squence_1.AddChild(nomalChoice_1);
+
+
+
+        BossAI_State_ChaseAttack chaseAttack1_1 = new BossAI_State_ChaseAttack(gameObject);
+        nomalAttack_Squence_1.AddChild(chaseAttack1_1);
+        BossAI_State_TwoWayAttack twoWayAttack_1 = new BossAI_State_TwoWayAttack(gameObject);
+        nomalAttack_Squence_1.AddChild(twoWayAttack_1);
+        BossAI_State_RightAttack rightAttack_1 = new BossAI_State_RightAttack(gameObject);
+        nomalAttack_Squence_1.AddChild(rightAttack_1);
+        BossAL_State_LeftAttack leftAttack_1 = new BossAL_State_LeftAttack(gameObject);
+        nomalAttack_Squence_1.AddChild(leftAttack_1);
+
+
+        //난수 세팅
+        BossAI_SetRandomNum setRandomNum_1 = new BossAI_SetRandomNum(gameObject);
+        nomalAttack_Squence_1.AddChild(setRandomNum_1);
+
+
+        //노말 패턴 시퀀스2번
         BTSquence nomalAttack_Squence_2 = new BTSquence();
-        //노말 패턴 시퀀스의 컨디션 2
-        //실제 노말 패턴 1
-        //실제 노말 패턴 2
-        //실제 노말 패턴 3
-        //예시
-        //BossAI_State_NomalAttackSequence_2 nomalAttack_Sequence_2 = new BossAI_State_NomalAttackSequence_2(gameObject);
-        //nomalAttack_Squence_2.AddChild(액션노드 변수명);
+        nomalAttack_Selector.AddChild(nomalAttack_Squence_2);
+
+        BossAI_State_Choice_2_Condition nomalChoice_2 = new BossAI_State_Choice_2_Condition(gameObject);
+        nomalAttack_Squence_2.AddChild(nomalChoice_2);
+
+
+        BossAI_State_TwoWayAttack twoWayAttack_2 = new BossAI_State_TwoWayAttack(gameObject);
+        nomalAttack_Squence_2.AddChild(twoWayAttack_2);
+        BossAL_State_LeftAttack leftAttack_2 = new BossAL_State_LeftAttack(gameObject);
+        nomalAttack_Squence_2.AddChild(leftAttack_2);
+        BossAL_State_LeftAttack leftAttack_2_1 = new BossAL_State_LeftAttack(gameObject);
+        nomalAttack_Squence_2.AddChild(leftAttack_2_1);
+
+
+        //난수 세팅
+        //BossAI_SetRandomNum setRandomNum_2 = new BossAI_SetRandomNum(gameObject);
+        //nomalAttack_Squence_2.AddChild(setRandomNum_2);
+        nomalAttack_Squence_2.AddChild(setRandomNum_1);
+
+
+
+        //노말 패턴 시퀀스3 번
         BTSquence nomalAttack_Squence_3 = new BTSquence();
-        //노말 패턴 시퀀스의 컨디션 3
-        //실제 노말 패턴 1
-        //실제 노말 패턴 2
-        //실제 노말 패턴 3
-        //실제 노말 패턴 4
+        nomalAttack_Selector.AddChild(nomalAttack_Squence_3);
+
+        BossAI_State_Choice_3_Condition nomalChoice_3 = new BossAI_State_Choice_3_Condition(gameObject);
+        nomalAttack_Squence_3.AddChild(nomalChoice_3);
+
+
+        BossAL_State_LeftAttack leftAttack_3 = new BossAL_State_LeftAttack(gameObject);
+        nomalAttack_Squence_3.AddChild(leftAttack_3);
+        BossAI_State_TwoWayAttack twoWayAttack_3 = new BossAI_State_TwoWayAttack(gameObject);
+        nomalAttack_Squence_3.AddChild(twoWayAttack_3);
+        BossAI_State_ChaseAttack chaseAttack_3 = new BossAI_State_ChaseAttack(gameObject);
+        nomalAttack_Squence_3.AddChild(chaseAttack_3);
+
+
+        //난수 세팅
+        //BossAI_SetRandomNum setRandomNum_3 = new BossAI_SetRandomNum(gameObject);
+        //nomalAttack_Squence_3.AddChild(setRandomNum_3);
+        nomalAttack_Squence_3.AddChild(setRandomNum_1);
+
         //예시
         //BossAI_State_NomalAttackSequence3 nomalAttack_Sequence_3 = new BossAI_State_NomalAttackSequence_2(gameObject);
         //nomalAttack_Squence_3.AddChild(액션노드 변수명);
-
-        nomalAttack_Selector.AddChild(nomalAttack_Squence_1);
-        nomalAttack_Selector.AddChild(nomalAttack_Squence_2);
-        nomalAttack_Selector.AddChild(nomalAttack_Squence_3);
 
         // 예를 들어:
         // EnemyState_Action1 action1 = new EnemyState_Action1(gameObject);
@@ -822,7 +885,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
         //메인(페이즈) 셀렉터
         BTMainSelector.AddChild(Phase_One);
-        BTMainSelector.AddChild(Phase_Two);
+        //BTMainSelector.AddChild(Phase_Two);
 
         //작업이 끝난 Selector를 루트 노드에 붙이기
         TreeAIState.AddChild(BTMainSelector);
