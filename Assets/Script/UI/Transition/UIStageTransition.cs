@@ -22,12 +22,13 @@ public class UIStageTransition : UIBase
     [SerializeField] private Animator animator;
     [SerializeField] private float speed=0.1f;
     [SerializeField] private int maxFloor;
+    [SerializeField] private Sprite[] sprite;
 
     private int currentFloor;
     private GameObject[] block;
 
     [SerializeField] private float spriteHeight = 100f;
-    [SerializeField] private float spriteSpace = 50f;
+    [SerializeField] private float spriteSpace;
 
     public override void Initialize()
     {
@@ -37,7 +38,7 @@ public class UIStageTransition : UIBase
         SetupPlayer();
 
         //MainGameManager.Instance.OnUIPlayingStateChanged += StartTransition;
-        TestGameManagerDohyun.Instance.OnInitialized += StartTransition;
+        GameManager.Instance.OnStageStartEvent += StartTransition;
     }
 
     // Tower 층수만큼 일정한 간격으로 블럭 생성
@@ -57,6 +58,8 @@ public class UIStageTransition : UIBase
                 block[i].transform.position = pos;
             }
         }
+
+        block[block.Length - 1].GetComponent<Image>().sprite = sprite[1];
     }
 
     // 생성한 블럭 위치 기준으로 플레이어 오브젝트 배치 및 현재 층수 1층 설정
@@ -65,7 +68,7 @@ public class UIStageTransition : UIBase
         //player.GetComponent<SpriteResolver>().SetCategoryAndLabel("idle", "1");
 
         Vector3 pos = block[0].transform.position;
-        pos.y += spriteHeight;
+        //pos.y -= (spriteHeight / 2);
         player.transform.position = pos;
 
         currentFloor = 0;

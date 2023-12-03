@@ -23,8 +23,6 @@ public class UIReloadHUD : UIBase, ICommonUI
         statHandler = player.GetComponent<PlayerStatHandler>();
         //player.GetComponent<TopDownCharacterController>().OnEndReloadEvent += Close;
         slider = GetComponentInChildren<Slider>();
-
-        Debug.Log("[[CheckInterface] Done Initialize");
     }
 
     void ICommonUI.Behavior()
