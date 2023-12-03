@@ -43,6 +43,7 @@ public class CharacterSelectPopup : MonoBehaviourPun
     private int initCharType;
 
     public GameObject player;
+    private PlayerStatHandler playerStats;
     public int viewID;
 
     void Start()
@@ -98,39 +99,72 @@ public class CharacterSelectPopup : MonoBehaviourPun
         // 직업명 적용
         playerClassText.text = $"<{playerClass}>";
 
-        // 캐릭터 스탯 적용
-        // 스탯이 있다고 가정
-        Sample_Player player = new Sample_Player(curCharType);
-        Type type = player.GetType();
-        FieldInfo[] fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance);
-        
+        // 기존 내용 삭제
         foreach (Transform child in PlayerStatScrollContent.transform)
         {
-            Destroy(child.gameObject); 
+            Destroy(child.gameObject);
         }
-        
+
         RectTransform statRect = PlayerStatScrollContent.GetComponent<RectTransform>();
         Vector2 sizeDelta = statRect.sizeDelta;
         sizeDelta.y = 70;
 
-        foreach (FieldInfo field in fields)
+        // 캐릭터 스탯 적용
+        playerStats = LobbyManager.Instance.instantiatedPlayer.GetComponent<PlayerStatHandler>();
+        playerStats.SetStatusArray();
+        var statArray = playerStats.PlayerStatArray;
+        var statNameArray = playerStats.PlayerStatNameArray;
+
+        for (int i = 0; i < statArray.Length; i++) 
         {
-            GameObject go = Instantiate(StatInfoPrefab);
-            // child 오브젝트가 둘다 같을 경우, 배열로 불러와서 처리함.
-            TextMeshProUGUI[] texts = go.GetComponentsInChildren<TextMeshProUGUI>();
-
-            texts[0].text = field.Name;
-            texts[1].text = field.GetValue(player).ToString();
-
-            sizeDelta.y += 60;
-            // 프리팹은 Scene에다가 오브젝트로 생성하는 건데, transform을 가져오는 과정에서 world 좌표를 유지하는 옵션을 켰기 때문에 오류가 나타남.
-            go.transform.SetParent(PlayerStatScrollContent.transform, false);
+            // TIPS : 프리팹은 Scene에다가 오브젝트로 생성하는 건데, transform을 가져오는 과정에서 world 좌표를 유지하는 옵션을 켰기 때문에 오류가 나타남.
+            GameObject go = Instantiate(StatInfoPrefab, PlayerStatScrollContent.transform, false);
             go.transform.localScale = Vector3.one;
             go.SetActive(true);
+
+            TextMeshProUGUI[] statInfos = go.GetComponentsInChildren<TextMeshProUGUI>();
+
+            statInfos[0].text = statNameArray[i];
+            statInfos[1].text = $"{statArray[i].basic} (+ {statArray[i].added})";
+
+            sizeDelta.y += 60;
         }
 
         statRect.sizeDelta = sizeDelta;
         StartCoroutine(DelayedLayoutRebuild(statRect));
+
+        //// 스탯이 있다고 가정
+        //Sample_Player player = new Sample_Player(curCharType);
+        //Type type = player.GetType();
+        //FieldInfo[] fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance);
+
+        //foreach (Transform child in PlayerStatScrollContent.transform)
+        //{
+        //    Destroy(child.gameObject); 
+        //}
+
+        //RectTransform statRect = PlayerStatScrollContent.GetComponent<RectTransform>();
+        //Vector2 sizeDelta = statRect.sizeDelta;
+        //sizeDelta.y = 70;
+
+        //foreach (FieldInfo field in fields)
+        //{
+        //    GameObject go = Instantiate(StatInfoPrefab);
+        //    // child 오브젝트가 둘다 같을 경우, 배열로 불러와서 처리함.
+        //    TextMeshProUGUI[] texts = go.GetComponentsInChildren<TextMeshProUGUI>();
+
+        //    texts[0].text = field.Name;
+        //    texts[1].text = field.GetValue(player).ToString();
+
+        //    sizeDelta.y += 60;
+        //    // 프리팹은 Scene에다가 오브젝트로 생성하는 건데, transform을 가져오는 과정에서 world 좌표를 유지하는 옵션을 켰기 때문에 오류가 나타남.
+        //    go.transform.SetParent(PlayerStatScrollContent.transform, false);
+        //    go.transform.localScale = Vector3.one;
+        //    go.SetActive(true);
+        //}
+
+        //statRect.sizeDelta = sizeDelta;
+        //StartCoroutine(DelayedLayoutRebuild(statRect));
 
         // 캐릭터 스킬 적용
         playerSkillText.text = $"{playerClass}의 스킬에 대한 설명입니다.";

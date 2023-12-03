@@ -16,5 +16,5 @@ public class Stats
     public Stats(float basic) 
     {
         this.basic = basic;
-    }
+    }    
 }
