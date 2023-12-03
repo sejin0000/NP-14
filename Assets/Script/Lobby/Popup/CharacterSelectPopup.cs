@@ -107,10 +107,11 @@ public class CharacterSelectPopup : MonoBehaviourPun
 
         RectTransform statRect = PlayerStatScrollContent.GetComponent<RectTransform>();
         Vector2 sizeDelta = statRect.sizeDelta;
-        sizeDelta.y = 70;
+        sizeDelta.y = 0;
 
         // 캐릭터 스탯 적용
-        playerStats = LobbyManager.Instance.instantiatedPlayer.GetComponent<PlayerStatHandler>();
+        //playerStats = LobbyManager.Instance.instantiatedPlayer.GetComponent<PlayerStatHandler>();
+        playerStats = LobbyManager.Instance.dataSetting.GetStatData(curCharType);
         playerStats.SetStatusArray();
         var statArray = playerStats.PlayerStatArray;
         var statNameArray = playerStats.PlayerStatNameArray;
@@ -127,7 +128,7 @@ public class CharacterSelectPopup : MonoBehaviourPun
             statInfos[0].text = statNameArray[i];
             statInfos[1].text = $"{statArray[i].basic} (+ {statArray[i].added})";
 
-            sizeDelta.y += 60;
+            sizeDelta.y += 30;
         }
 
         statRect.sizeDelta = sizeDelta;
@@ -173,7 +174,7 @@ public class CharacterSelectPopup : MonoBehaviourPun
     #region button
     public void OnLeftButtonClicked()
     {
-        int classNumber = Enum.GetNames(typeof(LobbyPanel.CharClass)).Length - 1;
+        int classNumber = Enum.GetNames(typeof(CharClass)).Length - 1;
         curCharType -= (curCharType != 0) ? 1 : -classNumber;
         Debug.Log($"왼쪽 클릭 후 : {curCharType}");
         UpdateCharInfo();
@@ -181,7 +182,7 @@ public class CharacterSelectPopup : MonoBehaviourPun
 
     public void OnRightButtonClicked()
     {
-        int classNumber = Enum.GetNames(typeof(LobbyPanel.CharClass)).Length - 1;
+        int classNumber = Enum.GetNames(typeof(CharClass)).Length - 1;
         curCharType += (curCharType != classNumber) ? 1 : -classNumber;
         Debug.Log($"오른쪽 클릭 후 : {curCharType}");
         UpdateCharInfo();
@@ -212,6 +213,7 @@ public class CharacterSelectPopup : MonoBehaviourPun
     {
         // 커스텀 프로퍼티 저장 (원래 것으로)
         PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "Char_Class", initCharType } });
+        LobbyManager.Instance.dataSetting.GetStatData(initCharType);
 
         // 팝업 닫기
         gameObject.SetActive(false);

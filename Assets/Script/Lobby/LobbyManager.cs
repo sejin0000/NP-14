@@ -18,6 +18,14 @@ public enum PanelType
     TestRoomPanel,
     ShopPanel,
 }
+
+public enum CharClass
+{
+    Soldier,
+    Shotgun,
+    Sniper,
+}
+
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
     public static LobbyManager Instance;
