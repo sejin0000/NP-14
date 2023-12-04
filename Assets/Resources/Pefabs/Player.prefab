@@ -1055,7 +1055,7 @@ MonoBehaviour:
   CanPayBack: 0
   CanSupport: 0
   footCollider: {fileID: 2818698585101496412}
-  rigidbody: {fileID: 0}
+  rigidbody: {fileID: 1628206893393210816}
 --- !u!114 &216501136413859800
 MonoBehaviour:
   m_ObjectHideFlags: 0

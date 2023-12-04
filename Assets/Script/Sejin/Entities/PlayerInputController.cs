@@ -13,6 +13,7 @@ public class PlayerInputController : TopDownCharacterController
     public int atkPercent;
     public bool IsMove = false;
     PlayerStatHandler playerstatHnadler;
+    PlayerResultController playerResultController;
     public bool siegeMode;
     public bool Flash;
     public bool cantMove;
@@ -24,6 +25,7 @@ public class PlayerInputController : TopDownCharacterController
         coolTimeController = GetComponent<CoolTimeController>();
 
         playerstatHnadler = GetComponent<PlayerStatHandler>();
+        playerResultController= GetComponent<PlayerResultController>();
         playerstatHnadler.OnDieEvent += InputOff;
         playerstatHnadler.OnRegenEvent += InputOn;
         atkPercent = 100;
@@ -186,14 +188,16 @@ public class PlayerInputController : TopDownCharacterController
 
     public void OnSiegeMode(InputValue value)
     {
-        Debug.Log("시즈모드 발사");
         CallSiegeModeEvent();
     }
     public void OnFlash(InputValue value)
     {
         CallFlashEvent();
     }
-
+    public void OnAugmentCheck(InputValue value)
+    {
+        CallAugmentCheck();
+    }
 
     public void OnReload(InputValue value)
     {

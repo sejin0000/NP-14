@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class A2103 : MonoBehaviourPun
 {
-    List<GameObject> target;
+    List<GameObject> target = new List<GameObject>();
     PlayerStatHandler me;
     public GameObject Player;
     private TopDownCharacterController controller;
@@ -26,7 +26,6 @@ public class A2103 : MonoBehaviourPun
     {
         me = transform.parent.gameObject.GetComponent<PlayerStatHandler>();
         controller = GetComponent<TopDownCharacterController>();
-        target = new List<GameObject>();
         AtkPower = 0;
         AtkSpeedPower = 0;
         BulletSpreadPower = 0;
@@ -82,14 +81,14 @@ public class A2103 : MonoBehaviourPun
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy") && photonView.IsMine)
         {
             target.Add(collision.gameObject);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy") && photonView.IsMine)
         {
             target.Remove(collision.gameObject);
         }
