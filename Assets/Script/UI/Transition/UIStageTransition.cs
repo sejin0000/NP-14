@@ -24,7 +24,7 @@ public class UIStageTransition : UIBase
     [SerializeField] private int maxFloor;
     [SerializeField] private Sprite[] sprite;
 
-    private int currentFloor;
+    private int currentFloor = -1;
     private GameObject[] block;
 
     [SerializeField] private float spriteHeight = 100f;
@@ -35,7 +35,7 @@ public class UIStageTransition : UIBase
         Debug.Log("[UIStageTransition] initialized");
 
         CreateTower();
-        SetupPlayer();
+        //SetupPlayer();
 
         //MainGameManager.Instance.OnUIPlayingStateChanged += StartTransition;
         GameManager.Instance.OnStageStartEvent += StartTransition;
@@ -65,13 +65,13 @@ public class UIStageTransition : UIBase
     // 생성한 블럭 위치 기준으로 플레이어 오브젝트 배치 및 현재 층수 1층 설정
     public void SetupPlayer()
     {
-        //player.GetComponent<SpriteResolver>().SetCategoryAndLabel("idle", "1");
+        currentFloor = GameManager.Instance.curStage;
 
         Vector3 pos = block[0].transform.position;
         //pos.y -= (spriteHeight / 2);
         player.transform.position = pos;
 
-        currentFloor = 0;
+        //player.GetComponent<SpriteResolver>().SetCategoryAndLabel("idle", "1");
     }
 
     public void StartTransition()
