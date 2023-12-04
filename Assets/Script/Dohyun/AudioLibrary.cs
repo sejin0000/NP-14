@@ -74,7 +74,7 @@ public class AudioLibrary : MonoBehaviour
             player = null;
         }
 
-        AudioManager.PlayBGM(BGMList.Ace_Of_Bananas);
+        AudioManager.PlayBGM(BGMList.Dragao_Inkomodo);
     }
     
     void SetupPlayerSE()
