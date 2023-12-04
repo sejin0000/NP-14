@@ -21,8 +21,12 @@ public class NewBehaviourScript : MonoBehaviourPunCallbacks, IPunObservable
     int rollCount=0;
     int endRollCount = 4;
     bool rolling = false;
+    bool isPhase1;
     Vector2 direction;
     Rigidbody2D _rigidbody2D;
+    float time;
+    float thornTime=0.2f;
+    float thornAngle = 0;
 
 
     public float currentHP;                  // 현재 체력 계산
@@ -143,6 +147,7 @@ public class NewBehaviourScript : MonoBehaviourPunCallbacks, IPunObservable
 
         rollCount = 0;
         rolling = false;
+        isPhase1 = true;
     }
     void Update()
     {
@@ -1103,7 +1108,7 @@ public class NewBehaviourScript : MonoBehaviourPunCallbacks, IPunObservable
     {// 현재 유도기능 x 우선 이러이러한 방식이에요 위해 총쏘기까지만 구현함 
         MissileCountCheck();
         Bullet _bullet = Instantiate<Bullet>(MissilePrefab, bossAim.transform.position, bossAim.transform.rotation);
-
+        _bullet.MissileFire(2);
         _bullet.IsDamage = true;
         _bullet.ATK = atk;
         _bullet.BulletLifeTime = duration;
@@ -1194,21 +1199,26 @@ public class NewBehaviourScript : MonoBehaviourPunCallbacks, IPunObservable
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (rolling && collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
+        if (rolling && collision.gameObject.layer == LayerMask.NameToLayer("Wall") && isPhase1)
         {
             if (rollCount % 2 == 0)
             {
                 thorntornado1();
             }
-            else 
+            else
             {
                 thorntornado2();
             }
             rollCount++;
-            if (rollCount >= endRollCount) 
+            if (rollCount >= endRollCount)
             {
                 Invoke("RollEnd", 0.2f);
             }
+            Vector3 normal = collision.contacts[0].normal; // 법선벡터
+            direction = Vector3.Reflect(direction, normal).normalized; // 반사
+        }
+        else if (!isPhase1 && collision.gameObject.layer == LayerMask.NameToLayer("Wall")) 
+        {
             Vector3 normal = collision.contacts[0].normal; // 법선벡터
             direction = Vector3.Reflect(direction, normal).normalized; // 반사
         }
@@ -1219,7 +1229,21 @@ public class NewBehaviourScript : MonoBehaviourPunCallbacks, IPunObservable
         {
             direction = direction * bossSO.enemyMoveSpeed * Time.deltaTime;
             _rigidbody2D.velocity = direction;
+            if (!isPhase1)
+            {
+                time += Time.deltaTime;
+                if (time > thornTime) //0.2초마다
+                {
+                    thornAngle += 2.5f;
+                    photonView.RPC("thorn", RpcTarget.All, thornAngle);
+                    if (thornAngle >= 360)
+                    {
+                        thornAngle = 0;
+                    }
+                }
+            }
         }
+
     }
     #endregion
 }

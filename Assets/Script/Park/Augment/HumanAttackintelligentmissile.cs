@@ -11,12 +11,33 @@ public class HumanAttackintelligentmissile : MonoBehaviour
     Bullet _bullet;
     private float turningForce;
     public bool ready;
+    string targetName;
+    public 
     // Start is called before the first frame update
     void Start()
     {
         targeting = false;
         _bullet = GetComponentInParent<Bullet>();
         turningForce = 15f;
+        targetName = "Enemy";
+    }
+    public void init(int i) 
+    {
+        if (i == 1)
+        {
+            targeting = false;
+            _bullet = GetComponentInParent<Bullet>();
+            turningForce = 15f;
+            targetName = "Enemy";
+        }
+        else
+        {
+            transform.localScale = new Vector3(5,5,0);
+            targeting = false;
+            _bullet = GetComponentInParent<Bullet>();
+            turningForce = 10f;
+            targetName = "Player";
+        }
     }
 
     // Update is called once per frame
@@ -32,7 +53,7 @@ public class HumanAttackintelligentmissile : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (ready &&!targeting && collision.gameObject.layer == LayerMask.NameToLayer("Enemy")) 
+        if (ready &&!targeting && collision.gameObject.layer == LayerMask.NameToLayer(targetName)) 
             //TODO ∏’» ≥Ø ∆¿≈≥ ∆–ƒ° «œ±‚
         {
             targeting = true;
