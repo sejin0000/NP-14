@@ -19,6 +19,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public Dictionary<string, RoomInfo> cachedRoomList;
     public Dictionary<string, GameObject> RoomFindEntriesList;
 
+    private AudioLibrary audioLibrary;
+
     private void Awake()
     {
         if (Instance == null)
@@ -39,6 +41,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         cachedTestRoomList = new Dictionary<string, RoomInfo>();
         testRoomListEntries = new Dictionary<string, GameObject>();
         RoomFindEntriesList = new Dictionary<string, GameObject>();
+
+        audioLibrary = AudioManager.Instance.AudioLibrary;
     }
 
     public override void OnConnectedToMaster()
@@ -66,6 +70,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         {
             LobbyManager.Instance.SetPanel(PanelType.MainLobbyPanel);
         }
+
+        audioLibrary.CallLobbySoundEvent();
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
@@ -88,6 +94,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         LobbyManager.Instance.LoadP.Initialize(1.5f);
+
         // DESC : 빠른 시작과 테스트룸 구분
         PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(CustomProperyDefined.TEST_OR_NOT, out object testProperty);
         if (!(bool)testProperty)
@@ -191,13 +198,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         if (LobbyManager.Instance.CurrentState == PanelType.RoomPanel)
         {
             _RoomP.SetPartyPlayerInfo();
-        }
 
-
-        // DESC : 레디 상황 최신화 
-        if (PhotonNetwork.IsMasterClient)
-        {
-            _RoomP.StartButton.gameObject.SetActive(_RoomP.CheckPlayersReady());
+            // DESC : 레디 상황 최신화 
+            if (PhotonNetwork.IsMasterClient)
+            {
+                _RoomP.StartButton.gameObject.SetActive(_RoomP.CheckPlayersReady());
+            }
         }
     }
 

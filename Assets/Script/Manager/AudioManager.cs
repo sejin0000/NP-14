@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.WebSockets;
@@ -12,6 +13,15 @@ public enum ClipType
     NONE,
     BGM,
     SE
+}
+
+// ADDED
+public enum BGMList
+{
+    Ace_Of_Bananas,
+    Dragao_Inkomodo,
+    Duty_Cycle_GB,
+    Strike_Witches_Get_Bitches,
 }
 
 public class AudioManager : Singleton<AudioManager>
@@ -29,6 +39,10 @@ public class AudioManager : Singleton<AudioManager>
 
     [SerializeField] private Dictionary<string, AudioClip> clipDict;
 
+    // ADDED
+    [Header("AudioLibrary")]
+    public AudioLibrary AudioLibrary;
+
     public AudioMixer Mixer { get { return mixer; } }
 
     private void Awake()
@@ -36,6 +50,9 @@ public class AudioManager : Singleton<AudioManager>
         base.Awake();
         InitializeData();
         InitializeObject();
+        
+        // ADDED
+        AudioLibrary = this.gameObject.GetComponent<AudioLibrary>();
     }
 
     // Dictinonary에 오디오 클립 추가
@@ -81,19 +98,33 @@ public class AudioManager : Singleton<AudioManager>
     /// </summary>
     /// <param name="clipName"></param>
     /// <param name="loop"></param>
-    static public void PlayBGM(string clipName, float volume=1f, bool loop=true)
+    static public void PlayBGM(BGMList clipName, float volume = 1f, bool loop = true)
     {
         var clipDict = Instance.clipDict;
         var player = Instance.BGMPlayer;
-
-        if (!CheckContainKey(clipName, ClipType.BGM))
+        var encodedName = EncodeBGMEnum(clipName);
+        if (!CheckContainKey(encodedName, ClipType.BGM))
             return;
 
-        player.clip = clipDict[clipName];
+        player.clip = clipDict[encodedName];
         player.volume = volume;
         player.loop = loop;
         player.Play();
     }
+
+    //static public void PlayBGM(string clipName, float volume=1f, bool loop=true)
+    //{
+    //    var clipDict = Instance.clipDict;
+    //    var player = Instance.BGMPlayer;
+
+    //    if (!CheckContainKey(clipName, ClipType.BGM))
+    //        return;
+
+    //    player.clip = clipDict[clipName];
+    //    player.volume = volume;
+    //    player.loop = loop;
+    //    player.Play();
+    //}
 
     /// <summary>
     /// <para>SE 오디오 클립을 실행합니다. 클립이 존재하지 않으면 캐싱합니다.</para>
@@ -166,5 +197,13 @@ public class AudioManager : Singleton<AudioManager>
             clipDict.Add(clip.name, clip);
         }
         return true;
+    }
+
+    // ADDED
+    static string EncodeBGMEnum(BGMList bgmEnum)
+    {
+        string bgmName = Enum.GetName(typeof(BGMList), bgmEnum);
+        string encodedName = bgmName.Replace('_', ' ');
+        return encodedName;
     }
 }

@@ -13,7 +13,8 @@ public class AudioManagerTest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameManager.Instance.OnStageStartEvent += PlayStageBGM;
+        if (manager != null)
+            GameManager.Instance.OnStageStartEvent += PlayStageBGM;
     }
 
     // Update is called once per frame
@@ -25,9 +26,9 @@ public class AudioManagerTest : MonoBehaviour
     void PlayStageBGM()
     {
         if (GameManager.Instance.curStage == 0)
-            AudioManager.PlayBGM("Duty Cycle GB");
+            AudioManager.PlayBGM(BGMList.Duty_Cycle_GB);
         else if (GameManager.Instance.curStage >= 1)
-            AudioManager.PlayBGM("Strike Witches Get Bitches");
+            AudioManager.PlayBGM(BGMList.Strike_Witches_Get_Bitches);
     }
 
     //private void Fire()

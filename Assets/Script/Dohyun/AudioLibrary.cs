@@ -1,4 +1,5 @@
 using Photon.Realtime;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.WebSockets;
@@ -40,18 +41,42 @@ public class AudioLibrary : MonoBehaviour
 
     private GameObject player;
 
-    private void Awake()
-    {
+    [HideInInspector]
+    public event Action OnRoomSoundEvent;
         
-    }
 
     void Start()
-    {       
-        player = GameManager.Instance.clientPlayer;
-        SetupPlayerSE();
-        AttachPlayerSE();
+    {
+        if (GameManager.Instance != null)
+        {
+            player = GameManager.Instance.clientPlayer;
+            SetupPlayerSE();
+            AttachPlayerSE();
+        }
     }
 
+    // ADDED 
+    public void CallRoomSoundEvent(GameObject newPlayer)
+    {
+        player = newPlayer;
+        OnRoomSoundEvent += SetupPlayerSE;
+        OnRoomSoundEvent += AttachPlayerSE;
+        OnRoomSoundEvent?.Invoke();
+    }
+
+    // ADDED
+    public void CallLobbySoundEvent()
+    {
+        if (player != null)
+        {
+            OnRoomSoundEvent -= SetupPlayerSE;
+            OnRoomSoundEvent -= AttachPlayerSE;
+            player = null;
+        }
+
+        AudioManager.PlayBGM(BGMList.Ace_Of_Bananas);
+    }
+    
     void SetupPlayerSE()
     {
         var stats = player.GetComponent<PlayerStatHandler>();

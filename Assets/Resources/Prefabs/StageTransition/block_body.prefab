@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5567211061459452658}
   - component: {fileID: 3848219485940398782}
   m_Layer: 5
-  m_Name: Block
+  m_Name: block_body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34,11 +34,11 @@ RectTransform:
   m_Father: {fileID: 0}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 100}
-  m_SizeDelta: {x: 300, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 300, y: 200}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &551418793737515873
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -67,7 +67,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 444888293, guid: 6c739beb66feeab44965be65b863c6be, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -89,5 +89,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44c32844ee6425b4a9919d232dea466d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blockType: 0
-  blockColor: {r: 0, g: 0, b: 0, a: 0}
+  blockType: 1

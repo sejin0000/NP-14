@@ -29,6 +29,10 @@ public class MainLobbyPanel : MonoBehaviourPun
     private GameObject Player;
     private string playerPrefabPath;
 
+    [Header("SetupPopup")]
+    [SerializeField] public GameObject SetupPopup;
+    //
+
     public TextMeshProUGUI Gold; // TODO : 뒤끝베이스에 골드량 추가 예정
 
     private GraphicRaycaster raycaster;
@@ -54,6 +58,7 @@ public class MainLobbyPanel : MonoBehaviourPun
         testLobbyButton.onClick.AddListener(OnTestLobbyButtonClicked);
         quickStartButton.onClick.AddListener(OnQuickStartButtonClicked);
         findRoomButton.onClick.AddListener(OnFindRoomButtonClicked);
+        settingButton.onClick.AddListener(OnSettingButtonClicked);
         ButtonList = new List<Button>
         {           
             findRoomButton,
@@ -143,6 +148,12 @@ public class MainLobbyPanel : MonoBehaviourPun
     public void OnTestLobbyButtonClicked()
     {
         LobbyManager.Instance.SetPanel(PanelType.TestLobbyPanel);
+    }
+
+    private void OnSettingButtonClicked()
+    {
+        //TODO : 테스트용
+        SetupPopup.SetActive(true);
     }
     #endregion
 }
