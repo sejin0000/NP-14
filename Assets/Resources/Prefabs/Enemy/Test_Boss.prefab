@@ -2140,6 +2140,7 @@ MonoBehaviour:
   isGroggy: 0
   isBreathInProgress: 0
   isRunningBreath: 0
+  isTrackingFurthestTarget: 0
   lastAttackPlayer: 0
   currentNomalAttackSquence: 0
   image_Gauge: {fileID: 6387957788525354447}

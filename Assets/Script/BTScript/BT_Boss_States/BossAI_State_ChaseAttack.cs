@@ -21,6 +21,7 @@ public class BossAI_State_ChaseAttack : BTAction
     public override void Initialize()
     {        
         currentTime = bossSO.atkDelay;
+        bossAI_Dragon.isTrackingFurthestTarget = true;
     }
 
     public override Status Update()
@@ -69,7 +70,7 @@ public class BossAI_State_ChaseAttack : BTAction
 
     public override void Terminate()
     {
-        Debug.Log("BossAI_State_ChaseAttack Terminate 호출");
+        Debug.Log("BossAI_State_ChaseAttack Terminate 호출");       
         //각 공격 패턴 끝날 때 뭐 하고싶으면 여기 하셈
     }
 }

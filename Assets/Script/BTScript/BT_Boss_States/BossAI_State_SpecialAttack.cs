@@ -23,7 +23,6 @@ public class BossAI_State_SpecialAttack : BTAction
     public override void Initialize()
     {
         currentTime = bossSO.SpecialAttackDelay;
-        bossAI_Dragon.SetStateColor(Color.yellow);
     }
 
     public override Status Update()
@@ -31,57 +30,46 @@ public class BossAI_State_SpecialAttack : BTAction
         //맨처음에 할거 -> 모든 플레이어의 위치를 받아서, 내가 지정한 피벗과 가까운지 확인
         //가깝다면? 특수 패턴 실행 ->멀다면? 실패 반환[노말 패턴으로 바로 넘어감]
         //헤드 피벗 위치를 넘어서 존재한다면? -> 랜덤 패턴값 비명으로 고정
-        float minDistance = float.MaxValue;
-
-
-        //가장 가까운 타겟 서치
-        for (int i = 0; i < bossAI_Dragon.PlayersTransform.Count; i++)
-        {
-            if (bossAI_Dragon.PlayersTransform[i] == null)
-                continue;
-
-            float distanceToAllTarget = Vector2.Distance(owner.transform.position, bossAI_Dragon.PlayersTransform[i].transform.position);
-
-            if(distanceToAllTarget < minDistance)
-            {
-                minDistance = distanceToAllTarget;
-                bossAI_Dragon.currentTarget = bossAI_Dragon.PlayersTransform[i];
-            }
-
-
-        }
 
 
         //조건 부분 스페셜 어택 컨디션으로 이관할것 Failure 까지
         float distanceToTarget = Vector2.Distance(owner.transform.position, bossAI_Dragon.currentTarget.transform.position);
 
-        if(distanceToTarget > 13f)
+        if(distanceToTarget > 7f)
         {
-            bossAI_Dragon.currentTarget = null;
             return Status.BT_Failure;
-        }            
+        }
 
-        SetAim(); //특수패턴 시작 시 보스 머리 방향 => 항상 플레이어 쪽으로
 
-        //bossAI_Dragon.bossHead.transform.LookAt(target.position, Vector3.forward);
+        Debug.Log("특수 공격 조건 충족 중");
 
         currentTime -= Time.deltaTime;
 
         if (currentTime <= 0)
         {
-            /*
-            //보스 머리 끝부분 위치의 y값 보다 위쪽에 위치하는 플레이어가 존재한다면 => 강제적으로 밀치기 패턴을 사용함
+            
+            //특수패턴 1 : 플레이어가 머리 뒤쪽으로 넘어간 경우 => 전체 공격
             for (int i = 0; i < bossAI_Dragon.PlayersTransform.Count; i++)
             {
                 if (bossAI_Dragon.PlayersTransform[i].position.y > 0f)
                 {
                     Debug.Log("플레이어에 대한 공격 영역 활성화: " + i);
                     bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 3);
-                    return Status.BT_Success;
+                    return Status.BT_Failure; //이거 잘 생각하셈 (실패 -> 특수 패턴 실행 후 바로 노말 / 성공 -> 다시 처음부터 시작)
                 }
             }
-            */
 
+
+            //특수패턴 2 : 보류
+
+
+
+            //특수 패턴 3 : 플레이어가 특수 패턴 범위 안에 있는 경우 [통상] => 브레스
+            bossAI_Dragon.PV.RPC("StartBreathCoroutine", RpcTarget.All);
+
+
+
+            /*
             // 공격 주기에 도달하면 랜덤 특수 공격 실행
             int randomPattern = Random.Range(0, 4);
 
@@ -108,7 +96,7 @@ public class BossAI_State_SpecialAttack : BTAction
                     bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 3);
                     break;
             }            
-
+            */
             currentTime = bossSO.atkDelay; //시간 초기화
         }
 
@@ -117,71 +105,8 @@ public class BossAI_State_SpecialAttack : BTAction
 
         return Status.BT_Running;
     }
-    public void SetAim() // 피해량, 플레이어 위치 받아옴
-    {
-        //플레이어를 바라보도록 설정
-
-        //anim.SetTrigger("Attack"); // 공격 애니메이션
-
-        //대상과 머리의 방향을 구한 뒤 해당 방향으로 RotateArm
-        Vector3 direction = (bossAI_Dragon.currentTarget.transform.position - bossAI_Dragon.bossHead.transform.position).normalized;
-
-
-
-        RotateArm(direction);
-    }
-    private void RotateArm(Vector2 newAim)
-    {
-        float rotZ = Mathf.Atan2(newAim.y, newAim.x) * Mathf.Rad2Deg;
-        rotZ += 90f;
-
-        if (rotZ > 40 || rotZ < -40f)
-        {
-            ReturnOriginRotate();
-            //여기다 지진패턴[양 팔을 들어서 내려놓기] 넣어서 꼼수 대응
-            return;
-        }
-
-        // 원하는 회전 범위 지정
-        float minRotation = -25f;
-        float maxRotation = 25f;
-        //270~61 == 회전하면 안됨
-        rotZ = Mathf.Clamp(rotZ, minRotation, maxRotation);
-
-
-        // 현재 회전 각도
-        Quaternion currentRotation = bossAI_Dragon.bossHead.transform.rotation;
-
-        // 목표 회전 각도
-        Quaternion targetRotation = Quaternion.Euler(0, 0, rotZ);
-
-        // 회전 보간
-        float interpolationFactor = 0.005f; // 보간 계수
-        Quaternion interpolatedRotation = Quaternion.Slerp(currentRotation, targetRotation, interpolationFactor);
-
-
-        bossAI_Dragon.bossHead.transform.rotation = interpolatedRotation;
-    }
-
-    private void ReturnOriginRotate()
-    {
-        // 목표 회전 각도
-        Quaternion targetRotation = Quaternion.Euler(0, 0, 0);
-
-        // 현재 회전 각도
-        Quaternion currentRotation = bossAI_Dragon.bossHead.transform.rotation;
-
-        // 회전 보간
-        float interpolationFactor = 0.005f; // 보간 계수
-        Quaternion interpolatedRotation = Quaternion.Slerp(currentRotation, targetRotation, interpolationFactor);
-
-
-        bossAI_Dragon.bossHead.transform.rotation = interpolatedRotation;
-    }
 
     public override void Terminate()
     {
-        ReturnOriginRotate();
-        bossAI_Dragon.SetStateColor(bossAI_Dragon.originColor);
     }
 }
