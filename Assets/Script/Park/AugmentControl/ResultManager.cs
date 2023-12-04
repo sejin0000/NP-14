@@ -259,7 +259,7 @@ public class ResultManager : MonoBehaviour//vsÄÚµå
                 int index = tempList.FindIndex(x => x.Code.Equals(target));
                 MySpecialListSocket newSocket = Instantiate(Socketprefab);
                 newSocket.transform.SetParent(ViewListContent);
-                newSocket.Init(tempList[index].Name, tempList[index].func);
+                newSocket.Init(tempList[index].Name, tempList[index].func, tempList[index].Rare, tempList[index].Code);
 
                 tempList.Remove(tempList[index]);
             }
