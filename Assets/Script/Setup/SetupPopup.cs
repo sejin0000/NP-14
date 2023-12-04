@@ -48,13 +48,17 @@ public class SetupPopup : MonoBehaviour
     {
         backButton.onClick.AddListener(OnBackButtonClicked);
         SoundIndexButton.onClick.AddListener(OnSoundIndexButtonClicked);
-        AccountIndexButton.onClick.AddListener(OnAccountIndexButtonClicked);
         SystemIndexButton.onClick.AddListener(OnSystemIndexButtonClicked);
+        if (AccountIndexButton != null)
+        {
+            AccountIndexButton.onClick.AddListener(OnAccountIndexButtonClicked);
+        }
 
         SetupBoxRect = SetupBoxScrollContent.GetComponent<RectTransform>();
         SetupBoxRectWidth = SetupBoxRect.sizeDelta.x;
 
         SetAnnouncePopup();
+        CheckTabKeyInput();
     }
 
 
@@ -138,5 +142,13 @@ public class SetupPopup : MonoBehaviour
             Destroy(SetupBoxScrollContent.transform.GetChild(i).gameObject);
         }
         SetupBoxRect.sizeDelta = new Vector2(SetupBoxRectWidth, 0);
+    }
+
+    private void CheckTabKeyInput()
+    {        
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            this.gameObject.SetActive(!this.gameObject.activeSelf);
+        }
     }
 }
