@@ -46,7 +46,7 @@ public class ResultManager : MonoBehaviour//vsÄÚµå
         //}
         GameManager.Instance.OnRoomEndEvent += CallStatResult;
         GameManager.Instance.OnStageEndEvent += SpecialResult;
-        GameManager.Instance.OnBossStageStartEvent += SpecialResult;
+        GameManager.Instance.OnBossStageEndEvent += SpecialResult;
 
         pv = GetComponent<PhotonView>();
     }

@@ -211,6 +211,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("보스 스테이지 세팅");
         OnBossStageSettingEvent?.Invoke();
+        FF.FadeIn();
         CallBossStageStartEvent();
     }
 
