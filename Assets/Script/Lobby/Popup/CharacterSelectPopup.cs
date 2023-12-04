@@ -168,7 +168,29 @@ public class CharacterSelectPopup : MonoBehaviourPun
         //StartCoroutine(DelayedLayoutRebuild(statRect));
 
         // 캐릭터 스킬 적용
-        playerSkillText.text = $"{playerClass}의 스킬에 대한 설명입니다.";
+        playerSkillText.text = GetSkillText(curCharType);
+    }
+
+    private string GetSkillText(int charNum)
+    {
+        string skillText;
+        switch (charNum)
+        {
+            case (int)CharClass.Soldier:
+                skillText = "스팀팩 버프를 본인에게 부여합니다. \n 지속시간동안 캐릭터의 공격속도, 이동속도를 증가시킵니다.";
+                break;
+            case (int)CharClass.Shotgun:
+                skillText = "아군과 본인을 지키는 쉴드를 생성합니다.";
+                break;
+            case (int)CharClass.Sniper:
+                skillText = "아군에게 힐을 부여하는 힐모드와 적군에게 피해를 입히는 딜모드로 전환합니다.";
+                break;
+            default:
+                skillText = "NA";
+                break;
+        }
+
+        return skillText;
     }
 
     #region button
