@@ -57,10 +57,8 @@ public class SetupPopup : MonoBehaviour
         SetupBoxRect = SetupBoxScrollContent.GetComponent<RectTransform>();
         SetupBoxRectWidth = SetupBoxRect.sizeDelta.x;
 
-        SetAnnouncePopup();
-        CheckTabKeyInput();
+        SetAnnouncePopup();        
     }
-
 
     private void OnEnable()
     {
@@ -142,13 +140,5 @@ public class SetupPopup : MonoBehaviour
             Destroy(SetupBoxScrollContent.transform.GetChild(i).gameObject);
         }
         SetupBoxRect.sizeDelta = new Vector2(SetupBoxRectWidth, 0);
-    }
-
-    private void CheckTabKeyInput()
-    {        
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            this.gameObject.SetActive(!this.gameObject.activeSelf);
-        }
     }
 }
