@@ -18,13 +18,15 @@ public class A1207 : MonoBehaviourPun
 
     private void Awake()
     {
+        collision = GetComponent<CollisionController>();
+        playerStatHandler = GetComponent<PlayerStatHandler>();
+        collision.footCollider.isTrigger = true;
+        collision.rigidbody.bodyType = RigidbodyType2D.Kinematic;
         if (photonView.IsMine)
         {
-            collision= GetComponent<CollisionController>();
-            playerStatHandler=GetComponent<PlayerStatHandler>();
 
-            collision.footCollider.isTrigger = true;
-            collision.rigidbody.bodyType = RigidbodyType2D.Kinematic;
+            target = new List<Transform>();
+     
 
             GameManager.Instance.OnStageStartEvent += ImDie;
             GameManager.Instance.OnBossStageStartEvent += ImDie;
@@ -32,15 +34,16 @@ public class A1207 : MonoBehaviourPun
             playerinput = GetComponent<PlayerInput>();
 
             Dictionary<int, Transform> dic = GameManager.Instance.playerInfoDictionary;
-                foreach (KeyValuePair<int, Transform> kv in dic)
+            foreach (KeyValuePair<int, Transform> kv in dic)
             {
                 if (kv.Key != gameObject.GetPhotonView().ViewID) 
                 {
                     target.Add(kv.Value);
+
                 }
-                targetOne = target[0];
-                targetPlayerStatHandler = targetOne.GetComponent <PlayerStatHandler >();
             }
+            targetOne = target[0];
+            targetPlayerStatHandler = targetOne.GetComponent<PlayerStatHandler>();
 
         }
     }
@@ -65,11 +68,11 @@ public class A1207 : MonoBehaviourPun
     }
     public void Change()
     {
-        if (targetOne = target[0])
+        if (targetOne == target[0] && (target.Count >=2))
         {
             targetOne = target[1];
         }
-        else
+        else if ((target.Count >= 2))
         {
             targetOne = target[0];
         }

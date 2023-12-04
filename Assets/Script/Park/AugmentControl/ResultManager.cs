@@ -19,9 +19,10 @@ public class ResultManager : MonoBehaviour//vs코드
     public List<IAugment> stat1;
     public List<IAugment> stat2;
     public List<IAugment> stat3;
+    public GameObject MySpecialList;
+    bool SeeNowMyList;
 
-    //public MainGameManager gameManager;
-    //public TestGameManager gameManager;
+
     public List<SpecialAugment> SpecialAugment1 = new List<SpecialAugment>();
     public List<SpecialAugment> SpecialAugment2 = new List<SpecialAugment>();
     public List<SpecialAugment> SpecialAugment3 = new List<SpecialAugment>();
@@ -29,6 +30,11 @@ public class ResultManager : MonoBehaviour//vs코드
     public GameObject Player;
 
     public PhotonView pv;
+
+
+    public MySpecialListSocket Socketprefab;
+    public Transform ViewListContent;
+
 
     public bool statChance;
 
@@ -47,7 +53,7 @@ public class ResultManager : MonoBehaviour//vs코드
         GameManager.Instance.OnRoomEndEvent += CallStatResult;
         GameManager.Instance.OnStageEndEvent += SpecialResult;
         GameManager.Instance.OnBossStageEndEvent += SpecialResult;
-
+        SeeNowMyList = false;
         pv = GetComponent<PhotonView>();
     }
     void Awake()
@@ -63,15 +69,6 @@ public class ResultManager : MonoBehaviour//vs코드
             Destroy(this);
         }
         testsetting = false;
-        //PickStatList(MakeAugmentListManager.stat1);//스탯1
-        //if (MainGameManager.Instance != null) TO DEL 아래도 테스트 게임 매니저라고 판단됨
-        //{
-        //    gameManager = MainGameManager.Instance;
-        //}
-        //if (TestGameManager.Instance != null)
-        //{
-        //    gameManager = TestGameManager.Instance;
-        //}
 
     }
     public void StartSet()
@@ -251,6 +248,10 @@ public class ResultManager : MonoBehaviour//vs코드
                 int target= picklist[i].stat.Code;
                 //리스트에서 이름 찾아서 제거
                 int index = tempList.FindIndex(x => x.Code.Equals(target));
+                MySpecialListSocket newSocket = Instantiate(Socketprefab);
+                newSocket.transform.SetParent(ViewListContent);
+                newSocket.Init(tempList[index].Name, tempList[index].func, tempList[index].Rare, tempList[index].Code);
+
                 tempList.Remove(tempList[index]);
             }
             picklist[i].gameObject.SetActive(false);
@@ -265,5 +266,18 @@ public class ResultManager : MonoBehaviour//vs코드
     public void ready() 
     {
         GameManager.Instance.PV.RPC("EndPlayerCheck",RpcTarget.All);
+    }
+    public void OnOffGetList()
+    {
+        if (SeeNowMyList)
+        {
+            MySpecialList.SetActive(false);
+            SeeNowMyList = false;
+        }
+        else 
+        {
+            MySpecialList.SetActive(true);
+            SeeNowMyList = true;
+        }
     }
 }

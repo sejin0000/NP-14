@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95acb80495f00264e90da9f5cde41ae1, type: 3}
   m_Name: MonsterSquadSO2
   m_EditorClassIdentifier: 
-  MonsterList: 0000000000000000
+  MonsterList: 000000000000000002000000
   MonsterNum: 10

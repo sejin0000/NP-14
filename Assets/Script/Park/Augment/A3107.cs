@@ -58,7 +58,7 @@ public class A3107 : MonoBehaviourPun
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy") && photonView.IsMine)
         {
             EnemyAI wjr = collision.GetComponent<EnemyAI>();
             wjr.PV.RPC("DecreaseHPByObject", RpcTarget.All, damege, PvNum);

@@ -78,6 +78,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "AugmentCheck",
+                    "type": "Button",
+                    "id": "e47bbf64-fd93-4935-85c6-762fca74da2d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Reload",
                     "type": "Button",
                     "id": "54ce5b28-a45f-4ad9-91e1-5176f53bc256",
@@ -325,6 +334,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Flash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "83ffbd2c-7c85-4bf3-b5d3-27fcb85266a7",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "AugmentCheck",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
