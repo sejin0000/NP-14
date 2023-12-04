@@ -95,9 +95,9 @@ MonoBehaviour:
   Name: {fileID: 6825216362472074263}
   Func: {fileID: 1433392767532644934}
   symbolOptionObj: {fileID: 5511721028357856337}
-  tier1: {fileID: 1321877955, guid: 32afb963486ca964c9427576de62d81e, type: 3}
-  tier2: {fileID: 1417595674, guid: 32afb963486ca964c9427576de62d81e, type: 3}
-  tier3: {fileID: -1477409259, guid: 32afb963486ca964c9427576de62d81e, type: 3}
+  tier1: {fileID: 1975862619, guid: 87ab3e901c09e5549a2cc7c6c5205d52, type: 3}
+  tier2: {fileID: -1985634543, guid: 87ab3e901c09e5549a2cc7c6c5205d52, type: 3}
+  tier3: {fileID: -1326318321, guid: 87ab3e901c09e5549a2cc7c6c5205d52, type: 3}
   symbolStat: {fileID: -1342991249, guid: 32afb963486ca964c9427576de62d81e, type: 3}
   symbolAll: {fileID: -1439897137, guid: 32afb963486ca964c9427576de62d81e, type: 3}
   symbolSniper: {fileID: 149328577, guid: 32afb963486ca964c9427576de62d81e, type: 3}

@@ -296,7 +296,7 @@ public class PlayerStatHandler : MonoBehaviourPun
         GameManager.Instance.OnBossStageStartEvent += stageBuffReset;
         viewID = photonView.ViewID;
         OnChangeCurHPEvent += SendSyncHP;
-        this.gameObject.layer = 12;
+        this.gameObject.layer = 8;
         if (ImGhost) 
         { this.gameObject.layer = 13; }
     }

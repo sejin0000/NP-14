@@ -68,16 +68,7 @@ public class ResultManager : MonoBehaviour//vs코드
         {
             Destroy(this);
         }
-        testsetting = true;
-        //PickStatList(MakeAugmentListManager.stat1);//스탯1
-        //if (MainGameManager.Instance != null) TO DEL 아래도 테스트 게임 매니저라고 판단됨
-        //{
-        //    gameManager = MainGameManager.Instance;
-        //}
-        //if (TestGameManager.Instance != null)
-        //{
-        //    gameManager = TestGameManager.Instance;
-        //}
+        testsetting = false;
 
     }
     public void StartSet()
