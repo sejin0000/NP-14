@@ -1,14 +1,29 @@
+using ExitGames.Client.Photon.StructWrapping;
 using myBehaviourTree;
 using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XR;
 using UnityEngine.UI;
 
 public class NewBehaviourScript : MonoBehaviourPunCallbacks, IPunObservable
 {
     private BTRoot TreeAIState;
+
+    //박민혁이만든함수
+    public Bullet MissilePrefab;
+    public int missileCount;
+    public Bullet thornPrefab;
+    int rollCount=0;
+    int endRollCount = 4;
+    bool rolling = false;
+    Vector2 direction;
+    Rigidbody2D _rigidbody2D;
+
 
     public float currentHP;                  // 현재 체력 계산
     public float viewAngle;                  // 시야각 (기본120도)
@@ -125,6 +140,9 @@ public class NewBehaviourScript : MonoBehaviourPunCallbacks, IPunObservable
         int randomTarget = Random.Range(0, PlayersTransform.Count);
 
         currentTarget = PlayersTransform[randomTarget];
+
+        rollCount = 0;
+        rolling = false;
     }
     void Update()
     {
@@ -1078,6 +1096,132 @@ public class NewBehaviourScript : MonoBehaviourPunCallbacks, IPunObservable
         }
 
     }
-}
     #endregion
+    #region 미사일
+    [PunRPC]
+    public void Missile(float atk, float speed, float duration)//총알 생성 프리팹 보스에임이 조준대상이라고 생각하고 있음 뇌피셜임
+    {// 현재 유도기능 x 우선 이러이러한 방식이에요 위해 총쏘기까지만 구현함 
+        MissileCountCheck();
+        Bullet _bullet = Instantiate<Bullet>(MissilePrefab, bossAim.transform.position, bossAim.transform.rotation);
+
+        _bullet.IsDamage = true;
+        _bullet.ATK = atk;
+        _bullet.BulletLifeTime = duration;
+        _bullet.BulletSpeed = speed;
+        _bullet.targets["Player"] = (int)BulletTarget.Player;
+        _bullet.BulletOwner = photonView.ViewID;
+    }
+    public void MissileOn() //미사일 발사 발사텀을 주기위해 코루틴 선택 인보크로 대체 가능하리라예상됨
+    {
+        missileCount = 0; // 3발을쏨 == 3발 다쏘면 이번 패턴 end 조건만족을 위해 카운트 리셋
+        StartCoroutine("firefirefire");
+    }
+    public IEnumerator firefirefire()
+    {
+        float atk = bossSO.atk * 2f;
+        float speed = bossSO.bulletSpeed;
+        float bulletLifeTIme = bossSO.bulletLifeTime;
+
+        photonView.RPC("Missile", RpcTarget.All, atk, speed, bulletLifeTIme);
+        yield return new WaitForSeconds(0.5f);
+        photonView.RPC("Missile", RpcTarget.All, atk * 2, speed * 0.5, bulletLifeTIme * 2);
+        yield return new WaitForSeconds(0.5f);
+        photonView.RPC("Missile", RpcTarget.All, atk * 0.5, speed * 2, bulletLifeTIme);
+    }
+    public void MissileCountCheck()
+    {
+        missileCount++;
+        if (missileCount >= 3)
+        {
+            //이번패턴 나갈 조건 체크
+        }
+    }
+    #endregion
+    #region 가시발사
+    [PunRPC]
+    public void thorn(float rot)//총알 생성 프리팹 보스에임이 조준대상이라고 생각하고 있음 뇌피셜임
+    {// 현재 유도기능 x 우선 이러이러한 방식이에요 위해 총쏘기까지만 구현함 
+        MissileCountCheck();
+        Quaternion angle = Quaternion.Euler(new Vector3(0, 0, rot));
+        Bullet _bullet = Instantiate<Bullet>(thornPrefab, bossAim.transform.position, angle);
+        _bullet.IsDamage = true;
+        _bullet.ATK = bossSO.atk;
+        _bullet.BulletLifeTime = bossSO.bulletLifeTime;
+        _bullet.BulletSpeed = bossSO.bulletSpeed;
+        _bullet.targets["Player"] = (int)BulletTarget.Player;
+        _bullet.BulletOwner = photonView.ViewID;
+    }
+    public void thorntornado1()
+    {
+        float n = 0;
+        Quaternion rot = Quaternion.Euler(new Vector3(0, 0, n));
+        for (int i = 0; i < 8; ++i)
+        {
+            photonView.RPC("thorn", RpcTarget.All, n);
+            n += 45;
+        }
+        Invoke("thorntornado2", 1f);
+    }
+    public void thorntornado2()
+    {
+        float n = 22.5f;
+        Quaternion rot = Quaternion.Euler(new Vector3(0, 0, n));
+        for (int i = 0; i < 8; ++i)
+        {
+            photonView.RPC("thorn", RpcTarget.All, n);
+            n += 45;
+        }
+        if(!rolling) //구르기 중이 아니라면 ==일반 상태의 가시쏘기 완료
+        {
+            //패턴끝 조건 추가        
+        }
+
+    }
+    #endregion
+    #region 구르기모드
+    public void RollStart() 
+    {
+        //롤카운트 기준으로 멈추고 n초후(벽에 딱붙어서 멈추지 않기 위함) 멈출것임 트리거에서 if rolling && collier.layer==wall
+        rollCount = 0;
+        rolling = true;
+        Vector2 me = transform.position;
+        Vector2 u = target.position;
+        direction = (me - u).normalized;
+    }
+    public void RollEnd() 
+    {
+        rolling = false;
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (rolling && collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
+        {
+            if (rollCount % 2 == 0)
+            {
+                thorntornado1();
+            }
+            else 
+            {
+                thorntornado2();
+            }
+            rollCount++;
+            if (rollCount >= endRollCount) 
+            {
+                Invoke("RollEnd", 0.2f);
+            }
+            Vector3 normal = collision.contacts[0].normal; // 법선벡터
+            direction = Vector3.Reflect(direction, normal).normalized; // 반사
+        }
+    }
+    public void updateclone()//업데이트 돌려야 됨 근데 업데이트 돌리면 이상할거같아서 이렇게 해둠
+    {
+        if (rolling) 
+        {
+            direction = direction * bossSO.enemyMoveSpeed * Time.deltaTime;
+            _rigidbody2D.velocity = direction;
+        }
+    }
+    #endregion
+}
+
 
