@@ -157,6 +157,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         if (LobbyManager.Instance.CurrentState == PanelType.RoomPanel)
         {
             Debug.Log($"LobbyManager - LeftRoom : Client State : {PhotonNetwork.NetworkClientState}{Enum.GetName(typeof(ClientState), PhotonNetwork.NetworkClientState)}");
+            PhotonNetwork.LocalPlayer.CustomProperties[CustomProperyDefined.ASK_READY_PROPERTY] = false;
             LobbyManager.Instance.SetPanel(PanelType.MainLobbyPanel);
             PhotonNetwork.ConnectUsingSettings();
 
@@ -184,18 +185,24 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.LocalPlayer == newMasterClient)
         {
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable() {{ CustomProperyDefined.ASK_READY_PROPERTY, false }});
             LobbyManager.Instance.RoomP.ReadyButton.gameObject.SetActive(false);
         }
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
+        foreach (var hashKey in changedProps.Keys) 
+        {
+            Debug.Log($"OnPlayerPropertiesUpdate : {(string)hashKey}");        
+        }
         var playerPartyDict = LobbyManager.Instance.playerPartyDict;
         var _RoomP = LobbyManager.Instance.RoomP;
 
 
         // DESC : 플레이어 파티 박스 최신화
-        if (LobbyManager.Instance.CurrentState == PanelType.RoomPanel)
+        if (LobbyManager.Instance.CurrentState == PanelType.RoomPanel
+            && PhotonNetwork.LocalPlayer.CustomProperties[CustomProperyDefined.ASK_READY_PROPERTY] != null)
         {
             _RoomP.SetPartyPlayerInfo();
 

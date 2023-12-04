@@ -740,6 +740,14 @@ PrefabInstance:
       propertyPath: Surface2D
       value: 
       objectReference: {fileID: 1446008945}
+    - target: {fileID: 4282806665659269914, guid: 94660f1eecddc314f8d09523b43c5ee4, type: 3}
+      propertyPath: BossMapSize.x
+      value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 4282806665659269914, guid: 94660f1eecddc314f8d09523b43c5ee4, type: 3}
+      propertyPath: BossMapSize.y
+      value: 18
+      objectReference: {fileID: 0}
     - target: {fileID: 4323504389568728521, guid: 94660f1eecddc314f8d09523b43c5ee4, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -1328,7 +1336,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3710770239789521589, guid: 7769f7b49d97a104b9752d2ce64fa83f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 3710770239789521589, guid: 7769f7b49d97a104b9752d2ce64fa83f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1387,6 +1395,10 @@ PrefabInstance:
     - target: {fileID: 3228654747883424040, guid: 56582e1fd921b2448a6dc87521f5f27a, type: 3}
       propertyPath: m_Name
       value: AugmentManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 3228654747883424040, guid: 56582e1fd921b2448a6dc87521f5f27a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3381109296560309649, guid: 56582e1fd921b2448a6dc87521f5f27a, type: 3}
       propertyPath: m_RootOrder
@@ -1617,7 +1629,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 4.2497115
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1888,6 +1900,10 @@ PrefabInstance:
     - target: {fileID: 9127201675613093919, guid: 551f5738c4f3cd54abff453776f4b8d8, type: 3}
       propertyPath: m_Name
       value: ResultManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 9127201675613093919, guid: 551f5738c4f3cd54abff453776f4b8d8, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
