@@ -10,25 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1f76e7dab80292843a8ceb8dbf8daab0, type: 3}
-  m_Name: Ranged_Enemy
+  m_Name: Melee_Enemy
   m_EditorClassIdentifier: 
-  enemyName: "\uBA40\uC5B4\uC6A9"
-  type: 1
-  atk: 3
-  hp: 20
-  bulletSpeed: 7
-  atkDelay: 0.5
+  enemyName: "\uAC00\uAE4C\uC6CC\uC6A9"
+  type: 0
+  atk: 5
+  hp: 60
+  bulletSpeed: 10
+  atkDelay: 0.2
   SpecialAttackDelay: 0
-  patrolDelay: 3
-  chaseTime: 3
-  groggyTiem: 1.5
+  patrolDelay: 2.5
+  chaseTime: 5
+  groggyTiem: 1
   bulletLifeTime: 6
   breathAttackDelay: 0
-  enemyMoveSpeed: 3.5
-  enemyChaseSpeed: 2.5
-  viewAngle: 60
-  viewDistance: 6
-  attackRange: 8
+  enemyMoveSpeed: 4
+  enemyChaseSpeed: 3.5
+  viewAngle: 70
+  viewDistance: 9
+  attackRange: 2.5
   dropGold: 0
   unitScale: 0
   bossPatternTime: 0
