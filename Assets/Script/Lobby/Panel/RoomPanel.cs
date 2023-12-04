@@ -200,12 +200,22 @@ public class RoomPanel : MonoBehaviourPunCallbacks
             var partyPlayerInfo = playerInfoPrefab.GetComponent<PartyPlayerInfo>();
             partyPlayerInfo.Initialize(cnt, p);
 
-            p.CustomProperties.TryGetValue(askReadyProp, out object isReady);
-
-            if (isReady == null)
+            var readyProp = p.CustomProperties[askReadyProp];
+            bool isReady;
+            if (readyProp == null)
             {
                 isReady = false;
             }
+            else
+            {
+                isReady = (bool)p.CustomProperties[askReadyProp];
+            }
+            //p.CustomProperties.TryGetValue(askReadyProp, out object isReady);
+            //if (isReady == null)
+            //{
+            //    isReady = false;
+            //}
+            Debug.Log($"Player : {p.ActorNumber} / IsReady : {(bool)isReady}");
             partyPlayerInfo.SetReady((bool)isReady);
 
             _playerPartyDict.Add(p.ActorNumber, playerInfoPrefab);
@@ -267,6 +277,11 @@ public class RoomPanel : MonoBehaviourPunCallbacks
 
     public void OnSubmitButtonClicked()
     {
+        if (ChatInputField.text == "")
+        {
+            ChatInputField.DeactivateInputField();
+            return;
+        }
         string inputText = ChatInputField.text;
         string nickName = PhotonNetwork.LocalPlayer.NickName;
 
