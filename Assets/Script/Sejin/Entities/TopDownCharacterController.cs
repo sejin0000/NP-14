@@ -19,7 +19,7 @@ public class TopDownCharacterController : MonoBehaviourPun
     public event Action OnStartSkillEvent;
     public event Action OnSiegeModeEvent;
     public event Action OnFlashEvent;
-
+    public event Action OnAugmentcheck;
 
     public event Action SkillMinusEvent;
     public event Action<bool> OnAttackKeepEvent;
@@ -29,6 +29,8 @@ public class TopDownCharacterController : MonoBehaviourPun
     public PlayerStatHandler playerStatHandler;
     public TopDownMovement topDownMovement;
     public CoolTimeController coolTimeController;
+
+
 
     private bool AtkKeyhold = false;
 
@@ -171,7 +173,10 @@ public class TopDownCharacterController : MonoBehaviourPun
             OnReloadEvent?.Invoke();
         }
     }
-
+    public void CallAugmentCheck()
+    {
+        OnAugmentcheck?.Invoke();
+    }
     public void CallEndReloadEvent()
     {
         OnEndReloadEvent?.Invoke();
