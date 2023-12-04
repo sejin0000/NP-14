@@ -28,7 +28,7 @@ MonoBehaviour:
   enemyChaseSpeed: 3.5
   viewAngle: 70
   viewDistance: 9
-  attackRange: 2.5
+  attackRange: 3
   dropGold: 0
   unitScale: 0
   bossPatternTime: 0
