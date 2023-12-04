@@ -77,6 +77,7 @@ public class GameManager : MonoBehaviour
 
         OnStageStartEvent += MG.MapMake;
         OnStageStartEvent += MG.roomNodeInfo.CloseDoor;
+        OnBossStageSettingEvent += MG.BossMapMake;
         if (PhotonNetwork.IsMasterClient)
         {
             OnStageStartEvent += MG.NavMeshBakeRunTime;
@@ -100,7 +101,7 @@ public class GameManager : MonoBehaviour
         }
         else if(stageListInfo.StagerList[curStage].stageType == StageType.bossStage)
         {
-
+            CallBossStageSettingEvent();
         }
     }
 
@@ -211,6 +212,8 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("보스 스테이지 세팅");
         OnBossStageSettingEvent?.Invoke();
+        FF.FadeIn();
+        CallBossStageStartEvent();
     }
 
     public void CallBossStageStartEvent()

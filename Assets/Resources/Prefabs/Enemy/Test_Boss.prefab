@@ -2133,14 +2133,16 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   SpeedCoefficient: 1
-  BreathAttackDelay: 0
+  breathAttackDelay: 0
   currentTime: 0
   isLive: 0
   isAttaking: 0
   isGroggy: 0
-  patternRunning: 0
   isBreathInProgress: 0
+  isRunningBreath: 0
+  isTrackingFurthestTarget: 0
   lastAttackPlayer: 0
+  currentNomalAttackSquence: 0
   image_Gauge: {fileID: 6387957788525354447}
   txt_Gauge: {fileID: 3123471649144832447}
   PV: {fileID: 1435295126933701603}

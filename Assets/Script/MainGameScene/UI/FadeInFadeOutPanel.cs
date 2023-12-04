@@ -53,9 +53,13 @@ public class FadeInFadeOutPanel : MonoBehaviour
         {
             GameManager.Instance.NextGameClearEvent();
         }
-        else
+        else if(i == 3)
         {
             GameManager.Instance.NextGameOverEvent();
+        }
+        else if(i == 4)
+        {
+            GameManager.Instance.CallBossStageStartEvent();
         }
     }
 }

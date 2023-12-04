@@ -30,12 +30,12 @@ namespace myBehaviourTree
 
             if (GetStatus() == Status.BT_Running)
             {
-                Debug.Log("EBH_Running은 사용하지 않습니다. EBH_Success 혹은 EBH_Failure가 유효한 상태입니다.");
+                Debug.Log("BT_Running 컨디션에서 쓰지마라. BT_Success 나 BT_Failure만 쓰셈 ㅡㅡ.");
             }
 
             //★최적화 필요함 : 이전 Action node를 참조하는 필드 변수로 만들어 사용
 
-            //상태 : EBH_Success인 경우 ==> 작동중인 Action 종료[다른 노드와의 충돌 방지/행동 트리거의 일관성 유지]
+            //상태 : BT_Success인 경우 ==> 작동중인 Action 종료[다른 노드와의 충돌 방지/행동 트리거의 일관성 유지]
             if (GetStatus() == Status.BT_Success)
             {
                 //이전에 존재한 다른 노드 값 초기화 - 반드시 들어가는 조건문 필요함

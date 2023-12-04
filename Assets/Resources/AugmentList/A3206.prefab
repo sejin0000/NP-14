@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 3913141191768914953}
   - component: {fileID: 4335156877960907964}
   - component: {fileID: 1635957585644219907}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: A3206
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -209,9 +209,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3750052000313150128}
   - component: {fileID: 6024714672017736466}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GameObject
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
