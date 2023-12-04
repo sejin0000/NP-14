@@ -39,11 +39,8 @@ public class SetupPopup : MonoBehaviour
         get { return setupState; } 
         set
         {
-            if (value != setupState)
-            {
-                SetSubjectText(value);
-                setupState = value;
-            }
+            SetSubjectText(value);
+            setupState = value;
         }
     }
     
@@ -59,6 +56,7 @@ public class SetupPopup : MonoBehaviour
 
         SetAnnouncePopup();
     }
+
 
     private void OnEnable()
     {
@@ -129,7 +127,7 @@ public class SetupPopup : MonoBehaviour
 
     private void SetSetupPrefab(string path)
     {
-        var prefab = Instantiate(Resources.Load<GameObject>(path), SetupBoxScrollContent.transform, false);
+        var prefab = Instantiate(Resources.Load<GameObject>(path), SetupBoxScrollContent.transform, false);       
         SetupBoxRect.sizeDelta += new Vector2(0, prefab.GetComponent<RectTransform>().sizeDelta.y);
     }
 

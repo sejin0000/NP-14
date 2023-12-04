@@ -9,7 +9,7 @@ public class NickNameChangePrefab : MonoBehaviour
 {
     [SerializeField] private TMP_InputField nickNameInput;    
     [SerializeField] private Button SubmitButton;
-    private SetupPopup setupPopup;
+    public SetupPopup setupPopup;
 
     private void OnEnable()
     {
