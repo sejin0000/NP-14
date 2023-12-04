@@ -13,6 +13,10 @@ using UnityEngine.Tilemaps;
 public class MapGenerator : MonoBehaviour
 {
     [SerializeField] public Vector2Int mapSize; //원하는 맵의 크기
+
+    [SerializeField] public Vector2Int BossMapSize; //원하는 맵의 크기
+
+
     [SerializeField] float minimumDevideRate; //공간이 나눠지는 최소 비율
     [SerializeField] float maximumDivideRate; //공간이 나눠지는 최대 비율
     [SerializeField] private GameObject line; //lineRenderer를 사용해서 공간이 나눠진걸 시작적으로 보여주기 위함
@@ -42,7 +46,16 @@ public class MapGenerator : MonoBehaviour
         roomNodeInfo = GetComponent<RoomNodeInfo>();
     }
 
+    public void BossMapMake()
+    {
+        root = new Node(new RectInt(0, 0, BossMapSize.x, BossMapSize.y)); //전체 맵 크기의 루트노드를 만듬 
 
+        setTile.OrderSetRectTile(new RectInt(0, 0, BossMapSize.x + 20, BossMapSize.y + 10), setTile.wallTileMap, setTile.wallTile, new Vector2(-((BossMapSize.x + 20) / 2), -((BossMapSize.y + 10) / 2)));
+        setTile.OrderSetRectTile(new RectInt(0, 0, BossMapSize.x, BossMapSize.y), setTile.wallTileMap, null, new Vector2(-(BossMapSize.x / 2), -(BossMapSize.y / 2)));
+        setTile.OrderSetRectTile(new RectInt(0, 0, BossMapSize.x, BossMapSize.y), setTile.groundTileMap, setTile.groundTile, new Vector2(-(BossMapSize.x / 2), -(BossMapSize.y / 2)));
+
+        roomNodeInfo.porTal.GetComponent<Portal>().portalSetting(0, 20);
+    }
     public void MapMake()
     {
         Debug.Log("MapMake");

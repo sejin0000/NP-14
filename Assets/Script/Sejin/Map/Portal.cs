@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Portal : MonoBehaviour
 {
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Player" && other.gameObject.GetComponent<PhotonView>().IsMine)
@@ -16,5 +17,10 @@ public class Portal : MonoBehaviour
                 GameManager.Instance.MG.roomNodeInfo.porTal = gameObject;
             }
         }
+    }
+
+    public void portalSetting(float x,float y)
+    {
+        gameObject.transform.position = new Vector2(x, y);
     }
 }

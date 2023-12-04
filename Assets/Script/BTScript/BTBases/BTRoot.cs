@@ -86,5 +86,6 @@ namespace myBehaviourTree //여러개의 스크립트를 하나로 묶을 수 있네?
             //현재 루트 노드의 상태를 반환
             return GetStatus();
         }
+
     }
 }

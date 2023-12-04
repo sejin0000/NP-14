@@ -1,39 +1,35 @@
 using myBehaviourTree;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
-
-//2페이즈 : 일단 보류->수요일 전까지 1페이즈 완성 목표
-
-
-public class BossAI_Phase_2_Condition : BTCondition
+public class BossAI_State_ReturnRoot : BTAction
 {
     private GameObject owner;
     private BossAI_Dragon bossAI_Dragon;
     private EnemySO bossSO;
 
-
-    private float percentHP;
-    public BossAI_Phase_2_Condition(GameObject _owner)
+    private float currentTime;         // 시간 계산용   
+    public BossAI_State_ReturnRoot(GameObject _owner)
     {
         owner = _owner;
         bossAI_Dragon = owner.GetComponent<BossAI_Dragon>();
-        bossSO = bossAI_Dragon.bossSO;
     }
 
     public override void Initialize()
     {
+        //리프 노드에서 실패를 반환할 수 없고
+        //리프 노드에서 트리 재실행이 필요한 경우 쓰셈
     }
 
     public override Status Update()
     {
-        percentHP = (bossAI_Dragon.currentHP / bossSO.hp * 100);
-
-        if (percentHP > 50)//(현재 체력이 50% 미만) => 다음 페이즈로
-            return Status.BT_Failure;
-
         return Status.BT_Success;
+    }
+    public override void Terminate()
+    {
+        Debug.Log("리셋 성공");
+        //루트로 올라가기전에 하고싶은 일 있으면 쓰셈
     }
 }
