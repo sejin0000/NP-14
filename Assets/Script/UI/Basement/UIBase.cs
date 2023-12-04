@@ -22,5 +22,10 @@ public class UIBase : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+
+    public virtual void Foo()
+    {
+        Debug.Log("Foo! " + GetType().Name);
+    }
 }
 
