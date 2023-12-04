@@ -77,6 +77,7 @@ public class GameManager : MonoBehaviour
 
         OnStageStartEvent += MG.MapMake;
         OnStageStartEvent += MG.roomNodeInfo.CloseDoor;
+        OnBossStageSettingEvent += MG.BossMapMake;
         if (PhotonNetwork.IsMasterClient)
         {
             OnStageStartEvent += MG.NavMeshBakeRunTime;

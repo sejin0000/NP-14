@@ -135,8 +135,8 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         knockbackDistance = 0f;
 
 
-        //TODO 생성할 때, 모든 플레이어 Transform 정보를 담는다.
-        foreach (var _value in TestGameManagerWooMin.Instance.playerInfoDictionary.Values)
+        //TODO 생성할 때, 모든 플레이어 Transform 정보를 담는다.TestGameManagerWooMin
+        foreach (var _value in GameManager.Instance.playerInfoDictionary.Values)
         {
             PlayersTransform.Add(_value);           
         }
@@ -265,6 +265,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void DestroyEnemy()
     {
+        GameManager.Instance.CallBossStageEndEvent();
         Destroy(gameObject);
     }
 

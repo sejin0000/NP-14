@@ -63,8 +63,7 @@ public class MonsterSpawner : MonoBehaviour
 
         MonsterName monster = stagerListInfoSO.StagerList[GameManager.Instance.curStage].MonsterSquadList[randomSquad].MonsterList[randamMonster];
 
-        BossSpawner(monster.ToString(), new Vector2(0,0));
-
+        BossSpawner(monster.ToString(), new Vector2(0,10));
     }
 
 
