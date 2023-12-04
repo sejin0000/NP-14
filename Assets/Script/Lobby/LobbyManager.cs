@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using System.Runtime.CompilerServices;
 
 public enum PanelType
 {
@@ -17,6 +18,14 @@ public enum PanelType
     TestRoomPanel,
     ShopPanel,
 }
+
+public enum CharClass
+{
+    Soldier,
+    Shotgun,
+    Sniper,
+}
+
 public class LobbyManager : MonoBehaviourPunCallbacks
 {
     public static LobbyManager Instance;
@@ -63,6 +72,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     [HideInInspector]
     public event Action<PanelType> OnLeaveRoom;
+    private AudioLibrary audioLibrary;
 
     public void Awake()
     {
@@ -84,6 +94,9 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
         // DESC : DataSetting ÃÊ±âÈ­
         dataSetting = DataSettingPrefab.GetComponent<PlayerDataSetting>();
+
+        // DESC : AudioLibrary Ä³½Ì
+        audioLibrary = AudioManager.Instance.AudioLibrary;
     }
 
     public void SetRoomPanel()
@@ -99,6 +112,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         CharacterSelect.Initialize();
 
         RoomP.SetPartyPlayerInfo();
+
+        audioLibrary.CallRoomSoundEvent(instantiatedPlayer);
     }
 
     public void SetRoomPanelEntered()
@@ -132,6 +147,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         dataSetting.ownerPlayer = instantiatedPlayer;
         dataSetting.viewID = ViewID;
         CharacterSelect.Initialize();
+
+        audioLibrary.CallRoomSoundEvent(instantiatedPlayer);
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)

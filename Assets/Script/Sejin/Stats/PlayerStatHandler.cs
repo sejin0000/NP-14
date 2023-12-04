@@ -160,7 +160,9 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     public float ReflectCoeff;
     public float InShieldHP;
-    
+
+    [HideInInspector] public string[] PlayerStatNameArray;
+    [HideInInspector] public Stats[] PlayerStatArray;
 
     private void Awake()
     {
@@ -223,6 +225,22 @@ public class PlayerStatHandler : MonoBehaviourPun
         atkClip = playerStats.atkClip;
         reloadStartClip = playerStats.reloadClip[0];
         reloadFinishClip = playerStats.reloadClip[1];
+        
+        PlayerStatArray = new Stats[11];
+        PlayerStatNameArray = new string[11]
+        {
+            "체력",
+            "공격력",
+            "이동속도",
+            "공격속도",
+            "장전 쿨타임",
+            "스킬 쿨타임",
+            "대쉬 쿨타임",
+            "탄퍼짐",
+            "사거리",
+            "크리티컬",
+            "장탄수",
+        };
     }
     private void OnEnable()
     {
@@ -314,7 +332,6 @@ public class PlayerStatHandler : MonoBehaviourPun
         }
         Damage(damage);
     }
-
 
     public void Damage(float damage)
     {
@@ -523,5 +540,24 @@ public class PlayerStatHandler : MonoBehaviourPun
 
         // 최종 위치에 고정
         transform.position = targetPosition;
+    }
+
+    public void SetStatusArray()
+    {
+        PlayerStatArray = new Stats[11]
+        {
+            HP,
+            ATK,
+            Speed,
+            AtkSpeed,
+            ReloadCoolTime,
+            SkillCoolTime,
+            RollCoolTime,
+            BulletSpread,
+            BulletLifeTime,
+            Critical,
+            AmmoMax
+        };
+
     }
 }

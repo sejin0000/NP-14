@@ -12,6 +12,8 @@ public class Shield : MonoBehaviour
     public List<int> InShieldViewIDList;
     private float buffAmount;
 
+    private Transform parentTransform;
+
     [Header("ShieldInfo")]
     public float shieldSurvivalTime = 3;
     private float shieldHP;
@@ -54,6 +56,12 @@ public class Shield : MonoBehaviour
 
     private void Start()
     {
+        parentTransform = transform.parent;
+        if (parentTransform == null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
         target = new List<PlayerStatHandler>();
         InShieldViewIDList = new List<int>();
         playerStat = transform.parent.GetComponent<PlayerStatHandler>();
@@ -82,6 +90,10 @@ public class Shield : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (parentTransform == null)
+        {
+            return;
+        }
         if (collision.gameObject.layer == LayerMask.NameToLayer("Bullet")
             && collision.gameObject.GetComponent<Bullet>().targets.ContainsValue((int)BulletTarget.Player))
         {
@@ -135,6 +147,10 @@ public class Shield : MonoBehaviour
 
     public void SendShieldHP()
     {
+        if (parentTransform == null)
+        {
+            return;
+        }
         foreach (PlayerStatHandler playerStat in target)
         {
             playerStat.InShieldHP = ShieldHP;
@@ -144,6 +160,10 @@ public class Shield : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        if (parentTransform == null)
+        {
+            return;
+        }
         PlayerStatHandler targetstat = collision.GetComponent<PlayerStatHandler>();
         if (targetstat != null)
         {

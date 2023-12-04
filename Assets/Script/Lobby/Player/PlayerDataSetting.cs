@@ -32,17 +32,17 @@ public class PlayerDataSetting : MonoBehaviourPun
 
         switch (charType)
         {
-            case (int)LobbyPanel.CharClass.Soldier:                
+            case (int)CharClass.Soldier:                
                 statSO.CharacterChange(soldierSO);
                 DelComponent(statSO.gameObject);
                 statSO.gameObject.AddComponent<Player1Skill>();               
                 break;
-            case (int)LobbyPanel.CharClass.Shotgun:                
+            case (int)CharClass.Shotgun:                
                 statSO.CharacterChange(shotGunSO);
                 DelComponent(statSO.gameObject);
                 statSO.gameObject.AddComponent<Player2Skill>();
                 break;
-            case (int)LobbyPanel.CharClass.Sniper:                
+            case (int)CharClass.Sniper:                
                 statSO.CharacterChange(sniperSO);
                 DelComponent(statSO.gameObject);
                 statSO.gameObject.AddComponent<Player3Skill>();
@@ -52,7 +52,7 @@ public class PlayerDataSetting : MonoBehaviourPun
 
     public void DelComponent(GameObject GO)
     {
-        
+        GO.GetComponent<PlayerInputController>().SkillReset();
         if (GO.GetComponent<Player1Skill>())
         {            
             Destroy(GO.GetComponent<Player1Skill>());
@@ -65,5 +65,23 @@ public class PlayerDataSetting : MonoBehaviourPun
         {            
             Destroy(GO.GetComponent<Player3Skill>());
         }
+    }
+
+    public PlayerStatHandler GetStatData(int classNum)
+    {
+        PlayerStatHandler statSO = LobbyManager.Instance.instantiatedPlayer.GetComponent<PlayerStatHandler>();
+        switch (classNum)
+        {
+            case (int)CharClass.Soldier:
+                statSO.CharacterChange(soldierSO);
+                break;
+            case (int)CharClass.Shotgun:
+                statSO.CharacterChange(shotGunSO);
+                break;
+            case (int)CharClass.Sniper:
+                statSO.CharacterChange(sniperSO);
+                break;
+        }
+        return statSO;
     }
 }

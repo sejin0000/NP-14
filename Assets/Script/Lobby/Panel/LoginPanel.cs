@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-public class LoginPanel : MonoBehaviourPunCallbacks
+public class LoginPanel : MonoBehaviourPunCallbacks, IPointerClickHandler
 {
     [Header("Login")]
     public GameObject LoginBox;
@@ -17,31 +17,37 @@ public class LoginPanel : MonoBehaviourPunCallbacks
     [SerializeField] private TMP_InputField playerPswdInput;
     [SerializeField] private Button loginButton;
 
+    [Header("NickNamePopup")]
+    [SerializeField] private GameObject NickNamePopupPrefab;
+    private NickNamePopup NickNamePopup;
+
     [Header("Background Image")]
     [SerializeField] private GameObject Trio;
     [SerializeField] private GameObject Tower;
+
 
     [Header("Start")]
     [SerializeField] private GameObject StartLogo;
     private bool isClicked;
 
-    private void Awake()
+    private void OnEnable()
     {
+        AudioManager.PlayBGM(BGMList.Strike_Witches_Get_Bitches);
         loginButton.onClick.AddListener(OnLoginButtonClicked);
         isClicked = false;
     }
 
-    private void Update()
-    {
+    public void OnPointerClick(PointerEventData eventData)
+    {        
         if (!isClicked)
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                StartLogo.SetActive(false);
-                Trio.SetActive(true);
-                LoginBox.SetActive(true);
-                isClicked = true;
-            }
+            StartLogo.SetActive(false);
+            Trio.SetActive(false);
+            LoginBox.SetActive(false); // 임시로 로그인 기능 제한            
+            isClicked = true;
+            Instantiate(NickNamePopupPrefab, this.transform, false);
+            NickNamePopup = NickNamePopupPrefab.GetComponent<NickNamePopup>();
+            NickNamePopup.Initialize();
         }
     }
 

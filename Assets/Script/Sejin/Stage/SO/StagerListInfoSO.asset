@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StagerList:
   - {fileID: 11400000, guid: 80d39cfab55079d438004f2c5b906131, type: 2}
-  - {fileID: 11400000, guid: 80d39cfab55079d438004f2c5b906131, type: 2}
+  - {fileID: 11400000, guid: 824c11f13c0fda14499b7adcd973b8ca, type: 2}
+  - {fileID: 11400000, guid: 8900da5e538e9ce409b7859ec5b3f32a, type: 2}
