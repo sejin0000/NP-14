@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -10,6 +11,7 @@ public class SetupPopup : MonoBehaviour
     {
         Sound,
         Account,
+        System,
     }
 
     [Header("Button")]
@@ -19,6 +21,7 @@ public class SetupPopup : MonoBehaviour
     [SerializeField] private TextMeshProUGUI setupSubjectText;
     [SerializeField] private Button SoundIndexButton;
     [SerializeField] private Button AccountIndexButton;
+    [SerializeField] private Button SystemIndexButton;
 
     [Header("SetupBox")]
     [SerializeField] private GameObject SetupBox;
@@ -38,8 +41,8 @@ public class SetupPopup : MonoBehaviour
         {
             if (value != setupState)
             {
+                SetSubjectText(value);
                 setupState = value;
-                SetSubjectText(setupState);
             }
         }
     }
@@ -49,6 +52,7 @@ public class SetupPopup : MonoBehaviour
         backButton.onClick.AddListener(OnBackButtonClicked);
         SoundIndexButton.onClick.AddListener(OnSoundIndexButtonClicked);
         AccountIndexButton.onClick.AddListener(OnAccountIndexButtonClicked);
+        SystemIndexButton.onClick.AddListener(OnSystemIndexButtonClicked);
 
         SetupBoxRect = SetupBoxScrollContent.GetComponent<RectTransform>();
         SetupBoxRectWidth = SetupBoxRect.sizeDelta.x;
@@ -73,6 +77,9 @@ public class SetupPopup : MonoBehaviour
             case (int)SetupIndex.Account:
                 setupSubjectText.text = "설정 - 계정";
                 break;
+            case (int)SetupIndex.System:
+                setupSubjectText.text = "설정 - 시스템";
+                break;
         }
     }
     private void SetAnnouncePopup()
@@ -89,24 +96,35 @@ public class SetupPopup : MonoBehaviour
 
     private void OnSoundIndexButtonClicked()
     {
-        if (SetupState == SetupIndex.Sound) 
+        if (setupState == SetupIndex.Sound)
         {
             return;
         }
-        SetupState = SetupIndex.Sound;
+        setupState = SetupIndex.Sound;
         ClearSetupBox();
         SetSetupPrefab(PrefabPathes.SOUND_CONTROL_PREFAB_PATH);
     }
 
     private void OnAccountIndexButtonClicked()
     {
-        if (SetupState == SetupIndex.Account)
+        if (setupState == SetupIndex.Account)
         {
             return;
         }
-        SetupState = SetupIndex.Account;
+        setupState = SetupIndex.Account;
         ClearSetupBox();
         SetSetupPrefab(PrefabPathes.NICKNAME_CHANGE_PREFAB_PATH);
+    }
+
+    private void OnSystemIndexButtonClicked()
+    {
+        if (setupState == SetupIndex.System)
+        {
+            return;
+        }
+        setupState = SetupIndex.Account;
+        ClearSetupBox();
+        SetSetupPrefab(PrefabPathes.SYSTEM_OFF_PREFAB_PATH);
     }
 
     private void SetSetupPrefab(string path)

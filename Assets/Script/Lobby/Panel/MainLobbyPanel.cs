@@ -9,6 +9,7 @@ using UnityEngine.UI;
 using Random = UnityEngine.Random;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using UnityEngine.EventSystems;
+using Unity.VisualScripting;
 
 public class MainLobbyPanel : MonoBehaviourPun
 {
@@ -59,12 +60,16 @@ public class MainLobbyPanel : MonoBehaviourPun
         quickStartButton.onClick.AddListener(OnQuickStartButtonClicked);
         findRoomButton.onClick.AddListener(OnFindRoomButtonClicked);
         settingButton.onClick.AddListener(OnSettingButtonClicked);
+        backButton.onClick.AddListener(OnBackButtonClicked);
+
         ButtonList = new List<Button>
         {           
             findRoomButton,
             quickStartButton,
             settingButton,
         };
+
+        GetButtonEventTrigger();
         // DESC : instantiate Player
         //InstantiatePlayer();
 
@@ -75,46 +80,31 @@ public class MainLobbyPanel : MonoBehaviourPun
         raycaster = GetComponent<GraphicRaycaster>();
     }
 
-    private void Update()
+
+    private void GetButtonEventTrigger()
     {
-        PointerEventData eventData = new PointerEventData(EventSystem.current);
-        eventData.position = Input.mousePosition;
-
-        List<RaycastResult> results = new List<RaycastResult>();
-        raycaster.Raycast(eventData, results);
-
-        if (results.Count > 0)
+        foreach (Button button in ButtonList) 
         {
-            Button hitButton = results[0].gameObject.transform.parent.GetComponent<Button>();
-            
-            if (hitButton != null)
-            {
-                foreach (Button button in ButtonList)
-                {
-                    if (button == hitButton)
-                    {
-                        button.transform.GetChild(1).gameObject.SetActive(true);
-                    }
-                    else
-                    {
-                        button.transform.GetChild(1).gameObject.SetActive(false);
-                    }
-                }                
-            }
-        }
-        else
-        {
-            foreach (Button button in ButtonList)
-            {
-                button.transform.GetChild(1).gameObject.SetActive(false);
-            }
+            button.AddComponent<EventTrigger>();
+            var buttonEvent = button.GetComponent<EventTrigger>();
+            var selectedMark = button.transform.GetChild(1).gameObject;
+
+
+            EventTrigger.Entry entryEnter = new EventTrigger.Entry();
+            entryEnter.eventID = EventTriggerType.PointerEnter;
+            entryEnter.callback.AddListener((data) => { selectedMark.SetActive(true); });
+
+            EventTrigger.Entry entryExit = new EventTrigger.Entry();
+            entryExit.eventID = EventTriggerType.PointerExit;
+            entryExit.callback.AddListener((data) => { selectedMark.SetActive(false); });
+
+            buttonEvent.triggers.Add(entryEnter);
+            buttonEvent.triggers.Add(entryExit);
+
         }
     }
-    private void InstantiatePlayer()
-    {
-        LobbyManager.Instance.instantiatedPlayer = Instantiate(Resources.Load<GameObject>(PrefabPathes.PLAYER_INLOBBY_PREFAB_PATH));
-    }
 
+    
 
     #region Buttons
     private void OnQuickStartButtonClicked()
@@ -154,6 +144,21 @@ public class MainLobbyPanel : MonoBehaviourPun
     {
         //TODO : 테스트용
         SetupPopup.SetActive(true);
+    }
+
+    private void OnBackButtonClicked()
+    {
+        var announcePopup = Instantiate(Resources.Load<GameObject>(PrefabPathes.SETUP_ANNOUNCE_POPUP), transform, false);
+        var setupAnnouncePopup = announcePopup.GetComponent<SetupAnnouncePopup>();
+        setupAnnouncePopup.Initialize(AnnouncementType.GameEnd);
+        announcePopup.transform.localPosition = Vector3.zero;
+    }
+    #endregion
+
+    #region Garauge
+    private void InstantiatePlayer()
+    {
+        LobbyManager.Instance.instantiatedPlayer = Instantiate(Resources.Load<GameObject>(PrefabPathes.PLAYER_INLOBBY_PREFAB_PATH));
     }
     #endregion
 }

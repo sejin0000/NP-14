@@ -116,6 +116,8 @@ public class NickNamePopup : MonoBehaviour
         State = NickNameState.Welcome;
         ClearButtonListner();
         cancelButton.gameObject.SetActive(false);
+        var localPos = allowButton.transform.localPosition;
+        allowButton.transform.localPosition = new Vector3(0, localPos.y, localPos.z);
         allowButton.onClick.AddListener(OnAllowButtonClickedInWelcome);
     }
 

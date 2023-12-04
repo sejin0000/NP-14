@@ -15,6 +15,7 @@ public class PrefabPathes
     public static readonly string CHARACTER_SELECT_POPUP = "Prefabs/LobbyScene/CharacterSelectPopup";
     public static readonly string SOUND_CONTROL_PREFAB_PATH = "Prefabs/Setup/SoundControlPrefab";
     public static readonly string NICKNAME_CHANGE_PREFAB_PATH = "Prefabs/Setup/NickNameChangePrefab";
+    public static readonly string SYSTEM_OFF_PREFAB_PATH = "Prefabs/Setup/SystemOffPrefab";
     public static readonly string SETUP_ANNOUNCE_POPUP = "Prefabs/Setup/SetupAnnouncePopup";
     #endregion
 }

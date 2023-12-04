@@ -11,6 +11,7 @@ public enum AnnouncementType
 {
     NicknameSuccess,
     NicknameFailure,
+    GameEnd,
 }
 public class SetupAnnouncePopup : MonoBehaviour
 {
@@ -34,6 +35,7 @@ public class SetupAnnouncePopup : MonoBehaviour
     [HideInInspector]
     public static string ANNOUNCEMENT_NICKNAME_SUCCESS = "닉네임이 변경되었습니다.";
     public static string ANNOUNCEMENT_NICKNAME_FAILURE = "닉네임은 2~10 글자의 한글 / 영어 / 숫자의 조합으로만 가능합니다.";
+    public static string ANNOUNCEMENT_GAME_END = "게임을 종료하시겠습니까?";
 
 
     public void Initialize(AnnouncementType announcementType, string nickname = "")
@@ -48,7 +50,8 @@ public class SetupAnnouncePopup : MonoBehaviour
 
         announcementText.text = AnnounceDict[announcementType];
         SetButton(ButtonDict[announcementType]);
-        AllowButton.onClick.AddListener(() => AllowButtonClicked(announcementType, nickname));        
+        AllowButton.onClick.AddListener(() => AllowButtonClicked(announcementType, nickname));
+        DenyButton.onClick.AddListener(() => DenyButtonClicked(announcementType));
     }
 
     private void SetAnnounceDict()
@@ -56,7 +59,8 @@ public class SetupAnnouncePopup : MonoBehaviour
         AnnounceDict = new Dictionary<AnnouncementType, string>
         {
             { AnnouncementType.NicknameSuccess, ANNOUNCEMENT_NICKNAME_SUCCESS },
-            { AnnouncementType.NicknameFailure, ANNOUNCEMENT_NICKNAME_FAILURE }
+            { AnnouncementType.NicknameFailure, ANNOUNCEMENT_NICKNAME_FAILURE },
+            { AnnouncementType.GameEnd, ANNOUNCEMENT_GAME_END }
         };
     }
 
@@ -65,7 +69,8 @@ public class SetupAnnouncePopup : MonoBehaviour
         ButtonDict = new Dictionary<AnnouncementType, int>
         {
             { AnnouncementType.NicknameSuccess, 1 },
-            { AnnouncementType.NicknameFailure, 1 }
+            { AnnouncementType.NicknameFailure, 1 },
+            { AnnouncementType.GameEnd, 2 }
         };
     }
 
@@ -100,6 +105,27 @@ public class SetupAnnouncePopup : MonoBehaviour
                 break;
             case (int)AnnouncementType.NicknameFailure:
                 this.gameObject.SetActive(false);
+                break;
+            case (int)AnnouncementType.GameEnd:
+                #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+                #else
+                Application.Quit();
+                #endif
+                this.gameObject.SetActive(false);
+                break;
+        }
+    }
+
+    private void DenyButtonClicked(AnnouncementType announcementType)
+    {
+        switch ((int)announcementType)
+        {
+            case (int)AnnouncementType.NicknameSuccess:
+            case (int)AnnouncementType.NicknameFailure:
+            case (int)AnnouncementType.GameEnd:
+                this.gameObject.SetActive(false);
+                Application.Quit();
                 break;
         }
     }
