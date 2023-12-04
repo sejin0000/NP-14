@@ -193,7 +193,24 @@ public class NewBehaviourScript : MonoBehaviourPunCallbacks, IPunObservable
             UpdateBreath();
         }
 
-
+        if (rolling)
+        {
+            direction = direction * bossSO.enemyMoveSpeed * Time.deltaTime;
+            _rigidbody2D.velocity = direction;
+            if (!isPhase1)
+            {
+                time += Time.deltaTime;
+                if (time > thornTime) //0.2초마다
+                {
+                    thornAngle += 2.5f;
+                    photonView.RPC("Thorn", RpcTarget.All, thornAngle, 1);
+                    if (thornAngle >= 360)
+                    {
+                        thornAngle = 0;
+                    }
+                }
+            }
+        }
         /*
         //목적지와 내 거리가 일정거리 이하거나 / nav가 멈춘 상태(그냥 정지) 가 아닌경우
         if (!IsNavAbled())
@@ -1105,7 +1122,7 @@ public class NewBehaviourScript : MonoBehaviourPunCallbacks, IPunObservable
     #region 미사일
     [PunRPC]
     public void Missile(float atk, float speed, float duration)//총알 생성 프리팹 보스에임이 조준대상이라고 생각하고 있음 뇌피셜임
-    {// 현재 유도기능 x 우선 이러이러한 방식이에요 위해 총쏘기까지만 구현함 
+    {
         MissileCountCheck();
         Bullet _bullet = Instantiate<Bullet>(MissilePrefab, bossAim.transform.position, bossAim.transform.rotation);
         _bullet.MissileFire(2);
@@ -1144,36 +1161,44 @@ public class NewBehaviourScript : MonoBehaviourPunCallbacks, IPunObservable
     #endregion
     #region 가시발사
     [PunRPC]
-    public void thorn(float rot)//총알 생성 프리팹 보스에임이 조준대상이라고 생각하고 있음 뇌피셜임
-    {// 현재 유도기능 x 우선 이러이러한 방식이에요 위해 총쏘기까지만 구현함 
+    public void Thorn(float rot,int type)//가시 미사일과 달리 몸 중앙에서 발사됨
+    {
         MissileCountCheck();
         Quaternion angle = Quaternion.Euler(new Vector3(0, 0, rot));
-        Bullet _bullet = Instantiate<Bullet>(thornPrefab, bossAim.transform.position, angle);
+        Bullet _bullet = Instantiate<Bullet>(thornPrefab, transform.position, angle);
         _bullet.IsDamage = true;
         _bullet.ATK = bossSO.atk;
         _bullet.BulletLifeTime = bossSO.bulletLifeTime;
         _bullet.BulletSpeed = bossSO.bulletSpeed;
+        if (type == 1)
+        {
+            _bullet.BulletSpeed = 1f;
+        }
+        else 
+        {
+            _bullet.BulletSpeed = bossSO.bulletSpeed;
+        }
         _bullet.targets["Player"] = (int)BulletTarget.Player;
         _bullet.BulletOwner = photonView.ViewID;
     }
-    public void thorntornado1()
+    public void ThornTornado1()
     {
         float n = 0;
         Quaternion rot = Quaternion.Euler(new Vector3(0, 0, n));
         for (int i = 0; i < 8; ++i)
         {
-            photonView.RPC("thorn", RpcTarget.All, n);
+            photonView.RPC("Thorn", RpcTarget.All, n,0);
             n += 45;
         }
-        Invoke("thorntornado2", 1f);
+        Invoke("ThornTornado2", 1f);
     }
-    public void thorntornado2()
+    public void ThornTornado2()
     {
         float n = 22.5f;
         Quaternion rot = Quaternion.Euler(new Vector3(0, 0, n));
         for (int i = 0; i < 8; ++i)
         {
-            photonView.RPC("thorn", RpcTarget.All, n);
+            photonView.RPC("Thorn", RpcTarget.All, n);
             n += 45;
         }
         if(!rolling) //구르기 중이 아니라면 ==일반 상태의 가시쏘기 완료
@@ -1196,6 +1221,7 @@ public class NewBehaviourScript : MonoBehaviourPunCallbacks, IPunObservable
     public void RollEnd() 
     {
         rolling = false;
+        //구르기 패턴 종료
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -1203,11 +1229,11 @@ public class NewBehaviourScript : MonoBehaviourPunCallbacks, IPunObservable
         {
             if (rollCount % 2 == 0)
             {
-                thorntornado1();
+                ThornTornado1();
             }
             else
             {
-                thorntornado2();
+                ThornTornado2();
             }
             rollCount++;
             if (rollCount >= endRollCount)
@@ -1222,10 +1248,20 @@ public class NewBehaviourScript : MonoBehaviourPunCallbacks, IPunObservable
             Vector3 normal = collision.contacts[0].normal; // 법선벡터
             direction = Vector3.Reflect(direction, normal).normalized; // 반사
         }
+
+        if (rolling && collision.gameObject.layer == LayerMask.NameToLayer("Player")) 
+        {
+            PlayerStatHandler player = collision.gameObject.GetComponent<PlayerStatHandler>();
+            if (player != null) 
+            {
+
+                player.photonView.RPC("GiveDamege",RpcTarget.All, bossSO.atk*2);
+            }
+        }
     }
     public void updateclone()//업데이트 돌려야 됨 근데 업데이트 돌리면 이상할거같아서 이렇게 해둠
     {
-        if (rolling) 
+        if (rolling)
         {
             direction = direction * bossSO.enemyMoveSpeed * Time.deltaTime;
             _rigidbody2D.velocity = direction;
@@ -1235,7 +1271,7 @@ public class NewBehaviourScript : MonoBehaviourPunCallbacks, IPunObservable
                 if (time > thornTime) //0.2초마다
                 {
                     thornAngle += 2.5f;
-                    photonView.RPC("thorn", RpcTarget.All, thornAngle);
+                    photonView.RPC("Thorn", RpcTarget.All, thornAngle, 1);
                     if (thornAngle >= 360)
                     {
                         thornAngle = 0;
