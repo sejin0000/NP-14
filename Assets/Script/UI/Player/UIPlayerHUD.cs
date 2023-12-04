@@ -50,4 +50,9 @@ public class UIPlayerHUD : UIBase
     {
         dodgeGauge.UpdateValue();
     }
+
+    public override void Foo()
+    {
+        Debug.Log("Foo! " + GetType().Name);
+    }
 }
