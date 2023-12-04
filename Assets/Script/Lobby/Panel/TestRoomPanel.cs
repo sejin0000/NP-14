@@ -1,4 +1,6 @@
 using Photon.Pun;
+using Photon.Realtime;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -93,7 +95,7 @@ public class TestRoomPanel : MonoBehaviourPun
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.CurrentRoom.IsVisible = false;
 
-        Debug.Log(currentTestScene);
+        Debug.Log($"LobbyManager - TestRoomPanel Current ClientState : {Enum.GetName(typeof(ClientState), PhotonNetwork.NetworkClientState)}");
         PhotonNetwork.LoadLevel(currentTestScene);
     }
 }
