@@ -7620,6 +7620,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5924062456417362254, guid: ff46f3475da01914fb058b34e65a416b, type: 3}
+      propertyPath: enemy_hit
+      value: 
+      objectReference: {fileID: 8300000, guid: d80d1af9b134d02439d06ab1cc48383d, type: 3}
+    - target: {fileID: 5924062456417362254, guid: ff46f3475da01914fb058b34e65a416b, type: 3}
+      propertyPath: player_hit
+      value: 
+      objectReference: {fileID: 8300000, guid: 0d8ddd3a840d3414784247f7dfe9a796, type: 3}
+    - target: {fileID: 5924062456417362254, guid: ff46f3475da01914fb058b34e65a416b, type: 3}
+      propertyPath: enemy_attack
+      value: 
+      objectReference: {fileID: 8300000, guid: 92710c1289e39de4c8ed5d574ff8a708, type: 3}
+    - target: {fileID: 5924062456417362254, guid: ff46f3475da01914fb058b34e65a416b, type: 3}
+      propertyPath: player_rolling
+      value: 
+      objectReference: {fileID: 8300000, guid: a175481334333284a9903abf2c30daf9, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
