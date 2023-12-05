@@ -95,6 +95,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         // DESC : DataSetting 초기화
         dataSetting = DataSettingPrefab.GetComponent<PlayerDataSetting>();
 
+        
+    }
+
+    private void Start()
+    {
         // DESC : AudioLibrary 캐싱
         audioLibrary = AudioManager.Instance.AudioLibrary;
     }
