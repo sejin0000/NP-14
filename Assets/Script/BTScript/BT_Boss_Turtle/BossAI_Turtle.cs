@@ -816,9 +816,14 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     {
         float n = 0;
         Quaternion rot = Quaternion.Euler(new Vector3(0, 0, n));
+        int atktype = 0;
+        if (rolling)
+        {
+            atktype = 1;
+        }
         for (int i = 0; i < 8; ++i)
         {
-            photonView.RPC("Thorn", RpcTarget.All, n,0);
+            photonView.RPC("Thorn", RpcTarget.All, n, atktype);
             n += 45;
         }
         Invoke("ThornTornado2", 1f);
@@ -827,16 +832,20 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     {
         float n = 22.5f;
         Quaternion rot = Quaternion.Euler(new Vector3(0, 0, n));
+        int atktype = 0;
+        if (rolling)
+        {
+            atktype = 1;
+        }
         for (int i = 0; i < 8; ++i)
         {
-            photonView.RPC("Thorn", RpcTarget.All, n);
+            photonView.RPC("Thorn", RpcTarget.All, n, atktype);
             n += 45;
         }
-        if(!rolling) //구르기 중이 아니라면 ==일반 상태의 가시쏘기 완료
+        if (rolling)
         {
-            //패턴끝 조건 추가        
+            //패턴 종료조건
         }
-
     }
     #endregion
     #region 구르기모드
@@ -894,8 +903,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (rolling)
         {
-            direction = direction * bossSO.enemyMoveSpeed * Time.deltaTime;
-            _rigidbody2D.velocity = direction;
+            _rigidbody2D.velocity = direction * bossSO.enemyMoveSpeed * Time.deltaTime;
             if (!isPhase1)
             {
                 time += Time.deltaTime;
