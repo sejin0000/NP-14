@@ -6,6 +6,10 @@ using UnityEngine.UI;
 
 public class UIManager : LocalSingleton<UIManager>
 {
+    public GameObject overPanel;
+    public GameObject clearPanel;
+
+
     [SerializeField] private List<UIBase> layer;
 
     public List<UIBase> Layer
@@ -17,12 +21,15 @@ public class UIManager : LocalSingleton<UIManager>
     {
         base.Awake();
     }
-    
-    // Start is called before the first frame update
-    void Start()
+
+    private void Start()
     {
         Initialize();
+        GameManager.Instance.OnGameOverEvent += GameOver;
+        GameManager.Instance.OnGameClearEvent += GameClear;
     }
+    
+    // Start is called before the first frame update
 
     private void Initialize()
     {
@@ -70,4 +77,15 @@ public class UIManager : LocalSingleton<UIManager>
         Debug.Log("[UIManager] Find Fail. Check parameter. " + name);
         return null;
     }
+
+    public void GameOver()
+    {
+        overPanel.SetActive(true);
+    }
+    public void GameClear()
+    {
+        clearPanel.SetActive(true);
+    }
+
+
 }
