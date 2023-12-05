@@ -628,6 +628,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     //가 멀 가 미사일
     public IEnumerator firefirefire()
     {
+        Debug.Log($"미사일 발사");
         SetNearestTarget();
         float atk = bossSO.atk * 2f;
         float speed = bossSO.bulletSpeed;
@@ -651,6 +652,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         if (missileCount >= 3)
         {
             isEndMissile = true;
+            missileCoolTime = bossSO.missileCoolTime;
         }
     }
     #endregion
@@ -658,7 +660,6 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void Thorn(float rot,int type)//가시 미사일과 달리 몸 중앙에서 발사됨
     {
-        MissileCountCheck();
         Quaternion angle = Quaternion.Euler(new Vector3(0, 0, rot));
         Bullet _bullet = Instantiate<Bullet>(thornPrefab, transform.position, angle);
         _bullet.IsDamage = true;
@@ -678,6 +679,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     }
     public void ThornTornado1()
     {
+        Debug.Log($"가시쏘기 입장");
         float n = 0;
         Quaternion rot = Quaternion.Euler(new Vector3(0, 0, n));
         int atktype = 0;
@@ -695,6 +697,8 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     public void ThornTornado2()
     {
         float n = 22.5f;
+        Debug.Log($"가시쏘기 입장2");
+        Debug.Log($"롤링 상태 {rolling}");
         Quaternion rot = Quaternion.Euler(new Vector3(0, 0, n));
         int atktype = 0;
         if (rolling)
@@ -709,6 +713,8 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         if (!rolling)
         {
             isEndThornTornado = true;
+            thornTornadoCoolTime = bossSO.thornTornadoCoolTime;
+            Debug.Log($"가시쏘기 퇴장");
         }
     }
     #endregion
@@ -716,17 +722,20 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     public void RollStart()
     {
         SetNearestTarget();
-
+        Debug.Log($"구르기 진입");
         //롤카운트 기준으로 멈추고 n초후(벽에 딱붙어서 멈추지 않기 위함) 멈출것임 트리거에서 if rolling && collier.layer==wall
         rollCount = 0;
         rolling = true;
+        Debug.Log($"구르기 변화 체크 {rolling}");
         Vector2 me = transform.position;
         Vector2 u = target.position;
         direction = (me - u).normalized;
     }
     public void RollEnd() 
     {
+        Debug.Log($"구르기 퇴장");
         rolling = false;
+        rollingCooltime = bossSO.rollingCooltime;
         //구르기 패턴 종료
     }
     private void OnCollisionEnter2D(Collision2D collision)

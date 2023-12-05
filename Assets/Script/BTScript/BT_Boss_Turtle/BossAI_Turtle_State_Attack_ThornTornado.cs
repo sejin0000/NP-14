@@ -19,6 +19,11 @@ public class BossAI_Turtle_State_Attack_ThornTornado : BTAction
     public override void Initialize()
     {
         bossAI_Turtle.isEndThornTornado = false;
+        Debug.Log($"가시들어옴체크");
+        if (bossAI_Turtle.thornTornadoCoolTime <= 0) 
+        {
+        bossAI_Turtle.ThornTornado1();
+        }
     }
 
     public override Status Update()
@@ -27,20 +32,14 @@ public class BossAI_Turtle_State_Attack_ThornTornado : BTAction
         {
             Debug.Log("가시 발사 쿨타임 중");
             return Status.BT_Success;
-        }            
-
-
-
-
-        if(!bossAI_Turtle.isEndThornTornado)
+        }
+        if (bossAI_Turtle.isEndThornTornado) 
         {
-            bossAI_Turtle.ThornTornado1();
-            bossAI_Turtle.thornTornadoCoolTime = bossSO.thornTornadoCoolTime;
-            Debug.Log($"가시 발사 성공 현재 패턴 종료 : 상태 {bossAI_Turtle.isEndThornTornado} ");
             return Status.BT_Success;
         }
 
 
+        Debug.Log("가시실행중");
         return Status.BT_Running;
     }
     public override void Terminate()

@@ -3,6 +3,7 @@ using myBehaviourTree;
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using UnityEngine;
 
 public class BossAI_Turtle_State_Attack_Rolling : BTAction
@@ -21,7 +22,11 @@ public class BossAI_Turtle_State_Attack_Rolling : BTAction
     public override void Initialize()
     {
         //회전 전 세팅
-        bossAI_Turtle.RollStart();
+        Debug.Log($"구르기 쿨체크 {bossAI_Turtle.rollingCooltime}");
+        if (bossAI_Turtle.rollingCooltime <= 0)
+        {
+            bossAI_Turtle.RollStart();
+        }
     }
 
     public override Status Update()
@@ -32,9 +37,6 @@ public class BossAI_Turtle_State_Attack_Rolling : BTAction
             return Status.BT_Success;
         }
 
-
-
-
         //롤링 업데이트
         if (bossAI_Turtle.rolling)
         {
@@ -44,11 +46,10 @@ public class BossAI_Turtle_State_Attack_Rolling : BTAction
 
         if (!bossAI_Turtle.rolling)
         {
-            Debug.Log("구르기 완료, 쿨타임 리셋");
-            bossAI_Turtle.rollingCooltime = bossSO.rollingCooltime;
+
             return Status.BT_Success;
         }
-
+        Debug.Log("구르기 실행중");
         return Status.BT_Running;
     }
     public override void Terminate()

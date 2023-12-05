@@ -19,17 +19,18 @@ public class BossAI_Turtle_Phase_1_Condition : BTCondition
 
     public override void Initialize()
     {
+        Debug.Log($"생존 진입 체크");
     }
 
     public override Status Update()
     {
-
         percentHP = (bossAI_Turtle.currentHP / bossSO.hp * 100);
 
 
         if (percentHP <= 30)//(현재 체력이 30% 이하) => 다음 페이즈로
+        {
             return Status.BT_Failure;
-
+        }
         return Status.BT_Success;
     }
 }

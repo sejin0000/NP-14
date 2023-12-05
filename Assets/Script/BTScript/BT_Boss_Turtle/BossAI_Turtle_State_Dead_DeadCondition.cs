@@ -18,8 +18,12 @@ public class BossAI_Turtle_State_Dead_DeadCondition : BTCondition
     public override Status Update()
     {
         if (bossAI_Turtle.isLive)
+        {
             return Status.BT_Failure;
-        else
+        }
+        else 
+        {
             return Status.BT_Success;
+        }
     }
 }

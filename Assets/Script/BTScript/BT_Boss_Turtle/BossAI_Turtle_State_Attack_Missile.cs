@@ -18,6 +18,11 @@ public class BossAI_Turtle_State_Attack_Missile : BTAction
     public override void Initialize()
     {
         bossAI_Turtle.isEndMissile = false;
+        Debug.Log($"미사일들어옴체크");
+        if (bossAI_Turtle.missileCoolTime <= 0) 
+        {
+        bossAI_Turtle.MissileOn();
+        }
     }
 
     public override Status Update()
@@ -27,25 +32,13 @@ public class BossAI_Turtle_State_Attack_Missile : BTAction
             Debug.Log("미사일 발사 쿨타임 중");
             return Status.BT_Success;
         }
-
-
-
-
         if (!bossAI_Turtle.isEndMissile)
         {
-            bossAI_Turtle.MissileOn();
-            Debug.Log("미사일 발사 성공");
-        }
-
-
-
-        if(bossAI_Turtle.isEndMissile)
-        {
-            Debug.Log("미사일 발사 완료, 쿨타임 리셋");
-            bossAI_Turtle.missileCoolTime = bossSO.missileCoolTime;
             return Status.BT_Success;
         }
 
+
+        Debug.Log("미사일실행중");
         return Status.BT_Running;
     }
     public override void Terminate()
