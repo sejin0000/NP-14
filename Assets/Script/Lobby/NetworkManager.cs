@@ -154,6 +154,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             StartCoroutine(WaitForLeaving());
         }
 
+        LobbyManager.Instance.CharacterSelect.gameObject.SetActive(false);
+
         if (LobbyManager.Instance.CurrentState == PanelType.RoomPanel)
         {
             Debug.Log($"LobbyManager - LeftRoom : Client State : {PhotonNetwork.NetworkClientState}{Enum.GetName(typeof(ClientState), PhotonNetwork.NetworkClientState)}");

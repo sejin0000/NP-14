@@ -9,11 +9,15 @@ public class NickNameChangePrefab : MonoBehaviour
 {
     [SerializeField] private TMP_InputField nickNameInput;    
     [SerializeField] private Button SubmitButton;
-    private SetupPopup setupPopup;
+    public SetupPopup setupPopup;
 
     private void OnEnable()
     {
-        setupPopup = LobbyManager.Instance.MainLobbyP.SetupPopup.GetComponent<SetupPopup>();
+        if (LobbyManager.Instance != null)
+            setupPopup = LobbyManager.Instance.MainLobbyP.SetupPopup.GetComponent<SetupPopup>();
+        else if (UIManager.Instance != null)
+            setupPopup = UIManager.Instance.GetUIComponent<SetupPopup>();
+
         SubmitButton.onClick.AddListener(OnSubmitButtonClicked);
     }
 

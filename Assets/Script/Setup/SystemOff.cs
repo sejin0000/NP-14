@@ -10,7 +10,11 @@ public class SystemOff : MonoBehaviour
 
     private void OnEnable()
     {
-        setupPopup = LobbyManager.Instance.MainLobbyP.SetupPopup.GetComponent<SetupPopup>();
+        if (LobbyManager.Instance != null)
+            setupPopup = LobbyManager.Instance.MainLobbyP.SetupPopup.GetComponent<SetupPopup>();
+        else if (UIManager.Instance != null)
+            setupPopup = UIManager.Instance.GetUIComponent<SetupPopup>();
+
         ExitButton.onClick.AddListener(OnExitButtonClicked);
     }
     public void OnExitButtonClicked()

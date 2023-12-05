@@ -39,11 +39,8 @@ public class SetupPopup : MonoBehaviour
         get { return setupState; } 
         set
         {
-            if (value != setupState)
-            {
-                SetSubjectText(value);
-                setupState = value;
-            }
+            SetSubjectText(value);
+            setupState = value;
         }
     }
     
@@ -51,13 +48,16 @@ public class SetupPopup : MonoBehaviour
     {
         backButton.onClick.AddListener(OnBackButtonClicked);
         SoundIndexButton.onClick.AddListener(OnSoundIndexButtonClicked);
-        AccountIndexButton.onClick.AddListener(OnAccountIndexButtonClicked);
         SystemIndexButton.onClick.AddListener(OnSystemIndexButtonClicked);
+        if (AccountIndexButton != null)
+        {
+            AccountIndexButton.onClick.AddListener(OnAccountIndexButtonClicked);
+        }
 
         SetupBoxRect = SetupBoxScrollContent.GetComponent<RectTransform>();
         SetupBoxRectWidth = SetupBoxRect.sizeDelta.x;
 
-        SetAnnouncePopup();
+        SetAnnouncePopup();        
     }
 
     private void OnEnable()
@@ -100,7 +100,7 @@ public class SetupPopup : MonoBehaviour
         {
             return;
         }
-        setupState = SetupIndex.Sound;
+        SetupState = SetupIndex.Sound;
         ClearSetupBox();
         SetSetupPrefab(PrefabPathes.SOUND_CONTROL_PREFAB_PATH);
     }
@@ -111,7 +111,7 @@ public class SetupPopup : MonoBehaviour
         {
             return;
         }
-        setupState = SetupIndex.Account;
+        SetupState = SetupIndex.Account;
         ClearSetupBox();
         SetSetupPrefab(PrefabPathes.NICKNAME_CHANGE_PREFAB_PATH);
     }
@@ -122,14 +122,14 @@ public class SetupPopup : MonoBehaviour
         {
             return;
         }
-        setupState = SetupIndex.Account;
+        SetupState = SetupIndex.System;
         ClearSetupBox();
         SetSetupPrefab(PrefabPathes.SYSTEM_OFF_PREFAB_PATH);
     }
 
     private void SetSetupPrefab(string path)
     {
-        var prefab = Instantiate(Resources.Load<GameObject>(path), SetupBoxScrollContent.transform, false);
+        var prefab = Instantiate(Resources.Load<GameObject>(path), SetupBoxScrollContent.transform, false);       
         SetupBoxRect.sizeDelta += new Vector2(0, prefab.GetComponent<RectTransform>().sizeDelta.y);
     }
 
