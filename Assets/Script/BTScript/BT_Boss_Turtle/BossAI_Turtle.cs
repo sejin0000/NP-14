@@ -37,10 +37,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     public EnemySO bossSO;                  // Enemy 정보 [모든 Action Node에 owner로 획득시킴]
     public SpriteRenderer[] spriteRenderers;
     public Animator anim;
-    public ParticleSystem BreathParticleObject;
 
-    public GameObject Show_AttackArea;
-    public Collider2D[] AreaList;
 
     private Transform target;
     public Transform currentTarget
@@ -48,41 +45,28 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         get { return target; }
         set { if (target != value) { OnTargetChaged(value); target = value; } }
     }
-    public LayerMask breathTargetLayer;
 
     //public Collider2D target;
     public List<Transform> PlayersTransform;
 
-    //공격 범위 안에 들어온 플레이어 리스트
-    public List<PlayerStatHandler> inToAreaPlayers = new List<PlayerStatHandler>();
 
 
     public Bullet enemyBulletPrefab;
-    public Transform bossHead;
     public Transform bossAim;
-    public Collider2D[] bossHitBox;
     public Color originColor;
 
     public LayerMask targetMask;             // 타겟 레이어(Player)
 
     public float SpeedCoefficient = 1f;      // 이동속도 계수
-    public float breathAttackDelay;
     public float currentTime;
 
     public bool isLive = true;
     public bool isAttaking = false;
     public bool isGroggy = false;
-    public bool isBreathInProgress = false; // 브레스 실행여부 판별, 중복실행 방지
-    public bool isRunningBreath = false;    // 브레스 발사중
     public bool isTrackingFurthestTarget = false;
     //플레이어 정보
 
     public int lastAttackPlayer;
-    public int currentNomalAttackSquence; // 노말어택 시퀀스 랜덤 난수(0~3) : 3종
-
-    //게임매니저에서(어디든) 관리하는 플레이어들 정보를 요청해서 사용
-
-    //가장많은 피해를 준 플레이어 타겟-> 불렛(쏜사람 정보) 맞은놈만 알면됨 ->플레이 공격력->
 
 
 
@@ -111,15 +95,12 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         anim = GetComponentInChildren<Animator>();
         spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
         PV = GetComponent<PhotonView>();
-        AreaList = Show_AttackArea.GetComponentsInChildren<Collider2D>(true); //비활성화된 오브젝트도 탐색<>(true)
 
         //게임 오브젝트 활성화 시, 행동 트리 생성
         CreateTreeAIState();
         currentHP = bossSO.hp;
         viewAngle = bossSO.viewAngle;
         viewDistance = bossSO.viewDistance;
-        breathAttackDelay = bossSO.breathAttackDelay;
-        currentTime = breathAttackDelay;
         isLive = true;
 
         originColor = spriteRenderers[0].color;
@@ -138,7 +119,6 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         }
 
 
-        currentNomalAttackSquence = Random.Range(0, 3);
 
         //생성 시 랜덤 타겟 지정
         int randomTarget = Random.Range(0, PlayersTransform.Count);
@@ -151,18 +131,16 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     }
     void Update()
     {
-
+        /*
         if (!PhotonNetwork.IsMasterClient)
         {
-            //$추가됨 : 동기화된 머리 위치에 대한 보간 처리
             bossHead.transform.rotation = Quaternion.Slerp(bossHead.transform.rotation, hostRotation, Time.deltaTime * lerpSpeed);
 
             AreaList[6].transform.position = hostAimPosition;
             AreaList[6].transform.rotation = Quaternion.Slerp(bossHead.transform.rotation, hostRotation, Time.deltaTime * lerpSpeed);
             return;
         }
-        //AI트리의 노드 상태를 매 프레임 마다 얻어옴
-
+        */
 
         TreeAIState.Tick();
 
@@ -170,28 +148,9 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
             return;
 
 
-        if (!isTrackingFurthestTarget)
-            SetNearestTarget();
+        //hostAimPosition = bossAim.transform.position;
+        //hostRotation = bossHead.transform.rotation;
 
-
-        SetHead();
-
-        hostAimPosition = bossAim.transform.position;
-        hostRotation = bossHead.transform.rotation;
-
-
-
-
-        if (isBreathInProgress)
-        {
-            AreaList[6].transform.position = bossAim.transform.position;
-            AreaList[6].transform.rotation = bossHead.transform.rotation;
-
-            if (!isRunningBreath || inToAreaPlayers.Count == 0)
-                return;
-
-            UpdateBreath();
-        }
 
         if (rolling)
         {
@@ -286,29 +245,6 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         Destroy(gameObject);
     }
 
-    [PunRPC]
-    public void Fire()
-    {
-        int numBullets = 5; // 부채꼴 내의 총알 수를 조절하세요
-        float AttackAngle = 120f; // 부채꼴의 각도를 조절하세요
-
-        float startAngle = -AttackAngle / 2f; // 부채꼴의 시작 각도 -60 == -60 ~ 120 즉 180도의 범위를 커버한다.
-
-        for (int i = 0; i < numBullets; i++)
-        {
-            //-60 + 0 * (120/4) = 0 || -60 + 1 * (120/4)
-            float angle = startAngle + i * (AttackAngle / (numBullets - 1));
-            Quaternion bulletRotation = bossHead.transform.rotation * Quaternion.Euler(0f, 0f, angle - 90f);
-
-            var _bullet = Instantiate(enemyBulletPrefab, bossAim.transform.position, bulletRotation);
-
-            _bullet.IsDamage = true;
-            _bullet.ATK = bossSO.atk;
-            _bullet.BulletLifeTime = bossSO.bulletLifeTime;
-            _bullet.BulletSpeed = bossSO.bulletSpeed;
-            _bullet.targets["Player"] = (int)BulletTarget.Player;
-        }
-    }
 
     //상태이상
     [PunRPC]
@@ -335,333 +271,6 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     }
     #endregion
 
-    #region 실제 액션[브레스]
-
-    public void Breath()
-    {
-
-        //과정 1 완료        
-        //브레스 상태 변수를 통해 제어
-        //브레스 워닝사인의 포지션을 용 머리에 y - n 만큼의 포지션 위치에 활성화 시킴 v
-        //브레스 워닝사인의 로테이션 값도 동일하게 돌려준다. v (업데이트에서 보간 진행중)
-        //범위 내의 플레이어는 워닝사인 내부에서 알아서 처리함 v
-        //브레스 워닝사인의 경우는 다 차올라도 사라지지 않는다. v
-
-
-        //브레스 파티클을 aim의 포지션에 활성화(혹은 생성) - 파티클을  아예 머리에 달아서 굳이 로테이션 값 조절이 필요없도록 하자 v
-        //브레스는 콜리전 처리를 on 해서 트리거가 아닌 콜라이더에 부딫힐 경우, 튕겨나가도록 처리한다. v
-        //브레스 파티클 자체는 플레이어와 부딫혀도 아무런 상호작용도 하지 않는다. v 
-
-        //과정 2
-        //워닝 사인이 다 차오른 경우 브레스 파티클을 실행한다. (2.0f 초 뒤에 모두 차오름)
-
-
-        //브레스 진행 중 : 약간의 시간(0.1f ~0.2f) 이후, 어택 에어리어 내부 리스트에 있는 플레이어를 대상으로만 레이캐스트를 발사한다.
-        //레이캐스트는 최초 hit 대상이 wall인 경우 리턴한다.
-        //최초 hit 대상이 리스트 내에 있는 플레이어인 경우에는, 해당 플레이어를 대상으로 피해와 넉백을 주도록한다.
-        //4~5초 후 파티클과 어택 에어리어를 동시에 비활성화 시킨다.
-
-        //약간의 시간 이후이므로 
-
-
-    }
-
-    [PunRPC]
-    public void StartBreathCoroutine()
-    {
-        StartCoroutine(StartBreath());
-    }
-
-
-    public IEnumerator StartBreath()
-    {
-        //브레스 중복실행 방지
-        if (isBreathInProgress)
-            yield break;
-
-        isBreathInProgress = true;
-        AreaList[6].gameObject.SetActive(true);
-        SetAnim("isBreathAttack", true);
-        //워닝 사인 차오르는거 대기 후 브레스 파티클을 플레이
-        yield return new WaitForSeconds(2f);
-        BreathParticleObject.Play();
-
-
-        //여기다 브레스 업데이트용 bool
-        isRunningBreath = true;
-
-        //브레스 종료 시간 도달 (2+4f)
-        yield return new WaitForSeconds(4f);
-        isBreathInProgress = false;
-        AreaList[6].gameObject.SetActive(false);
-        SetAnim("isBreathAttack", false);
-        BreathParticleObject.Stop();
-        isRunningBreath = false;
-
-        currentTime = breathAttackDelay;
-    }
-
-    public void UpdateBreath()
-    {
-        currentTime -= Time.deltaTime;
-
-        if (currentTime <= 0)
-        {
-            Debug.Log("업데이트 브레스 들어옴");
-
-            //에어리어 리스트에 사람이 하나라도 있다면?
-            //리스트 내 모든 대상에게 레이캐스트 발사
-            //업데이트하고 있지 않으므로 위에서 리턴 날 가능성이 큼 이 부분은 역시 업데이트 조지는게 맞음 아오 졸려죽겠다
-
-            for (int i = 0; i < inToAreaPlayers.Count; i++)
-            {
-                Debug.Log("반복문 들어옴");
-                // 플레이어의 위치
-                PlayerStatHandler player = inToAreaPlayers[i];
-                Vector3 playerPosition = player.transform.position;
-                // 플레이어<->보스에임 방향 구하기
-                Vector3 directionToPlayer = (playerPosition - bossAim.position).normalized;
-                Debug.DrawLine(bossAim.position, player.transform.position, Color.white);
-
-                // 레이 발사
-                RaycastHit2D hit = Physics2D.Raycast(bossAim.position, directionToPlayer, Mathf.Infinity, breathTargetLayer);
-
-                if (hit.transform.tag != "Wall" || inToAreaPlayers.Count != 0) // hit 대상이 있거나, 벽이 아닌 경우에만 작동
-                {
-                    if (hit.transform.tag == "Player")
-                    {
-                        //일정 주기로 피해를 주기
-
-                        // 플레이어와 공격 영역의 방향 벡터
-
-
-                        // 넉백거리
-                        float knockbackDistance = 1f;
-
-
-                        // 실제 피해
-                        player.DirectDamage(bossSO.atk, PV.ViewID);
-                        // 실제 넉백
-                        player.photonView.RPC("StartKnockback", RpcTarget.All, directionToPlayer, knockbackDistance);
-                        //StartCoroutine(player.Knockback(directionToPlayer, knockbackDistance));
-
-                        Debug.Log($"2나오면 안됨 : {inToAreaPlayers.Count} 데미지는 이만큼 받음 :{bossSO.atk}");
-                        Debug.Log($"플레이어 현재 체력은 : {player.CurHP}");
-                    }
-                }
-            }
-
-            currentTime = breathAttackDelay;
-        }
-
-    }
-    //양팔 공격은 [두 메서드 동시에 실행함]
-    public void RightArmAttack()
-    {
-
-    }
-    public void LeftArmAttack()
-    {
-
-    }
-    public void TwoHandAttack()
-    {
-
-    }
-
-    [PunRPC]
-    public void ActiveAttackArea(int patternNum)
-    {
-        //고정 범위->다 차오르면 스프라이트 내부에 있는 플레이어에게 데미지
-        //원형 범위->타겟 플레이어를 추적하다 다 차오르기 직전에 정지 -> 다 차오르면 해당 위치에 낙석 오브젝트 생성
-        switch (patternNum)
-        {
-            case 0:
-                AreaList[0].gameObject.SetActive(true); //우측 공격영역 (좌측 팔)
-                SetAnim("isLeftAttack", true); //트리거로 하려고 했으나 팀원이 에러가 가끔 생긴다고 해서 bool로 animSet
-                LocalSetAnimFalse("isLeftAttack");
-                //이 부분에 플레이어 피해&넉백 판정주는 코루틴 실행
-                LocalTryAttackAreaTargets(0);
-
-                //공격 이후
-                LocalLaterInActiveAttackArea(0);
-                break;
-            case 1:
-                AreaList[1].gameObject.SetActive(true); ; //좌측 공격영역 (우측 팔)
-                SetAnim("isRightAttack", true);
-                LocalSetAnimFalse("isRightAttack");
-                LocalTryAttackAreaTargets(1);
-
-
-                LocalLaterInActiveAttackArea(1);
-                break;
-            case 2:
-                AreaList[0].gameObject.SetActive(true); ; // 좌측 우측 동시 실행 이거 어캐함?             
-                AreaList[1].gameObject.SetActive(true); ;
-                SetAnim("isTwoArmAttack", true);
-                LocalSetAnimFalse("isTwoArmAttack");
-
-                // 각 Area에 대해 처리
-                LocalTryAttackAreaTargets(2);
-
-                LocalLaterInActiveAttackArea(2);  // 2 : 둘 다 꺼짐
-                break;
-            case 3:
-                AreaList[2].gameObject.SetActive(true); ; // 모든 범위 실행
-                LocalTryAttackAreaTargets(2);
-
-
-                LocalLaterInActiveAttackArea(3);
-                break;
-            case 4:
-                AreaList[3].gameObject.SetActive(true); ; // 타겟 플레이어에 원형 실행
-                LocalChaseArea();
-                LocalTryAttackAreaTargets(3);
-
-                LocalLaterInActiveAttackArea(4);
-                break;
-            case 5:
-                // 모든 플레이어에 원형 실행(3,4,5)
-                break;
-        }
-    }
-
-    public void InActiveAttackArea(int patternNum)
-    {
-        switch (patternNum)
-        {
-            case 0:
-                AreaList[0].gameObject.SetActive(false); //좌측 팔
-                break;
-            case 1:
-                AreaList[1].gameObject.SetActive(false); //우측 팔
-                break;
-            case 2:
-                AreaList[0].gameObject.SetActive(false); // 좌측 우측 동시 실행
-                AreaList[1].gameObject.SetActive(false);
-                break;
-            case 3:
-                AreaList[2].gameObject.SetActive(false); // 모든 범위 실행
-                break;
-            case 4:
-                AreaList[3].gameObject.SetActive(false); // 타겟 플레이어에 원형 실행
-                isTrackingFurthestTarget = false;
-                break;
-            case 5:
-                ;//모든 플레이어를 추적하는 원형(3,4,5)
-                break;
-        }
-    }
-
-
-    //공격 범위 UI 종료용 코루틴(여기서 예고 레이어 타격 영역 => 일반 영역으로 교체)
-    public IEnumerator LaterInActiveAttackArea(int patternNum)
-    {
-        yield return new WaitForSeconds(3f);
-        InActiveAttackArea(patternNum);
-    }
-
-    public void LocalLaterInActiveAttackArea(int patternNum)
-    {
-        StartCoroutine(LaterInActiveAttackArea(patternNum));
-    }
-
-    //애니메이션 종료용 코루틴(여기서 예고 레이어 일반 영역 => 타격 영역으로 교체)
-    IEnumerator SetAnimFalse(string boolName)
-    {
-        yield return new WaitForSeconds(0.5f);
-
-        SetAnim(boolName, false);
-    }
-
-    public void LocalSetAnimFalse(string boolName)
-    {
-        StartCoroutine(SetAnimFalse(boolName));
-    }
-
-
-    //실제 공격 판정 타이밍 (공격만 왜 메서드 3개냐 ㅋㅋㅋㅋ)
-    IEnumerator TryAttackAreaTargets(int areaIndex, float attackCoefficient = 1)
-    {
-        yield return new WaitForSeconds(2.0f);
-        AttackTargetsInArea(areaIndex);
-    }
-    public void LocalTryAttackAreaTargets(int areaIndex, float attackCoefficient = 1)
-    {
-        StartCoroutine(TryAttackAreaTargets(areaIndex));
-    }
-
-
-    //진짜 진짜 공격&넉백임
-    public void AttackTargetsInArea(int areaIndex, float attackCoefficient = 1f)
-    {
-        if (inToAreaPlayers == null || areaIndex < 0 || areaIndex > AreaList.Length)
-            return;
-
-        Transform attackAreaTransform = AreaList[areaIndex].transform;
-
-        for (int i = 0; i < inToAreaPlayers.Count; i++)
-        {
-
-            PlayerStatHandler player = inToAreaPlayers[i];
-
-            // 플레이어와 공격 영역의 방향 벡터
-            Vector3 playerPosition = player.transform.position;
-            Vector3 areaPosition = attackAreaTransform.position;
-
-            if (areaIndex == 2)
-                areaPosition = new Vector3(0, 5, 0);
-
-            Vector3 directionToPlayer = (playerPosition - areaPosition).normalized;
-
-
-            // 넉백거리
-            float knockbackDistance = 1.5f;
-
-            // 실제 넉백
-
-            StartCoroutine(player.Knockback(directionToPlayer, knockbackDistance));
-
-            // 실제 피해
-            player.DirectDamage(bossSO.atk * attackCoefficient, PV.ViewID);
-        }
-    }
-
-    //일정 시간 이후에 멈추도록(추적 속도를 0으로 변경)
-    IEnumerator ChaseArea()
-    {
-        if (AreaList[3].gameObject.activeSelf)
-        {
-            // 추적 시작 위치 저장
-            Vector3 areaStartPosition = currentTarget.position;
-
-            AreaList[3].transform.position = areaStartPosition;
-
-            // 일정 시간 동안 천천히 타겟을 쫓음
-            float elapsedTime = 0f;
-            float chaseDuration = 3.5f; // 추적 시간
-
-            while (elapsedTime < chaseDuration)
-            {
-                // 타겟 쪽으로 천천히 이동
-                AreaList[3].transform.position = Vector3.Lerp(areaStartPosition, currentTarget.position, elapsedTime / chaseDuration);
-
-                elapsedTime += Time.deltaTime;
-                yield return null; // 한 프레임 대기
-            }
-        }
-
-    }
-
-    public void LocalChaseArea()
-    {
-        StartCoroutine(ChaseArea());
-    }
-
-
-
-
-    #endregion
 
     #region 타겟(Player) 관련 
     private void OnTargetChaged(Transform _target)
@@ -692,6 +301,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         currentTarget = null;
     }
 
+    /*
     public void SetHead() // 피해량, 플레이어 위치 받아옴
     {
         //플레이어를 바라보도록 설정
@@ -737,7 +347,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
 
         bossHead.transform.rotation = interpolatedRotation;
     }
-
+    
     private void ReturnOriginRotate()
     {
         // 목표 회전 각도
@@ -753,7 +363,10 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
 
         bossHead.transform.rotation = interpolatedRotation;
     }
+    */
 
+
+    //가장 가까운 타겟 서치
     private void SetNearestTarget()
     {
 
@@ -761,7 +374,6 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         float minDistance = float.MaxValue;
 
 
-        //가장 가까운 타겟 서치
         for (int i = 0; i < PlayersTransform.Count; i++)
         {
             if (PlayersTransform[i] == null)
@@ -778,6 +390,25 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     }
 
 
+    // 가장 먼 타겟 서치
+    private void FurthestTarget()
+    {
+        float maxDistance = float.MinValue;
+
+        for (int i = 0; i < PlayersTransform.Count; i++)
+        {
+            if (PlayersTransform[i] == null)
+                continue;
+
+            float distanceToAllTarget = Vector2.Distance(transform.position, PlayersTransform[i].transform.position);
+
+            if (distanceToAllTarget > maxDistance)
+            {
+                maxDistance = distanceToAllTarget;
+                currentTarget = PlayersTransform[i];
+            }
+        }
+    }
 
 
 
