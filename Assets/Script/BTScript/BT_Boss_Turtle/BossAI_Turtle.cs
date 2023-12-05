@@ -10,7 +10,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XR;
 using UnityEngine.UI;
 
-public class NewBehaviourScript : MonoBehaviourPunCallbacks, IPunObservable
+public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
 {
     private BTRoot TreeAIState;
 
