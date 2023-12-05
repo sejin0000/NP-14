@@ -25,8 +25,6 @@ public class UIManager : LocalSingleton<UIManager>
     private void Start()
     {
         Initialize();
-        GameManager.Instance.OnGameOverEvent += GameOver;
-        GameManager.Instance.OnGameClearEvent += GameClear;
     }
     
     // Start is called before the first frame update
@@ -77,15 +75,4 @@ public class UIManager : LocalSingleton<UIManager>
         Debug.Log("[UIManager] Find Fail. Check parameter. " + name);
         return null;
     }
-
-    public void GameOver()
-    {
-        overPanel.SetActive(true);
-    }
-    public void GameClear()
-    {
-        clearPanel.SetActive(true);
-    }
-
-
 }

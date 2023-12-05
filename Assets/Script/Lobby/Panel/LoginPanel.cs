@@ -32,9 +32,13 @@ public class LoginPanel : MonoBehaviourPunCallbacks, IPointerClickHandler
 
     private void OnEnable()
     {
-        AudioManager.PlayBGM(BGMList.Strike_Witches_Get_Bitches);
         loginButton.onClick.AddListener(OnLoginButtonClicked);
         isClicked = false;
+    }
+
+    private void Start()
+    {
+        AudioManager.PlayBGM(BGMList.Strike_Witches_Get_Bitches);
     }
 
     public void OnPointerClick(PointerEventData eventData)
