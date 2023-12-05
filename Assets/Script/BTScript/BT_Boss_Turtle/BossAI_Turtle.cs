@@ -16,26 +16,27 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
 
     //박민혁이만든함수
     public Bullet MissilePrefab;
-    public int missileCount;
+    private int missileCount;
+    private int rollCount;
     public Bullet thornPrefab;
-    int rollCount=0;
-    int endRollCount = 4;
-    bool rolling = false;
-    bool isPhase1;
-    Vector2 direction;
-    Rigidbody2D _rigidbody2D;
-    float time;
-    float thornTime=0.2f;
-    float thornAngle = 0;
+    public bool rolling = false;
+    public bool isPhase1;
+
+    [HideInInspector] public Vector2 direction;
+
+    public Rigidbody2D _rigidbody2D;
+    public float time;
+    public float thornTime = 0.2f;
+    private float thornAngle = 0;
 
 
     public float currentHP;                  // 현재 체력 계산
-    public float viewAngle;                  // 시야각 (기본120도)
-    public float viewDistance;               // 시야 거리 (기본 10)
+    [HideInInspector] public float viewAngle;                  // 시야각 (기본120도)
+    [HideInInspector] public float viewDistance;               // 시야 거리 (기본 10)
 
     //컴포넌트 및 기타 외부요소(일부 할당은 하위 노드에서 진행)
-    public EnemySO bossSO;                  // Enemy 정보 [모든 Action Node에 owner로 획득시킴]
-    public SpriteRenderer[] spriteRenderers;
+    public Boss_Turtle_SO bossSO;                  // Enemy 정보 [모든 Action Node에 owner로 획득시킴]
+    public SpriteRenderer spriteRenderers;
     public Animator anim;
 
 
@@ -47,26 +48,33 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     //public Collider2D target;
-    public List<Transform> PlayersTransform;
+    [HideInInspector] public List<Transform> PlayersTransform;
 
 
 
-    public Bullet enemyBulletPrefab;
     public Transform bossAim;
     public Color originColor;
 
-    public LayerMask targetMask;             // 타겟 레이어(Player)
 
     public float SpeedCoefficient = 1f;      // 이동속도 계수
-    public float currentTime;
+
+
+    //각 액션 패턴 쿨타임
+    [HideInInspector] public float rollingCooltime;
+    [HideInInspector] public float thornTornadoCoolTime;
+    [HideInInspector] public float missileCoolTime;
+
+
 
     public bool isLive = true;
     public bool isAttaking = false;
     public bool isGroggy = false;
     public bool isTrackingFurthestTarget = false;
+    public bool isEndThornTornado = false;
+    public bool isEndMissile = false;
     //플레이어 정보
 
-    public int lastAttackPlayer;
+    [HideInInspector] public int lastAttackPlayer;
 
 
 
@@ -93,8 +101,9 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     void Awake()
     {
         anim = GetComponentInChildren<Animator>();
-        spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
+        spriteRenderers = GetComponentInChildren<SpriteRenderer>();
         PV = GetComponent<PhotonView>();
+        _rigidbody2D = GetComponent<Rigidbody2D>();
 
         //게임 오브젝트 활성화 시, 행동 트리 생성
         CreateTreeAIState();
@@ -103,11 +112,14 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         viewDistance = bossSO.viewDistance;
         isLive = true;
 
-        originColor = spriteRenderers[0].color;
+        originColor = spriteRenderers.color;
 
         //★싱글 테스트 시 if else 주석처리 할것
         //쫓는 플레이어도 호스트가 판별?
 
+        rollingCooltime = 1f;//7
+        thornTornadoCoolTime = 0f; //5
+        missileCoolTime = 0f; //2
 
         knockbackDistance = 0f;
 
@@ -125,7 +137,6 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
 
         currentTarget = PlayersTransform[randomTarget];
 
-        rollCount = 0;
         rolling = false;
         isPhase1 = true;
     }
@@ -420,39 +431,33 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
 
     private void SetColor(int colorNum)
     {
-        for (int i = 0; i < spriteRenderers.Length; i++)
+        switch (colorNum)
         {
-            switch (colorNum)
-            {
-                case (int)BossStateColor.ColorRed:
-                    spriteRenderers[i].color = Color.red;
-                    break;
-                case (int)BossStateColor.ColorYellow:
-                    spriteRenderers[i].color = Color.yellow;
-                    break;
-                case (int)BossStateColor.ColorBlue:
-                    spriteRenderers[i].color = Color.blue;
-                    break;
-                case (int)BossStateColor.ColorBlack:
-                    spriteRenderers[i].color = Color.black;
-                    break;
-                case (int)BossStateColor.ColorOrigin:
-                    spriteRenderers[i].color = originColor;
-                    break;
-                case (int)BossStateColor.ColorMagenta:
-                    spriteRenderers[i].color = Color.magenta;
-                    break;
-            }
+            case (int)BossStateColor.ColorRed:
+                spriteRenderers.color = Color.red;
+                break;
+            case (int)BossStateColor.ColorYellow:
+                spriteRenderers.color = Color.yellow;
+                break;
+            case (int)BossStateColor.ColorBlue:
+                spriteRenderers.color = Color.blue;
+                break;
+            case (int)BossStateColor.ColorBlack:
+                spriteRenderers.color = Color.black;
+                break;
+            case (int)BossStateColor.ColorOrigin:
+                spriteRenderers.color = originColor;
+                break;
+            case (int)BossStateColor.ColorMagenta:
+                spriteRenderers.color = Color.magenta;
+                break;
         }
     }
 
     [PunRPC]
     public void SetStateColor(Color _color)
     {
-        for (int i = 0; i < spriteRenderers.Length; i++)
-        {
-            spriteRenderers[i].color = _color;
-        }
+        spriteRenderers.color = _color;
     }
     #endregion
 
@@ -511,9 +516,9 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         //Enemy 생존 체크
         //컨디션 체크 -> 사망 시 필요한 액션들(오브젝트 제거....)
         BTSquence BTDead = new BTSquence();
-        BossAI_State_Dead_DeadCondition deadCondition = new BossAI_State_Dead_DeadCondition(gameObject);
+        BossAI_Turtle_State_Dead_DeadCondition deadCondition = new BossAI_Turtle_State_Dead_DeadCondition(gameObject);
         BTDead.AddChild(deadCondition);
-        BossAI_State_Dead state_Dead = new BossAI_State_Dead(gameObject);
+        BossAI_Turtle_State_Dead state_Dead = new BossAI_Turtle_State_Dead(gameObject);
         BTDead.AddChild(state_Dead);
 
 
@@ -522,95 +527,18 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         //페이즈 판별 <셀렉터 겸 컨디션>[기본 = 1페이즈  ||  체력 50% '미만' = 2페이즈]
         BTSquence Phase_1 = new BTSquence();
 
-        //BossAI_Phase_1_Condition phaseOneCondition = new BossAI_Phase_1_Condition(gameObject);
-        //Phase_1.AddChild(phaseOneCondition);
+        BossAI_Turtle_Phase_1_Condition phaseOneCondition = new BossAI_Turtle_Phase_1_Condition(gameObject);
+        Phase_1.AddChild(phaseOneCondition);
 
+        BossAI_Turtle_State_Attack_Rolling rollingAttack = new BossAI_Turtle_State_Attack_Rolling(gameObject);
+        Phase_1.AddChild(rollingAttack);
+        BossAI_Turtle_State_Attack_ThornTornado tornado = new BossAI_Turtle_State_Attack_ThornTornado(gameObject);
+        Phase_1.AddChild(tornado);
+        BossAI_Turtle_State_Attack_Missile missile = new BossAI_Turtle_State_Attack_Missile(gameObject);
+        Phase_1.AddChild(missile);
+        BossAI_Turtle_Idle idle = new BossAI_Turtle_Idle(gameObject);
+        Phase_1.AddChild(idle);
 
-        //액션 셀렉터
-
-        BTSelector ActionSelector = new BTSelector();
-        Phase_1.AddChild(ActionSelector);
-
-
-        BossAI_State_SpecialAttack specialAttack = new BossAI_State_SpecialAttack(gameObject);
-        ActionSelector.AddChild(specialAttack);
-
-        //첫 노말패턴 시퀀스의 컨디션에서 노말액션 시퀀스에 사용할 랜덤 난수 쏴주기
-
-        //1페이즈
-        BTSelector nomalAttack_Selector = new BTSelector();
-        ActionSelector.AddChild(nomalAttack_Selector);
-
-
-        //노말 패턴 시퀀스1 번
-        BTSquence nomalAttack_Squence_1 = new BTSquence();
-        nomalAttack_Selector.AddChild(nomalAttack_Squence_1);
-
-        BossAI_State_Choice_1_Condition nomalChoice_1 = new BossAI_State_Choice_1_Condition(gameObject);
-        nomalAttack_Squence_1.AddChild(nomalChoice_1);
-
-
-
-        BossAI_State_ChaseAttack chaseAttack1_1 = new BossAI_State_ChaseAttack(gameObject);
-        nomalAttack_Squence_1.AddChild(chaseAttack1_1);
-        BossAI_State_TwoWayAttack twoWayAttack_1 = new BossAI_State_TwoWayAttack(gameObject);
-        nomalAttack_Squence_1.AddChild(twoWayAttack_1);
-        BossAI_State_RightAttack rightAttack_1 = new BossAI_State_RightAttack(gameObject);
-        nomalAttack_Squence_1.AddChild(rightAttack_1);
-        BossAL_State_LeftAttack leftAttack_1 = new BossAL_State_LeftAttack(gameObject);
-        nomalAttack_Squence_1.AddChild(leftAttack_1);
-
-
-        //난수 세팅
-        BossAI_SetRandomNum setRandomNum_1 = new BossAI_SetRandomNum(gameObject);
-        nomalAttack_Squence_1.AddChild(setRandomNum_1);
-
-
-        //노말 패턴 시퀀스2번
-        BTSquence nomalAttack_Squence_2 = new BTSquence();
-        nomalAttack_Selector.AddChild(nomalAttack_Squence_2);
-
-        BossAI_State_Choice_2_Condition nomalChoice_2 = new BossAI_State_Choice_2_Condition(gameObject);
-        nomalAttack_Squence_2.AddChild(nomalChoice_2);
-
-        BossAI_State_Breath Breath_2 = new BossAI_State_Breath(gameObject);
-        nomalAttack_Squence_2.AddChild(Breath_2);
-        BossAI_State_TwoWayAttack twoWayAttack_2 = new BossAI_State_TwoWayAttack(gameObject);
-        nomalAttack_Squence_2.AddChild(twoWayAttack_2);
-        BossAL_State_LeftAttack leftAttack_2 = new BossAL_State_LeftAttack(gameObject);
-        nomalAttack_Squence_2.AddChild(leftAttack_2);
-        BossAL_State_LeftAttack leftAttack_2_1 = new BossAL_State_LeftAttack(gameObject);
-        nomalAttack_Squence_2.AddChild(leftAttack_2_1);
-
-
-        //난수 세팅
-        //BossAI_SetRandomNum setRandomNum_2 = new BossAI_SetRandomNum(gameObject);
-        //nomalAttack_Squence_2.AddChild(setRandomNum_2);
-        nomalAttack_Squence_2.AddChild(setRandomNum_1);
-
-
-
-        //노말 패턴 시퀀스3 번
-        BTSquence nomalAttack_Squence_3 = new BTSquence();
-        nomalAttack_Selector.AddChild(nomalAttack_Squence_3);
-
-        BossAI_State_Choice_3_Condition nomalChoice_3 = new BossAI_State_Choice_3_Condition(gameObject);
-        nomalAttack_Squence_3.AddChild(nomalChoice_3);
-
-
-        BossAL_State_LeftAttack leftAttack_3 = new BossAL_State_LeftAttack(gameObject);
-        nomalAttack_Squence_3.AddChild(leftAttack_3);
-        BossAI_State_TwoWayAttack twoWayAttack_3 = new BossAI_State_TwoWayAttack(gameObject);
-        nomalAttack_Squence_3.AddChild(twoWayAttack_3);
-        BossAI_State_ChaseAttack chaseAttack_3 = new BossAI_State_ChaseAttack(gameObject);
-        nomalAttack_Squence_3.AddChild(chaseAttack_3);
-        BossAI_State_Breath Breath_3 = new BossAI_State_Breath(gameObject);
-        nomalAttack_Squence_3.AddChild(Breath_3);
-
-        //난수 세팅
-        //BossAI_SetRandomNum setRandomNum_3 = new BossAI_SetRandomNum(gameObject);
-        //nomalAttack_Squence_3.AddChild(setRandomNum_3);
-        nomalAttack_Squence_3.AddChild(setRandomNum_1);
 
         /*
         BTSelector Phase_2 = new BTSelector();
@@ -633,79 +561,6 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         //2페이즈
         BTSelector phase_2_nomalAttack_Selector = new BTSelector();
         phase_2_ActionSelector.AddChild(phase_2_nomalAttack_Selector);
-
-
-        //노말 패턴 시퀀스1 번
-        BTSquence Phase_2_nomalAttack_Squence_1 = new BTSquence();
-        phase_2_nomalAttack_Selector.AddChild(Phase_2_nomalAttack_Squence_1);
-
-        BossAI_State_Choice_1_Condition phase_2_nomalChoice_1 = new BossAI_State_Choice_1_Condition(gameObject);
-        Phase_2_nomalAttack_Squence_1.AddChild(phase_2_nomalChoice_1);
-
-
-
-        BossAI_State_ChaseAttack phase_2_chaseAttack1_1 = new BossAI_State_ChaseAttack(gameObject);
-        Phase_2_nomalAttack_Squence_1.AddChild(phase_2_chaseAttack1_1);
-        BossAI_State_TwoWayAttack phase_2_twoWayAttack_1 = new BossAI_State_TwoWayAttack(gameObject);
-        Phase_2_nomalAttack_Squence_1.AddChild(phase_2_twoWayAttack_1);
-        BossAI_State_RightAttack phase_2_rightAttack_1 = new BossAI_State_RightAttack(gameObject);
-        Phase_2_nomalAttack_Squence_1.AddChild(phase_2_rightAttack_1);
-        BossAI_State_Breath phase_2_Breath_1 = new BossAI_State_Breath(gameObject);
-        Phase_2_nomalAttack_Squence_1.AddChild(phase_2_Breath_1);
-        BossAL_State_LeftAttack phase_2_leftAttack_1 = new BossAL_State_LeftAttack(gameObject);
-        Phase_2_nomalAttack_Squence_1.AddChild(phase_2_leftAttack_1);
-
-
-        //난수 세팅 (나중에 2페이즈 노말 패턴 시퀀스가 더 추가된다면 분기하고 새 스크립트를 만든다)
-        nomalAttack_Squence_1.AddChild(setRandomNum_1);
-
-
-        //노말 패턴 시퀀스2번
-        BTSquence phase_2_nomalAttack_Squence_2 = new BTSquence();
-        phase_2_nomalAttack_Selector.AddChild(phase_2_nomalAttack_Squence_2);
-
-        BossAI_State_Choice_2_Condition phase_2_nomalChoice_2 = new BossAI_State_Choice_2_Condition(gameObject);
-        phase_2_nomalAttack_Squence_2.AddChild(phase_2_nomalChoice_2);
-
-
-        BossAI_State_TwoWayAttack phase_2_twoWayAttack_2 = new BossAI_State_TwoWayAttack(gameObject);
-        phase_2_nomalAttack_Squence_2.AddChild(phase_2_twoWayAttack_2);
-        BossAL_State_LeftAttack phase_2_leftAttack_2 = new BossAL_State_LeftAttack(gameObject);
-        phase_2_nomalAttack_Squence_2.AddChild(phase_2_leftAttack_2);
-        BossAI_State_Breath phase_2_Breath_2 = new BossAI_State_Breath(gameObject);
-        phase_2_nomalAttack_Squence_2.AddChild(phase_2_Breath_2);
-        BossAL_State_LeftAttack phase_2_leftAttack_2_1 = new BossAL_State_LeftAttack(gameObject);
-        phase_2_nomalAttack_Squence_2.AddChild(phase_2_leftAttack_2_1);
-
-
-        //난수 세팅
-        //BossAI_SetRandomNum setRandomNum_2 = new BossAI_SetRandomNum(gameObject);
-        //nomalAttack_Squence_2.AddChild(setRandomNum_2);
-        nomalAttack_Squence_2.AddChild(setRandomNum_1);
-
-
-
-        //노말 패턴 시퀀스3 번
-        BTSquence phase_2_nomalAttack_Squence_3 = new BTSquence();
-        phase_2_nomalAttack_Selector.AddChild(phase_2_nomalAttack_Squence_3);
-
-        BossAI_State_Choice_3_Condition phase_2_nomalChoice_3 = new BossAI_State_Choice_3_Condition(gameObject);
-        phase_2_nomalAttack_Squence_3.AddChild(phase_2_nomalChoice_3);
-
-
-        BossAL_State_LeftAttack phase_2_leftAttack_3 = new BossAL_State_LeftAttack(gameObject);
-        phase_2_nomalAttack_Squence_3.AddChild(phase_2_leftAttack_3);
-        BossAI_State_TwoWayAttack phase_2_twoWayAttack_3 = new BossAI_State_TwoWayAttack(gameObject);
-        phase_2_nomalAttack_Squence_3.AddChild(phase_2_twoWayAttack_3);
-        BossAI_State_ChaseAttack phase_2_chaseAttack_3 = new BossAI_State_ChaseAttack(gameObject);
-        phase_2_nomalAttack_Squence_3.AddChild(phase_2_chaseAttack_3);
-        BossAI_State_Breath phase_2_Breath_3 = new BossAI_State_Breath(gameObject);
-        phase_2_nomalAttack_Squence_3.AddChild(phase_2_Breath_3);
-
-        //난수 세팅
-        //BossAI_SetRandomNum setRandomNum_3 = new BossAI_SetRandomNum(gameObject);
-        //nomalAttack_Squence_3.AddChild(setRandomNum_3);
-        nomalAttack_Squence_3.AddChild(setRandomNum_1);
 
         */
 
@@ -769,24 +624,33 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         missileCount = 0; // 3발을쏨 == 3발 다쏘면 이번 패턴 end 조건만족을 위해 카운트 리셋
         StartCoroutine("firefirefire");
     }
+
+    //가 멀 가 미사일
     public IEnumerator firefirefire()
     {
+        SetNearestTarget();
         float atk = bossSO.atk * 2f;
         float speed = bossSO.bulletSpeed;
         float bulletLifeTIme = bossSO.bulletLifeTime;
 
         photonView.RPC("Missile", RpcTarget.All, atk, speed, bulletLifeTIme);
         yield return new WaitForSeconds(0.5f);
-        photonView.RPC("Missile", RpcTarget.All, atk * 2, speed * 0.5, bulletLifeTIme * 2);
+
+        
+        FurthestTarget();
+        photonView.RPC("Missile", RpcTarget.All, atk, speed, bulletLifeTIme); // atk * 0.5 , speed * 2
         yield return new WaitForSeconds(0.5f);
-        photonView.RPC("Missile", RpcTarget.All, atk * 0.5, speed * 2, bulletLifeTIme);
+
+        SetNearestTarget();
+        photonView.RPC("Missile", RpcTarget.All, atk, speed, bulletLifeTIme); //atk * 2, speed * 0.5, bulletLifeTIme * 2
+
     }
     public void MissileCountCheck()
     {
         missileCount++;
         if (missileCount >= 3)
         {
-            //이번패턴 나갈 조건 체크
+            isEndMissile = true;
         }
     }
     #endregion
@@ -842,15 +706,17 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
             photonView.RPC("Thorn", RpcTarget.All, n, atktype);
             n += 45;
         }
-        if (rolling)
+        if (!rolling)
         {
-            //패턴 종료조건
+            isEndThornTornado = true;
         }
     }
     #endregion
     #region 구르기모드
-    public void RollStart() 
+    public void RollStart()
     {
+        SetNearestTarget();
+
         //롤카운트 기준으로 멈추고 n초후(벽에 딱붙어서 멈추지 않기 위함) 멈출것임 트리거에서 if rolling && collier.layer==wall
         rollCount = 0;
         rolling = true;
@@ -876,7 +742,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
                 ThornTornado2();
             }
             rollCount++;
-            if (rollCount >= endRollCount)
+            if (rollCount >= bossSO.endRollCount)
             {
                 Invoke("RollEnd", 0.2f);
             }
