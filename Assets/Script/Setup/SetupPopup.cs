@@ -100,7 +100,7 @@ public class SetupPopup : MonoBehaviour
         {
             return;
         }
-        setupState = SetupIndex.Sound;
+        SetupState = SetupIndex.Sound;
         ClearSetupBox();
         SetSetupPrefab(PrefabPathes.SOUND_CONTROL_PREFAB_PATH);
     }
@@ -111,7 +111,7 @@ public class SetupPopup : MonoBehaviour
         {
             return;
         }
-        setupState = SetupIndex.Account;
+        SetupState = SetupIndex.Account;
         ClearSetupBox();
         SetSetupPrefab(PrefabPathes.NICKNAME_CHANGE_PREFAB_PATH);
     }
@@ -122,7 +122,7 @@ public class SetupPopup : MonoBehaviour
         {
             return;
         }
-        setupState = SetupIndex.Account;
+        SetupState = SetupIndex.System;
         ClearSetupBox();
         SetSetupPrefab(PrefabPathes.SYSTEM_OFF_PREFAB_PATH);
     }
