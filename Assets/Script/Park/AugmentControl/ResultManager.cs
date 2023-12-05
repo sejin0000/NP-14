@@ -124,21 +124,17 @@ public class ResultManager : MonoBehaviour//vs코드
             target3 = 5;
         }
         int type = 0;
-        Debug.Log($"랜덤 수 : {random}");
         if (random <= target1)
         {
             type = 1;
-            Debug.Log($"대상 타겟 가중치 {target1}대상 티어 1티어 ");
         }
         else if (random <= target1 + target2)
         {
             type = 2;
-            Debug.Log($"대상 타겟 가중치 {target1 + target2}대상 티어  2티어 ");
         }
         else if (random <= target1 + target2 + target3)
         {
             type = 3;
-            Debug.Log($"대상 티어 3티어 ");
         }
         else 
         {

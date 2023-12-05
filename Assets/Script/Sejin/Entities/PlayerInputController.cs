@@ -36,6 +36,7 @@ public class PlayerInputController : TopDownCharacterController
 
         playerInput = GetComponent<PlayerInput>();
         playerInput.actions.FindAction("Move2").Disable();
+        playerInput.actions.FindAction("SiegeMode").Disable();
         _camera = Camera.main;
 
 

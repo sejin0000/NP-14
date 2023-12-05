@@ -146,7 +146,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("룸 종료");
         if (!ClearStageCheck)
         {
-            Debug.Log("스테이지 아직 미클리어");
             PV.RPC("PunCallRoomEndEvent", RpcTarget.AllBuffered);
         }
     }
