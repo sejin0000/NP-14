@@ -155,8 +155,6 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         }
         //AI트리의 노드 상태를 매 프레임 마다 얻어옴
 
-        TreeAIState.Tick();
-
         if (!isLive)
             return;
 
@@ -192,7 +190,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         hostPosition = transform.position;
         hostAimRotation = bossAim.transform.rotation;
 
-
+        TreeAIState.Tick();
         /*
         //목적지와 내 거리가 일정거리 이하거나 / nav가 멈춘 상태(그냥 정지) 가 아닌경우
         if (!IsNavAbled())
@@ -323,70 +321,6 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     {
         currentTarget = null;
     }
-
-    /*
-    public void SetHead() // 피해량, 플레이어 위치 받아옴
-    {
-        //플레이어를 바라보도록 설정
-
-        //anim.SetTrigger("Attack"); // 공격 애니메이션
-
-        //대상과 머리의 방향을 구한 뒤 해당 방향으로 Rotat
-        Vector3 direction = (currentTarget.transform.position - bossHead.transform.position).normalized;
-
-
-
-        RotateHead(direction);
-    }
-    private void RotateHead(Vector2 newAim)
-    {
-        float rotZ = Mathf.Atan2(newAim.y, newAim.x) * Mathf.Rad2Deg;
-        rotZ += 90f;
-
-        if (rotZ > 40 || rotZ < -40f)
-        {
-            ReturnOriginRotate();
-            //여기다 지진패턴[양 팔을 들어서 내려놓기] 넣어서 꼼수 대응
-            return;
-        }
-
-        // 원하는 회전 범위 지정
-        float minRotation = -25f;
-        float maxRotation = 25f;
-        //270~61 == 회전하면 안됨
-        rotZ = Mathf.Clamp(rotZ, minRotation, maxRotation);
-
-
-        // 현재 회전 각도
-        Quaternion currentRotation = bossHead.transform.rotation;
-
-        // 목표 회전 각도
-        Quaternion targetRotation = Quaternion.Euler(0, 0, rotZ);
-
-        // 회전 보간
-        float interpolationFactor = 0.005f; // 보간 계수
-        Quaternion interpolatedRotation = Quaternion.Slerp(currentRotation, targetRotation, interpolationFactor);
-
-
-        bossHead.transform.rotation = interpolatedRotation;
-    }
-    
-    private void ReturnOriginRotate()
-    {
-        // 목표 회전 각도
-        Quaternion targetRotation = Quaternion.Euler(0, 0, 0);
-
-        // 현재 회전 각도
-        Quaternion currentRotation = bossHead.transform.rotation;
-
-        // 회전 보간
-        float interpolationFactor = 0.005f; // 보간 계수
-        Quaternion interpolatedRotation = Quaternion.Slerp(currentRotation, targetRotation, interpolationFactor);
-
-
-        bossHead.transform.rotation = interpolatedRotation;
-    }
-    */
 
 
     //가장 가까운 타겟 서치
@@ -711,6 +645,8 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     #region 구르기모드
     public void RollStart()
     {
+        SetAnim("Rolling", true);
+        bossAim.gameObject.SetActive(false);
         SetNearestTarget();
         Debug.Log($"구르기 진입");
         //롤카운트 기준으로 멈추고 n초후(벽에 딱붙어서 멈추지 않기 위함) 멈출것임 트리거에서 if rolling && collier.layer==wall
@@ -724,6 +660,8 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     }
     public void RollEnd() 
     {
+        SetAnim("Rolling", false);
+        bossAim.gameObject.SetActive(true);
         Debug.Log($"구르기 퇴장");
         rolling = false;
         rollingCooltime = bossSO.rollingCooltime;
