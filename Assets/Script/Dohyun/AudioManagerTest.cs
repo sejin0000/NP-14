@@ -1,26 +1,38 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class AudioManagerTest : MonoBehaviour
 {
-    GameObject player;
+    List<GameObject> player;
     [SerializeField] GameManager manager;
     
 
     // Start is called before the first frame update
     void Start()
     {
-        if (manager != null)
-            GameManager.Instance.OnStageStartEvent += PlayStageBGM;
+        //Initialize();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Initialize()
     {
-        
+        manager = GameManager.Instance;
+        if (manager != null)
+        {
+            PhotonView pv = GameManager.Instance.GetComponent<PhotonView>();
+            var viewID = new List<int>(GameManager.Instance.playerInfoDictionary.Keys).ToArray();
+
+            for(int i=0; i < viewID.Length; i++)
+            {
+                var temp_pv = PhotonView.Find(viewID[i]);
+                AudioManager.Instance.AudioLibrary.CallRoomSoundEvent(temp_pv.gameObject);
+            }
+            GameManager.Instance.OnStageStartEvent += PlayStageBGM;
+        }
     }
 
     void PlayStageBGM()

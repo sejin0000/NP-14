@@ -2,6 +2,7 @@ using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -88,8 +89,9 @@ public class GameManager : MonoBehaviour
         }
         OnStageStartEvent += MG.roomNodeInfo.OpenDoor;
 
-
         PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
+        AudioManager.Instance.AddComponent<AudioManagerTest>().Initialize();
+
         MakeSetting.MakeManager();
         TeamGold = 0;
     }
