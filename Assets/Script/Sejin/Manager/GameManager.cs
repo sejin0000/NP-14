@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     public event Action ChangeGoldEvent;
     public bool ClearStageCheck;//박민혁 추가 스테이지 클리어시 빈방 비울때 콜여부
 
-    public StagerListInfoSO stageListInfo;
+    public StageListInfoSO stageListInfo;
     public int curStage = 0;
 
 
@@ -71,11 +71,14 @@ public class GameManager : MonoBehaviour
 
         OnInitEvent += PS.InstantiatePlayer;
 
+        CallInitEvent();
+
         MG = _mapGenerator.GetComponent<MapGenerator>();
         FF = _fadeInfadeOutPanel.GetComponent<FadeInFadeOutPanel>();
         MS = _mansterSpawner.GetComponent<MonsterSpawner>();
 
         OnStageStartEvent += MG.MapMake;
+        MG.roomNodeInfo = MG.GetComponent<RoomNodeInfo>();
         OnStageStartEvent += MG.roomNodeInfo.CloseDoor;
         OnBossStageSettingEvent += MG.BossMapMake;
         if (PhotonNetwork.IsMasterClient)
@@ -85,7 +88,7 @@ public class GameManager : MonoBehaviour
         }
         OnStageStartEvent += MG.roomNodeInfo.OpenDoor;
 
-        CallInitEvent();
+
         PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
         MakeSetting.MakeManager();
         TeamGold = 0;
@@ -268,6 +271,7 @@ public class GameManager : MonoBehaviour
     {
         CallPlayerLifeCheckEvent();
         PartyDeathCount--;
+        Debug.Log("현재 죽은수 PartyDeath : " + PartyDeathCount.ToString());
     }
     public void CallPlayerLifeCheckEvent()
     {

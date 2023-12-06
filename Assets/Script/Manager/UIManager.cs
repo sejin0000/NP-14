@@ -6,6 +6,10 @@ using UnityEngine.UI;
 
 public class UIManager : LocalSingleton<UIManager>
 {
+    public GameObject overPanel;
+    public GameObject clearPanel;
+
+
     [SerializeField] private List<UIBase> layer;
 
     public List<UIBase> Layer
@@ -17,12 +21,13 @@ public class UIManager : LocalSingleton<UIManager>
     {
         base.Awake();
     }
-    
-    // Start is called before the first frame update
-    void Start()
+
+    private void Start()
     {
         Initialize();
     }
+    
+    // Start is called before the first frame update
 
     private void Initialize()
     {

@@ -62,29 +62,25 @@ public class ResultManager : MonoBehaviour//vs코드
         {
             Instance = this;
 
-            DontDestroyOnLoad(this.gameObject);
+            //DontDestroyOnLoad(this.gameObject);
         }
         else
         {
             Destroy(this);
         }
-        testsetting = false;
+        testsetting = true;
 
     }
     public void StartSet()
     {
         stat1 = MakeAugmentListManager.Instance.stat1;
-        Debug.Log($"스탯1 개수{stat1.Count}");
         stat2 = MakeAugmentListManager.Instance.stat2;
-        Debug.Log($"스탯2 개수{stat2.Count}");
         stat3 = MakeAugmentListManager.Instance.stat3;
-        Debug.Log($"스탯3 개수{stat3.Count}");
+
         SpecialAugment1 = MakeAugmentListManager.Instance.SpecialAugment1;
-        Debug.Log($"증강1 개수{SpecialAugment1.Count}");
         SpecialAugment2 = MakeAugmentListManager.Instance.SpecialAugment2;
-        Debug.Log($"증강2 개수{SpecialAugment2.Count}");
         SpecialAugment3 = MakeAugmentListManager.Instance.SpecialAugment3;
-        Debug.Log($"증강3 개수{SpecialAugment3.Count}");
+
         ProtoList = MakeAugmentListManager.Instance.Prototype;
         Debug.Log("배포전 프로토타입 주석처리");
         statChance = false;

@@ -20,7 +20,7 @@ public class MonsterSpawner : MonoBehaviour
     {
         Debug.Log("몬스터 생성 이벤트");
         MapGenerator mapGenerator = GameManager.Instance.MG;
-        StagerListInfoSO stagerListInfoSO = GameManager.Instance.stageListInfo;
+        StageListInfoSO stagerListInfoSO = GameManager.Instance.stageListInfo;
 
         int MonsterSquadTypeCount = stagerListInfoSO.StagerList[GameManager.Instance.curStage].MonsterSquadList.Count;// 현재 스테이지에 몬스터 분대 수 
 
@@ -57,7 +57,7 @@ public class MonsterSpawner : MonoBehaviour
     public void BossSpawn()
     {
         MapGenerator mapGenerator = GameManager.Instance.MG;
-        StagerListInfoSO stagerListInfoSO = GameManager.Instance.stageListInfo;
+        StageListInfoSO stagerListInfoSO = GameManager.Instance.stageListInfo;
 
         int MonsterSquadTypeCount = stagerListInfoSO.StagerList[GameManager.Instance.curStage].MonsterSquadList.Count;// 현재 스테이지에 몬스터 분대 수 
         int randomSquad = Random.Range(0, MonsterSquadTypeCount);//  이번 방에 어떤 분대를 생성할지
