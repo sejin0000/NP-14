@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log("GameManager - Awake()");
         if (Instance == null)
         {
             Instance = this;
@@ -71,11 +72,14 @@ public class GameManager : MonoBehaviour
 
         OnInitEvent += PS.InstantiatePlayer;
 
+        CallInitEvent();
+
         MG = _mapGenerator.GetComponent<MapGenerator>();
         FF = _fadeInfadeOutPanel.GetComponent<FadeInFadeOutPanel>();
         MS = _mansterSpawner.GetComponent<MonsterSpawner>();
 
         OnStageStartEvent += MG.MapMake;
+        MG.roomNodeInfo = MG.GetComponent<RoomNodeInfo>();
         OnStageStartEvent += MG.roomNodeInfo.CloseDoor;
         OnBossStageSettingEvent += MG.BossMapMake;
         if (PhotonNetwork.IsMasterClient)
@@ -84,17 +88,15 @@ public class GameManager : MonoBehaviour
             OnStageStartEvent += MS.MonsterSpawn;           
         }
         OnStageStartEvent += MG.roomNodeInfo.OpenDoor;
-
-        CallInitEvent();
-        PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
-        MakeSetting.MakeManager();
-        TeamGold = 0;
-    }
-    
+    }   
 
 
     private void Start()
     {
+        PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
+        MakeSetting.MakeManager();
+        TeamGold = 0;
+
         if (stageListInfo.StagerList[curStage].stageType == StageType.normalStage)
         {
             CallStageStartEvent();
@@ -146,7 +148,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("룸 종료");
         if (!ClearStageCheck)
         {
-            Debug.Log("스테이지 아직 미클리어");
             PV.RPC("PunCallRoomEndEvent", RpcTarget.AllBuffered);
         }
     }
@@ -269,6 +270,7 @@ public class GameManager : MonoBehaviour
     {
         CallPlayerLifeCheckEvent();
         PartyDeathCount--;
+        Debug.Log("현재 죽은수 PartyDeath : " + PartyDeathCount.ToString());
     }
     public void CallPlayerLifeCheckEvent()
     {

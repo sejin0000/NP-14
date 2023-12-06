@@ -65,7 +65,6 @@ public class BossAI_State_SpecialAttack : BTAction
 
 
             //특수 패턴 3 : 플레이어가 특수 패턴 범위 안에 있는 경우 [통상] => 브레스
-            bossAI_Dragon.PV.RPC("StartBreathCoroutine", RpcTarget.All);
 
 
 

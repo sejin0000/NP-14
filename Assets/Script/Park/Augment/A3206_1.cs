@@ -8,6 +8,11 @@ public class A3206_1 : MonoBehaviour
     public float shieldHP = 50;
     public float shieldPower;
     private float time = 0;
+    public Rigidbody2D rigidbody2;
+    private void Start()
+    {
+        time = 0;
+    }
 
     private void Update()
     {

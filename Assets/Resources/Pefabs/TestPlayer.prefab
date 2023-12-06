@@ -694,6 +694,7 @@ MonoBehaviour:
   CanReflect: 0
   ReflectCoeff: 0
   InShieldHP: 0
+  PlayerStatNameArray: []
 --- !u!114 &7295784485177987548
 MonoBehaviour:
   m_ObjectHideFlags: 0

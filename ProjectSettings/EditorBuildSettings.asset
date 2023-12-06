@@ -9,24 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/LobbyScene.unity
     guid: 358b30e6175f1dc4d95050259ca36f01
   - enabled: 1
-    path: Assets/Scenes/MainScene.unity
-    guid: b97a4d090a2463648a23c956495d3463
-  - enabled: 1
-    path: Assets/Scenes/TestScenes/Test_DoHyun.unity
-    guid: c6b35450e2cf9bb44bc026c8608a0a34
-  - enabled: 1
-    path: Assets/Scenes/TestScenes/Test_JiMin.unity
-    guid: 57a61689c2dbee746bb104c58d724f88
-  - enabled: 1
-    path: Assets/Scenes/TestScenes/Test_MinHyuk.unity
-    guid: aee14c4451b3dcf49af57b0db2c03f85
-  - enabled: 0
-    path: Assets/Scenes/TestScenes/Test_Sejin.unity
-    guid: fb64121763d7c374cb625bfb8f11c7b0
-  - enabled: 1
-    path: Assets/Scenes/TestScenes/Test_WooMin.unity
-    guid: efe9c5ef6f296c84c8bb31381598568b
-  - enabled: 1
     path: Assets/Scenes/TestScenes/MainGameScene.unity
     guid: 83643e38b30b67b4f843c8afb68a2e6a
   m_configObjects: {}

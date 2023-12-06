@@ -541,6 +541,12 @@ public class PlayerStatHandler : MonoBehaviourPun
         // 최종 위치에 고정
         transform.position = targetPosition;
     }
+    [PunRPC]
+    public void ImLive()
+    {
+        Regen(HP.total);
+        this.gameObject.layer = 8;
+    }
 
     public void SetStatusArray()
     {

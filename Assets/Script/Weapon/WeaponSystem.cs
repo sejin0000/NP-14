@@ -16,6 +16,7 @@ public class WeaponSystem : MonoBehaviour
         Charging,
     }
 
+    private PlayerStatHandler playerStatHandler;
     private TopDownCharacterController _controller;
     private PhotonView pv;
     public Transform muzzleOfAGun;
@@ -57,6 +58,7 @@ public class WeaponSystem : MonoBehaviour
         pv             = GetComponent<PhotonView>();
         _controller    = GetComponent<TopDownCharacterController>();
         _viewID        = pv.ViewID;
+        playerStatHandler=GetComponent<PlayerStatHandler>();
         //target = BulletTarget.Enemy;
         targets = new Dictionary<string, int>();
         targets["Enemy"] = (int)BulletTarget.Enemy;
@@ -138,6 +140,12 @@ public class WeaponSystem : MonoBehaviour
     [PunRPC]
     public void BS(Quaternion rot, float Atk, float bulletLifeTime,Dictionary<string, int> _targets, bool _isDamage, int _viewID)//BulletSpawn
     {
+        float critical = playerStatHandler.Critical.total;
+        int criticalchance = Random.Range(1, 101);
+        if (critical >= criticalchance) 
+        {
+            Atk = Atk * 1.5f;
+        }
         //Debug.Log("Å¸°Ù");
         foreach (var target in _targets)
         {
@@ -197,7 +205,7 @@ public class WeaponSystem : MonoBehaviour
         _object.GetComponent<Bullet>().Init();
         if (humanAttackintelligentmissile)
         {
-            _bullet.MissileFire();
+            _bullet.MissileFire(1);
         }
     }
 }
