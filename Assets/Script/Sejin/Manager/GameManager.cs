@@ -93,12 +93,16 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("GameManager - StageStart");
+        StartCoroutine(WaitAudioManager());
         PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
         MakeSetting.MakeManager();
         TeamGold = 0;
 
+        Debug.Log($"GameManager - Start stageType : {Enum.GetName(typeof(StageType), stageListInfo.StagerList[curStage].stageType)})");
         if (stageListInfo.StagerList[curStage].stageType == StageType.normalStage)
         {
+            Debug.Log("GameManager - Start : CallStageStartEvent");
             CallStageStartEvent();
         }
         else if(stageListInfo.StagerList[curStage].stageType == StageType.bossStage)
@@ -107,7 +111,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
+    private IEnumerator WaitAudioManager()
+    {
+        if (AudioManager.Instance.AudioManagerTest == null)
+        {
+            Debug.Log("GameManager [WaitAudioManager] - Waiting");
+            yield return new WaitForSeconds(1f);
+            StartCoroutine(WaitAudioManager());
+        }
+        else
+        {
+            Debug.Log("GameManager - PlayStageBGM 이벤트 구독");
+            OnStageStartEvent += AudioManager.Instance.AudioManagerTest.PlayStageBGM;
+            yield return null;
+        }
+    }
     public void CallInitEvent()
     {
         Debug.Log("초기화");

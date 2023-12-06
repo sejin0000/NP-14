@@ -13,9 +13,25 @@ public class AudioManagerTest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (manager != null)
-            GameManager.Instance.OnStageStartEvent += PlayStageBGM;
+        //if (manager != null)
+        //{
+        //    Debug.Log("AudioManagerTest - PlayStageBGM 이벤트 구독");
+        //    GameManager.Instance.OnStageStartEvent += PlayStageBGM;
+        //}
     }
+
+    //private IEnumerator WaitGameManager()
+    //{
+    //    if (GameManager.Instance == null) 
+    //    {
+    //        Debug.Log("AudioManagerTest - Waiting");
+    //        yield return new WaitForSeconds(1f);
+    //        StartCoroutine(WaitGameManager());
+    //    }
+    //    Debug.Log("AudioManagerTest - PlayStageBGM 이벤트 구독");
+    //    GameManager.Instance.OnStageStartEvent += PlayStageBGM;
+    //    yield return null;
+    //}
 
     // Update is called once per frame
     void Update()
@@ -23,7 +39,7 @@ public class AudioManagerTest : MonoBehaviour
         
     }
 
-    void PlayStageBGM()
+    public void PlayStageBGM()
     {
         if (GameManager.Instance.curStage == 0)
             AudioManager.PlayBGM(BGMList.Duty_Cycle_GB);

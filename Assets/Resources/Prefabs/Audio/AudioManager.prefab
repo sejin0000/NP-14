@@ -32,7 +32,7 @@ Transform:
   m_Children:
   - {fileID: 1158209742745073800}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1301665912165803607
 MonoBehaviour:
@@ -50,6 +50,8 @@ MonoBehaviour:
   SEPlayerSize: 8
   SEClips: []
   BGMClips: []
+  AudioLibrary: {fileID: 0}
+  AudioManagerTest: {fileID: 1342314549356562532}
 --- !u!114 &5924062456417362254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,19 +65,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loby: {fileID: 8300000, guid: 2661c56113091224ab593bda9d2d0892, type: 3}
-  stage1: {fileID: 8300000, guid: c077ce5c27e83c044abf1e78a8ac621a, type: 3}
-  stage2: {fileID: 8300000, guid: b5469ef5c65beaf41b82f0c3dd8c94a1, type: 3}
-  boss1: {fileID: 8300000, guid: b526608e96b8c98449929f26d74e7336, type: 3}
-  attack: {fileID: 0}
-  rolling: {fileID: 0}
-  reload: {fileID: 0}
-  hit: {fileID: 0}
+  stage: []
+  boss: []
+  player_rolling: {fileID: 0}
+  player_hit: {fileID: 0}
+  enemy_attack: {fileID: 0}
+  enemy_hit: {fileID: 0}
   DoorOpen: {fileID: 0}
   DoorClose: {fileID: 0}
-  onMouse: {fileID: 0}
   click: {fileID: 0}
-  buzzer: {fileID: 0}
-  a: {fileID: 0}
 --- !u!1 &6007971594192543763
 GameObject:
   m_ObjectHideFlags: 0
