@@ -56,7 +56,7 @@ public class RoomFindPanel : MonoBehaviour
     public TMP_InputField RoomSearchInput;
 
     [Header("RoomEntries")]
-    public GameObject RoomEntryPrefab;
+    private GameObject RoomEntryPrefab;
 
     [HideInInspector]
     public Hashtable CustomRoomProperties;
@@ -177,6 +177,7 @@ public class RoomFindPanel : MonoBehaviour
         {
             if (info.Name.Contains(RoomSearchInput.text)) 
             {
+                RoomEntryPrefab = Resources.Load<GameObject>(PrefabPathes.ROOM_ENTRY_PREFAB);
                 GameObject entry = Instantiate(RoomEntryPrefab, RoomScrollViewContent.transform, false);
                 var gridLG = RoomScrollViewContent.GetComponent<GridLayoutGroup>();
                 RoomScrollViewContent.GetComponent<RectTransform>().sizeDelta += new Vector2(0, gridLG.cellSize.y + gridLG.padding.bottom);

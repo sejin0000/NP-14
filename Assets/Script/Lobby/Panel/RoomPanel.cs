@@ -25,7 +25,7 @@ public class RoomPanel : MonoBehaviourPunCallbacks
     public TMP_InputField ChatInputField;
     public Button SubmitButton;
     public GameObject ChatBox;
-    public GameObject ChatLog;
+    private GameObject ChatLog;
     public GameObject ChatScrollContent;
     public ScrollRect ChatScrollRect;
     private bool isChatBoxActive;
@@ -285,6 +285,7 @@ public class RoomPanel : MonoBehaviourPunCallbacks
         string inputText = ChatInputField.text;
         string nickName = PhotonNetwork.LocalPlayer.NickName;
 
+        ChatLog = Resources.Load<GameObject>(PrefabPathes.CHAT_LOG_PREFAB);
         GameObject chatPrefab = Instantiate(ChatLog, ChatScrollContent.transform, false);
         ChatLog chatLog = chatPrefab.GetComponent<ChatLog>();
 

@@ -18,7 +18,7 @@ public class LoginPanel : MonoBehaviourPunCallbacks, IPointerClickHandler
     [SerializeField] private Button loginButton;
 
     [Header("NickNamePopup")]
-    [SerializeField] private GameObject NickNamePopupPrefab;
+    private GameObject NickNamePopupPrefab;
     private NickNamePopup NickNamePopup;
 
     [Header("Background Image")]
@@ -38,7 +38,7 @@ public class LoginPanel : MonoBehaviourPunCallbacks, IPointerClickHandler
 
     private void Start()
     {
-        AudioManager.PlayBGM(BGMList.Strike_Witches_Get_Bitches);
+        AudioManager.PlayBGM(BGMList.Strike_Witches_Get_Bitches);        
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -49,7 +49,7 @@ public class LoginPanel : MonoBehaviourPunCallbacks, IPointerClickHandler
             Trio.SetActive(false);
             LoginBox.SetActive(false); // 임시로 로그인 기능 제한            
             isClicked = true;
-            Instantiate(NickNamePopupPrefab, this.transform, false);
+            NickNamePopupPrefab = Instantiate(Resources.Load<GameObject>(PrefabPathes.NICKNAME_POPUP), this.transform, false);
             NickNamePopup = NickNamePopupPrefab.GetComponent<NickNamePopup>();
             NickNamePopup.Initialize();
         }
