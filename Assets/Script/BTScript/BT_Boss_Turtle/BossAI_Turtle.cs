@@ -37,6 +37,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     //컴포넌트 및 기타 외부요소(일부 할당은 하위 노드에서 진행)
     public Boss_Turtle_SO bossSO;                  // Enemy 정보 [모든 Action Node에 owner로 획득시킴]
     public SpriteRenderer spriteRenderer;
+    private SpriteRenderer AimSpriteRenderer;
     public Animator anim;
 
 
@@ -73,6 +74,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     public bool isTrackingFurthestTarget = false;
     public bool isEndThornTornado = false;
     public bool isEndMissile = false;
+    public bool isFilp = false;
     //플레이어 정보
 
     [HideInInspector] public int lastAttackPlayer;
@@ -89,6 +91,9 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     public PhotonView PV;
     private Quaternion hostAimRotation;
     private Vector3 hostPosition;
+    private Vector3 hostLocalScale;
+    private Vector3 hosAimLocalScale;
+
     private Vector2 hostKnckbackPosition;
     public float lerpSpeed = 10f; // 보간시 필요한 수치(조정 필요)
 
@@ -103,6 +108,8 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     {
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        AimSpriteRenderer = bossAim.GetComponent<SpriteRenderer>();
+
         PV = GetComponent<PhotonView>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
         
@@ -149,17 +156,23 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     }
     void Update()
     {
+        //AI트리의 노드 상태를 매 프레임 마다 얻어옴
         if (!PhotonNetwork.IsMasterClient)
         {
             //$추가됨 : 동기화된 머리 위치에 대한 보간 처리
             transform.position = Vector3.Lerp(transform.position, hostPosition, Time.deltaTime * lerpSpeed);
+            transform.localScale = hostLocalScale;
+            bossAim.localScale = hosAimLocalScale;
             bossAim.transform.rotation = Quaternion.Slerp(bossAim.transform.rotation, hostAimRotation, Time.deltaTime * lerpSpeed);
             return;
         }
-        //AI트리의 노드 상태를 매 프레임 마다 얻어옴
 
-        if (!isLive)
-            return;
+        hostPosition = transform.position;
+        hostLocalScale = transform.localScale;
+
+        hosAimLocalScale = bossAim.transform.localScale;
+        hostAimRotation = bossAim.transform.rotation;
+
 
         if (rolling)
         {
@@ -189,10 +202,15 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
             FilpSet();
         }
 
-        hostPosition = transform.position;
-        hostAimRotation = bossAim.transform.rotation;
 
         TreeAIState.Tick();
+        
+        if (!isLive)
+            return;
+
+        //롤링
+
+
         /*
         //목적지와 내 거리가 일정거리 이하거나 / nav가 멈춘 상태(그냥 정지) 가 아닌경우
         if (!IsNavAbled())
@@ -416,11 +434,15 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     {
         if (currentTarget.position.x < transform.position.x)
         {
-            spriteRenderer.flipX = true;
+            isFilp = true; 
+            transform.localScale = new Vector3(-1, 1, 1);
+            bossAim.transform.localScale = new Vector3(-1, -1, 1);
         }
         else if (currentTarget.position.x > transform.position.x)
         {
-            spriteRenderer.flipX = false;
+            isFilp = false;
+            transform.localScale = new Vector3(1, 1, 1);
+            bossAim.transform.localScale = new Vector3(1, 1, 1);
         }
         else
             return;
@@ -529,7 +551,13 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     public void Missile(float atk, float speed, float duration)//총알 생성 프리팹 보스에임이 조준대상이라고 생각하고 있음 뇌피셜임
     {
         MissileCountCheck();
+
         Bullet _bullet = Instantiate<Bullet>(MissilePrefab, makeMissileZone.transform.position, bossAim.transform.rotation);
+        if (isFilp)
+        {
+            _bullet.transform.localScale = new Vector3(1.5f, -1.5f, 1);
+        }
+
         _bullet.MissileFire(2);
         _bullet.IsDamage = true;
         _bullet.ATK = atk;
@@ -784,6 +812,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     #endregion
 
 
+
     //동기화 관련 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
@@ -791,7 +820,8 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         {
             // 데이터를 전송
             stream.SendNext(hostPosition);
-            stream.SendNext(spriteRenderer.flipX); // 이게 맞나?
+            stream.SendNext(hostLocalScale);
+            stream.SendNext(hosAimLocalScale);
             stream.SendNext(hostAimRotation);
 
         }
@@ -799,7 +829,8 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         {
             // 데이터를 수신
             hostPosition = (Vector3)stream.ReceiveNext();
-            spriteRenderer.flipX = (bool)stream.ReceiveNext();
+            hostLocalScale = (Vector3)stream.ReceiveNext();
+            hosAimLocalScale = (Vector3)stream.ReceiveNext();
             hostAimRotation = (Quaternion)stream.ReceiveNext();
         }
 

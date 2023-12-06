@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: "\uC18D\uC774\uAC70\uBD81"
   type: 1
-  atk: 5
+  atk: 0
   hp: 500
   bulletSpeed: 5
   atkDelay: 5

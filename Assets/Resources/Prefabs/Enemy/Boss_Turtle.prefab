@@ -91,6 +91,7 @@ GameObject:
   - component: {fileID: 1820005031407185644}
   - component: {fileID: 2147693626907134483}
   - component: {fileID: 8384629612375458149}
+  - component: {fileID: -7778207565973833633}
   m_Layer: 7
   m_Name: Boss_Turtle
   m_TagString: Enemy
@@ -207,6 +208,7 @@ MonoBehaviour:
   isTrackingFurthestTarget: 0
   isEndThornTornado: 0
   isEndMissile: 0
+  isFilp: 0
   lastAttackPlayer: 0
   image_Gauge: {fileID: 7649235073199446399}
   txt_Gauge: {fileID: 4592752103999156577}
@@ -319,6 +321,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-7778207565973833633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3186486286308894452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &4497833564225799882
 GameObject:
   m_ObjectHideFlags: 0
@@ -730,7 +748,7 @@ GameObject:
   - component: {fileID: 1923543729851462359}
   - component: {fileID: 4283935516989800571}
   m_Layer: 7
-  m_Name: weaponPivot
+  m_Name: WeaponPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

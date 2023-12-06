@@ -121,7 +121,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
         if(enemySO.type == EnemyType.Melee)
         {
-            enemyBulletPrefab = Resources.Load<Bullet>(Enemy_PrefabPathes.BOSS_TURTLE_MISSILE_PREFAB);
+            enemyBulletPrefab = Resources.Load<Bullet>(Enemy_PrefabPathes.BOSS_TURTLE_MELEE_ENEMY_BULLET);
         }
 
         if (enemySO.type == EnemyType.Ranged)
