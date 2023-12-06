@@ -31,7 +31,10 @@ public class GameClearPanel : UIBase
     public void OnGameCleared()
     {
         Open();
-
+        if (PhotonNetwork.IsMasterClient)
+        {
+            GameManager.Instance._mansterSpawner.GetComponent<MonsterSpawner>().StageMonsterClear();
+        }
         ResultText.text = "Game Clear";
         isCleared = true;
         string endPartyInfoPath = "Prefabs/MainGameScene/EndPlayerInfo";
@@ -61,7 +64,10 @@ public class GameClearPanel : UIBase
     public void OnGameOver()
     {
         Open();
-
+        if (PhotonNetwork.IsMasterClient)
+        {
+            GameManager.Instance._mansterSpawner.GetComponent<MonsterSpawner>().StageMonsterClear();
+        }
         ResultText.text = "Game Over";
         isCleared = false;
         string endPartyInfoPath = "Prefabs/MainGameScene/EndPlayerInfo";
@@ -91,6 +97,9 @@ public class GameClearPanel : UIBase
     {
         PhotonNetwork.CurrentRoom.IsOpen = true;
         PhotonNetwork.CurrentRoom.IsVisible = true;
+
+        Destroy(AudioManager.Instance.gameObject);
+        PhotonNetwork.AutomaticallySyncScene = false;
 
         PhotonNetwork.LoadLevel("LobbyScene");
     }

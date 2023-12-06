@@ -271,7 +271,7 @@ public class RoomPanel : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.CurrentRoom.IsVisible = false;
-
+        Destroy(AudioManager.Instance.gameObject);
         PhotonNetwork.LoadLevel("MainGameScene");
     }
 

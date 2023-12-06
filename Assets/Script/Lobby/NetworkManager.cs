@@ -35,7 +35,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         {
             LobbyManager.Instance.SetPanel(PanelType.LoginPanel);
         }
-
+        if (PhotonNetwork.NetworkClientState == ClientState.Joined)
+        {
+            PhotonNetwork.LeaveRoom();
+            LobbyManager.Instance.SetPanel(PanelType.MainLobbyPanel);
+        }
         // DESC : Instantiate Dictionaries
         cachedRoomList = new Dictionary<string, RoomInfo>();
         cachedTestRoomList = new Dictionary<string, RoomInfo>();

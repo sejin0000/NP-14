@@ -32,7 +32,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         {
             Instance = this;
 
-            DontDestroyOnLoad(this.gameObject);
+            //DontDestroyOnLoad(this.gameObject);
         }
         else
         {

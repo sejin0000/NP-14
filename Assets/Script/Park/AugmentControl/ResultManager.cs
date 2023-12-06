@@ -62,7 +62,7 @@ public class ResultManager : MonoBehaviour//vsÄÚµå
         {
             Instance = this;
 
-            DontDestroyOnLoad(this.gameObject);
+            //DontDestroyOnLoad(this.gameObject);
         }
         else
         {
