@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log("GameManager - Awake()");
         if (Instance == null)
         {
             Instance = this;
@@ -87,17 +88,15 @@ public class GameManager : MonoBehaviour
             OnStageStartEvent += MS.MonsterSpawn;           
         }
         OnStageStartEvent += MG.roomNodeInfo.OpenDoor;
-
-
-        PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
-        MakeSetting.MakeManager();
-        TeamGold = 0;
-    }
-    
+    }   
 
 
     private void Start()
     {
+        PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
+        MakeSetting.MakeManager();
+        TeamGold = 0;
+
         if (stageListInfo.StagerList[curStage].stageType == StageType.normalStage)
         {
             CallStageStartEvent();
