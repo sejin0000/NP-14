@@ -13,6 +13,7 @@ public class UIPlayerHUD : UIBase
 
     private UIPlayerHP hpGauge;
     private UIPlayerDodge dodgeGauge;
+    private UIPlayerSkill skillGauge;
     private UIBulletIndicator bulletIndicator;
     private GameObject player;
 
@@ -26,6 +27,7 @@ public class UIPlayerHUD : UIBase
 
         hpGauge = GetComponentInChildren<UIPlayerHP>();
         dodgeGauge = GetComponentInChildren<UIPlayerDodge>();
+        skillGauge = GetComponentInChildren<UIPlayerSkill>();
         bulletIndicator = GetComponentInChildren<UIBulletIndicator>();
 
         Initialize();
@@ -36,6 +38,7 @@ public class UIPlayerHUD : UIBase
         Debug.Log("Initialize from [PlayerHUD]'s UIPlayerHUD Comp");
         hpGauge.Initialize();
         dodgeGauge.Initialize();
+        skillGauge.Initialize();
         bulletIndicator.Initialize();
 
         Sprite playerImage;
@@ -48,7 +51,8 @@ public class UIPlayerHUD : UIBase
 
     public void Update()
     {
-        dodgeGauge.UpdateValue();
+        dodgeGauge?.UpdateValue();
+        skillGauge?.UpdateValue();
     }
 
     public override void Foo()
