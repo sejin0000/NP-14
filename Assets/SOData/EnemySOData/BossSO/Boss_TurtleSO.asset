@@ -22,9 +22,9 @@ MonoBehaviour:
   patrolDelay: 0
   chaseTime: 0
   groggyTiem: 0
-  bulletLifeTime: 2
+  bulletLifeTime: 10
   breathAttackDelay: 0.2
-  enemyMoveSpeed: 0
+  enemyMoveSpeed: 10
   enemyChaseSpeed: 0
   viewAngle: 55
   viewDistance: 5
