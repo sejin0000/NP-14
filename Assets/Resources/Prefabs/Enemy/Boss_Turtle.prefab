@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6218630196864886911}
   - component: {fileID: 7312766467440517530}
   - component: {fileID: 7649235073199446399}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,9 +91,9 @@ GameObject:
   - component: {fileID: 1820005031407185644}
   - component: {fileID: 2147693626907134483}
   - component: {fileID: 8384629612375458149}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Boss_Turtle
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -113,7 +113,7 @@ Transform:
   - {fileID: 1923543729851462359}
   - {fileID: 2070279259568689008}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2039713456662949477
 SpriteRenderer:
@@ -191,7 +191,7 @@ MonoBehaviour:
   viewAngle: 0
   viewDistance: 0
   bossSO: {fileID: 11400000, guid: d3ecd0e5ad6fcd94a8cbd0f11ec214f3, type: 2}
-  spriteRenderers: {fileID: 2039713456662949477}
+  spriteRenderer: {fileID: 0}
   anim: {fileID: 0}
   PlayersTransform: []
   bossAim: {fileID: 1923543729851462359}
@@ -329,7 +329,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7690991684002156002}
   - component: {fileID: 174898695000169830}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MakeMissilePositon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -414,7 +414,7 @@ GameObject:
   - component: {fileID: 5768193541063948513}
   - component: {fileID: 5415696899153245560}
   - component: {fileID: 2540655000151736967}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: hp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -493,7 +493,7 @@ GameObject:
   - component: {fileID: 7637318305283641946}
   - component: {fileID: 2448990547449535193}
   - component: {fileID: 7214201130056097148}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: HP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -595,7 +595,7 @@ GameObject:
   - component: {fileID: 6730888130656502770}
   - component: {fileID: 5573476301447034463}
   - component: {fileID: 4592752103999156577}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: hpTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -729,7 +729,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1923543729851462359}
   - component: {fileID: 4283935516989800571}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: weaponPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}

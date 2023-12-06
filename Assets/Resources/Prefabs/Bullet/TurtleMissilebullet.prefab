@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2586141571367667236}
   - component: {fileID: 4580108798029997365}
   m_Layer: 10
-  m_Name: Turtle Missilebullet
+  m_Name: TurtleMissilebullet
   m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

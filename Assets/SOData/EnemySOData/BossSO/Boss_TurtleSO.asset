@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Boss_TurtleSO
   m_EditorClassIdentifier: 
   enemyName: "\uC18D\uC774\uAC70\uBD81"
-  type: 0
+  type: 1
   atk: 5
   hp: 500
   bulletSpeed: 5

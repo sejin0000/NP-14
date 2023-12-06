@@ -16,9 +16,9 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
 
     //박민혁이만든함수
     public Bullet MissilePrefab;
+    public Bullet thornPrefab;
     private int missileCount;
     private int rollCount;
-    public Bullet thornPrefab;
     public bool rolling = false;
     public bool isPhase1;
 
@@ -36,7 +36,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
 
     //컴포넌트 및 기타 외부요소(일부 할당은 하위 노드에서 진행)
     public Boss_Turtle_SO bossSO;                  // Enemy 정보 [모든 Action Node에 owner로 획득시킴]
-    public SpriteRenderer spriteRenderers;
+    public SpriteRenderer spriteRenderer;
     public Animator anim;
 
 
@@ -102,9 +102,12 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     void Awake()
     {
         anim = GetComponentInChildren<Animator>();
-        spriteRenderers = GetComponentInChildren<SpriteRenderer>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         PV = GetComponent<PhotonView>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
+        
+        MissilePrefab = Resources.Load<Bullet>(Enemy_PrefabPathes.BOSS_TURTLE_MISSILE_PREFAB);
+        thornPrefab = Resources.Load<Bullet>(Enemy_PrefabPathes.BOSS_TURTLE_THORN_PREFAB);
 
         //게임 오브젝트 활성화 시, 행동 트리 생성
         CreateTreeAIState();
@@ -113,7 +116,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         viewDistance = bossSO.viewDistance;
         isLive = true;
 
-        originColor = spriteRenderers.color;
+        originColor = spriteRenderer.color;
 
         //★싱글 테스트 시 if else 주석처리 할것
         //쫓는 플레이어도 호스트가 판별?
@@ -183,8 +186,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
             float angle = Mathf.Atan2(directiontarget.y, directiontarget.x) * Mathf.Rad2Deg;
             Quaternion rotation = Quaternion.Euler(new Vector3(0, 0, angle));
             bossAim.rotation = rotation;
-
-
+            FilpSet();
         }
 
         hostPosition = transform.position;
@@ -380,22 +382,22 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         switch (colorNum)
         {
             case (int)BossStateColor.ColorRed:
-                spriteRenderers.color = Color.red;
+                spriteRenderer.color = Color.red;
                 break;
             case (int)BossStateColor.ColorYellow:
-                spriteRenderers.color = Color.yellow;
+                spriteRenderer.color = Color.yellow;
                 break;
             case (int)BossStateColor.ColorBlue:
-                spriteRenderers.color = Color.blue;
+                spriteRenderer.color = Color.blue;
                 break;
             case (int)BossStateColor.ColorBlack:
-                spriteRenderers.color = Color.black;
+                spriteRenderer.color = Color.black;
                 break;
             case (int)BossStateColor.ColorOrigin:
-                spriteRenderers.color = originColor;
+                spriteRenderer.color = originColor;
                 break;
             case (int)BossStateColor.ColorMagenta:
-                spriteRenderers.color = Color.magenta;
+                spriteRenderer.color = Color.magenta;
                 break;
         }
     }
@@ -403,27 +405,27 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void SetStateColor(Color _color)
     {
-        spriteRenderers.color = _color;
+        spriteRenderer.color = _color;
     }
     #endregion
 
     #region 애니메이션 관련
 
-    /*
-    private void UpdateAnimation()
+
+    public void FilpSet()
     {
-        if (navTargetPoint.y > transform.position.y)
+        if (currentTarget.position.x < transform.position.x)
         {
-            SetAnim("isUpWalk", true);
-            SetAnim("isWalk", false);
+            spriteRenderer.flipX = true;
+        }
+        else if (currentTarget.position.x > transform.position.x)
+        {
+            spriteRenderer.flipX = false;
         }
         else
-        {
-            SetAnim("isWalk", true);
-            SetAnim("isUpWalk", false);
-        }
+            return;
     }
-    */
+
 
     private void SetAnim(string animName, bool set)
     {
@@ -667,6 +669,59 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         rollingCooltime = bossSO.rollingCooltime;
         //구르기 패턴 종료
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        //호스트에서만 충돌 처리됨
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
+        Bullet playerBullet = collision.gameObject.GetComponent<Bullet>();
+
+
+        if (collision.gameObject.tag == "Bullet" && playerBullet.targets.ContainsValue((int)BulletTarget.Enemy) && playerBullet.IsDamage)
+        {
+            float atk = collision.transform.GetComponent<Bullet>().ATK;
+            int ViewID = playerBullet.BulletOwner;
+            //Debug.Log($"뷰아이디 : {ViewID}");
+            PhotonView PlayerPv = PhotonView.Find(ViewID);
+            PlayerStatHandler player = PlayerPv.gameObject.GetComponent<PlayerStatHandler>();
+            player.EnemyHitCall();
+
+
+            if (playerBullet.fire)
+            {
+                Debuff.Instance.GiveFire(this.gameObject, atk, ViewID);
+            }
+            if (playerBullet.burn)
+            {
+                GameObject firezone = PhotonNetwork.Instantiate("AugmentList/A0122", transform.localPosition, Quaternion.identity);
+                firezone.GetComponent<A0122_1>().Init(playerBullet.BulletOwner, atk);
+            }
+            //모든 플레이어에게 현재 적의 체력 동기화
+            PV.RPC("DecreaseHP", RpcTarget.All, atk);
+
+
+
+            //여기다 불렛 모시깽이 얻기
+            lastAttackPlayer = playerBullet.BulletOwner;
+
+            // 뷰ID를 사용하여 포톤 플레이어 찾기&해당 플레이어로 타겟 변경
+            PhotonView photonView = PhotonView.Find(playerBullet.BulletOwner);
+            if (photonView != null)
+            {
+                Transform playerTransform = photonView.transform;
+
+                currentTarget = playerTransform;
+            }
+
+            if (!playerBullet.Penetrate)
+            {
+                Destroy(collision.gameObject);
+            }
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (rolling && isPhase1 && collision.gameObject.layer == LayerMask.NameToLayer("Wall") || collision.gameObject.layer == LayerMask.NameToLayer("Player"))
@@ -736,7 +791,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         {
             // 데이터를 전송
             stream.SendNext(hostPosition);
-            //stream.SendNext(navTargetPoint);
+            stream.SendNext(spriteRenderer.flipX); // 이게 맞나?
             stream.SendNext(hostAimRotation);
 
         }
@@ -744,7 +799,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         {
             // 데이터를 수신
             hostPosition = (Vector3)stream.ReceiveNext();
-            //navTargetPoint = (Vector3)stream.ReceiveNext();
+            spriteRenderer.flipX = (bool)stream.ReceiveNext();
             hostAimRotation = (Quaternion)stream.ReceiveNext();
         }
 

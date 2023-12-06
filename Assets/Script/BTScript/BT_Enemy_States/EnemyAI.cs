@@ -118,6 +118,17 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         PV = GetComponent<PhotonView>();
+
+        if(enemySO.type == EnemyType.Melee)
+        {
+            enemyBulletPrefab = Resources.Load<Bullet>(Enemy_PrefabPathes.BOSS_TURTLE_MISSILE_PREFAB);
+        }
+
+        if (enemySO.type == EnemyType.Ranged)
+        {
+            enemyBulletPrefab = Resources.Load<Bullet>(Enemy_PrefabPathes.BOSS_TURTLE_RANGED_ENEMY_BULLET);
+        }
+
         CanWater = true;
         CanFire = true;
         CanIce = true;
