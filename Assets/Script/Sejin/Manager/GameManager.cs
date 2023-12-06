@@ -269,6 +269,7 @@ public class GameManager : MonoBehaviour
     {
         CallPlayerLifeCheckEvent();
         PartyDeathCount--;
+        Debug.Log("ÇöÀç Á×Àº¼ö PartyDeath : " + PartyDeathCount.ToString());
     }
     public void CallPlayerLifeCheckEvent()
     {
