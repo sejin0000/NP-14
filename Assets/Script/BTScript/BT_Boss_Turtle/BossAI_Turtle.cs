@@ -87,8 +87,8 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
 
     //동기화
     public PhotonView PV;
-    private Vector3 hostAimPosition;
-    private Quaternion hostRotation;
+    private Quaternion hostAimRotation;
+    private Vector3 hostPosition;
     private Vector2 hostKnckbackPosition;
     public float lerpSpeed = 10f; // 보간시 필요한 수치(조정 필요)
 
@@ -146,6 +146,20 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     }
     void Update()
     {
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            //$추가됨 : 동기화된 머리 위치에 대한 보간 처리
+            transform.position = Vector3.Lerp(transform.position, hostPosition, Time.deltaTime * lerpSpeed);
+            bossAim.transform.rotation = Quaternion.Slerp(bossAim.transform.rotation, hostAimRotation, Time.deltaTime * lerpSpeed);
+            return;
+        }
+        //AI트리의 노드 상태를 매 프레임 마다 얻어옴
+
+        TreeAIState.Tick();
+
+        if (!isLive)
+            return;
+
         if (rolling)
         {
             _rigidbody2D.velocity = direction * bossSO.enemyMoveSpeed * Time.deltaTime;
@@ -174,25 +188,11 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
 
 
         }
-        /*
-        if (!PhotonNetwork.IsMasterClient)
-        {
-            bossHead.transform.rotation = Quaternion.Slerp(bossHead.transform.rotation, hostRotation, Time.deltaTime * lerpSpeed);
 
-            AreaList[6].transform.position = hostAimPosition;
-            AreaList[6].transform.rotation = Quaternion.Slerp(bossHead.transform.rotation, hostRotation, Time.deltaTime * lerpSpeed);
-            return;
-        }
-        */
-
-        TreeAIState.Tick();
-
-        if (!isLive)
-            return;
+        hostPosition = transform.position;
+        hostAimRotation = bossAim.transform.rotation;
 
 
-        //hostAimPosition = bossAim.transform.position;
-        //hostRotation = bossHead.transform.rotation;
         /*
         //목적지와 내 거리가 일정거리 이하거나 / nav가 멈춘 상태(그냥 정지) 가 아닌경우
         if (!IsNavAbled())
@@ -587,27 +587,6 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     }
 
 
-
-    //동기화 관련 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.IsWriting)
-        {
-            // 데이터를 전송
-            stream.SendNext(hostAimPosition);
-            //stream.SendNext(navTargetPoint);
-            stream.SendNext(hostRotation);
-
-        }
-        else if (stream.IsReading)
-        {
-            // 데이터를 수신
-            hostAimPosition = (Vector3)stream.ReceiveNext();
-            //navTargetPoint = (Vector3)stream.ReceiveNext();
-            hostRotation = (Quaternion)stream.ReceiveNext();
-        }
-
-    }
     #endregion
     #region 미사일
     [PunRPC]
@@ -810,6 +789,28 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
 
     }
     #endregion
+
+
+    //동기화 관련 
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            // 데이터를 전송
+            stream.SendNext(hostPosition);
+            //stream.SendNext(navTargetPoint);
+            stream.SendNext(hostAimRotation);
+
+        }
+        else if (stream.IsReading)
+        {
+            // 데이터를 수신
+            hostPosition = (Vector3)stream.ReceiveNext();
+            //navTargetPoint = (Vector3)stream.ReceiveNext();
+            hostAimRotation = (Quaternion)stream.ReceiveNext();
+        }
+
+    }
 }
 
 
