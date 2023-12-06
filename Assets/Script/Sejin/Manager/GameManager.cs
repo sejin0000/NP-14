@@ -71,11 +71,14 @@ public class GameManager : MonoBehaviour
 
         OnInitEvent += PS.InstantiatePlayer;
 
+        CallInitEvent();
+
         MG = _mapGenerator.GetComponent<MapGenerator>();
         FF = _fadeInfadeOutPanel.GetComponent<FadeInFadeOutPanel>();
         MS = _mansterSpawner.GetComponent<MonsterSpawner>();
 
         OnStageStartEvent += MG.MapMake;
+        MG.roomNodeInfo = MG.GetComponent<RoomNodeInfo>();
         OnStageStartEvent += MG.roomNodeInfo.CloseDoor;
         OnBossStageSettingEvent += MG.BossMapMake;
         if (PhotonNetwork.IsMasterClient)
@@ -85,7 +88,7 @@ public class GameManager : MonoBehaviour
         }
         OnStageStartEvent += MG.roomNodeInfo.OpenDoor;
 
-        CallInitEvent();
+
         PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
         MakeSetting.MakeManager();
         TeamGold = 0;
