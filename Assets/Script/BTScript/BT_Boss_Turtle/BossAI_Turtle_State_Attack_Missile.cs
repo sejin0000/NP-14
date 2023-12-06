@@ -40,7 +40,7 @@ public class BossAI_Turtle_State_Attack_Missile : BTAction
         }
 
 
-        Debug.Log("미사일실행중");
+        //Debug.Log("미사일실행중");
         return Status.BT_Running;
     }
     public override void Terminate()

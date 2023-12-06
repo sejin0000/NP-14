@@ -22,7 +22,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     public bool rolling = false;
     public bool isPhase1;
 
-    [HideInInspector] public Vector2 direction;
+    [HideInInspector] public Vector3 direction;
 
     public Rigidbody2D _rigidbody2D;
     public float time;
@@ -53,6 +53,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
 
 
     public Transform bossAim;
+    public GameObject makeMissileZone;
     public Color originColor;
 
 
@@ -117,9 +118,12 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         //★싱글 테스트 시 if else 주석처리 할것
         //쫓는 플레이어도 호스트가 판별?
 
-        rollingCooltime = bossSO.rollingCooltime;
-        thornTornadoCoolTime = bossSO.thornTornadoCoolTime;
-        missileCoolTime = bossSO.missileCoolTime;
+        //rollingCooltime = bossSO.rollingCooltime;
+        //thornTornadoCoolTime = bossSO.thornTornadoCoolTime;
+        //missileCoolTime = bossSO.missileCoolTime;
+        rollingCooltime = 1;
+        thornTornadoCoolTime = 0;
+        missileCoolTime = 0;
 
         knockbackDistance = 0f;
 
@@ -142,6 +146,34 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     }
     void Update()
     {
+        if (rolling)
+        {
+            _rigidbody2D.velocity = direction * bossSO.enemyMoveSpeed * Time.deltaTime;
+            if (!isPhase1)
+            {
+                time += Time.deltaTime;
+                if (time > thornTime) //0.2초마다
+                {
+                    thornAngle += 2.5f;
+                    photonView.RPC("Thorn", RpcTarget.All, thornAngle, 1);
+                    if (thornAngle >= 360)
+                    {
+                        thornAngle = 0;
+                    }
+
+                }
+            }
+        }
+        else 
+        {
+            _rigidbody2D.velocity = Vector3.zero;
+            Vector3 directiontarget = (currentTarget.transform.position - transform.position).normalized;
+            float angle = Mathf.Atan2(directiontarget.y, directiontarget.x) * Mathf.Rad2Deg;
+            Quaternion rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+            bossAim.rotation = rotation;
+
+
+        }
         /*
         if (!PhotonNetwork.IsMasterClient)
         {
@@ -582,7 +614,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     public void Missile(float atk, float speed, float duration)//총알 생성 프리팹 보스에임이 조준대상이라고 생각하고 있음 뇌피셜임
     {
         MissileCountCheck();
-        Bullet _bullet = Instantiate<Bullet>(MissilePrefab, bossAim.transform.position, bossAim.transform.rotation);
+        Bullet _bullet = Instantiate<Bullet>(MissilePrefab, makeMissileZone.transform.position, bossAim.transform.rotation);
         _bullet.MissileFire(2);
         _bullet.IsDamage = true;
         _bullet.ATK = atk;
@@ -603,17 +635,21 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         Debug.Log($"미사일 발사");
         SetNearestTarget();
         float atk = bossSO.atk * 2f;
-        float speed = bossSO.bulletSpeed;
+        float speed = bossSO.bulletSpeed * 0.5f ;
         float bulletLifeTIme = bossSO.bulletLifeTime;
 
         photonView.RPC("Missile", RpcTarget.All, atk, speed, bulletLifeTIme);
         yield return new WaitForSeconds(0.5f);
 
-        
+        float atk2 = atk * 0.5f;
+        float speed2 = speed * 2f;
         FurthestTarget();
-        photonView.RPC("Missile", RpcTarget.All, atk, speed, bulletLifeTIme); // atk * 0.5 , speed * 2
+        photonView.RPC("Missile", RpcTarget.All, atk2, speed2, bulletLifeTIme); // atk * 0.5 , speed * 2
         yield return new WaitForSeconds(0.5f);
 
+        float atk3 = atk * 2f;
+        float speed3 = speed * 0.5f;
+        float bulletLifeTime3 = bulletLifeTIme*2;
         SetNearestTarget();
         photonView.RPC("Missile", RpcTarget.All, atk, speed, bulletLifeTIme); //atk * 2, speed * 0.5, bulletLifeTIme * 2
 
@@ -651,7 +687,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     }
     public void ThornTornado1()
     {
-        Debug.Log($"가시쏘기 입장");
+        //Debug.Log($"가시쏘기 입장");
         float n = 0;
         Quaternion rot = Quaternion.Euler(new Vector3(0, 0, n));
         int atktype = 0;
@@ -664,13 +700,16 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
             photonView.RPC("Thorn", RpcTarget.All, n, atktype);
             n += 45;
         }
+        if (!rolling) 
+        {
         Invoke("ThornTornado2", 1f);
+        }
     }
     public void ThornTornado2()
     {
         float n = 22.5f;
-        Debug.Log($"가시쏘기 입장2");
-        Debug.Log($"롤링 상태 {rolling}");
+        //Debug.Log($"가시쏘기 입장2");
+        //Debug.Log($"롤링 상태 {rolling}");
         Quaternion rot = Quaternion.Euler(new Vector3(0, 0, n));
         int atktype = 0;
         if (rolling)
@@ -698,10 +737,11 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         //롤카운트 기준으로 멈추고 n초후(벽에 딱붙어서 멈추지 않기 위함) 멈출것임 트리거에서 if rolling && collier.layer==wall
         rollCount = 0;
         rolling = true;
-        Debug.Log($"구르기 변화 체크 {rolling}");
+        //Debug.Log($"구르기 변화 체크 {rolling}");
         Vector2 me = transform.position;
         Vector2 u = currentTarget.position;
-        direction = (me - u).normalized;
+        direction = (u - me).normalized;
+
     }
     public void RollEnd() 
     {
@@ -712,7 +752,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (rolling && collision.gameObject.layer == LayerMask.NameToLayer("Wall") && isPhase1)
+        if (rolling && isPhase1 && collision.gameObject.layer == LayerMask.NameToLayer("Wall") || collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             if (rollCount % 2 == 0)
             {
@@ -730,10 +770,12 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
             Vector3 normal = collision.contacts[0].normal; // 법선벡터
             direction = Vector3.Reflect(direction, normal).normalized; // 반사
         }
-        else if (!isPhase1 && collision.gameObject.layer == LayerMask.NameToLayer("Wall")) 
+        else if (!isPhase1 && collision.gameObject.layer == LayerMask.NameToLayer("Wall") || collision.gameObject.layer ==LayerMask.NameToLayer("Player")) 
         {
             Vector3 normal = collision.contacts[0].normal; // 법선벡터
+            Debug.Log($"현재 방향벡터 {direction}");
             direction = Vector3.Reflect(direction, normal).normalized; // 반사
+            Debug.Log($"튕긴 방햑벡터 {direction}");
         }
 
         if (rolling && collision.gameObject.layer == LayerMask.NameToLayer("Player")) 

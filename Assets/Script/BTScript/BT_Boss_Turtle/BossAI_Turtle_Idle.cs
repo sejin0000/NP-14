@@ -27,13 +27,12 @@ public class BossAI_Turtle_Idle : BTAction
     {
         if (bossAI_Turtle.thornTornadoCoolTime <= 0 || bossAI_Turtle.missileCoolTime <= 0) //(bossAI_Turtle.rollingCooltime <= 0 || bossAI_Turtle.thornTornadoCoolTime <= 0 || bossAI_Turtle.missileCoolTime <= 0)
         {
-            Debug.Log("쿨타임 체크가 완료되었습니다.");
             return Status.BT_Failure;
         }
         //쿨타임 체크 = 모든 쿨타임 중 하나라도 쿨타임이 다 돌아있는 패턴이 있다면 성공 반환 시키고 루트리턴
         
         //업데이트 : 모든 쿨타임 시간에 따라 업데이트
-        //bossAI_Turtle.rollingCooltime -= Time.deltaTime;
+        bossAI_Turtle.rollingCooltime -= Time.deltaTime;
         bossAI_Turtle.thornTornadoCoolTime -= Time.deltaTime;
         bossAI_Turtle.missileCoolTime -= Time.deltaTime;
 

@@ -28,7 +28,7 @@ public class BossAI_Turtle_Phase_1_Condition : BTCondition
         }
         else
         {
-            Debug.Log("1페이즈 진입 완료");
+            //Debug.Log("1페이즈 진입 완료");
             return Status.BT_Success;
         }
     }

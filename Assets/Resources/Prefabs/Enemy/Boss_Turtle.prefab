@@ -112,7 +112,7 @@ Transform:
   - {fileID: 1923543729851462359}
   - {fileID: 2070279259568689008}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2039713456662949477
 SpriteRenderer:
@@ -182,7 +182,7 @@ MonoBehaviour:
   thornPrefab: {fileID: 904275267072613488, guid: c957a26897ccd5b4e9d9dfd5aab9f3dd, type: 3}
   rolling: 0
   isPhase1: 0
-  direction: {x: 0, y: 0}
+  direction: {x: 0, y: 0, z: 0}
   _rigidbody2D: {fileID: 0}
   time: 0
   thornTime: 0.2
@@ -194,6 +194,7 @@ MonoBehaviour:
   anim: {fileID: 0}
   PlayersTransform: []
   bossAim: {fileID: 1923543729851462359}
+  makeMissileZone: {fileID: 4497833564225799882}
   originColor: {r: 0, g: 0, b: 0, a: 0}
   SpeedCoefficient: 1
   rollingCooltime: 0
@@ -307,7 +308,7 @@ GameObject:
   - component: {fileID: 7690991684002156002}
   - component: {fileID: 174898695000169830}
   m_Layer: 0
-  m_Name: Square
+  m_Name: MakeMissilePositon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

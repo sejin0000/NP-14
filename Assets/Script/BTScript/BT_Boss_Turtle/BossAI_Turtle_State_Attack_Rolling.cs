@@ -22,7 +22,7 @@ public class BossAI_Turtle_State_Attack_Rolling : BTAction
     public override void Initialize()
     {
         //회전 전 세팅
-        Debug.Log($"구르기 쿨체크 {bossAI_Turtle.rollingCooltime}");
+        //Debug.Log($"구르기 쿨체크 {bossAI_Turtle.rollingCooltime}");
         if (bossAI_Turtle.rollingCooltime <= 0)
         {
             bossAI_Turtle.RollStart();
@@ -34,22 +34,22 @@ public class BossAI_Turtle_State_Attack_Rolling : BTAction
     {
         if (bossAI_Turtle.rollingCooltime > 0)
         {
-            Debug.Log("구르기 쿨타임 중");
+            //Debug.Log("구르기 쿨타임 중");
             return Status.BT_Failure;
         }
 
         //롤링 업데이트
         if (bossAI_Turtle.rolling)
         {
-            Debug.Log("구르기 성공");
-            bossAI_Turtle._rigidbody2D.velocity = bossAI_Turtle.direction * bossSO.enemyMoveSpeed * Time.deltaTime;
+            bossAI_Turtle._rigidbody2D.velocity = bossAI_Turtle.direction * bossSO.enemyMoveSpeed;
+            return Status.BT_Running;
         }
 
         if (!bossAI_Turtle.rolling)
         {
             return Status.BT_Success;
         }
-        Debug.Log("구르기 실행중");
+        //Debug.Log("구르기 실행중");
         return Status.BT_Running;
     }
     public override void Terminate()
