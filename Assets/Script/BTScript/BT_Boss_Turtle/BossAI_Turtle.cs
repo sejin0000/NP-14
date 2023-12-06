@@ -520,7 +520,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         BossAI_Turtle_Idle idle = new BossAI_Turtle_Idle(gameObject);
         phase_1_ActionSelector.AddChild(idle);
         BossAI_Turtle_State_Attack_Rolling rollingAttack = new BossAI_Turtle_State_Attack_Rolling(gameObject);
-        Phase_1.AddChild(rollingAttack);
+        phase_1_ActionSelector.AddChild(rollingAttack);
         BossAI_Turtle_State_Attack_ThornTornado tornado = new BossAI_Turtle_State_Attack_ThornTornado(gameObject);
         phase_1_ActionSelector.AddChild(tornado);
         BossAI_Turtle_State_Attack_Missile missile = new BossAI_Turtle_State_Attack_Missile(gameObject);
