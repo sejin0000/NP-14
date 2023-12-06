@@ -17,11 +17,6 @@ public class BossAI_Turtle_Phase_1_Condition : BTCondition
         bossSO = bossAI_Turtle.bossSO;
     }
 
-    public override void Initialize()
-    {
-        Debug.Log($"생존 진입 체크");
-    }
-
     public override Status Update()
     {
         percentHP = (bossAI_Turtle.currentHP / bossSO.hp * 100);
@@ -31,6 +26,10 @@ public class BossAI_Turtle_Phase_1_Condition : BTCondition
         {
             return Status.BT_Failure;
         }
-        return Status.BT_Success;
+        else
+        {
+            Debug.Log("1페이즈 진입 완료");
+            return Status.BT_Success;
+        }
     }
 }

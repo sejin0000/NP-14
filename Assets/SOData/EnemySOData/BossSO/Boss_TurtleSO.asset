@@ -32,8 +32,8 @@ MonoBehaviour:
   dropGold: 0
   unitScale: 0
   bossPatternTime: 0
-  rollingCooltime: 7
-  thornTornadoCoolTime: 5
-  missileCoolTime: 2
+  rollingCooltime: 8
+  thornTornadoCoolTime: 6
+  missileCoolTime: 4
   rollingDamge: 2
   endRollCount: 4

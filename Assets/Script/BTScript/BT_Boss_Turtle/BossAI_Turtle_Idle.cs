@@ -21,15 +21,13 @@ public class BossAI_Turtle_Idle : BTAction
 
     public override void Initialize()
     {
-        Debug.Log($"아이들 진입");
     }
 
     public override Status Update()
     {
-        if(bossAI_Turtle.rollingCooltime <= 0 || bossAI_Turtle.thornTornadoCoolTime <= 0 || bossAI_Turtle.missileCoolTime <= 0)
+        if (bossAI_Turtle.rollingCooltime <= 0 || bossAI_Turtle.thornTornadoCoolTime <= 0 || bossAI_Turtle.missileCoolTime <= 0)
         {
-            Debug.Log($"아이들퇴장");
-            return Status.BT_Success;
+            return Status.BT_Failure;
         }
         //쿨타임 체크 = 모든 쿨타임 중 하나라도 쿨타임이 다 돌아있는 패턴이 있다면 성공 반환 시키고 루트리턴
         
@@ -37,9 +35,6 @@ public class BossAI_Turtle_Idle : BTAction
         bossAI_Turtle.rollingCooltime -= Time.deltaTime;
         bossAI_Turtle.thornTornadoCoolTime -= Time.deltaTime;
         bossAI_Turtle.missileCoolTime -= Time.deltaTime;
-        Debug.Log($"구르기 {bossAI_Turtle.rollingCooltime}");
-        Debug.Log($"가시 {bossAI_Turtle.thornTornadoCoolTime}");
-        Debug.Log($"대포 {bossAI_Turtle.missileCoolTime}");
 
 
 
@@ -49,7 +44,6 @@ public class BossAI_Turtle_Idle : BTAction
 
         //모든 쿨타임이 0 초과라면 계속 런닝 
 
-        Debug.Log($"아이들 하는중");
         return Status.BT_Running;
     }
     public override void Terminate()

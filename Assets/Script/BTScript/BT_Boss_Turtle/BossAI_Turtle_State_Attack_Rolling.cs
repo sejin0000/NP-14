@@ -27,6 +27,7 @@ public class BossAI_Turtle_State_Attack_Rolling : BTAction
         {
             bossAI_Turtle.RollStart();
         }
+
     }
 
     public override Status Update()
@@ -34,7 +35,7 @@ public class BossAI_Turtle_State_Attack_Rolling : BTAction
         if (bossAI_Turtle.rollingCooltime > 0)
         {
             Debug.Log("구르기 쿨타임 중");
-            return Status.BT_Success;
+            return Status.BT_Failure;
         }
 
         //롤링 업데이트
@@ -46,7 +47,6 @@ public class BossAI_Turtle_State_Attack_Rolling : BTAction
 
         if (!bossAI_Turtle.rolling)
         {
-
             return Status.BT_Success;
         }
         Debug.Log("구르기 실행중");

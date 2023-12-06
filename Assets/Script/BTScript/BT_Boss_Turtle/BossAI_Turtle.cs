@@ -117,9 +117,9 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         //★싱글 테스트 시 if else 주석처리 할것
         //쫓는 플레이어도 호스트가 판별?
 
-        rollingCooltime = 1f;//7
-        thornTornadoCoolTime = 0f; //5
-        missileCoolTime = 0f; //2
+        rollingCooltime = bossSO.rollingCooltime;
+        thornTornadoCoolTime = bossSO.thornTornadoCoolTime;
+        missileCoolTime = bossSO.missileCoolTime;
 
         knockbackDistance = 0f;
 
@@ -530,38 +530,30 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         BossAI_Turtle_Phase_1_Condition phaseOneCondition = new BossAI_Turtle_Phase_1_Condition(gameObject);
         Phase_1.AddChild(phaseOneCondition);
 
+
+
+
+        BTSelector phase_1_ActionSelector = new BTSelector();
+        Phase_1.AddChild(phase_1_ActionSelector);
+
+
+        BossAI_Turtle_Idle idle = new BossAI_Turtle_Idle(gameObject);
+        phase_1_ActionSelector.AddChild(idle);
         BossAI_Turtle_State_Attack_Rolling rollingAttack = new BossAI_Turtle_State_Attack_Rolling(gameObject);
         Phase_1.AddChild(rollingAttack);
         BossAI_Turtle_State_Attack_ThornTornado tornado = new BossAI_Turtle_State_Attack_ThornTornado(gameObject);
-        Phase_1.AddChild(tornado);
+        phase_1_ActionSelector.AddChild(tornado);
         BossAI_Turtle_State_Attack_Missile missile = new BossAI_Turtle_State_Attack_Missile(gameObject);
-        Phase_1.AddChild(missile);
-        BossAI_Turtle_Idle idle = new BossAI_Turtle_Idle(gameObject);
-        Phase_1.AddChild(idle);
-
+        phase_1_ActionSelector.AddChild(missile);
 
         /*
         BTSelector Phase_2 = new BTSelector();
 
-        BossAI_Phase_2_Condition phase_2_Condition = new BossAI_Phase_2_Condition(gameObject);
+        BossAI_Turtle_Phase_2_Condition phase_2_Condition = new BossAI_Turtle_Phase_2_Condition(gameObject);
         Phase_2.AddChild(phase_2_Condition);
 
-
-        //액션 셀렉터
-
-        BTSelector phase_2_ActionSelector = new BTSelector();
-        Phase_2.AddChild(ActionSelector);
-
-
-        BossAI_State_Phase_2_SpecialAttack phase_2_specialAttack = new BossAI_State_Phase_2_SpecialAttack(gameObject);
-        phase_2_ActionSelector.AddChild(phase_2_specialAttack);
-
-        //첫 노말패턴 시퀀스의 컨디션에서 노말액션 시퀀스에 사용할 랜덤 난수 쏴주기
-
-        //2페이즈
-        BTSelector phase_2_nomalAttack_Selector = new BTSelector();
-        phase_2_ActionSelector.AddChild(phase_2_nomalAttack_Selector);
-
+        BossAI_Turtle_State_Attack_ThornTornado Phase_2_tornado = new BossAI_Turtle_State_Attack_ThornTornado(gameObject);
+        Phase_2.AddChild(Phase_2_tornado);
         */
 
 
@@ -728,7 +720,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         rolling = true;
         Debug.Log($"구르기 변화 체크 {rolling}");
         Vector2 me = transform.position;
-        Vector2 u = target.position;
+        Vector2 u = currentTarget.position;
         direction = (me - u).normalized;
     }
     public void RollEnd() 

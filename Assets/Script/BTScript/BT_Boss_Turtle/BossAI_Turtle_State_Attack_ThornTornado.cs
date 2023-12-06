@@ -8,6 +8,8 @@ public class BossAI_Turtle_State_Attack_ThornTornado : BTAction
     private GameObject owner;
     private BossAI_Turtle bossAI_Turtle;
     private Boss_Turtle_SO bossSO;
+    private bool isRunning;
+
 
     public BossAI_Turtle_State_Attack_ThornTornado(GameObject _owner)
     {
@@ -19,10 +21,12 @@ public class BossAI_Turtle_State_Attack_ThornTornado : BTAction
     public override void Initialize()
     {
         bossAI_Turtle.isEndThornTornado = false;
-        Debug.Log($"가시들어옴체크");
-        if (bossAI_Turtle.thornTornadoCoolTime <= 0) 
+        isRunning = false;
+
+        if (bossAI_Turtle.thornTornadoCoolTime <= 0 && !bossAI_Turtle.isEndThornTornado && !isRunning)
         {
-        bossAI_Turtle.ThornTornado1();
+            isRunning = true;
+            bossAI_Turtle.ThornTornado1();
         }
     }
 
@@ -30,11 +34,13 @@ public class BossAI_Turtle_State_Attack_ThornTornado : BTAction
     {
         if (bossAI_Turtle.thornTornadoCoolTime > 0)
         {
-            Debug.Log("가시 발사 쿨타임 중");
-            return Status.BT_Success;
+            return Status.BT_Failure;
         }
+
         if (bossAI_Turtle.isEndThornTornado) 
         {
+            bossAI_Turtle.isEndThornTornado = false;
+            bossAI_Turtle.thornTornadoCoolTime = bossSO.thornTornadoCoolTime;
             return Status.BT_Success;
         }
 
