@@ -161,26 +161,6 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
 
         //hostAimPosition = bossAim.transform.position;
         //hostRotation = bossHead.transform.rotation;
-
-
-        if (rolling)
-        {
-            direction = direction * bossSO.enemyMoveSpeed * Time.deltaTime;
-            _rigidbody2D.velocity = direction;
-            if (!isPhase1)
-            {
-                time += Time.deltaTime;
-                if (time > thornTime) //0.2초마다
-                {
-                    thornAngle += 2.5f;
-                    photonView.RPC("Thorn", RpcTarget.All, thornAngle, 1);
-                    if (thornAngle >= 360)
-                    {
-                        thornAngle = 0;
-                    }
-                }
-            }
-        }
         /*
         //목적지와 내 거리가 일정거리 이하거나 / nav가 멈춘 상태(그냥 정지) 가 아닌경우
         if (!IsNavAbled())
