@@ -40,7 +40,7 @@ public class CollisionController : MonoBehaviourPun
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.GetComponent<Bullet>()) 
+        if (collision.gameObject.GetComponent<Bullet>()) //公利贸府
         {
             if (playerStat.isDie && collision.gameObject.GetComponent<Bullet>().canresurrection && this.gameObject.layer == 12)
             {
@@ -49,8 +49,7 @@ public class CollisionController : MonoBehaviourPun
                 WeaponSystem stat = photonView.gameObject.GetComponent<WeaponSystem>();
                 if (stat.canresurrection)
                 {
-                    playerStat.Regen(playerStat.HP.total);
-                    this.gameObject.layer = 8;
+                    playerStat.photonView.RPC("ImLive", RpcTarget.All);
                     int PvNum = _bullet.BulletOwner;
 
                     playerStat.photonView.RPC("thankyouLife", RpcTarget.All, PvNum);
