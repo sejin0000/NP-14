@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     public event Action ChangeGoldEvent;
     public bool ClearStageCheck;//박민혁 추가 스테이지 클리어시 빈방 비울때 콜여부
 
-    public StagerListInfoSO stageListInfo;
+    public StageListInfoSO stageListInfo;
     public int curStage = 0;
 
 
