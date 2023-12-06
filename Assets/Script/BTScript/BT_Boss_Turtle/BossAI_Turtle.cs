@@ -432,7 +432,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
             }
         }
     }
-
+=
 
 
 
@@ -711,6 +711,8 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     #region 구르기모드
     public void RollStart()
     {
+        anim.SetBool("Rolling", true);
+        bossAim.gameObject.SetActive(false);
         SetNearestTarget();
         Debug.Log($"구르기 진입");
         //롤카운트 기준으로 멈추고 n초후(벽에 딱붙어서 멈추지 않기 위함) 멈출것임 트리거에서 if rolling && collier.layer==wall
@@ -724,6 +726,8 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     }
     public void RollEnd() 
     {
+        anim.SetBool("Rolling", false);
+        bossAim.gameObject.SetActive(true);
         Debug.Log($"구르기 퇴장");
         rolling = false;
         rollingCooltime = bossSO.rollingCooltime;
