@@ -30,6 +30,8 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     [SerializeField] private PlayerSO playerStats;
 
+    PlayerAnimatorController anime;
+
 
     public Stats ATK;                 // 공격력
     public Stats HP;                  // 체력
@@ -148,7 +150,7 @@ public class PlayerStatHandler : MonoBehaviourPun
     [HideInInspector] public bool CanReload;                              //장전   가능한지
     [HideInInspector] public bool CanSkill;                               //스킬   가능한지
     [HideInInspector] public bool CanRoll;                                //구르기 가능한지
-    [HideInInspector] public bool Invincibility;                          //무적
+    public bool Invincibility;                          //무적
 
     public bool useSkill;
     public bool UseRoll;
@@ -166,6 +168,7 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     private void Awake()
     {
+        anime = GetComponent<PlayerAnimatorController>();
         ATK = new Stats(playerStats.atk);
         HP = new Stats(playerStats.hp);
         Speed = new Stats(playerStats.unitSpeed);
@@ -388,6 +391,7 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     public void Regen(float HP)
     {
+        Debug.Log("너냐?");
         HPadd(HP);
         OnRegenEvent?.Invoke();
         OnRegenCalculateEvent?.Invoke(RegenHP);
@@ -445,11 +449,15 @@ public class PlayerStatHandler : MonoBehaviourPun
     [PunRPC]
     public void PunRpcStartHp() 
     {
-        curHP = HP.total;
+        CurHP = HP.total;
         this.gameObject.layer = 8;
         if (ImGhost)
         { this.gameObject.layer = 13; }
-        SendSyncHP();
+        if (isDie == true) 
+        {
+            anime._animation.SetTrigger("IsRegen");
+        }
+
     }
 
     public void SendSyncHP()
