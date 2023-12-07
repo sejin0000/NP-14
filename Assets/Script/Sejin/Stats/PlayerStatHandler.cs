@@ -295,10 +295,6 @@ public class PlayerStatHandler : MonoBehaviourPun
         GameManager.Instance.OnStageStartEvent += stageBuffReset;
         GameManager.Instance.OnBossStageStartEvent += stageBuffReset;
         viewID = photonView.ViewID;
-        OnChangeCurHPEvent += SendSyncHP;
-        this.gameObject.layer = 8;
-        if (ImGhost) 
-        { this.gameObject.layer = 13; }
     }
     public override string ToString()
     {
@@ -439,7 +435,15 @@ public class PlayerStatHandler : MonoBehaviourPun
     }
     public void startHp()
     {
+        photonView.RPC("PunRpcStartHp",RpcTarget.All);
+    }
+    [PunRPC]
+    public void PunRpcStartHp() 
+    {
         curHP = HP.total;
+        this.gameObject.layer = 8;
+        if (ImGhost)
+        { this.gameObject.layer = 13; }
     }
 
     public void SendSyncHP()
