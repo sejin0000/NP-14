@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2399457338903538801, guid: c6b4b6d0de7b38640bfa21c6b4ca5618, type: 3}
       propertyPath: m_Pivot.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2399457338903538801, guid: c6b4b6d0de7b38640bfa21c6b4ca5618, type: 3}
       propertyPath: m_RootOrder
@@ -92,13 +92,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3848219485940398782, guid: c6b4b6d0de7b38640bfa21c6b4ca5618, type: 3}
+      propertyPath: blockType
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5567211061459452658, guid: c6b4b6d0de7b38640bfa21c6b4ca5618, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 1682756104, guid: 6c739beb66feeab44965be65b863c6be, type: 3}
+      objectReference: {fileID: 1531123485, guid: 6c739beb66feeab44965be65b863c6be, type: 3}
     - target: {fileID: 7718011510914312856, guid: c6b4b6d0de7b38640bfa21c6b4ca5618, type: 3}
       propertyPath: m_Name
-      value: block_ent
+      value: block_head
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

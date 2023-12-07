@@ -15,20 +15,18 @@ public class UIStageTransition : UIBase
 {
     [Header("GameObject")]
     [SerializeField] private GameObject blockParents;
-    [SerializeField] private GameObject blockPrefab;
+    [SerializeField] private GameObject[] blockPrefab;
     [SerializeField] private GameObject player;
 
     [Header("ETC")]
     [SerializeField] private Animator animator;
     [SerializeField] private float speed=0.1f;
     [SerializeField] private int maxFloor;
-    [SerializeField] private Sprite[] sprite;
 
     private int currentFloor = -1;
     private GameObject[] block;
 
     private float spriteHeight;
-    [SerializeField] private float spriteSpace;
 
     public override void Initialize()
     {
@@ -39,6 +37,7 @@ public class UIStageTransition : UIBase
 
         //MainGameManager.Instance.OnUIPlayingStateChanged += StartTransition;
         GameManager.Instance.OnStageStartEvent += StartTransition;
+        spriteHeight = blockPrefab[0].GetComponent<RectTransform>().rect.height;
     }
 
     // Tower 층수만큼 일정한 간격으로 블럭 생성
@@ -47,24 +46,21 @@ public class UIStageTransition : UIBase
         block = new GameObject[maxFloor];
         for(int i=0; i<maxFloor;++i)
         {
-            GameObject temp = Instantiate(blockPrefab, blockParents.transform);
-            spriteHeight = temp.GetComponentInChildren<Image>().sprite.rect.height;
+            GameObject temp;
+            if (i == maxFloor - 1) //Block_Head
+                temp = Instantiate(blockPrefab[1], blockParents.transform);
+            else //Block_Body
+                temp = Instantiate(blockPrefab[0], blockParents.transform);
 
             block[i] = temp;
-            block[i].transform.SetParent(blockParents.transform);
-
             
-
-
             if (i > 0)
             {
-                Vector3 pos = block[i - 1].transform.position;
-                pos.y += (spriteHeight + spriteSpace);
-                block[i].transform.position = pos;
+                Vector3 pos = block[i - 1].GetComponent<RectTransform>().anchoredPosition;
+                pos.y += spriteHeight;
+                block[i].GetComponent<RectTransform>().anchoredPosition = pos;
             }
         }
-
-        block[block.Length - 1].GetComponent<Image>().sprite = sprite[1];
     }
 
     // 생성한 블럭 위치 기준으로 플레이어 오브젝트 배치 및 현재 층수 1층 설정
@@ -88,8 +84,8 @@ public class UIStageTransition : UIBase
     IEnumerator ClimeTower()
     {
         yield return new WaitForSecondsRealtime(1f);
-
-        while (player.transform.position.y <= (block[currentFloor + 1].transform.position.y+spriteHeight))
+        //player.GetComponent<RectTransform>().rect.height/4);
+        while (player.transform.position.y <= (block[currentFloor + 1].transform.position.y))
         {
             //player.GetComponent<SpriteResolver>().SetCategoryAndLabel("run", "1");
             animator.SetBool("isRun", true);
