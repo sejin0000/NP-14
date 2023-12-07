@@ -68,10 +68,10 @@ public class Bullet : MonoBehaviour
         //to del ¾Æ·¡
         layerMask = 1 << LayerMask.NameToLayer("Wall");
     }
-    public void MissileFire() 
+    public void MissileFire(int i) 
     {
         missile = GetComponentInChildren<HumanAttackintelligentmissile>();
-        missile.ready = true;
+        missile.init(i);
     }
 
     // Update is called once per frame

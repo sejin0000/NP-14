@@ -205,7 +205,7 @@ public class WeaponSystem : MonoBehaviour
         _object.GetComponent<Bullet>().Init();
         if (humanAttackintelligentmissile)
         {
-            _bullet.MissileFire();
+            _bullet.MissileFire(1);
         }
     }
 }

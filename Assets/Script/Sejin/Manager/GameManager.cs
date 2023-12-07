@@ -2,7 +2,6 @@ using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -58,6 +57,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        Debug.Log("GameManager - Awake()");
         if (Instance == null)
         {
             Instance = this;
@@ -88,18 +88,15 @@ public class GameManager : MonoBehaviour
             OnStageStartEvent += MS.MonsterSpawn;           
         }
         OnStageStartEvent += MG.roomNodeInfo.OpenDoor;
-
-        PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
-        AudioManager.Instance.AddComponent<AudioManagerTest>().Initialize();
-
-        MakeSetting.MakeManager();
-        TeamGold = 0;
-    }
-    
+    }   
 
 
     private void Start()
     {
+        PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
+        MakeSetting.MakeManager();
+        TeamGold = 0;
+
         if (stageListInfo.StagerList[curStage].stageType == StageType.normalStage)
         {
             CallStageStartEvent();
@@ -151,7 +148,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("룸 종료");
         if (!ClearStageCheck)
         {
-            Debug.Log("스테이지 아직 미클리어");
             PV.RPC("PunCallRoomEndEvent", RpcTarget.AllBuffered);
         }
     }
