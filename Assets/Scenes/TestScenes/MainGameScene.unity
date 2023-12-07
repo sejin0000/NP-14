@@ -748,6 +748,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b2934c7a0062d24d9b2cd0510a239d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &735884096 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8599324111135393774, guid: 98a910679d6a70f46b5abec579bc114b, type: 3}
+  m_PrefabInstance: {fileID: 1098576604}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &841788894
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1082,7 +1087,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 550584306055296429, guid: 98a910679d6a70f46b5abec579bc114b, type: 3}
   m_PrefabInstance: {fileID: 1098576604}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 735884096}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a04ae86fe57e918459f343064f058588, type: 3}
@@ -2529,10 +2534,13 @@ MonoBehaviour:
   MG: {fileID: 0}
   _fadeInfadeOutPanel: {fileID: 556909696}
   _mansterSpawner: {fileID: 1342027616}
+  _UIManager: {fileID: 77425072}
+  _StageTransition: {fileID: 735884096}
   PS: {fileID: 0}
   clientPlayer: {fileID: 0}
   PartyDeathCount: 0
   TeamGold: 0
+  isTransitionPlayed: 0
 --- !u!4 &1855578660
 Transform:
   m_ObjectHideFlags: 0

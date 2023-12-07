@@ -439,7 +439,7 @@ public class PlayerStatHandler : MonoBehaviourPun
     }
     public void startHp()
     {
-        curHP = HP.total;
+        CurHP = HP.total;
     }
 
     public void SendSyncHP()

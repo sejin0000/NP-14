@@ -5936,7 +5936,6 @@ MonoBehaviour:
   playerIdInput: {fileID: 1001002916}
   playerPswdInput: {fileID: 0}
   loginButton: {fileID: 149664851}
-  NickNamePopupPrefab: {fileID: 796943371697769289, guid: 5f13c8fe2e02de248a9e6bd5763b4446, type: 3}
   Trio: {fileID: 1788402095}
   Tower: {fileID: 990908030}
   StartLogo: {fileID: 1969143029}
@@ -14752,7 +14751,6 @@ MonoBehaviour:
   ChatInputField: {fileID: 1814743562}
   SubmitButton: {fileID: 771824549}
   ChatBox: {fileID: 1798967822}
-  ChatLog: {fileID: 1580934528868145059, guid: 429e494743d959644ae76b8ceb04fb82, type: 3}
   ChatScrollContent: {fileID: 376548891}
   ChatScrollRect: {fileID: 429708782}
   PartyBox: {fileID: 1857915279}
@@ -19684,7 +19682,6 @@ MonoBehaviour:
   ResetButton: {fileID: 1640317353}
   RoomSearchButton: {fileID: 1797244975}
   RoomSearchInput: {fileID: 1673231966}
-  RoomEntryPrefab: {fileID: 6750872727936949305, guid: bca26a949c57df14398ea86f093f6260, type: 3}
 --- !u!1 &1684172779
 GameObject:
   m_ObjectHideFlags: 0
