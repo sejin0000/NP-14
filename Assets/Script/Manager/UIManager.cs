@@ -6,10 +6,6 @@ using UnityEngine.UI;
 
 public class UIManager : LocalSingleton<UIManager>
 {
-    public GameObject overPanel;
-    public GameObject clearPanel;
-
-
     [SerializeField] private List<UIBase> layer;
 
     public List<UIBase> Layer

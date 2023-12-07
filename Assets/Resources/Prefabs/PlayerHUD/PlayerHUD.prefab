@@ -37,7 +37,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -100, y: -105}
+  m_AnchoredPosition: {x: -220, y: -105}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2368600946123897245
@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ffeafec4ef776d468cd38da4335b813, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillGauge: {fileID: 0}
+  skillGauge: {fileID: 5126038701635291239}
 --- !u!1 &1677936364070158289
 GameObject:
   m_ObjectHideFlags: 0
@@ -778,8 +778,6 @@ MonoBehaviour:
   bullets: []
   bulletPrefab: {fileID: 8621146673863956084, guid: b2a0c9b90e1471a4d824c63a35502336, type: 3}
   bulletParents: {fileID: 3379503748544946262}
-  spriteWidth: 20
-  spriteSpace: 5
 --- !u!1 &7842255056498600605
 GameObject:
   m_ObjectHideFlags: 0

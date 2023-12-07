@@ -27,7 +27,7 @@ public class UIStageTransition : UIBase
     private int currentFloor = -1;
     private GameObject[] block;
 
-    [SerializeField] private float spriteHeight = 100f;
+    private float spriteHeight;
     [SerializeField] private float spriteSpace;
 
     public override void Initialize()
@@ -50,6 +50,8 @@ public class UIStageTransition : UIBase
             GameObject temp = Instantiate(blockPrefab, blockParents.transform);
             block[i] = temp;
             block[i].transform.SetParent(blockParents.transform);
+
+            spriteHeight = temp.GetComponentInChildren<Image>().sprite.rect.height;
 
             if (i > 0)
             {
