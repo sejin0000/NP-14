@@ -15,6 +15,7 @@ public class MainGameCamera : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("MainGameCamera - Start");
         if(MainGameManager.Instance != null)
         {
             Target = MainGameManager.Instance.InstantiatedPlayer; 

@@ -28,6 +28,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     public int PlayerPvNumber;//현재플레이어의 포톤뷰 넘버
     private void Awake()//싱글톤
     {
+        Debug.Log("AugmentManager - Awake");
         if (null == Instance)
         {
             Instance = this;
