@@ -261,6 +261,10 @@ MonoBehaviour:
   - thorn
   - Thorn
   - ImLive
+  - LaterRollEnd
+  - PunRpcStartHp
+  - RollStart
+  - stageBuffReset
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

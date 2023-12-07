@@ -44,8 +44,6 @@ public class BossAI_Turtle_State_Attack_ThornTornado : BTAction
             return Status.BT_Success;
         }
 
-
-        //Debug.Log("가시실행중");
         return Status.BT_Running;
     }
     public override void Terminate()

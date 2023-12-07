@@ -187,7 +187,6 @@ MonoBehaviour:
   direction: {x: 0, y: 0, z: 0}
   _rigidbody2D: {fileID: 0}
   time: 0
-  thornTime: 0.2
   currentHP: 0
   viewAngle: 0
   viewDistance: 0

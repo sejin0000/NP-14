@@ -10,4 +10,9 @@ public class Boss_Turtle_SO : EnemySO
     public float missileCoolTime;
     public float rollingDamge;
     public int endRollCount;
+
+    [Header("2페이즈 전용 SO")]
+
+    public float thornTime;
+    public float thrronAngle;
 }

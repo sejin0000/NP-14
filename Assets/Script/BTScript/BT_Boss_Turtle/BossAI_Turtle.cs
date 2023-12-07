@@ -26,7 +26,6 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
 
     public Rigidbody2D _rigidbody2D;
     public float time;
-    public float thornTime = 0.2f;
     private float thornAngle = 0;
 
 
@@ -197,15 +196,15 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
             if (!isPhase1)
             {
                 time += Time.deltaTime;
-                if (time > thornTime) //0.2초마다
+                if (time > bossSO.thornTime) //0.2초마다
                 {
-                    thornAngle += 2.5f;
+                    thornAngle += bossSO.thrronAngle;
                     photonView.RPC("Thorn", RpcTarget.All, thornAngle, 1);
                     if (thornAngle >= 360)
                     {
                         thornAngle = 0;
                     }
-
+                    time = 0;
                 }
             }
         }
@@ -268,6 +267,8 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         {
             return;
         }
+
+        //TODO : ★사운드
         //PV.RPC("SetStateColor", RpcTarget.All, (int)EnemyStateColor.ColorRed, PV.ViewID);
         currentHP -= damage;
         GaugeUpdate();
@@ -284,6 +285,8 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         {
             return;
         }
+
+        //TODO : ★사운드
         //PV.RPC("SetStateColor", RpcTarget.All, (int)EnemyStateColor.ColorRed, PV.ViewID);
         currentHP -= damage;
         GaugeUpdate();
@@ -367,10 +370,8 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
 
         for (int i = 0; i < PlayersTransform.Count; i++)
         {
-            Debug.Log($"타겟 인원 체크 {i}");
             if (PlayersTransform[i] == null)
             {
-                Debug.Log($"타겟이 존재하지 않습니다. {i}");
                 continue;
             }
 
@@ -485,7 +486,6 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void SyncAnimation(string animName, bool set)
     {
-        Debug.Log($"{animName}이 {set} 상태로 호출됨");
         anim.SetBool(animName, set);
     }
     #endregion
@@ -534,15 +534,14 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         BossAI_Turtle_State_Attack_Missile missile = new BossAI_Turtle_State_Attack_Missile(gameObject);
         phase_1_ActionSelector.AddChild(missile);
 
-        /*
-        BTSelector Phase_2 = new BTSelector();
+        
+        BTSquence Phase_2 = new BTSquence();
 
         BossAI_Turtle_Phase_2_Condition phase_2_Condition = new BossAI_Turtle_Phase_2_Condition(gameObject);
         Phase_2.AddChild(phase_2_Condition);
-
-        BossAI_Turtle_State_Attack_ThornTornado Phase_2_tornado = new BossAI_Turtle_State_Attack_ThornTornado(gameObject);
-        Phase_2.AddChild(Phase_2_tornado);
-        */
+        BossAI_Turtle_State_Attack_InfinityRolling infinityTornado = new BossAI_Turtle_State_Attack_InfinityRolling(gameObject);
+        Phase_2.AddChild(infinityTornado);
+        
 
 
 
@@ -556,7 +555,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
 
         //메인(페이즈) 셀렉터
         BTMainSelector.AddChild(Phase_1);
-        //BTMainSelector.AddChild(Phase_2);
+        BTMainSelector.AddChild(Phase_2);
 
         //작업이 끝난 Selector를 루트 노드에 붙이기
         TreeAIState.AddChild(BTMainSelector);
@@ -686,7 +685,6 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         {
             isEndThornTornado = true;
             thornTornadoCoolTime = bossSO.thornTornadoCoolTime;
-            Debug.Log($"가시쏘기 퇴장");
         }
     }
     #endregion
@@ -697,7 +695,6 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         SetAnim("Rolling", true);
         bossAim.gameObject.SetActive(false);
         SetNearestTarget();
-        Debug.Log($"구르기 진입");
         //롤카운트 기준으로 멈추고 n초후(벽에 딱붙어서 멈추지 않기 위함) 멈출것임 트리거에서 if rolling && collier.layer==wall
         rollCount = 0;
         rolling = true;
@@ -734,7 +731,6 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
 
         yield return new WaitForSeconds(0.3f);
         
-        Debug.Log($"구르기 퇴장");
         rolling = false;
         rollingCooltime = bossSO.rollingCooltime;
         //구르기 패턴 종료
@@ -794,7 +790,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (rolling && isPhase1 && collision.gameObject.layer == LayerMask.NameToLayer("Wall")  || (rolling && collision.gameObject.layer == LayerMask.NameToLayer("Player")))
+        if (rolling && isPhase1 && collision.gameObject.layer == LayerMask.NameToLayer("Wall")  || (rolling && isPhase1 &&  collision.gameObject.layer == LayerMask.NameToLayer("Player")))
         {
             if (rollCount % 2 == 0)
             {
@@ -840,7 +836,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
             if (!isPhase1)
             {
                 time += Time.deltaTime;
-                if (time > thornTime) //0.2초마다
+                if (time > bossSO.thornTime) //0.2초마다
                 {
                     thornAngle += 2.5f;
                     photonView.RPC("Thorn", RpcTarget.All, thornAngle, 1);

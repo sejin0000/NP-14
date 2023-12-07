@@ -29,6 +29,9 @@ public class BossAI_Turtle_Phase_2_Condition : BTCondition
         if (percentHP > 30)//(현재 체력이 30% 초과) => 1페이즈로 (혹은 부등호랑 수치 조정으로 3페이즈 생성가능)
             return Status.BT_Failure;
 
+
+
+
         return Status.BT_Success;
     }
 }
