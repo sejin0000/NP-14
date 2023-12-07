@@ -176,7 +176,8 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
 
         if (rolling)
         {
-            _rigidbody2D.velocity = direction * bossSO.enemyMoveSpeed * Time.deltaTime;
+            transform.Translate(direction * bossSO.enemyMoveSpeed * Time.deltaTime);
+            //_rigidbody2D.velocity = direction * bossSO.enemyMoveSpeed * Time.deltaTime;
             if (!isPhase1)
             {
                 time += Time.deltaTime;
