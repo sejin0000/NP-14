@@ -48,10 +48,13 @@ public class UIStageTransition : UIBase
         for(int i=0; i<maxFloor;++i)
         {
             GameObject temp = Instantiate(blockPrefab, blockParents.transform);
+            spriteHeight = temp.GetComponentInChildren<Image>().sprite.rect.height;
+
             block[i] = temp;
             block[i].transform.SetParent(blockParents.transform);
 
-            spriteHeight = temp.GetComponentInChildren<Image>().sprite.rect.height;
+            
+
 
             if (i > 0)
             {
