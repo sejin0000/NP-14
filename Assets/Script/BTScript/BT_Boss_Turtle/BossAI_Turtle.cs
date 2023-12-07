@@ -753,7 +753,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (rolling && isPhase1 && collision.gameObject.layer == LayerMask.NameToLayer("Wall") || collision.gameObject.layer == LayerMask.NameToLayer("Player"))
+        if (rolling && isPhase1 && collision.gameObject.layer == LayerMask.NameToLayer("Wall")  || (rolling && collision.gameObject.layer == LayerMask.NameToLayer("Player")))
         {
             if (rollCount % 2 == 0)
             {
