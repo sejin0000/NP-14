@@ -246,6 +246,11 @@ public class PlayerStatHandler : MonoBehaviourPun
     {
         stageBuffReset();
     }
+    private void PunRpcStageBuffReset() 
+    {
+        photonView.RPC("stageBuffReset", RpcTarget.All);
+    }
+    [PunRPC]
     private void stageBuffReset() 
     {
         if (!CanSpeedBuff)
@@ -292,8 +297,8 @@ public class PlayerStatHandler : MonoBehaviourPun
         GameManager.Instance.OnStageStartEvent += startHp;
         GameManager.Instance.OnBossStageStartEvent += RefillCoin;
         GameManager.Instance.OnBossStageStartEvent += startHp;
-        GameManager.Instance.OnStageStartEvent += stageBuffReset;
-        GameManager.Instance.OnBossStageStartEvent += stageBuffReset;
+        GameManager.Instance.OnStageStartEvent += PunRpcStageBuffReset;
+        GameManager.Instance.OnBossStageStartEvent += PunRpcStageBuffReset;
         viewID = photonView.ViewID;
     }
     public override string ToString()
