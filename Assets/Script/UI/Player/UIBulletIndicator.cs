@@ -21,7 +21,7 @@ public class UIBulletIndicator : UIBase, ICommonUI
     private float ammoMax;
     private float currentAmmo;
     private float spriteWidth;
-    private float spriteSpace;
+    [SerializeField] private float spriteSpace = 10f;
     
 
     void ICommonUI.Initialize()
@@ -75,17 +75,15 @@ public class UIBulletIndicator : UIBase, ICommonUI
         for (int i = 0; i < ammoMax; ++i)
         {
             GameObject temp = Instantiate(bulletPrefab, bulletParents.transform);
-
-            spriteWidth = temp.GetComponent<RectTransform>().rect.width;
-            spriteSpace = 0;
-
             bullets.Add(temp);
+
+            spriteWidth = bullets[0].GetComponent<RectTransform>().rect.width;
 
             if (i > 0)
             {
-                Vector3 pos = bullets[i - 1].transform.position;
+                Vector3 pos = bullets[i - 1].GetComponent<RectTransform>().anchoredPosition;
                 pos.x += ((spriteWidth) + spriteSpace);
-                bullets[i].transform.position = pos;
+                bullets[i].GetComponent<RectTransform>().anchoredPosition = pos;
             }
         }
     }
@@ -103,9 +101,9 @@ public class UIBulletIndicator : UIBase, ICommonUI
 
             if (i > 0)
             {
-                Vector3 pos = bullets[i - 1].transform.position;
+                Vector3 pos = bullets[i - 1].GetComponent<RectTransform>().anchoredPosition;
                 pos.x += ((spriteWidth) + spriteSpace);
-                bullets[i].transform.position = pos;
+                bullets[i].GetComponent<RectTransform>().anchoredPosition = pos;
             }     
         }
     }
@@ -124,7 +122,7 @@ public class UIBulletIndicator : UIBase, ICommonUI
     {
         currentAmmo = playerStat.CurAmmo;
         int index_L = (int)(ammoMax - currentAmmo);
-        int index_R = (int)currentAmmo-1;
+        int index_R = (int)currentAmmo;
 
         if (index_R >= 0)
         {
