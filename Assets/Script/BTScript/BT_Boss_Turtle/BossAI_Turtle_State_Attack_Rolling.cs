@@ -41,7 +41,7 @@ public class BossAI_Turtle_State_Attack_Rolling : BTAction
         //롤링 업데이트
         if (bossAI_Turtle.rolling)
         {
-            bossAI_Turtle._rigidbody2D.velocity = bossAI_Turtle.direction * bossSO.enemyMoveSpeed;
+            //bossAI_Turtle._rigidbody2D.velocity = bossAI_Turtle.direction * bossSO.enemyMoveSpeed;
             return Status.BT_Running;
         }
 
