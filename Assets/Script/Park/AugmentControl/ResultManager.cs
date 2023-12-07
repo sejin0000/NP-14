@@ -68,7 +68,7 @@ public class ResultManager : MonoBehaviour//vs코드
         {
             Destroy(this);
         }
-        testsetting = true;
+        testsetting = false;
 
     }
     public void StartSet()
@@ -164,6 +164,8 @@ public class ResultManager : MonoBehaviour//vs코드
     }
     public void CallSpecialResult()
     {
+        if (GameManager.Instance.curStage < GameManager.Instance.stageListInfo.StagerList.Count) 
+        {
         int tier = RandomTier();
         switch (tier)
         {
@@ -186,6 +188,7 @@ public class ResultManager : MonoBehaviour//vs코드
                 PickSpecialList(SpecialAugment1);
                 break;
 
+        }
         }
     }
   
