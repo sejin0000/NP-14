@@ -30,9 +30,7 @@ public class Setting : MonoBehaviour
 
     private void BossStage()
     {
-        var RandPosX = Random.Range(-1f, 1f);
-        var RandPosY = Random.Range(-1f, 1f);
-        GameManager.Instance.clientPlayer.transform.position = new Vector3(RandPosX, RandPosY);
+        GameManager.Instance.clientPlayer.transform.position = Vector3.zero;
     }
 
     public void InstantiatePlayer()

@@ -8,6 +8,8 @@ public class UIBullet : UIBase
     private Animation bulletAni;
     [SerializeField] private GameObject bullet;
 
+    private Sprite bulletSprite;
+
     private void Awake()
     {
         bulletAni = GetComponent<Animation>();
@@ -16,7 +18,8 @@ public class UIBullet : UIBase
     private void Start()
     {
         // Change bullet's sprite depend on class.
-        bullet.GetComponentInChildren<Image>().sprite = GameManager.Instance.clientPlayer.GetComponent<PlayerStatHandler>().indicatorSprite;
+        bulletSprite = GameManager.Instance.clientPlayer.GetComponent<PlayerStatHandler>().indicatorSprite;
+        bullet.GetComponent<Image>().sprite = bulletSprite;
     }
 
     public void PlayAnim(string clipName)

@@ -42,7 +42,6 @@ public class AudioManager : Singleton<AudioManager>
     // ADDED
     [Header("AudioLibrary")]
     public AudioLibrary AudioLibrary;
-    public AudioManagerTest AudioManagerTest;
 
     public AudioMixer Mixer { get { return mixer; } }
 
@@ -53,7 +52,7 @@ public class AudioManager : Singleton<AudioManager>
         InitializeObject();
         
         // ADDED
-        AudioLibrary = this.gameObject.GetComponent<AudioLibrary>();        
+        AudioLibrary = this.gameObject.GetComponent<AudioLibrary>();
     }
 
     // Dictinonary에 오디오 클립 추가

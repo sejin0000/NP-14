@@ -50,4 +50,10 @@ public class UIStageBlock : MonoBehaviour
 
         return blockColor;
     }
+
+    public void ResizeObject(float new_width, float new_height)
+    {
+        RectTransform temp = GetComponent<RectTransform>();
+        temp.rect.Set(temp.rect.x, temp.rect.y, new_width, new_height);
+    }
 }

@@ -2,6 +2,7 @@ using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -53,9 +54,6 @@ public class GameManager : MonoBehaviour
     public int PartyDeathCount;
     public int TeamGold;
 
-    private bool isStartFirst;
-    public bool isTransitionPlayed;
-
 
 
     private void Awake()
@@ -80,36 +78,28 @@ public class GameManager : MonoBehaviour
         MG = _mapGenerator.GetComponent<MapGenerator>();
         FF = _fadeInfadeOutPanel.GetComponent<FadeInFadeOutPanel>();
         MS = _mansterSpawner.GetComponent<MonsterSpawner>();
-        
 
         OnStageStartEvent += MG.MapMake;
         MG.roomNodeInfo = MG.GetComponent<RoomNodeInfo>();
         OnStageStartEvent += MG.roomNodeInfo.CloseDoor;
-        OnBossStageSettingEvent += MG.BossMapMake;  
+        OnBossStageSettingEvent += MG.BossMapMake;
         if (PhotonNetwork.IsMasterClient)
         {
             OnStageStartEvent += MG.NavMeshBakeRunTime;
-            OnStageStartEvent += MS.MonsterSpawn;
-            OnBossStageStartEvent += MS.BossSpawn;
+            OnStageStartEvent += MS.MonsterSpawn;           
         }
         OnStageStartEvent += MG.roomNodeInfo.OpenDoor;
 
-        isStartFirst = true;
+        AudioManager.Instance.AddComponent<AudioManagerTest>().Initialize();
     }   
 
 
     private void Start()
     {
-        if (isStartFirst)
-        {
-            StartCoroutine(WaitAudioManager());
-            PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
-            MakeSetting.MakeManager();
-            TeamGold = 0;
+        PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
+        MakeSetting.MakeManager();
+        TeamGold = 0;
 
-            isStartFirst = false;
-        }
-                
         if (stageListInfo.StagerList[curStage].stageType == StageType.normalStage)
         {
             CallStageStartEvent();
@@ -120,19 +110,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private IEnumerator WaitAudioManager()
-    {
-        if (AudioManager.Instance.AudioManagerTest == null)
-        {            
-            yield return new WaitForSeconds(1f);
-            StartCoroutine(WaitAudioManager());
-        }
-        else
-        {            
-            OnStageStartEvent += AudioManager.Instance.AudioManagerTest.PlayStageBGM;
-            yield return null;
-        }
-    }
+
     public void CallInitEvent()
     {
         Debug.Log("초기화");
@@ -239,32 +217,13 @@ public class GameManager : MonoBehaviour
         Debug.Log("보스 스테이지 세팅");
         OnBossStageSettingEvent?.Invoke();
         FF.FadeIn();
-        //CallBossStageStartEvent();
-        StartCoroutine(WaitTransition());
+        CallBossStageStartEvent();
     }
-
 
     public void CallBossStageStartEvent()
     {
         Debug.Log("보스 스테이지 시작");
         OnBossStageStartEvent?.Invoke();
-    }
-
-    private IEnumerator WaitTransition()
-    {
-        if (!isTransitionPlayed)
-        {
-            Debug.Log("GameManager [WaitTransition] - Waiting");
-            yield return new WaitForSeconds(1f);
-            StartCoroutine(WaitTransition());
-        }
-        else
-        {
-            Debug.Log("GameManager - Transition 끝");
-            isTransitionPlayed = false;
-            CallBossStageStartEvent();
-            yield return null;
-        }
     }
 
     public void CallBossStageEndEvent()

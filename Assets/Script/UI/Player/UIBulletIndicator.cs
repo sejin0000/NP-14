@@ -20,8 +20,8 @@ public class UIBulletIndicator : UIBase, ICommonUI
 
     private float ammoMax;
     private float currentAmmo;
-    [SerializeField] private float spriteWidth;
-    [SerializeField] private float spriteSpace;
+    private float spriteWidth;
+    private float spriteSpace;
     
 
     void ICommonUI.Initialize()
@@ -31,6 +31,13 @@ public class UIBulletIndicator : UIBase, ICommonUI
 
     void ICommonUI.Behavior()
     {
+        ChangeValue();
+    }
+
+    public override void Initialize()
+    {
+        InitializeData();
+        InitializeBullets();
         ChangeValue();
     }
 
@@ -48,14 +55,6 @@ public class UIBulletIndicator : UIBase, ICommonUI
         player.OnEndReloadEvent += ReloadBullets;
         playerStat.OnChangeAmmorEvent += ChangeValue;
         player.OnAttackEvent += ShootBullet;
-        //player.OnAttackEvent += TestMethod;
-    }
-
-    public override void Initialize()
-    {
-        InitializeData();
-        InitializeBullets();
-        ChangeValue();
     }
 
     private void ChangeValue()
@@ -68,16 +67,6 @@ public class UIBulletIndicator : UIBase, ICommonUI
         ammo.text = sb.ToString();
     }
 
-    public override void Open()
-    {
-        gameObject.SetActive(true);
-    }
-
-    public override void Close()
-    {
-        gameObject.SetActive(false);
-    }
-
     public void InitializeBullets()
     {
         Debug.Log("[InitializeBullets] AKAKAKAKAAKAKAK");
@@ -86,7 +75,10 @@ public class UIBulletIndicator : UIBase, ICommonUI
         for (int i = 0; i < ammoMax; ++i)
         {
             GameObject temp = Instantiate(bulletPrefab, bulletParents.transform);
-            //bullets[i] = temp;
+
+            spriteWidth = temp.GetComponent<RectTransform>().rect.width;
+            spriteSpace = 0;
+
             bullets.Add(temp);
 
             if (i > 0)
@@ -97,6 +89,7 @@ public class UIBulletIndicator : UIBase, ICommonUI
             }
         }
     }
+
     public void ResizeBullets()
     {
         bullets.Capacity = (int)ammoMax;
@@ -149,9 +142,13 @@ public class UIBulletIndicator : UIBase, ICommonUI
             bullets[i].GetComponent<UIBullet>().PlayAnim("Idle");
         }
     }
-
-    public void TestMethod()
+    public override void Open()
     {
+        gameObject.SetActive(true);
+    }
 
+    public override void Close()
+    {
+        gameObject.SetActive(false);
     }
 }

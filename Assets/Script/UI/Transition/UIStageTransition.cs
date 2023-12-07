@@ -27,7 +27,7 @@ public class UIStageTransition : UIBase
     private int currentFloor = -1;
     private GameObject[] block;
 
-    [SerializeField] private float spriteHeight = 100f;
+    private float spriteHeight;
     [SerializeField] private float spriteSpace;
 
     public override void Initialize()
@@ -39,9 +39,6 @@ public class UIStageTransition : UIBase
 
         //MainGameManager.Instance.OnUIPlayingStateChanged += StartTransition;
         GameManager.Instance.OnStageStartEvent += StartTransition;
-
-        // ADDED
-        GameManager.Instance.OnBossStageSettingEvent += StartTransition;
     }
 
     // Tower 층수만큼 일정한 간격으로 블럭 생성
@@ -53,6 +50,8 @@ public class UIStageTransition : UIBase
             GameObject temp = Instantiate(blockPrefab, blockParents.transform);
             block[i] = temp;
             block[i].transform.SetParent(blockParents.transform);
+
+            spriteHeight = temp.GetComponentInChildren<Image>().sprite.rect.height;
 
             if (i > 0)
             {
@@ -99,7 +98,6 @@ public class UIStageTransition : UIBase
         animator.SetBool("isRun", false);
         yield return new WaitForSecondsRealtime(3f);
         OnClimeTower();
-        GameManager.Instance.isTransitionPlayed = true;
     }
 
     // UI 연출이 끝나면 메인 게임 매니저의 상태 변경

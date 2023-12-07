@@ -86,10 +86,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
         UpdateCachedTestRoomList(roomList);
         UpdateTestRoomListView();
-        if (LobbyManager.Instance.CurrentState == PanelType.RoomFindPanel)
-        {
-            LobbyManager.Instance.RoomFindP.UpdateFindRoomListView();
-        }
+        LobbyManager.Instance.RoomFindP.UpdateFindRoomListView();
     }
 
     public override void OnLeftLobby()
@@ -300,7 +297,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         var testLobby = LobbyManager.Instance.TestLobbyP;
         foreach (RoomInfo info in cachedTestRoomList.Values)
         {
-            GameObject entry = Instantiate(Resources.Load<GameObject>(PrefabPathes.TESTROOM_ENTRY_PREFAB), testLobby.RoomScrollViewContent.transform, false);
+            GameObject entry = Instantiate(Resources.Load<GameObject>("Prefabs/LobbyScene/TestRoomEntry"), testLobby.RoomScrollViewContent.transform, false);
             entry.transform.localScale = Vector3.one;
             entry.GetComponent<RoomListEntry>().Initialize(info.Name, (byte)info.PlayerCount, (byte)info.MaxPlayers);
             testLobby.OnEntryClicked += entry.GetComponent<RoomListEntry>().OnSelectRoomButtonClicked;
