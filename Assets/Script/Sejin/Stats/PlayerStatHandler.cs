@@ -449,6 +449,7 @@ public class PlayerStatHandler : MonoBehaviourPun
         this.gameObject.layer = 8;
         if (ImGhost)
         { this.gameObject.layer = 13; }
+        SendSyncHP();
     }
 
     public void SendSyncHP()
