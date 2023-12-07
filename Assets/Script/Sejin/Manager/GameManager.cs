@@ -2,6 +2,7 @@ using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -88,6 +89,8 @@ public class GameManager : MonoBehaviour
             OnStageStartEvent += MS.MonsterSpawn;           
         }
         OnStageStartEvent += MG.roomNodeInfo.OpenDoor;
+
+        AudioManager.Instance.AddComponent<AudioManagerTest>().Initialize();
     }   
 
 
