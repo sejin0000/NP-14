@@ -136,11 +136,22 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
 
         //TODO 생성할 때, 모든 플레이어 Transform 정보를 담는다.TestGameManagerWooMin
-        foreach (var _value in GameManager.Instance.playerInfoDictionary.Values)
+        if (TestGameManager.Instance != null)
         {
-            PlayersTransform.Add(_value);           
+            //생성할 때, 모든 플레이어 Transform 정보를 담는다.
+            foreach (var _value in TestGameManager.Instance.playerInfoDictionary.Values)
+            {
+                PlayersTransform.Add(_value);
+            }
         }
-
+        else
+        {
+            //생성할 때, 모든 플레이어 Transform 정보를 담는다.
+            foreach (var _value in GameManager.Instance.playerInfoDictionary.Values)
+            {
+                PlayersTransform.Add(_value);
+            }
+        }
 
         currentNomalAttackSquence = Random.Range(0, 3);
 
@@ -149,6 +160,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
         currentTarget = PlayersTransform[randomTarget]; 
     }
+
     void Update()
     {
 
@@ -740,15 +752,17 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     private void SetNearestTarget()
     {
 
-
         float minDistance = float.MaxValue;
 
 
-        //가장 가까운 타겟 서치
         for (int i = 0; i < PlayersTransform.Count; i++)
         {
+            Debug.Log($"타겟 인원 체크 {i}");
             if (PlayersTransform[i] == null)
+            {
+                Debug.Log($"타겟이 존재하지 않습니다. {i}");
                 continue;
+            }
 
             float distanceToAllTarget = Vector2.Distance(transform.position, PlayersTransform[i].transform.position);
 

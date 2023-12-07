@@ -138,10 +138,28 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         knockbackDistance = 0f;
 
 
+        rolling = false;
+        isPhase1 = true;
+
+
+        GaugeUpdate();
+
         //TODO 생성할 때, 모든 플레이어 Transform 정보를 담는다.TestGameManagerWooMin
-        foreach (var _value in GameManager.Instance.playerInfoDictionary.Values)
+        if (TestGameManager.Instance != null)
         {
-            PlayersTransform.Add(_value);
+            //생성할 때, 모든 플레이어 Transform 정보를 담는다.
+            foreach (var _value in TestGameManager.Instance.playerInfoDictionary.Values)
+            {
+                PlayersTransform.Add(_value);
+            }
+        }
+        else
+        {
+            //생성할 때, 모든 플레이어 Transform 정보를 담는다.
+            foreach (var _value in GameManager.Instance.playerInfoDictionary.Values)
+            {
+                PlayersTransform.Add(_value);
+            }
         }
 
 
@@ -151,8 +169,6 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
 
         currentTarget = PlayersTransform[randomTarget];
 
-        rolling = false;
-        isPhase1 = true;
     }
     void Update()
     {
@@ -193,19 +209,17 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
                 }
             }
         }
-        else 
-        {
-            _rigidbody2D.velocity = Vector3.zero;
-            Vector3 directiontarget = (currentTarget.transform.position - transform.position).normalized;
-            float angle = Mathf.Atan2(directiontarget.y, directiontarget.x) * Mathf.Rad2Deg;
-            Quaternion rotation = Quaternion.Euler(new Vector3(0, 0, angle));
-            bossAim.rotation = rotation;
-            FilpSet();
-        }
+
 
 
         TreeAIState.Tick();
-        
+
+        Vector3 directiontarget = (currentTarget.transform.position - transform.position).normalized;
+        float angle = Mathf.Atan2(directiontarget.y, directiontarget.x) * Mathf.Rad2Deg;
+        Quaternion rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        bossAim.rotation = rotation;
+        FilpSet();
+
         if (!isLive)
             return;
 
@@ -348,14 +362,17 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     private void SetNearestTarget()
     {
 
-
         float minDistance = float.MaxValue;
 
 
         for (int i = 0; i < PlayersTransform.Count; i++)
         {
+            Debug.Log($"타겟 인원 체크 {i}");
             if (PlayersTransform[i] == null)
+            {
+                Debug.Log($"타겟이 존재하지 않습니다. {i}");
                 continue;
+            }
 
             float distanceToAllTarget = Vector2.Distance(transform.position, PlayersTransform[i].transform.position);
 
@@ -674,6 +691,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     }
     #endregion
     #region 구르기모드
+    [PunRPC]
     public void RollStart()
     {
         SetAnim("Rolling", true);
@@ -689,10 +707,33 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         direction = (u - me).normalized;
 
     }
+    /*
     public void RollEnd() 
     {
         SetAnim("Rolling", false);
         bossAim.gameObject.SetActive(true);
+        Debug.Log($"구르기 퇴장");
+        //adas
+        rolling = false;
+        rollingCooltime = bossSO.rollingCooltime;
+        //구르기 패턴 종료
+    }
+    */
+    [PunRPC]
+    public void LaterRollEnd()
+    {
+        StartCoroutine(RollEnd());
+    }
+
+    IEnumerator RollEnd()
+    {
+
+
+        SetAnim("Rolling", false);
+        bossAim.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(0.3f);
+        
         Debug.Log($"구르기 퇴장");
         rolling = false;
         rollingCooltime = bossSO.rollingCooltime;
@@ -766,7 +807,9 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
             rollCount++;
             if (rollCount >= bossSO.endRollCount)
             {
-                Invoke("RollEnd", 0.2f);
+                PV.RPC("LaterRollEnd", RpcTarget.All);
+                //StartCoroutine(RollEnd());
+                //Invoke("RollEnd", 0.2f);
             }
             Vector3 normal = collision.contacts[0].normal; // 법선벡터
             direction = Vector3.Reflect(direction, normal).normalized; // 반사
