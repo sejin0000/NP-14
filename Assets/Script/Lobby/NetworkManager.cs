@@ -86,7 +86,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
         UpdateCachedTestRoomList(roomList);
         UpdateTestRoomListView();
-        LobbyManager.Instance.RoomFindP.UpdateFindRoomListView();
+        if (LobbyManager.Instance.CurrentState == PanelType.RoomFindPanel)
+        {
+            LobbyManager.Instance.RoomFindP.UpdateFindRoomListView();
+        }
     }
 
     public override void OnLeftLobby()
