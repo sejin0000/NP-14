@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UIPlayerHUD : UIBase
+public class UIPlayerHUD : UIMainGame
 {
     [SerializeField] private Image portrait;
 
@@ -30,10 +30,10 @@ public class UIPlayerHUD : UIBase
         skillGauge = GetComponentInChildren<UIPlayerSkill>();
         bulletIndicator = GetComponentInChildren<UIBulletIndicator>();
 
-        Initialize();
+        SetupData();
     }
 
-    public override void Initialize()
+    void SetupData()
     {
         Debug.Log("Initialize from [PlayerHUD]'s UIPlayerHUD Comp");
         hpGauge.Initialize();

@@ -4,31 +4,31 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UIReloadHUD : UIBase, ICommonUI
+public class UIReloadHUD : UIBase
 {
     private Slider slider;
     private GameObject player;
     private CoolTimeController controller;
     private PlayerStatHandler statHandler;
 
-    void ICommonUI.Initialize()
+    public override void Initialize()
+    {
+        InitializeData();
+        UpdateData();
+        Close();
+    }
+
+    public void InitializeData()
     {
         if (SceneManager.GetActiveScene().name == "Test_DoHyun")
             player = TestGameManagerDohyun.Instance.InstantiatedPlayer.gameObject;
         else
             player = GameManager.Instance.clientPlayer.gameObject;
 
-
         controller = player.GetComponent<CoolTimeController>();
         statHandler = player.GetComponent<PlayerStatHandler>();
         //player.GetComponent<TopDownCharacterController>().OnEndReloadEvent += Close;
         slider = GetComponentInChildren<Slider>();
-    }
-
-    void ICommonUI.Behavior()
-    {
-        UpdateData();
-        Close();
     }
 
     public void UpdateData()
@@ -47,15 +47,5 @@ public class UIReloadHUD : UIBase, ICommonUI
     void Update()
     {
         slider.value = controller.curReloadCool;
-    }
-
-    public override void Open()
-    {
-        gameObject.SetActive(true);
-    }
-
-    public override void Close()
-    {
-        gameObject.SetActive(false);
     }
 }

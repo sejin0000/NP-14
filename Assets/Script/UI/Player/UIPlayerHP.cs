@@ -6,26 +6,16 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UIPlayerHP : UIBase, ICommonUI
+public class UIPlayerHP : UIBase//, ICommonUI
 {
     [SerializeField] private Slider hpGauge;
     private PlayerStatHandler playerStats;
-
-    void ICommonUI.Initialize()
-    {
-        InitializeData();
-    }
-
-    void ICommonUI.Behavior()
-    {
-        UpdateValue();
-        Open();
-    }
 
     public override void Initialize()
     {
         InitializeData();
         UpdateValue();
+        Open();
     }
 
     void InitializeData()
@@ -46,16 +36,4 @@ public class UIPlayerHP : UIBase, ICommonUI
         hpGauge.maxValue = playerStats.HP.total;
         hpGauge.value = playerStats.CurHP;
     }
-
-    public override void Open()
-    {
-        gameObject.SetActive(true);
-    }
-
-    public override void Close()
-    {
-        gameObject.SetActive(false);
-    }
-
-
 }

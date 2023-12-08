@@ -8,7 +8,7 @@ using Photon.Pun;
 using UnityEngine.UI;
 using System;
 
-public class UIBulletIndicator : UIBase, ICommonUI
+public class UIBulletIndicator : UIBase
 {
     [SerializeField] private TMP_Text ammo;
     [SerializeField] private List<GameObject> bullets;
@@ -22,17 +22,6 @@ public class UIBulletIndicator : UIBase, ICommonUI
     private float currentAmmo;
     private float spriteWidth;
     [SerializeField] private float spriteSpace = 10f;
-    
-
-    void ICommonUI.Initialize()
-    {
-        InitializeData();
-    }
-
-    void ICommonUI.Behavior()
-    {
-        ChangeValue();
-    }
 
     public override void Initialize()
     {
@@ -69,8 +58,6 @@ public class UIBulletIndicator : UIBase, ICommonUI
 
     public void InitializeBullets()
     {
-        Debug.Log("[InitializeBullets] AKAKAKAKAAKAKAK");
-
         bullets = new List<GameObject>((int)ammoMax);
         for (int i = 0; i < ammoMax; ++i)
         {
@@ -121,8 +108,10 @@ public class UIBulletIndicator : UIBase, ICommonUI
     public void ShootBullet()
     {
         currentAmmo = playerStat.CurAmmo;
+        Debug.Log("[UIBulletIndicator] currentAmmo: " + currentAmmo);
         int index_L = (int)(ammoMax - currentAmmo);
         int index_R = (int)currentAmmo-1;
+        Debug.Log("[UIBulletIndicator] index_R: " + index_R);
 
         if (index_R >= 0)
         {
