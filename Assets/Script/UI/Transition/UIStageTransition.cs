@@ -37,12 +37,13 @@ public class UIStageTransition : UIBase
 
         //MainGameManager.Instance.OnUIPlayingStateChanged += StartTransition;
         GameManager.Instance.OnStageStartEvent += StartTransition;
-        spriteHeight = blockPrefab[0].GetComponent<RectTransform>().rect.height;
     }
 
     // Tower 층수만큼 일정한 간격으로 블럭 생성
     public void CreateTower()
     {
+        spriteHeight = blockPrefab[0].GetComponent<RectTransform>().rect.height;
+
         block = new GameObject[maxFloor];
         for(int i=0; i<maxFloor;++i)
         {
@@ -107,11 +108,13 @@ public class UIStageTransition : UIBase
 
         //MainGameManager.Instance.GameState = MainGameManager.GameStates.Start;
         Close();
+        UIManager.Instance.OpenMainGameUI();
     }
 
     private void Update()
     {
         player.GetComponent<Image>().sprite = player.GetComponent<SpriteRenderer>().sprite;
+        UIManager.Instance.CloseMainGameUI();
     }
 
     public override void Open()

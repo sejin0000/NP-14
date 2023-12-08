@@ -34,10 +34,18 @@ public class UIManager : LocalSingleton<UIManager>
         }
     }
 
-    public void StartIntro()
+    public void OpenMainGameUI()
     {
-        Debug.Log("[UIManager] Start Intro");
-        //MainGameManager.Instance.GameState = MainGameManager.GameStates.UIPlaying;
+        foreach (var layer in layer)
+            if (layer.GetComponent<UIMainGame>() != null)
+                layer.Open();
+    }
+
+    public void CloseMainGameUI()
+    {
+        foreach (var layer in layer)
+            if (layer.GetComponent<UIMainGame>() != null)
+                layer.Close();
     }
 
     public T GetUIComponent<T>() where T : MonoBehaviour

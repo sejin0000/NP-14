@@ -159,7 +159,6 @@ public class MainGameManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        UIManager.Instance.StartIntro();
         GameState = GameStates.UIPlaying;
     }
 
