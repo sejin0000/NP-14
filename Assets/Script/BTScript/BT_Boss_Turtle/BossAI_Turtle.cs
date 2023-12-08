@@ -21,6 +21,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     private int rollCount;
     public bool rolling = false;
     public bool isPhase1;
+    public float rollingTime;
 
     [HideInInspector] public Vector3 direction;
 
@@ -191,6 +192,16 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
 
         if (rolling)
         {
+            rollingTime+= Time.deltaTime;
+            if (rollingTime >= 5f) 
+            {
+                Debug.Log("끼임 발생으로 타켓팅 초기화");
+                FurthestTarget();
+                rollingTime = 0f;
+                Vector2 me = transform.position;
+                Vector2 u = currentTarget.position;
+                direction = (u - me).normalized;
+            }
             transform.Translate(direction * bossSO.enemyMoveSpeed * Time.deltaTime);
             //_rigidbody2D.velocity = direction * bossSO.enemyMoveSpeed * Time.deltaTime;
             if (!isPhase1)
@@ -698,6 +709,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         //롤카운트 기준으로 멈추고 n초후(벽에 딱붙어서 멈추지 않기 위함) 멈출것임 트리거에서 if rolling && collier.layer==wall
         rollCount = 0;
         rolling = true;
+        rollingTime = 0;
         //Debug.Log($"구르기 변화 체크 {rolling}");
         Vector2 me = transform.position;
         Vector2 u = currentTarget.position;
@@ -790,8 +802,11 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (rolling && isPhase1 && collision.gameObject.layer == LayerMask.NameToLayer("Wall")  || (rolling && isPhase1 &&  collision.gameObject.layer == LayerMask.NameToLayer("Player")))
+        if (rolling && (collision.gameObject.layer == LayerMask.NameToLayer("Wall") || collision.gameObject.layer == LayerMask.NameToLayer("Player")))
         {
+            rollingTime = 0;
+            if (isPhase1) 
+            {
             if (rollCount % 2 == 0)
             {
                 ThornTornado1();
@@ -807,25 +822,17 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
                 //StartCoroutine(RollEnd());
                 //Invoke("RollEnd", 0.2f);
             }
-            Vector3 normal = collision.contacts[0].normal; // 법선벡터
-            direction = Vector3.Reflect(direction, normal).normalized; // 반사
-        }
-        else if (!isPhase1 && collision.gameObject.layer == LayerMask.NameToLayer("Wall") || collision.gameObject.layer ==LayerMask.NameToLayer("Player")) 
-        {
-            Vector3 normal = collision.contacts[0].normal; // 법선벡터
-            Debug.Log($"현재 방향벡터 {direction}");
-            direction = Vector3.Reflect(direction, normal).normalized; // 반사
-            Debug.Log($"튕긴 방햑벡터 {direction}");
-        }
-
-        if (rolling && collision.gameObject.layer == LayerMask.NameToLayer("Player")) 
-        {
+            }
             PlayerStatHandler player = collision.gameObject.GetComponent<PlayerStatHandler>();
             if (player != null) 
             {
 
                 player.photonView.RPC("GiveDamege",RpcTarget.All, bossSO.atk*2);
             }
+            Vector3 normal = collision.contacts[0].normal; // 법선벡터
+            Debug.Log($"현재 방향벡터 {direction}");
+            direction = Vector3.Reflect(direction, normal).normalized; // 반사
+            Debug.Log($"튕긴 방햑벡터 {direction}");
         }
     }
     public void updateclone()//업데이트 돌려야 됨 근데 업데이트 돌리면 이상할거같아서 이렇게 해둠
