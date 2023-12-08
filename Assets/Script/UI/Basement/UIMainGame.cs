@@ -16,6 +16,16 @@ public class UIMainGame : UIBase
             GameManager.Instance.OnStageStartEvent += Open;
     }
 
+    public override void Open()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public override void Close()
+    {
+        gameObject.SetActive(false);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
