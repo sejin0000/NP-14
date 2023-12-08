@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.U2D.Animation;
 
 [CreateAssetMenu(fileName = "EnemySO", menuName = "ScriptableObject/EnemySO", order = int.MinValue)]
 public class EnemySO : ScriptableObject
@@ -34,6 +35,9 @@ public class EnemySO : ScriptableObject
     public int unitScale;         // 유닛 크기
 
 
+
+    public SpriteLibraryAsset enemySpriteLibrary;
+    public Bullet enemyBulletPrefab;
 
     //보스
 

@@ -898,8 +898,8 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         Phase_1.AddChild(ActionSelector);
 
 
-        BossAI_State_SpecialAttack specialAttack = new BossAI_State_SpecialAttack(gameObject);
-        ActionSelector.AddChild(specialAttack);
+        //BossAI_State_SpecialAttack specialAttack = new BossAI_State_SpecialAttack(gameObject);
+        //ActionSelector.AddChild(specialAttack);
 
         //첫 노말패턴 시퀀스의 컨디션에서 노말액션 시퀀스에 사용할 랜덤 난수 쏴주기
 

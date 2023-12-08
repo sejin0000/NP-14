@@ -8,6 +8,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XR;
+using UnityEngine.U2D.Animation;
 using UnityEngine.UI;
 
 public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
@@ -84,6 +85,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     private Image image_Gauge;              //몬스터 UI : Status
     [SerializeField]
     private TextMeshProUGUI txt_Gauge;
+
 
 
     //동기화

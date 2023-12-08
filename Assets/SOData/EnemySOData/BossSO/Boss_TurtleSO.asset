@@ -37,5 +37,5 @@ MonoBehaviour:
   missileCoolTime: 4
   rollingDamge: 2
   endRollCount: 4
-  thornTime: 0.5
+  thornTime: 0.2
   thrronAngle: 5
