@@ -108,24 +108,12 @@ public class UIStageTransition : UIBase
 
         //MainGameManager.Instance.GameState = MainGameManager.GameStates.Start;
         Close();
-        UIManager.Instance.OpenMainGameUI();
+        UIManager.Instance.Open<UIMainGame>();
     }
 
     private void Update()
     {
         player.GetComponent<Image>().sprite = player.GetComponent<SpriteRenderer>().sprite;
-        UIManager.Instance.CloseMainGameUI();
-    }
-
-    public override void Open()
-    {
-        base.Open();
-        this.gameObject.SetActive(true);
-    }
-
-    public override void Close()
-    {
-        base.Close();
-        this.gameObject.SetActive(false);
+        UIManager.Instance.Close<UIMainGame>();
     }
 }

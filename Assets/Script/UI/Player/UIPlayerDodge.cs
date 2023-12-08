@@ -6,27 +6,17 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UIPlayerDodge : UIBase, ICommonUI
+public class UIPlayerDodge : UIBase
 {
     [SerializeField] private Slider dodgeGauge;
     private CoolTimeController playerCool;
     private PlayerStatHandler playerStat;
 
-    void ICommonUI.Initialize()
-    {
-        InitializeData();
-    }
-
-    void ICommonUI.Behavior()
-    {
-        UpdateValue();
-        Open();
-    }
-
     public override void Initialize()
     {
         InitializeData();
         UpdateValue();
+        Open();
     }
 
     void InitializeData()

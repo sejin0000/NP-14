@@ -1295,7 +1295,6 @@ GameObject:
   - component: {fileID: 565215594733952380}
   - component: {fileID: 6848897978221717014}
   - component: {fileID: 4353346331555341600}
-  - component: {fileID: 2610623196561771893}
   m_Layer: 5
   m_Name: SetupPopupPrefab
   m_TagString: Untagged
@@ -1387,18 +1386,6 @@ MonoBehaviour:
   setupState: 0
   SetupBoxScrollContent: {fileID: 3611136852738110323}
   _setupAnnouncePopup: {fileID: 0}
---- !u!114 &2610623196561771893
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7794485384554927044}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ab5e61d1fbb24f498368c4e086d67cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7847809181125992357
 GameObject:
   m_ObjectHideFlags: 0

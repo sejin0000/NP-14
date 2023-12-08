@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6889087932153691462}
-  - component: {fileID: 2006635398965714064}
+  - component: {fileID: 6777067100498029184}
   m_Layer: 5
   m_Name: AudioSettingUI
   m_TagString: Untagged
@@ -38,7 +38,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 941.77246, y: 337.00916}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2006635398965714064
+--- !u!114 &6777067100498029184
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -58,6 +58,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6889087932153691462}
     m_Modifications:
+    - target: {fileID: 3493065202273765137, guid: 5ac84fe7cbf3f374e9348f221d47767c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Open
+      objectReference: {fileID: 0}
+    - target: {fileID: 3493065202273765137, guid: 5ac84fe7cbf3f374e9348f221d47767c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UIBase, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 7633670519424448133, guid: 5ac84fe7cbf3f374e9348f221d47767c, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

@@ -21,8 +21,6 @@ public class GameManager : MonoBehaviour
     public event Action OnBossStageStartEvent; //보스 룸 시작
     public event Action OnBossStageEndEvent;   //보스 룸 종료
 
-
-
     public event Action OnGameClearEvent;     //게임 클리어
     public event Action OnGameOverEvent;      //게임 오버
     public event Action PlayerLifeCheckEvent; //플레이어 죽음
