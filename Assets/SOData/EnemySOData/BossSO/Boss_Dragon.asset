@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: "\uBCF4\uC2A4\uC5D0\uC6A9"
   type: 0
-  atk: 5
-  hp: 100
+  atk: 35
+  hp: 1500
   bulletSpeed: 5
   atkDelay: 5
   SpecialAttackDelay: 5
@@ -31,4 +31,6 @@ MonoBehaviour:
   attackRange: 3
   dropGold: 0
   unitScale: 0
+  enemySpriteLibrary: {fileID: 0}
+  enemyBulletPrefab: {fileID: 0}
   bossPatternTime: 0

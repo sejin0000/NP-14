@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageType: 1
   MonsterSquadList:
-  - {fileID: 11400000, guid: 16526e734b94fee479a67898f7d87a34, type: 2}
+  - {fileID: 11400000, guid: fde3ab870136dcd46b373f7635d169ff, type: 2}
