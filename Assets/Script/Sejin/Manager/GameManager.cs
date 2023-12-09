@@ -94,36 +94,26 @@ public class GameManager : MonoBehaviour
         }
         OnStageStartEvent += MG.roomNodeInfo.OpenDoor;
 
-    }   
-
-    
+    }
     private void Start()
     {
         AudioManager.Instance.AddComponent<AudioManagerTest>().Initialize();
-        PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
-        MakeSetting.MakeManager();
-        TeamGold = 0;
-
-    private void Start()
-    {
-
-        if (firstStart) 
+        if (firstStart)
         {
-        PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
-        MakeSetting.MakeManager();
-        TeamGold = 0;
+            PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
+            MakeSetting.MakeManager();
+            TeamGold = 0;
         }
 
         if (stageListInfo.StagerList[curStage].stageType == StageType.normalStage)
         {
             CallStageSettingEvent();
         }
-        else if(stageListInfo.StagerList[curStage].stageType == StageType.bossStage)
+        else if (stageListInfo.StagerList[curStage].stageType == StageType.bossStage)
         {
             CallBossStageSettingEvent();
         }
     }
-
 
     public void CallInitEvent()
     {
