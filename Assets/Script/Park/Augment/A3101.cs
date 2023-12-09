@@ -25,11 +25,14 @@ public class A3101 : MonoBehaviourPun
     }
     private void Update()
     {
-        time += Time.deltaTime;
-        if (time >= healTime) 
+        if (photonView.IsMine)
         {
-            StayHeal();
-            time = 0f;
+            time += Time.deltaTime;
+            if (time >= healTime)
+            {
+                StayHeal();
+                time = 0f;
+            }
         }
     }
     // Update is called once per frame
