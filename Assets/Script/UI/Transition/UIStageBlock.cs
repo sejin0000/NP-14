@@ -23,32 +23,20 @@ public class UIStageBlock : MonoBehaviour
         blockImg = GetComponent<Image>();
     }
 
-    private void Start()
+    public void SetColor(StageType type)
     {
-        blockImg.color = InitColor();
-    }
-
-    public Color InitColor()
-    {
-        Color blockColor;
-        switch (blockType)
+        switch (type)
         {
+            case StageType.normalStage:
+                blockImg.color = Color.white;
+                break;
+            case StageType.bossStage:
+                blockImg.color = Color.red;
+                break;
             default:
-            case BlockType.NONE:
-                blockColor = Color.grey;
-                break;
-            case BlockType.NORMAL:
-                blockColor = Color.white;
-                break;
-            case BlockType.EVENT:
-                blockColor = Color.magenta;
-                break;
-            case BlockType.BOSS:
-                blockColor = Color.yellow;
+                blockImg.color = Color.white;
                 break;
         }
-
-        return blockColor;
     }
 
     public void ResizeObject(float new_width, float new_height)
