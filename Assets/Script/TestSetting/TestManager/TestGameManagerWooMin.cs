@@ -12,8 +12,12 @@ public class TestGameManagerWooMin : MonoBehaviourPun
 
     public enum MonsterType
     {
-        몬스터1,
         보스에용,
+        속이거북,
+        가까워용,
+        멀어용,
+        근거리거북이,
+        원거리거북이,
     }
 
     [Header("ClientPlayer")]
@@ -91,8 +95,12 @@ public class TestGameManagerWooMin : MonoBehaviourPun
 
     private void AddMonsterDict()
     {
-        monsterNameDictionary[MonsterType.몬스터1] = "Test_Enemy";
+        monsterNameDictionary[MonsterType.속이거북] = "Boss_Turtle";
         monsterNameDictionary[MonsterType.보스에용] = "Test_Boss";
+        monsterNameDictionary[MonsterType.멀어용] = "MiniTurtle_Ranged_Enemy";
+        monsterNameDictionary[MonsterType.가까워용] = "MiniDragon_Melee_Enemy";
+        monsterNameDictionary[MonsterType.원거리거북이] = "MiniTurtle_Ranged_Enemy";
+        monsterNameDictionary[MonsterType.근거리거북이] = "MiniTurtle_Melee_Enemy";
     }
     private void SpawnPlayer()
     {

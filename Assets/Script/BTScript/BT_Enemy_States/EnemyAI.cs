@@ -167,6 +167,14 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
                 PlayersTransform.Add(_value);
             }
         }
+        else if (TestGameManagerWooMin.Instance != null)
+        {
+            //생성할 때, 모든 플레이어 Transform 정보를 담는다.
+            foreach (var _value in TestGameManagerWooMin.Instance.playerInfoDictionary.Values)
+            {
+                PlayersTransform.Add(_value);
+            }
+        }
         else
         {
             //생성할 때, 모든 플레이어 Transform 정보를 담는다.
@@ -824,6 +832,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void DeadSync()
     {
+        if (GameManager.Instance == null)
+            return;
         GameManager.Instance.MG.roomNodeInfo.allRoomList[roomNum].roomInMoster--;
         if (GameManager.Instance.MG.roomNodeInfo.allRoomList[roomNum].roomInMoster == 0)
         {
