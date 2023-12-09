@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67495ca0fa4f9f74580f4a969211d8be, type: 3}
+  m_Name: StageInfoSO4
+  m_EditorClassIdentifier: 
+  stageType: 1
+  MonsterSquadList:
+  - {fileID: 11400000, guid: 6302fae35d115b249aaefce980a6774d, type: 2}
+  - {fileID: 11400000, guid: 6302fae35d115b249aaefce980a6774d, type: 2}
+  - {fileID: 11400000, guid: 70a3afc09a0a4ef48913fa6480092e3c, type: 2}
