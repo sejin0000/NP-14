@@ -31,4 +31,6 @@ MonoBehaviour:
   attackRange: 3
   dropGold: 0
   unitScale: 0
+  enemySpriteLibrary: {fileID: 0}
+  enemyBulletPrefab: {fileID: 0}
   bossPatternTime: 0

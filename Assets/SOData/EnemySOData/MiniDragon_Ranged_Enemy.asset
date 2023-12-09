@@ -15,7 +15,7 @@ MonoBehaviour:
   enemyName: "\uBA40\uC5B4\uC6A9"
   type: 1
   atk: 3
-  hp: 20
+  hp: 30
   bulletSpeed: 7
   atkDelay: 0.5
   SpecialAttackDelay: 0

@@ -17,7 +17,7 @@ MonoBehaviour:
   atk: 5
   hp: 60
   bulletSpeed: 10
-  atkDelay: 2
+  atkDelay: 0.6
   SpecialAttackDelay: 0
   patrolDelay: 2.5
   chaseTime: 5
@@ -28,7 +28,7 @@ MonoBehaviour:
   enemyChaseSpeed: 3.5
   viewAngle: 70
   viewDistance: 9
-  attackRange: 2
+  attackRange: 4
   dropGold: 0
   unitScale: 0
   enemySpriteLibrary: {fileID: 7108339969198208228, guid: 853e8e0d6b1f1054fb0783fdebd2232b, type: 3}
