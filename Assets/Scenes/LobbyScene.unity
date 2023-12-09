@@ -5313,7 +5313,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 4291710745262787743, guid: d0a323e2a864b904eae64f13691384b1, type: 3}
+  m_Sprite: {fileID: -4313611400051238305, guid: d0a323e2a864b904eae64f13691384b1, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -14752,7 +14752,6 @@ MonoBehaviour:
   ChatInputField: {fileID: 1814743562}
   SubmitButton: {fileID: 771824549}
   ChatBox: {fileID: 1798967822}
-  ChatLog: {fileID: 1580934528868145059, guid: 429e494743d959644ae76b8ceb04fb82, type: 3}
   ChatScrollContent: {fileID: 376548891}
   ChatScrollRect: {fileID: 429708782}
   PartyBox: {fileID: 1857915279}
