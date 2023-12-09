@@ -13,6 +13,10 @@ public class MainGameNetwork : MonoBehaviourPunCallbacks
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
         var GM = GameManager.Instance;
+        if (GM.isGameOver)
+        {
+            return;
+        }
         loadingPanel.Initialize(5f);
 
         GM._mansterSpawner.GetPhotonView().RPC("CLEAREnemyViewList", RpcTarget.All);
@@ -21,7 +25,7 @@ public class MainGameNetwork : MonoBehaviourPunCallbacks
         int viewID = GM.clientPlayer.GetPhotonView().ViewID;
         GM.gameObject.GetPhotonView().RPC("PlayerInfoDictionarySetting", RpcTarget.AllBuffered, viewID);
 
-        if (PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.LocalPlayer.ActorNumber == newMasterClient.ActorNumber)
         {
             if (GM != null) 
             {
@@ -35,6 +39,19 @@ public class MainGameNetwork : MonoBehaviourPunCallbacks
         StartCoroutine(WaitSucceed());
         GM.CallEmergencyProtocolEvent();
         GM.StageRestart();
+        var stageType = GM.stageListInfo.StagerList[GM.curStage].stageType;
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            if (stageType == StageType.normalStage)
+            {
+                GM.MS.MonsterSpawn();
+            }
+            else if (stageType == StageType.bossStage)
+            {
+                GM.MS.BossSpawn();
+            }            
+        }
         IsSucceedOver = false;
     }
     [PunRPC]

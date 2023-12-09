@@ -373,7 +373,6 @@ public class PlayerStatHandler : MonoBehaviourPun
                 this.gameObject.layer = 12;
             }
 
-            Debug.Log("[PlayerStatHandler] " + "Damage Done");
         }
 
     }
@@ -434,11 +433,14 @@ public class PlayerStatHandler : MonoBehaviourPun
     }
     public void startHp()
     {
-        photonView.RPC("PunRpcStartHp",RpcTarget.All);
+        if (photonView.IsMine)
+        {
+            photonView.RPC("PunRpcStartHp",RpcTarget.All);
+        }    
     }
     [PunRPC]
     public void PunRpcStartHp() 
-    {
+    {        
         CurHP = HP.total;
         this.gameObject.layer = 8;
         if (ImGhost)
@@ -464,7 +466,6 @@ public class PlayerStatHandler : MonoBehaviourPun
     [PunRPC]
     public void SetSyncHP(int viewID,float _CurHP )
     {
-        Debug.Log($" { viewID} : HP : {_CurHP}");
         PhotonView _PV;
         _PV = PhotonView.Find(viewID);
         PlayerStatHandler _PvPlayer = _PV.gameObject.GetComponent<PlayerStatHandler>();

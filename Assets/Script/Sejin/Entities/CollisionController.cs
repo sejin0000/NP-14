@@ -98,7 +98,6 @@ public class CollisionController : MonoBehaviourPun
                         damage *= (1 - playerStat.ReflectCoeff);
                     }
                     playerStat.Damage(damage);
-                    Debug.Log($"데미지 받음 : {damage} / 남은 체력 : {playerStat.CurHP} ");
                 }
                 else
                 {

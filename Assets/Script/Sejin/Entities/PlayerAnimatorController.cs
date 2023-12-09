@@ -123,7 +123,6 @@ public class PlayerAnimatorController : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("Á×À½¿ä");
         _animation.SetTrigger("IsDie");
         int viewID = pv.ViewID;
         pv.RPC("PunDie", RpcTarget.OthersBuffered, viewID);

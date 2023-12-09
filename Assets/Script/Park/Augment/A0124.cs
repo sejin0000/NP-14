@@ -20,7 +20,7 @@ public class A0124 : MonoBehaviourPun
             GameManager.Instance.OnStageStartEvent += DarkStart;
             GameManager.Instance.OnBossStageStartEvent += DarkStart;
             GameManager.Instance.OnStageEndEvent += DarkEnd;
-            GameManager.Instance.OnBossStageStartEvent += DarkEnd;
+            GameManager.Instance.OnBossStageEndEvent += DarkEnd;
         }
 
     }
