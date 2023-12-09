@@ -872,6 +872,73 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7079671553397028477, guid: 94660f1eecddc314f8d09523b43c5ee4, type: 3}
   m_PrefabInstance: {fileID: 873686771}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &954700572
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 954700574}
+  - component: {fileID: 954700573}
+  - component: {fileID: 954700575}
+  m_Layer: 0
+  m_Name: MainGameNetwork
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &954700573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 954700572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 492dd3a80571e45448b5bd326bc3ca3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &954700574
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 954700572}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -15.731581, y: 34.284935, z: -0.60792863}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 18
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &954700575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 954700572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 8
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1001 &1098576604
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1513,6 +1580,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1342027617}
   - component: {fileID: 1342027618}
+  - component: {fileID: 1342027619}
   m_Layer: 0
   m_Name: MonsterSpawner
   m_TagString: Untagged
@@ -1548,6 +1616,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Case: {fileID: 692013213}
+  EnemyViewIDList: 
+--- !u!114 &1342027619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1342027616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 7
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1354713590
 GameObject:
   m_ObjectHideFlags: 0
@@ -2191,11 +2282,15 @@ MonoBehaviour:
   _mapGenerator: {fileID: 873686772}
   MG: {fileID: 0}
   _fadeInfadeOutPanel: {fileID: 556909696}
+  FF: {fileID: 0}
   _mansterSpawner: {fileID: 1342027616}
+  MS: {fileID: 0}
   PS: {fileID: 0}
   clientPlayer: {fileID: 0}
   PartyDeathCount: 0
   TeamGold: 0
+  isTransitionPlayed: 0
+  isStartFirst: 0
 --- !u!4 &1855578660
 Transform:
   m_ObjectHideFlags: 0

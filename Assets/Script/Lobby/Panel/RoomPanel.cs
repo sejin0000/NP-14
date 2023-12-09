@@ -25,7 +25,7 @@ public class RoomPanel : MonoBehaviourPunCallbacks
     public TMP_InputField ChatInputField;
     public Button SubmitButton;
     public GameObject ChatBox;
-    public GameObject ChatLog;
+    private GameObject ChatLog;
     public GameObject ChatScrollContent;
     public ScrollRect ChatScrollRect;
     private bool isChatBoxActive;
@@ -82,11 +82,11 @@ public class RoomPanel : MonoBehaviourPunCallbacks
     private string askReadyProp;
     private Dictionary<int, GameObject> _playerPartyDict;
     private Coroutine DeactiveChatBox;
-
-
+        
     public void Awake()
     {
-        askReadyProp = CustomProperyDefined.ASK_READY_PROPERTY;        
+        askReadyProp = CustomProperyDefined.ASK_READY_PROPERTY;
+        ChatLog = Resources.Load<GameObject>(PrefabPathes.CHATLOG_PREFAB_PATH);
     }
 
     public void OnEnable()
@@ -119,7 +119,7 @@ public class RoomPanel : MonoBehaviourPunCallbacks
 
         // DESC : ChatBox È°¼ºÈ­
         IsChatBoxActive = true;
-        IsChatInputActive = false;
+        IsChatInputActive = false;        
     }
     public void Start()
     {

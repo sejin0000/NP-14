@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     public event Action OnGameClearEvent;     //게임 클리어
     public event Action OnGameOverEvent;      //게임 오버
     public event Action PlayerLifeCheckEvent; //플레이어 죽음
+    public event Action EmergencyProtocolEvent; // 호스트 튕겼을 시
 
     public event Action ChangeGoldEvent;
     public bool ClearStageCheck;              //박민혁 추가 스테이지 클리어시 빈방 비울때 콜여부
@@ -105,6 +106,8 @@ public class GameManager : MonoBehaviour
             PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
             MakeSetting.MakeManager();
             isStartFirst = false;
+
+            //EmergencyProtocolEvent += 
         }
 
         if (stageListInfo.StagerList[curStage].stageType == StageType.normalStage)
@@ -220,6 +223,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void StageRestart()
+    {
+        Start();
+    }
+
     public void CallBossStageSettingEvent()
     {
         Debug.Log("보스 스테이지 세팅");
@@ -254,6 +262,11 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("게임 오버");
         FF.FadeOut(3);
+    }
+
+    public void CallEmergencyProtocolEvent()
+    {
+        EmergencyProtocolEvent?.Invoke();
     }
     public void NextGameOverEvent()
     {

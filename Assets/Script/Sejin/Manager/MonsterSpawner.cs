@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class MonsterSpawner : MonoBehaviour
+public class MonsterSpawner : MonoBehaviourPun
 {
     public GameObject Case;
-
+    public List<int> EnemyViewIDList;
     private void Start()
     {
         GameManager.Instance.OnStageEndEvent += StageMonsterClear;
+        EnemyViewIDList = new List<int>();
     }
 
     public void MonsterSpawn()
@@ -21,20 +22,10 @@ public class MonsterSpawner : MonoBehaviour
 
         int MonsterSquadTypeCount = stagerListInfoSO.StagerList[GameManager.Instance.curStage].MonsterSquadList.Count;// 현재 스테이지에 몬스터 분대 수 
 
-
-
-
-
-
         for (int i = 0; i < mapGenerator.roomNodeInfo.allRoomList.Count; i++) //방 수 만큼 순회
         {
             RectInt room = mapGenerator.roomNodeInfo.allRoomList[i].roomRect;
             int randomSquad = Random.Range(0, MonsterSquadTypeCount);//  이번 방에 어떤 분대를 생성할지
-
-
-
-
-
 
             for (int j = 0; j < stagerListInfoSO.StagerList[GameManager.Instance.curStage].MonsterSquadList[randomSquad].MonsterNum; j++)// 스분대원 수만큼 순회
             {
@@ -72,7 +63,11 @@ public class MonsterSpawner : MonoBehaviour
         GameObject GO =  PhotonNetwork.Instantiate(testEnemy, vector, Quaternion.identity);
         GO.GetComponent<EnemyAI>().roomNum = _nodeNum;
         GO.transform.parent = Case.transform;
+
         GameManager.Instance.MG.roomNodeInfo.allRoomList[_nodeNum].roomInMoster++;
+
+        int viewID = GO.GetPhotonView().ViewID;
+        photonView.RPC("ADDEnemyViewList", RpcTarget.All, viewID);
     }
 
     public void BossSpawner(string _name, Vector2 vector)
@@ -80,6 +75,11 @@ public class MonsterSpawner : MonoBehaviour
         string testEnemy = $"Prefabs/Enemy/{_name}";
         GameObject GO = PhotonNetwork.Instantiate(testEnemy, vector, Quaternion.identity);
         GO.transform.parent = Case.transform;
+
+        int viewID = GO.GetPhotonView().ViewID;
+        photonView.RPC("ADDEnemyViewList", RpcTarget.All, viewID);
+
+        // TODO : 용과 거북이 생성 위치 다르게
     }
 
     public void StageMonsterClear()
@@ -89,5 +89,24 @@ public class MonsterSpawner : MonoBehaviour
         {
             PhotonNetwork.Destroy(child.gameObject);
         }
+        photonView.RPC("CLEAREnemyViewList", RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void ADDEnemyViewList(int viewID)
+    {
+        EnemyViewIDList.Add(viewID);
+    }
+
+    [PunRPC]
+    public void CLEAREnemyViewList()
+    {
+        EnemyViewIDList.Clear();
+    }
+
+    [PunRPC]
+    public void RemoveEnemyViewList(int viewID)
+    {
+        EnemyViewIDList.Remove(viewID);
     }
 }

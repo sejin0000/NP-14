@@ -96,6 +96,7 @@ public class UIStageTransition : UIBase
         animator.SetBool("isRun", false);
         yield return new WaitForSecondsRealtime(3f);
         OnClimeTower();
+        Debug.Log("UIStageTransition[ClimbTower] : isTransitonPlayer = true");
         GameManager.Instance.isTransitionPlayed = true;
     }
 
