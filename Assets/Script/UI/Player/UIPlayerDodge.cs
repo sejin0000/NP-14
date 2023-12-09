@@ -1,6 +1,7 @@
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,6 +10,7 @@ using UnityEngine.UI;
 public class UIPlayerDodge : UIBase
 {
     [SerializeField] private Slider dodgeGauge;
+    [SerializeField] private TMP_Text dodgeText;
     private CoolTimeController playerCool;
     private PlayerStatHandler playerStat;
 
@@ -37,13 +39,8 @@ public class UIPlayerDodge : UIBase
     {
         dodgeGauge.minValue = 0;
         dodgeGauge.maxValue = playerStat.RollCoolTime.total;
-
-        //if (playerStat.CanRoll)
-        //    dodgeGauge.value = playerStat.RollCoolTime.total;
-        //else
-        
         dodgeGauge.value = playerStat.RollCoolTime.total - playerCool.curRollCool;
-
+        dodgeText.text = (playerStat.CurRollStack.ToString() + "/" + playerStat.MaxRollStack.ToString());
     }
 
     public override void Open()

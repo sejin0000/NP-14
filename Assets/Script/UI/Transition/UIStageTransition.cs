@@ -41,8 +41,11 @@ public class UIStageTransition : UIBase
     public void CreateTower()
     {
         spriteHeight = blockPrefab[0].GetComponent<RectTransform>().rect.height;
+        var stageInfo = GameManager.Instance.stageListInfo.StagerList;
 
-        block = new GameObject[maxFloor];
+        block = new GameObject[stageInfo.Count];
+        maxFloor = stageInfo.Count;
+
         for(int i=0; i<maxFloor;++i)
         {
             GameObject temp;
@@ -52,6 +55,7 @@ public class UIStageTransition : UIBase
                 temp = Instantiate(blockPrefab[0], blockParents.transform);
 
             block[i] = temp;
+            block[i].GetComponent<UIStageBlock>().SetColor(stageInfo[i].stageType);
             
             if (i > 0)
             {
