@@ -17,15 +17,12 @@ public class A3106 : MonoBehaviourPun
             playerStat = GetComponent<PlayerStatHandler>();
             viewID = photonView.ViewID;
 
-            // 받는 데미지 감소
             playerStat.HitEvent2 += DefPose;
 
-            // 쉴드 반사 처리
             shieldSkill = GetComponent<Player2Skill>();
             playerStat.CanReflect = true;
             playerStat.OnDamageReflectEvent += ReflectDamage;
 
-            // 반사 계수 적용
             reflectCoeff = 0.3f;
             shieldSkill.ReflectCoeff = reflectCoeff;
             playerStat.ReflectCoeff = reflectCoeff;

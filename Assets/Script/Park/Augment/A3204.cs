@@ -27,7 +27,6 @@ public class A3204 : MonoBehaviourPun
     {
         photonView.RPC("Makeshield", RpcTarget.All);
     }
-    // Update is called once per frame
     [PunRPC]
     void Makeshield()
     {
@@ -53,6 +52,5 @@ public class A3204 : MonoBehaviourPun
         PhotonView a = PhotonView.Find(num);
         a.transform.SetParent(this.gameObject.transform);
         a.transform.localPosition = Vector3.zero;
-        //Prefabs.transform.SetParent(targetPlayer.transform);
     }
 }

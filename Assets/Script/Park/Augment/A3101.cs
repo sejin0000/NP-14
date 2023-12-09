@@ -40,9 +40,7 @@ public class A3101 : MonoBehaviourPun
     {
         if (photonView.IsMine) 
         {
-            Debug.Log($"3101ÈúÀü Ã¼·Â {playerStat.CurHP}");
             playerStat.HPadd(heal);
-            Debug.Log($"3101ÈúÈÄ Ã¼·Â {playerStat.CurHP}");
         }
     }
     void restartTime() 

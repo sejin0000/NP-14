@@ -24,7 +24,6 @@ public class A2203 : MonoBehaviour
         if (handler != null) 
         {
             target.Add(handler);
-            Debug.Log("플레이어입장");
         }    
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -33,7 +32,6 @@ public class A2203 : MonoBehaviour
         if (handler != null)
         {
             target.Remove(handler);
-            Debug.Log("플레이어퇴장");
         }
     }
     private void FixedUpdate()
@@ -47,7 +45,7 @@ public class A2203 : MonoBehaviour
         }
         if (stack > maxtime) 
         {
-            goodbye();
+            Destroy(gameObject);
         }
     }
     private void heal() 
@@ -57,19 +55,8 @@ public class A2203 : MonoBehaviour
             if (!target[i].isDie) 
             {
                 target[i].HPadd(healP);
-                Debug.Log(target[i].CurHP);
             }
         }
     }
-    private void goodbye()
-    {
-        if (target != null)
-        {
-            for (int i = 0; i < target.Count; ++i)
-            {
-                target.Remove(target[i]);
-            }
-        }
-        Destroy(gameObject);
-    }
+
 }

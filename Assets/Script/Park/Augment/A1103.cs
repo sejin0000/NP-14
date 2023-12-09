@@ -25,6 +25,5 @@ public class A1103 : MonoBehaviourPun
     {
         PhotonView pv = PhotonView.Find(viewID);
         pv.GetComponent<PlayerStatHandler>().HPadd(healed * convertCoeff);
-        Debug.Log($"A1103 È¸º¹µÈ HP : {healed * convertCoeff}");
     }
 }
