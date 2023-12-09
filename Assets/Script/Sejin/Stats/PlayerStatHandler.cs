@@ -450,6 +450,7 @@ public class PlayerStatHandler : MonoBehaviourPun
             PlayerInputController tempInputControl = this.gameObject.GetComponent<PlayerInputController>();
             tempInputControl.ResetSetting();
             tempInputControl.InputOn();
+            isDie = false;
             anime._animation.SetTrigger("IsRegen");
         }
 
