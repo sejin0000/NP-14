@@ -155,22 +155,18 @@ public class Debuff : MonoBehaviourPun
     }
 
     private IEnumerator LowSpeed(int viewID)
-    {
-        Debug.Log("LowSpeed 코루틴 돌아가는중 ....");        
+    {  
         int endtime = 3;
         PhotonView photonView = PhotonView.Find(viewID);
         PlayerStatHandler targetPlayer = photonView.gameObject.GetComponent<PlayerStatHandler>();
         if (targetPlayer.CanSpeedBuff) 
         {
-            Debug.Log("스피드.... ");
             targetPlayer.CanSpeedBuff = false;
             targetPlayer.Speed.added += 3f;
             targetPlayer._DebuffControl.Init(PlayerDebuffControl.buffName.Speed, endtime);
-            Debug.Log($"현재 속도 1: {targetPlayer.Speed.total}");
             yield return new WaitForSeconds(endtime);
             targetPlayer.Speed.added -= 3f;
             targetPlayer.CanSpeedBuff = true;
-            Debug.Log($"현재 속도 2: {targetPlayer.Speed.total}");
         }
     }
     public void GiveAtkBuff(GameObject gameObject)
@@ -197,14 +193,11 @@ public class Debuff : MonoBehaviourPun
         PlayerStatHandler targetPlayer = photonView.gameObject.GetComponent<PlayerStatHandler>();
         if (targetPlayer.CanAtkBuff)
         {
-            Debug.Log("스피드.... ");
             targetPlayer.CanAtkBuff = false;
             targetPlayer.ATK.coefficient += 0.1f;
-            Debug.Log($"현재 속도 1: {targetPlayer.Speed.total}");
             yield return new WaitForSeconds(endtime);
             targetPlayer.ATK.coefficient -= 0.1f;
             targetPlayer.CanAtkBuff = true;
-            Debug.Log($"현재 속도 2: {targetPlayer.Speed.total}");
         }
     }
 
@@ -216,7 +209,6 @@ public class Debuff : MonoBehaviourPun
             PhotonView pv = gameObject.GetComponent<PhotonView>();
             int viewID = pv.ViewID;
             photonView.RPC("IceGive", RpcTarget.All, viewID);
-            Debug.Log("얼음체크");
         }
     }
     [PunRPC]
@@ -233,7 +225,6 @@ public class Debuff : MonoBehaviourPun
         EnemyAI enemy = targetenemy.GetComponent<EnemyAI>();
         if (enemy.CanIce)
         {
-            Debug.Log("얼음체크");
             enemy.CanIce = false;
             GameObject particleIce = Instantiate(debuffIcePrefab);
             particleIce.transform.SetParent(enemy.gameObject.transform);
