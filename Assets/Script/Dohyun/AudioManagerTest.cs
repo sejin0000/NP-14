@@ -33,6 +33,7 @@ public class AudioManagerTest : MonoBehaviour
             }
             GameManager.Instance.OnStageStartEvent += PlayStageBGM;
         }
+        PlayStageBGM();
     }
 
     void PlayStageBGM()

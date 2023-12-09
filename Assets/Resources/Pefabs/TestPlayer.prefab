@@ -772,6 +772,7 @@ MonoBehaviour:
   playerSprite: {fileID: 554290144144741705}
   weaponSprite: {fileID: 7639390929974933696}
   isBack: 0
+  _animation: {fileID: 0}
 --- !u!114 &174773302517558128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1027,6 +1028,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speedParticle: {fileID: 8271105724184392739}
   _TwoMoonParticle: {fileID: 5707561305057948425}
+  _HealParticle: {fileID: 0}
 --- !u!1001 &4354566507725324052
 PrefabInstance:
   m_ObjectHideFlags: 0

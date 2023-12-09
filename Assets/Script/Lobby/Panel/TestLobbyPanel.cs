@@ -182,7 +182,9 @@ public class TestLobbyPanel : MonoBehaviourPunCallbacks
 
     public void GetSceneArray(Transform parentTransform)    
     {
-        string[] sceneFiles = Directory.GetFiles(folderPath, "*.unity").Select(Path.GetFileNameWithoutExtension).ToArray();
+        //string[] sceneFiles = Directory.GetFiles(folderPath, "*.unity").Select(Path.GetFileNameWithoutExtension).ToArray();
+        // TODO
+        string[] sceneFiles = new string[3] { "Test_JiMin", "Test_WooMin", "MainGameScene" };
         GameObject SceneEntry;
         foreach (string sceneName in sceneFiles)
         {

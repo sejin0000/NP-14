@@ -267,6 +267,10 @@ MonoBehaviour:
   - stageBuffReset
   - HealBuffOff
   - HealBuffOn
+  - ADDEnemyViewList
+  - CLEAREnemyViewList
+  - RemoveEnemyViewList
+  - SendSucceed
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

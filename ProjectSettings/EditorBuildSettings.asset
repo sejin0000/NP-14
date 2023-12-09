@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TestScenes/Test_JiMin.unity
     guid: 57a61689c2dbee746bb104c58d724f88
+  - enabled: 1
+    path: Assets/Scenes/TestScenes/Test_WooMin.unity
+    guid: efe9c5ef6f296c84c8bb31381598568b
   m_configObjects: {}

@@ -45,14 +45,4 @@ public class UIPlayerSkill : UIBase, ICommonUI
         float denominator = 1 / playerStats.SkillCoolTime.total;
         skillGauge.fillAmount = numerator * denominator;
     }
-
-    public override void Open()
-    {
-        gameObject.SetActive(true);
-    }
-
-    public override void Close()
-    {
-        gameObject.SetActive(false);
-    }
 }
