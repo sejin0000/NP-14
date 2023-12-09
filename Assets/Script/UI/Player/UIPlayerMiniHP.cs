@@ -12,7 +12,7 @@ using UnityEngine.UI;
 
 public class UIPlayerMiniHP : UIBase//, ICommonUI
 {
-    [SerializeField] private Slider hpGauge;
+    private Slider hpGauge;
     private PlayerStatHandler playerStats;
 
     public override void Initialize()
@@ -26,8 +26,8 @@ public class UIPlayerMiniHP : UIBase//, ICommonUI
     {
         var player = transform.parent.GetComponent<UIPlayerMiniHUD>().Player;
 
-        playerStats = player.GetComponent<PlayerStatHandler>();
         hpGauge = GetComponentInChildren<Slider>();
+        playerStats = player.GetComponent<PlayerStatHandler>();
 
         playerStats.OnChangeCurHPEvent += UpdateValue;
     }
