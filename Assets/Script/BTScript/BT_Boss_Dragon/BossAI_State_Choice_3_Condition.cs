@@ -23,12 +23,10 @@ public class BossAI_State_Choice_3_Condition : BTCondition
     {
 
 
-        Debug.Log($"현재 랜덤 난수는 {bossAI_Dragon.currentNomalAttackSquence} 입니다.");
 
         //노말 패턴 1
         if (bossAI_Dragon.currentNomalAttackSquence == 2)
         {
-            Debug.Log($"노말 시퀀스 패턴 3을 실행합니다.");
             return Status.BT_Success;
         }
         else

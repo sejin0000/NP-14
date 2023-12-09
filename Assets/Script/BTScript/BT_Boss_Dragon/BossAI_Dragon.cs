@@ -104,6 +104,8 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     public float lerpSpeed = 10f; // 보간시 필요한 수치(조정 필요)
 
 
+    private GameObject wall;
+
 
 
     //객체별 넉백거리
@@ -403,7 +405,6 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
         if (currentTime <= 0)
         {
-            Debug.Log("업데이트 브레스 들어옴");
 
             //에어리어 리스트에 사람이 하나라도 있다면?
             //리스트 내 모든 대상에게 레이캐스트 발사
@@ -411,7 +412,6 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
             for (int i = 0; i < inToAreaPlayers.Count; i++)
             {
-                Debug.Log("반복문 들어옴");
                 // 플레이어의 위치
                 PlayerStatHandler player = inToAreaPlayers[i];
                 Vector3 playerPosition = player.transform.position;
@@ -439,10 +439,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
                         player.DirectDamage(bossSO.atk, PV.ViewID);
                         // 실제 넉백
                         player.photonView.RPC("StartKnockback", RpcTarget.All, directionToPlayer, knockbackDistance);
-                        //StartCoroutine(player.Knockback(directionToPlayer, knockbackDistance));
-                    
-                        Debug.Log($"2나오면 안됨 : {inToAreaPlayers.Count} 데미지는 이만큼 받음 :{bossSO.atk}");
-                        Debug.Log($"플레이어 현재 체력은 : {player.CurHP}");
+                        //StartCoroutine(player.Knockback(directionToPlayer, knockbackDistance));                 
                     }
                 }
             }
@@ -863,6 +860,15 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
         anim.SetBool(animName, set);
     }
     #endregion
+
+
+
+    [PunRPC]
+    public void MakeWall(Transform target)
+    {
+        Instantiate(wall, target.position, Quaternion.identity);
+    }
+
 
     #region BehaviourTree 관련 
     void CreateTreeAIState()
