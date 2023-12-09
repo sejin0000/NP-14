@@ -13,6 +13,10 @@ public class MainGameNetwork : MonoBehaviourPunCallbacks
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
         var GM = GameManager.Instance;
+        if (GM.isGameOver)
+        {
+            return;
+        }
         loadingPanel.Initialize(5f);
 
         GM._mansterSpawner.GetPhotonView().RPC("CLEAREnemyViewList", RpcTarget.All);
