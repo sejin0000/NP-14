@@ -26,7 +26,7 @@ public class EnemyState_Attack : BTAction
     public override void Initialize()
     {
         currentTime = enemySO.atkDelay;
-        enemyAI.PV.RPC("SetStateColor", RpcTarget.All, (int)EnemyStateColor.ColorBlack, enemyAI.PV.ViewID);
+        //enemyAI.PV.RPC("SetStateColor", RpcTarget.All, (int)EnemyStateColor.ColorBlack, enemyAI.PV.ViewID);
 
         target = enemyAI.Target;
     }

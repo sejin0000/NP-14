@@ -34,7 +34,8 @@ public class EnemySO : ScriptableObject
 
     public int unitScale;         // 유닛 크기
 
-
+    [Header("네임드 전용")]
+    public int breathDelay;
 
     public SpriteLibraryAsset enemySpriteLibrary;
     public Bullet enemyBulletPrefab;
