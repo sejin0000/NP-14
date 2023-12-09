@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SetupPopup : MonoBehaviour
+public class SetupPopup : UIBase
 {
     public enum SetupIndex
     {

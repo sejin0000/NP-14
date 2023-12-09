@@ -39,6 +39,7 @@ public class MapGenerator : MonoBehaviour
     Node root;
     private void Awake()
     {
+        Debug.Log("MapGenerator - Awake");
         setTile = GetComponent<SetTile>();
         roomNodeInfo = GetComponent<RoomNodeInfo>();
     }

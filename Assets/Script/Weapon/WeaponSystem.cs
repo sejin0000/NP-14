@@ -54,11 +54,11 @@ public class WeaponSystem : MonoBehaviour
     private void Awake()
     {
         isDamage = true;
-        bullet         = Resources.Load<GameObject>("Prefabs/Player/Bullet");
-        pv             = GetComponent<PhotonView>();
-        _controller    = GetComponent<TopDownCharacterController>();
-        _viewID        = pv.ViewID;
-        playerStatHandler=GetComponent<PlayerStatHandler>();
+        bullet = Resources.Load<GameObject>("Prefabs/Player/Bullet");
+        pv = GetComponent<PhotonView>();
+        _controller = GetComponent<TopDownCharacterController>();
+        _viewID = pv.ViewID;
+        playerStatHandler = GetComponent<PlayerStatHandler>();
         //target = BulletTarget.Enemy;
         targets = new Dictionary<string, int>();
         targets["Enemy"] = (int)BulletTarget.Enemy;
@@ -75,17 +75,19 @@ public class WeaponSystem : MonoBehaviour
         Penetrate = false;
         pivotSet = false;
         canresurrection = false;
-        sniperAtkBuff=false;
-        canAngle=false;
+        sniperAtkBuff = false;
+        canAngle = false;
         weaponType = WeaponType.Shooting;
         finalAttackCoeff = 1;
         humanAttackintelligentmissile = false;
 
-    _cool = GetComponent<CoolTimeController>();
+        _cool = GetComponent<CoolTimeController>();
+        _controller.OnAttackEvent += Shooting;
     }
+
     private void Start()
     {
-        _controller.OnAttackEvent += Shooting;
+        
     }
 
     public void Shooting()
@@ -205,7 +207,7 @@ public class WeaponSystem : MonoBehaviour
         _object.GetComponent<Bullet>().Init();
         if (humanAttackintelligentmissile)
         {
-            _bullet.MissileFire();
+            _bullet.MissileFire(1);
         }
     }
 }

@@ -8,7 +8,7 @@ using Photon.Pun;
 using UnityEngine.UI;
 using System;
 
-public class UIBulletIndicator : UIBase, ICommonUI
+public class UIBulletIndicator : UIBase
 {
     [SerializeField] private TMP_Text ammo;
     [SerializeField] private List<GameObject> bullets;
@@ -20,17 +20,13 @@ public class UIBulletIndicator : UIBase, ICommonUI
 
     private float ammoMax;
     private float currentAmmo;
-    [SerializeField] private float spriteWidth;
-    [SerializeField] private float spriteSpace;
-    
+    private float spriteWidth;
+    [SerializeField] private float spriteSpace = 10f;
 
-    void ICommonUI.Initialize()
+    public override void Initialize()
     {
         InitializeData();
-    }
-
-    void ICommonUI.Behavior()
-    {
+        InitializeBullets();
         ChangeValue();
     }
 
@@ -48,14 +44,6 @@ public class UIBulletIndicator : UIBase, ICommonUI
         player.OnEndReloadEvent += ReloadBullets;
         playerStat.OnChangeAmmorEvent += ChangeValue;
         player.OnAttackEvent += ShootBullet;
-        //player.OnAttackEvent += TestMethod;
-    }
-
-    public override void Initialize()
-    {
-        InitializeData();
-        InitializeBullets();
-        ChangeValue();
     }
 
     private void ChangeValue()
@@ -68,35 +56,25 @@ public class UIBulletIndicator : UIBase, ICommonUI
         ammo.text = sb.ToString();
     }
 
-    public override void Open()
-    {
-        gameObject.SetActive(true);
-    }
-
-    public override void Close()
-    {
-        gameObject.SetActive(false);
-    }
-
     public void InitializeBullets()
     {
-        Debug.Log("[InitializeBullets] AKAKAKAKAAKAKAK");
-
         bullets = new List<GameObject>((int)ammoMax);
         for (int i = 0; i < ammoMax; ++i)
         {
             GameObject temp = Instantiate(bulletPrefab, bulletParents.transform);
-            //bullets[i] = temp;
             bullets.Add(temp);
+
+            spriteWidth = bullets[0].GetComponent<RectTransform>().rect.width;
 
             if (i > 0)
             {
-                Vector3 pos = bullets[i - 1].transform.position;
+                Vector3 pos = bullets[i - 1].GetComponent<RectTransform>().anchoredPosition;
                 pos.x += ((spriteWidth) + spriteSpace);
-                bullets[i].transform.position = pos;
+                bullets[i].GetComponent<RectTransform>().anchoredPosition = pos;
             }
         }
     }
+
     public void ResizeBullets()
     {
         bullets.Capacity = (int)ammoMax;
@@ -110,9 +88,9 @@ public class UIBulletIndicator : UIBase, ICommonUI
 
             if (i > 0)
             {
-                Vector3 pos = bullets[i - 1].transform.position;
+                Vector3 pos = bullets[i - 1].GetComponent<RectTransform>().anchoredPosition;
                 pos.x += ((spriteWidth) + spriteSpace);
-                bullets[i].transform.position = pos;
+                bullets[i].GetComponent<RectTransform>().anchoredPosition = pos;
             }     
         }
     }
@@ -130,8 +108,10 @@ public class UIBulletIndicator : UIBase, ICommonUI
     public void ShootBullet()
     {
         currentAmmo = playerStat.CurAmmo;
+        Debug.Log("[UIBulletIndicator] currentAmmo: " + currentAmmo);
         int index_L = (int)(ammoMax - currentAmmo);
-        int index_R = (int)currentAmmo-1;
+        int index_R = (int)currentAmmo;
+        Debug.Log("[UIBulletIndicator] index_R: " + index_R);
 
         if (index_R >= 0)
         {
@@ -149,9 +129,13 @@ public class UIBulletIndicator : UIBase, ICommonUI
             bullets[i].GetComponent<UIBullet>().PlayAnim("Idle");
         }
     }
-
-    public void TestMethod()
+    public override void Open()
     {
+        gameObject.SetActive(true);
+    }
 
+    public override void Close()
+    {
+        gameObject.SetActive(false);
     }
 }

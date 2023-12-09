@@ -257,6 +257,10 @@ MonoBehaviour:
   - DirectDamage
   - StartBreathCoroutine
   - StartKnockback
+  - Missile
+  - thorn
+  - Thorn
+  - ImLive
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

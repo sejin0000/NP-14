@@ -8,6 +8,7 @@ public enum MonsterName
     Test_Enemy,
     Test_Boss,
     MeleeEnemy,
+    Boss_Turtle,
 }
 [CreateAssetMenu(fileName = "MonsterSquadSO", menuName = "MonsterSquadSO", order = 1)]
 

@@ -35,6 +35,7 @@ public class Setting : MonoBehaviour
 
     public void InstantiatePlayer()
     {
+        Debug.Log("Setting[InstantiatePlayer] - ÇÃ·¹ÀÌ¾î ¼ÒÈ¯");
         if (PV == null)
         {
             PV = GetComponent<PhotonView>();
@@ -68,6 +69,7 @@ public class Setting : MonoBehaviour
     {
         GameObject clientPlayer = PhotonView.Find(viewID).gameObject;
         GameManager.Instance.playerInfoDictionary.Add(viewID, clientPlayer.transform);
+        Debug.Log("Setting[PlayerInfoDictionarySetting] - µñ¼Å³Ê¸® added");
     }
 
     [PunRPC]

@@ -137,7 +137,6 @@ public class ResultManager : MonoBehaviour//vs코드
             target3 = 5;
         }
         int type = 0;
-        Debug.Log($"랜덤 수 : {random}");
         if (random <= target1)
         {
             type = 1;

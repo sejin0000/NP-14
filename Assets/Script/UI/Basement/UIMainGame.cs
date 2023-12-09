@@ -9,22 +9,7 @@ public class UIMainGame : UIBase
     public override void Initialize()
     {
         Debug.Log("[UIMainGame] Initialize");
-
-        if (SceneManager.GetActiveScene().name == "Test_DoHyun")
-            Open();
-        else
-            GameManager.Instance.OnStageStartEvent += Open;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
         
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        GameManager.Instance.OnStageStartEvent += Open;
     }
 }

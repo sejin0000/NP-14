@@ -15,51 +15,51 @@ public class UIStageTransition : UIBase
 {
     [Header("GameObject")]
     [SerializeField] private GameObject blockParents;
-    [SerializeField] private GameObject blockPrefab;
+    [SerializeField] private GameObject[] blockPrefab;
     [SerializeField] private GameObject player;
 
     [Header("ETC")]
     [SerializeField] private Animator animator;
     [SerializeField] private float speed=0.1f;
     [SerializeField] private int maxFloor;
-    [SerializeField] private Sprite[] sprite;
 
     private int currentFloor = -1;
     private GameObject[] block;
 
-    [SerializeField] private float spriteHeight = 100f;
-    [SerializeField] private float spriteSpace;
+    private float spriteHeight;
 
     public override void Initialize()
     {
         Debug.Log("[UIStageTransition] initialized");
-
         CreateTower();
-        //SetupPlayer();
 
-        //MainGameManager.Instance.OnUIPlayingStateChanged += StartTransition;
-        GameManager.Instance.OnStageStartEvent += StartTransition;
+        GameManager.Instance.OnStageSettingEvent += StartTransition;
+        GameManager.Instance.OnBossStageSettingEvent += StartTransition;
     }
 
     // Tower 층수만큼 일정한 간격으로 블럭 생성
     public void CreateTower()
     {
+        spriteHeight = blockPrefab[0].GetComponent<RectTransform>().rect.height;
+
         block = new GameObject[maxFloor];
         for(int i=0; i<maxFloor;++i)
         {
-            GameObject temp = Instantiate(blockPrefab, blockParents.transform);
-            block[i] = temp;
-            block[i].transform.SetParent(blockParents.transform);
+            GameObject temp;
+            if (i == maxFloor - 1) //Block_Head
+                temp = Instantiate(blockPrefab[1], blockParents.transform);
+            else //Block_Body
+                temp = Instantiate(blockPrefab[0], blockParents.transform);
 
+            block[i] = temp;
+            
             if (i > 0)
             {
-                Vector3 pos = block[i - 1].transform.position;
-                pos.y += (spriteHeight + spriteSpace);
-                block[i].transform.position = pos;
+                Vector3 pos = block[i - 1].GetComponent<RectTransform>().anchoredPosition;
+                pos.y += spriteHeight;
+                block[i].GetComponent<RectTransform>().anchoredPosition = pos;
             }
         }
-
-        block[block.Length - 1].GetComponent<Image>().sprite = sprite[1];
     }
 
     // 생성한 블럭 위치 기준으로 플레이어 오브젝트 배치 및 현재 층수 1층 설정
@@ -77,14 +77,14 @@ public class UIStageTransition : UIBase
     public void StartTransition()
     {
         Open();
-        StartCoroutine(ClimeTower());
+        StartCoroutine(ClimbTower());
     }
 
-    IEnumerator ClimeTower()
+    IEnumerator ClimbTower()
     {
         yield return new WaitForSecondsRealtime(1f);
-
-        while (player.transform.position.y <= (block[currentFloor + 1].transform.position.y+spriteHeight))
+        //player.GetComponent<RectTransform>().rect.height/4);
+        while (player.transform.position.y <= (block[currentFloor + 1].transform.position.y))
         {
             //player.GetComponent<SpriteResolver>().SetCategoryAndLabel("run", "1");
             animator.SetBool("isRun", true);
@@ -96,32 +96,23 @@ public class UIStageTransition : UIBase
         animator.SetBool("isRun", false);
         yield return new WaitForSecondsRealtime(3f);
         OnClimeTower();
+        GameManager.Instance.isTransitionPlayed = true;
     }
 
     // UI 연출이 끝나면 메인 게임 매니저의 상태 변경
     private void OnClimeTower()
     {
-        StopCoroutine(ClimeTower());
+        StopCoroutine(ClimbTower());
         currentFloor += 1;
 
         //MainGameManager.Instance.GameState = MainGameManager.GameStates.Start;
         Close();
+        UIManager.Instance.Open<UIMainGame>();
     }
 
     private void Update()
     {
         player.GetComponent<Image>().sprite = player.GetComponent<SpriteRenderer>().sprite;
-    }
-
-    public override void Open()
-    {
-        base.Open();
-        this.gameObject.SetActive(true);
-    }
-
-    public override void Close()
-    {
-        base.Close();
-        this.gameObject.SetActive(false);
+        UIManager.Instance.Close<UIMainGame>();
     }
 }

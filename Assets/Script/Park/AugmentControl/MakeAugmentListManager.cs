@@ -41,6 +41,7 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
 
     private void Awake()
     {
+        Debug.Log("MakeAugmentManager - Awake");
         Instance = this;        
 
         //DontDestroyOnLoad(this);

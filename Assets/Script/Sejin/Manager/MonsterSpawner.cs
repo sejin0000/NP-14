@@ -11,7 +11,6 @@ public class MonsterSpawner : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.OnStageEndEvent += StageMonsterClear;
-        GameManager.Instance.OnBossStageSettingEvent += BossSpawn;
     }
 
     public void MonsterSpawn()

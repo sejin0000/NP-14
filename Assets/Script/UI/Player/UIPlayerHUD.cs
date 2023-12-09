@@ -7,12 +7,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UIPlayerHUD : UIBase
+public class UIPlayerHUD : UIMainGame
 {
     [SerializeField] private Image portrait;
 
     private UIPlayerHP hpGauge;
     private UIPlayerDodge dodgeGauge;
+    private UIPlayerSkill skillGauge;
     private UIBulletIndicator bulletIndicator;
     private GameObject player;
 
@@ -26,16 +27,18 @@ public class UIPlayerHUD : UIBase
 
         hpGauge = GetComponentInChildren<UIPlayerHP>();
         dodgeGauge = GetComponentInChildren<UIPlayerDodge>();
+        skillGauge = GetComponentInChildren<UIPlayerSkill>();
         bulletIndicator = GetComponentInChildren<UIBulletIndicator>();
 
-        Initialize();
+        SetupData();
     }
 
-    public override void Initialize()
+    void SetupData()
     {
         Debug.Log("Initialize from [PlayerHUD]'s UIPlayerHUD Comp");
         hpGauge.Initialize();
         dodgeGauge.Initialize();
+        skillGauge.Initialize();
         bulletIndicator.Initialize();
 
         Sprite playerImage;
@@ -48,7 +51,8 @@ public class UIPlayerHUD : UIBase
 
     public void Update()
     {
-        dodgeGauge.UpdateValue();
+        dodgeGauge?.UpdateValue();
+        skillGauge?.UpdateValue();
     }
 
     public override void Foo()
