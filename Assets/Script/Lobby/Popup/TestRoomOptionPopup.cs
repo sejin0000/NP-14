@@ -119,7 +119,9 @@ public class TestRoomOptionPopup : MonoBehaviour
 
     public void GetSceneArray()
     {
-        string[] sceneFiles = Directory.GetFiles(folderPath, "*.unity").Select(Path.GetFileNameWithoutExtension).ToArray();
+        //string[] sceneFiles = Directory.GetFiles(folderPath, "*.unity").Select(Path.GetFileNameWithoutExtension).ToArray();
+        // TODO
+        string[] sceneFiles = new string[2] { "Test_JiMin", "Test_WooMin" };
         GameObject SceneEntry;
         foreach (string sceneName in sceneFiles)
         {
