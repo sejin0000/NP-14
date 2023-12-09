@@ -290,6 +290,8 @@ public class PlayerStatHandler : MonoBehaviourPun
         }
         if (GameManager.Instance != null)
         {
+            viewID = photonView.ViewID;
+            OnChangeCurHPEvent += SendSyncHP;
             StageStartSet();
         }
 
