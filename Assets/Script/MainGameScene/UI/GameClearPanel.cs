@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameClearPanel : UIBase
 {
@@ -31,6 +32,7 @@ public class GameClearPanel : UIBase
     public void OnGameCleared()
     {
         Open();
+        GameManager.Instance.isGameOver = true;
         if (PhotonNetwork.IsMasterClient)
         {
             GameManager.Instance._mansterSpawner.GetComponent<MonsterSpawner>().StageMonsterClear();
@@ -64,6 +66,7 @@ public class GameClearPanel : UIBase
     public void OnGameOver()
     {
         Open();
+        GameManager.Instance.isGameOver = true;
         if (PhotonNetwork.IsMasterClient)
         {
             GameManager.Instance._mansterSpawner.GetComponent<MonsterSpawner>().StageMonsterClear();
@@ -101,6 +104,7 @@ public class GameClearPanel : UIBase
         Destroy(AudioManager.Instance.gameObject);
         PhotonNetwork.AutomaticallySyncScene = false;
 
-        PhotonNetwork.LoadLevel("LobbyScene");
+        //PhotonNetwork.LoadLevel("LobbyScene");
+        SceneManager.LoadScene(0);
     }
 }
