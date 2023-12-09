@@ -1,8 +1,11 @@
 using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem.UI;
+using Random = UnityEngine.Random;
 
 public class MonsterSpawner : MonoBehaviourPun
 {
@@ -53,7 +56,16 @@ public class MonsterSpawner : MonoBehaviourPun
 
         MonsterName monster = stagerListInfoSO.StagerList[GameManager.Instance.curStage].MonsterSquadList[randomSquad].MonsterList[randamMonster];
 
-        BossSpawner(monster.ToString(), new Vector2(0,10));
+        var dragonVector = new Vector2(0,10);
+        var turtleVector = new Vector2(3,3);
+        if (monster == MonsterName.Boss_Dragon)
+        {
+            BossSpawner(monster.ToString(), dragonVector);
+        }
+        if (monster == MonsterName.Boss_Turtle)
+        {
+            BossSpawner(monster.ToString(), turtleVector);
+        }
     }
 
 
@@ -61,6 +73,7 @@ public class MonsterSpawner : MonoBehaviourPun
     {
         string testEnemy = $"Prefabs/Enemy/{_name}";
         GameObject GO =  PhotonNetwork.Instantiate(testEnemy, vector, Quaternion.identity);
+        MultiplyEnemyPower(GO);
         GO.GetComponent<EnemyAI>().roomNum = _nodeNum;
         GO.transform.parent = Case.transform;
 
@@ -68,6 +81,17 @@ public class MonsterSpawner : MonoBehaviourPun
 
         int viewID = GO.GetPhotonView().ViewID;
         photonView.RPC("ADDEnemyViewList", RpcTarget.All, viewID);
+    }
+
+    public void MultiplyEnemyPower(GameObject enemy)
+    {
+        var _enemyAI = enemy.GetComponent<EnemyAI>();
+        float baseNumber = 1.3f;
+        float exponent = GameManager.Instance.curStage;
+
+        float result = (float)Math.Pow(baseNumber, exponent);
+        _enemyAI.currentHP *= result;
+        _enemyAI.appliedATK += exponent;
     }
 
     public void BossSpawner(string _name, Vector2 vector)

@@ -7,19 +7,20 @@ using UnityEngine;
 public class MainGameNetwork : MonoBehaviourPunCallbacks
 {
     private bool IsSucceedOver;
+    public LoadingPanel loadingPanel;
 
-    public override void OnPlayerLeftRoom(Player otherPlayer)
-    {
-        var GM = GameManager.Instance;
-        GM.playerInfoDictionary.Clear();
-        int viewID = GM.clientPlayer.GetPhotonView().ViewID;
-        GM.gameObject.GetPhotonView().RPC("PlayerInfoDictionarySetting", RpcTarget.AllBuffered, viewID);
-    }
+    
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
         var GM = GameManager.Instance;
+        loadingPanel.Initialize(5f);
+
         GM._mansterSpawner.GetPhotonView().RPC("CLEAREnemyViewList", RpcTarget.All);
-        
+
+        GM.playerInfoDictionary.Clear();
+        int viewID = GM.clientPlayer.GetPhotonView().ViewID;
+        GM.gameObject.GetPhotonView().RPC("PlayerInfoDictionarySetting", RpcTarget.AllBuffered, viewID);
+
         if (PhotonNetwork.IsMasterClient)
         {
             if (GM != null) 
@@ -50,7 +51,8 @@ public class MainGameNetwork : MonoBehaviourPunCallbacks
             StartCoroutine(WaitSucceed());
         }
         else
-        {            
+        {
+            Debug.Log("MainGameNetwork - Succeed Complete");
             yield return null;
         }
     }

@@ -4,18 +4,8 @@ using System.Diagnostics.Tracing;
 using UnityEngine;
 using UnityEngine.UI;
 
-enum BlockType
-{
-    NONE,
-    NORMAL,
-    EVENT,
-    BOSS
-}
-
 public class UIStageBlock : MonoBehaviour
 {
-    [SerializeField] BlockType blockType;
-
     private Image blockImg;
 
     private void Awake()
