@@ -245,10 +245,6 @@ public class PlayerStatHandler : MonoBehaviourPun
             "장탄수",
         };
     }
-    private void OnEnable()
-    {
-        stageBuffReset();
-    }
     private void PunRpcStageBuffReset() 
     {
         photonView.RPC("stageBuffReset", RpcTarget.All);
@@ -379,10 +375,6 @@ public class PlayerStatHandler : MonoBehaviourPun
 
             Debug.Log("[PlayerStatHandler] " + "Damage Done");
         }
-        else 
-        {
-            Debug.Log("피함 피함 피함");
-        }
 
     }
 
@@ -393,7 +385,6 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     public void Regen(float HP)
     {
-        Debug.Log("너냐?");
         HPadd(HP);
         OnRegenEvent?.Invoke();
         OnRegenCalculateEvent?.Invoke(RegenHP);
@@ -406,8 +397,6 @@ public class PlayerStatHandler : MonoBehaviourPun
         isRegen = true;
         _DebuffControl.Init(PlayerDebuffControl.buffName.TwoMoon, 5f);
         photonView.RPC("SendRegenBool", RpcTarget.All, viewID);
-        Debug.Log("부활 무적 시작");
-        // 부활 파티클이 켜져야 하는 시점
     }
 
     [PunRPC]
@@ -436,7 +425,6 @@ public class PlayerStatHandler : MonoBehaviourPun
         {
             pv.GetComponent<PlayerStatHandler>().isRegen = false;            
         }
-        Debug.Log("부활 무적 끝");
         // 부활 파티클이 꺼져야 하는 시점
     }
 
@@ -457,6 +445,9 @@ public class PlayerStatHandler : MonoBehaviourPun
         { this.gameObject.layer = 13; }
         if (isDie == true) 
         {
+            PlayerInputController tempInputControl = this.gameObject.GetComponent<PlayerInputController>();
+            tempInputControl.ResetSetting();
+            tempInputControl.InputOn();
             anime._animation.SetTrigger("IsRegen");
         }
 

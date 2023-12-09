@@ -109,7 +109,7 @@ public class GameManager : MonoBehaviour
 
             //EmergencyProtocolEvent += 
         }
-
+        PartyDeathCount = 0;
         if (stageListInfo.StagerList[curStage].stageType == StageType.normalStage)
         {
             CallStageSettingEvent();
