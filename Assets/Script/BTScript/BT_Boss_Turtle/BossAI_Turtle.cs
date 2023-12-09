@@ -258,7 +258,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     private void GaugeUpdate()
     {
         image_Gauge.fillAmount = (float)currentHP / bossSO.hp;
-        txt_Gauge.text = currentHP + " / " + bossSO.hp; // 현재 체력 / 최대 체력 표시
+        txt_Gauge.text = currentHP.ToString("F0") + " / " + bossSO.hp;
     }
 
     [PunRPC]

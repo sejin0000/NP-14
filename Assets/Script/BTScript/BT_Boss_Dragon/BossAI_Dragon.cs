@@ -134,6 +134,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
         knockbackDistance = 0f;
 
+        GaugeUpdate();
 
         //TODO 생성할 때, 모든 플레이어 Transform 정보를 담는다.TestGameManagerWooMin
         if (TestGameManager.Instance != null)
@@ -226,7 +227,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     private void GaugeUpdate()
     {
         image_Gauge.fillAmount = (float)currentHP / bossSO.hp;
-        txt_Gauge.text = currentHP + " / " + bossSO.hp; // 현재 체력 / 최대 체력 표시
+        txt_Gauge.text = currentHP.ToString("F0") + " / " + bossSO.hp;
     }
 
     [PunRPC]
