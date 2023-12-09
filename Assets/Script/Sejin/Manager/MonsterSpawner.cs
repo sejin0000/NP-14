@@ -53,7 +53,16 @@ public class MonsterSpawner : MonoBehaviourPun
 
         MonsterName monster = stagerListInfoSO.StagerList[GameManager.Instance.curStage].MonsterSquadList[randomSquad].MonsterList[randamMonster];
 
-        BossSpawner(monster.ToString(), new Vector2(0,10));
+        var dragonVector = new Vector2(0,10);
+        var turtleVector = new Vector2(3,3);
+        if (monster == MonsterName.Boss_Dragon)
+        {
+            BossSpawner(monster.ToString(), dragonVector);
+        }
+        if (monster == MonsterName.Boss_Turtle)
+        {
+            BossSpawner(monster.ToString(), turtleVector);
+        }
     }
 
 
