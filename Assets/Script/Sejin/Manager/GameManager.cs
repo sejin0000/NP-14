@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour
     public int PartyDeathCount;
     public int TeamGold;
     public bool isTransitionPlayed;
+    public bool isStartFirst;
 
 
 
@@ -91,15 +92,20 @@ public class GameManager : MonoBehaviour
         }
         OnStageStartEvent += MG.roomNodeInfo.OpenDoor;
 
+        TeamGold = 0;
+        isStartFirst = true;
     }
 
 
     private void Start()
     {
-        AudioManager.Instance.AddComponent<AudioManagerTest>().Initialize();
-        PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
-        MakeSetting.MakeManager();
-        TeamGold = 0;
+        if (isStartFirst)
+        {
+            AudioManager.Instance.AddComponent<AudioManagerTest>().Initialize();
+            PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
+            MakeSetting.MakeManager();
+            isStartFirst = false;
+        }
 
         if (stageListInfo.StagerList[curStage].stageType == StageType.normalStage)
         {
