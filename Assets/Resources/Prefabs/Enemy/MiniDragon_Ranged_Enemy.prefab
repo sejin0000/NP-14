@@ -122,7 +122,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0.6}
+  m_AnchoredPosition: {x: 0, y: 0.5}
   m_SizeDelta: {x: 200, y: 28}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &5735594272927198302
@@ -358,9 +358,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1616252627983104131}
   - component: {fileID: 61385077797086651}
-  - component: {fileID: 1357622211588905405}
-  - component: {fileID: 8923447907974815312}
-  - component: {fileID: 8736794089679222729}
+  - component: {fileID: 2620774945296316658}
+  - component: {fileID: 3502817631382226288}
+  - component: {fileID: 788158280079825599}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Untagged
@@ -425,7 +425,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: -1136013003, guid: c788c17479a98744793d7101c729f8dd, type: 3}
+  m_Sprite: {fileID: -519650836, guid: 76a7479ad241e8d4e80ae6f8f6e8fa64, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -436,7 +436,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &1357622211588905405
+--- !u!95 &2620774945296316658
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
@@ -446,7 +446,7 @@ Animator:
   m_GameObject: {fileID: 6537732574070128214}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 9d3f3554063a6ac42a43fee72dc0377b, type: 2}
+  m_Controller: {fileID: 9100000, guid: 5f958df8fabf07b44b958f0d92eb8b77, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -457,7 +457,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8923447907974815312
+--- !u!114 &3502817631382226288
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -469,11 +469,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed8b1ae4e4e52b34ea557c1c11e076fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CategoryHash: 0
-  m_labelHash: 0
+  m_CategoryHash: 0.009161512
+  m_labelHash: 8.840178e-23
   m_SpriteKey: 0
-  m_SpriteHash: 0
---- !u!114 &8736794089679222729
+  m_SpriteHash: 591189836
+--- !u!114 &788158280079825599
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -486,7 +486,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Library: []
-  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: bc356edf017b654408f6a7a1bb1f63ac, type: 3}
+  m_SpriteLibraryAsset: {fileID: 7108339969198208228, guid: 78e8c08b7db7b4f41b1ab9425514757b, type: 3}
 --- !u!1 &8136548992316328934
 GameObject:
   m_ObjectHideFlags: 0
@@ -502,7 +502,7 @@ GameObject:
   - component: {fileID: 7589394617890055635}
   - component: {fileID: 5574153265622427481}
   m_Layer: 7
-  m_Name: MeleeEnemy
+  m_Name: MiniDragon_Ranged_Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -542,18 +542,16 @@ MonoBehaviour:
   CanWater: 0
   CanIce: 0
   currentHP: 0
-  viewAngle: 57
-  viewDistance: 5
   roomNum: 0
-  enemySO: {fileID: 11400000, guid: 92a5293b29bd74c4b9d82802290b70d7, type: 2}
+  enemySO: {fileID: 11400000, guid: 3462c6ca5a0aec84eb2a06161ff250a7, type: 2}
   spriteRenderer: {fileID: 61385077797086651}
-  anim: {fileID: 1357622211588905405}
+  anim: {fileID: 2620774945296316658}
   originColor: {r: 0, g: 0, b: 0, a: 0}
   nav: {fileID: 7302048549800893148}
   navTargetPoint: {x: 0, y: 0, z: 0}
   PlayersTransform: []
   enemyAim: {fileID: 4931010869674023689}
-  enemyBulletPrefab: {fileID: 7691614160748915792, guid: ac39180b8f422f349a95419f34d39b2a, type: 3}
+  enemyBulletPrefab: {fileID: 7691614160748915792, guid: ffaf2c7e3b6a9714398653f89e5593ca, type: 3}
   targetMask:
     serializedVersion: 2
     m_Bits: 256
@@ -588,7 +586,7 @@ NavMeshAgent:
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 160
+  m_AngularSpeed: 140
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1

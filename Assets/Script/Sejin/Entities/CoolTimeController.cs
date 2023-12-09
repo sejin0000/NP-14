@@ -60,7 +60,7 @@ public class CoolTimeController : MonoBehaviour
         {
             controller.playerStatHandler.CanRoll = false;
         }
-        controller.playerStatHandler.Invincibility = true;
+        //controller.playerStatHandler.Invincibility = true;
         curRollCool = coolTime;
         controller.playerStatHandler.UseRoll = false;
     }
@@ -70,7 +70,7 @@ public class CoolTimeController : MonoBehaviour
         controller.playerStatHandler.CurRollStack += 1;
         controller.playerStatHandler.CanRoll = true;
         controller.playerStatHandler.UseRoll = true;
-        controller.playerStatHandler.Invincibility = false;
+        //controller.playerStatHandler.Invincibility = false;
         if (controller.playerStatHandler.CurRollStack < controller.playerStatHandler.MaxRollStack)
         {
             SkillCoolTime();

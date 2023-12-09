@@ -18,7 +18,6 @@ public class BossAI_Turtle_State_Attack_Missile : BTAction
     public override void Initialize()
     {
         bossAI_Turtle.isEndMissile = false;
-        Debug.Log($"미사일들어옴체크");
 
         if (bossAI_Turtle.missileCoolTime <= 0)
         {
@@ -30,7 +29,6 @@ public class BossAI_Turtle_State_Attack_Missile : BTAction
     {
         if (bossAI_Turtle.missileCoolTime > 0)
         {
-            Debug.Log("미사일 발사 쿨타임 중");
             return Status.BT_Failure;
         }
 

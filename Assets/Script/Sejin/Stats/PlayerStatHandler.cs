@@ -30,6 +30,8 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     [SerializeField] private PlayerSO playerStats;
 
+    PlayerAnimatorController anime;
+
 
     public Stats ATK;                 // 공격력
     public Stats HP;                  // 체력
@@ -148,7 +150,7 @@ public class PlayerStatHandler : MonoBehaviourPun
     [HideInInspector] public bool CanReload;                              //장전   가능한지
     [HideInInspector] public bool CanSkill;                               //스킬   가능한지
     [HideInInspector] public bool CanRoll;                                //구르기 가능한지
-    [HideInInspector] public bool Invincibility;                          //무적
+    public bool Invincibility;                          //무적
 
     public bool useSkill;
     public bool UseRoll;
@@ -166,6 +168,7 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     private void Awake()
     {
+        anime = GetComponent<PlayerAnimatorController>();
         ATK = new Stats(playerStats.atk);
         HP = new Stats(playerStats.hp);
         Speed = new Stats(playerStats.unitSpeed);
@@ -246,6 +249,11 @@ public class PlayerStatHandler : MonoBehaviourPun
     {
         stageBuffReset();
     }
+    private void PunRpcStageBuffReset() 
+    {
+        photonView.RPC("stageBuffReset", RpcTarget.All);
+    }
+    [PunRPC]
     private void stageBuffReset() 
     {
         if (!CanSpeedBuff)
@@ -292,13 +300,9 @@ public class PlayerStatHandler : MonoBehaviourPun
         GameManager.Instance.OnStageStartEvent += startHp;
         GameManager.Instance.OnBossStageStartEvent += RefillCoin;
         GameManager.Instance.OnBossStageStartEvent += startHp;
-        GameManager.Instance.OnStageStartEvent += stageBuffReset;
-        GameManager.Instance.OnBossStageStartEvent += stageBuffReset;
+        GameManager.Instance.OnStageStartEvent += PunRpcStageBuffReset;
+        GameManager.Instance.OnBossStageStartEvent += PunRpcStageBuffReset;
         viewID = photonView.ViewID;
-        OnChangeCurHPEvent += SendSyncHP;
-        this.gameObject.layer = 8;
-        if (ImGhost) 
-        { this.gameObject.layer = 13; }
     }
     public override string ToString()
     {
@@ -387,6 +391,7 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     public void Regen(float HP)
     {
+        Debug.Log("너냐?");
         HPadd(HP);
         OnRegenEvent?.Invoke();
         OnRegenCalculateEvent?.Invoke(RegenHP);
@@ -439,7 +444,20 @@ public class PlayerStatHandler : MonoBehaviourPun
     }
     public void startHp()
     {
-        curHP = HP.total;
+        photonView.RPC("PunRpcStartHp",RpcTarget.All);
+    }
+    [PunRPC]
+    public void PunRpcStartHp() 
+    {
+        CurHP = HP.total;
+        this.gameObject.layer = 8;
+        if (ImGhost)
+        { this.gameObject.layer = 13; }
+        if (isDie == true) 
+        {
+            anime._animation.SetTrigger("IsRegen");
+        }
+
     }
 
     public void SendSyncHP()

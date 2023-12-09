@@ -9,6 +9,7 @@ using static UnityEngine.Rendering.DebugUI;
 using TMPro;
 using Unity.Mathematics;
 using Unity.VisualScripting;
+using UnityEngine.U2D.Animation;
 
 //[Root 노드] => 왜 액션과 다르게 상속 안받음?
 //==>특정 AI 동작과 상태에 맞게 유연하게 조정하기 위해서
@@ -37,8 +38,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     public bool CanIce;
 
     public float currentHP;                  // 현재 체력 계산
-    public float viewAngle;                  // 시야각 (기본120도)
-    public float viewDistance;               // 시야 거리 (기본 10)
+    private float viewAngle;                  // 시야각 (기본120도)
+    private float viewDistance;               // 시야 거리 (기본 10)
 
     public int roomNum;                    // 방의 정보(클리어 조건을 위해 사용됨 -세진-)
 
@@ -82,7 +83,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     Quaternion nowEnemyRotation;
     [SerializeField]
     private Image images_Gauge;              //몬스터 UI : Status
-
+    private SpriteLibrary spriteLibrary;     //스프라이트 라이브러리(껍데기 변환용)
 
 
     //동기화
@@ -107,7 +108,6 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
 
 
-
     //객체별 넉백거리
     public float knockbackDistance;
 
@@ -118,8 +118,13 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         PV = GetComponent<PhotonView>();
+        spriteLibrary = GetComponentInChildren<SpriteLibrary>();
 
-        if(enemySO.type == EnemyType.Melee)
+        spriteLibrary.spriteLibraryAsset = enemySO.enemySpriteLibrary;
+        enemyBulletPrefab = enemySO.enemyBulletPrefab;
+
+        /*
+        if (enemySO.type == EnemyType.Melee)
         {
             enemyBulletPrefab = Resources.Load<Bullet>(Enemy_PrefabPathes.BOSS_TURTLE_MELEE_ENEMY_BULLET);
         }
@@ -128,6 +133,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         {
             enemyBulletPrefab = Resources.Load<Bullet>(Enemy_PrefabPathes.BOSS_TURTLE_RANGED_ENEMY_BULLET);
         }
+        */
+
 
         CanWater = true;
         CanFire = true;
@@ -802,7 +809,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             // 데이터를 전송
             stream.SendNext(hostPosition);
             //stream.SendNext(navTargetPoint);
-            stream.SendNext(spriteRenderer.flipX); // 이게 맞나?
+            stream.SendNext(spriteRenderer.flipX);
             stream.SendNext(enemyAim.transform.rotation);
 
         }

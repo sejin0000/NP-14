@@ -8,6 +8,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XR;
+using UnityEngine.U2D.Animation;
 using UnityEngine.UI;
 
 public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
@@ -21,12 +22,12 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     private int rollCount;
     public bool rolling = false;
     public bool isPhase1;
+    public float rollingTime;
 
     [HideInInspector] public Vector3 direction;
 
     public Rigidbody2D _rigidbody2D;
     public float time;
-    public float thornTime = 0.2f;
     private float thornAngle = 0;
 
 
@@ -87,6 +88,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     private TextMeshProUGUI txt_Gauge;
 
 
+
     //동기화
     public PhotonView PV;
     private Quaternion hostAimRotation;
@@ -138,10 +140,28 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         knockbackDistance = 0f;
 
 
+        rolling = false;
+        isPhase1 = true;
+
+
+        GaugeUpdate();
+
         //TODO 생성할 때, 모든 플레이어 Transform 정보를 담는다.TestGameManagerWooMin
-        foreach (var _value in GameManager.Instance.playerInfoDictionary.Values)
+        if (TestGameManager.Instance != null)
         {
-            PlayersTransform.Add(_value);
+            //생성할 때, 모든 플레이어 Transform 정보를 담는다.
+            foreach (var _value in TestGameManager.Instance.playerInfoDictionary.Values)
+            {
+                PlayersTransform.Add(_value);
+            }
+        }
+        else
+        {
+            //생성할 때, 모든 플레이어 Transform 정보를 담는다.
+            foreach (var _value in GameManager.Instance.playerInfoDictionary.Values)
+            {
+                PlayersTransform.Add(_value);
+            }
         }
 
 
@@ -151,8 +171,6 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
 
         currentTarget = PlayersTransform[randomTarget];
 
-        rolling = false;
-        isPhase1 = true;
     }
     void Update()
     {
@@ -176,36 +194,44 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
 
         if (rolling)
         {
+            rollingTime+= Time.deltaTime;
+            if (rollingTime >= 5f) 
+            {
+                Debug.Log("끼임 발생으로 타켓팅 초기화");
+                FurthestTarget();
+                rollingTime = 0f;
+                Vector2 me = transform.position;
+                Vector2 u = currentTarget.position;
+                direction = (u - me).normalized;
+            }
             transform.Translate(direction * bossSO.enemyMoveSpeed * Time.deltaTime);
             //_rigidbody2D.velocity = direction * bossSO.enemyMoveSpeed * Time.deltaTime;
             if (!isPhase1)
             {
                 time += Time.deltaTime;
-                if (time > thornTime) //0.2초마다
+                if (time > bossSO.thornTime) //0.2초마다
                 {
-                    thornAngle += 2.5f;
+                    thornAngle += bossSO.thrronAngle;
                     photonView.RPC("Thorn", RpcTarget.All, thornAngle, 1);
                     if (thornAngle >= 360)
                     {
                         thornAngle = 0;
                     }
-
+                    time = 0;
                 }
             }
         }
-        else 
-        {
-            _rigidbody2D.velocity = Vector3.zero;
-            Vector3 directiontarget = (currentTarget.transform.position - transform.position).normalized;
-            float angle = Mathf.Atan2(directiontarget.y, directiontarget.x) * Mathf.Rad2Deg;
-            Quaternion rotation = Quaternion.Euler(new Vector3(0, 0, angle));
-            bossAim.rotation = rotation;
-            FilpSet();
-        }
+
 
 
         TreeAIState.Tick();
-        
+
+        Vector3 directiontarget = (currentTarget.transform.position - transform.position).normalized;
+        float angle = Mathf.Atan2(directiontarget.y, directiontarget.x) * Mathf.Rad2Deg;
+        Quaternion rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        bossAim.rotation = rotation;
+        FilpSet();
+
         if (!isLive)
             return;
 
@@ -254,6 +280,8 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         {
             return;
         }
+
+        //TODO : ★사운드
         //PV.RPC("SetStateColor", RpcTarget.All, (int)EnemyStateColor.ColorRed, PV.ViewID);
         currentHP -= damage;
         GaugeUpdate();
@@ -270,6 +298,8 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         {
             return;
         }
+
+        //TODO : ★사운드
         //PV.RPC("SetStateColor", RpcTarget.All, (int)EnemyStateColor.ColorRed, PV.ViewID);
         currentHP -= damage;
         GaugeUpdate();
@@ -348,14 +378,15 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     private void SetNearestTarget()
     {
 
-
         float minDistance = float.MaxValue;
 
 
         for (int i = 0; i < PlayersTransform.Count; i++)
         {
             if (PlayersTransform[i] == null)
+            {
                 continue;
+            }
 
             float distanceToAllTarget = Vector2.Distance(transform.position, PlayersTransform[i].transform.position);
 
@@ -468,7 +499,6 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void SyncAnimation(string animName, bool set)
     {
-        Debug.Log($"{animName}이 {set} 상태로 호출됨");
         anim.SetBool(animName, set);
     }
     #endregion
@@ -517,15 +547,14 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         BossAI_Turtle_State_Attack_Missile missile = new BossAI_Turtle_State_Attack_Missile(gameObject);
         phase_1_ActionSelector.AddChild(missile);
 
-        /*
-        BTSelector Phase_2 = new BTSelector();
+        
+        BTSquence Phase_2 = new BTSquence();
 
         BossAI_Turtle_Phase_2_Condition phase_2_Condition = new BossAI_Turtle_Phase_2_Condition(gameObject);
         Phase_2.AddChild(phase_2_Condition);
-
-        BossAI_Turtle_State_Attack_ThornTornado Phase_2_tornado = new BossAI_Turtle_State_Attack_ThornTornado(gameObject);
-        Phase_2.AddChild(Phase_2_tornado);
-        */
+        BossAI_Turtle_State_Attack_InfinityRolling infinityTornado = new BossAI_Turtle_State_Attack_InfinityRolling(gameObject);
+        Phase_2.AddChild(infinityTornado);
+        
 
 
 
@@ -539,7 +568,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
 
         //메인(페이즈) 셀렉터
         BTMainSelector.AddChild(Phase_1);
-        //BTMainSelector.AddChild(Phase_2);
+        BTMainSelector.AddChild(Phase_2);
 
         //작업이 끝난 Selector를 루트 노드에 붙이기
         TreeAIState.AddChild(BTMainSelector);
@@ -669,31 +698,53 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         {
             isEndThornTornado = true;
             thornTornadoCoolTime = bossSO.thornTornadoCoolTime;
-            Debug.Log($"가시쏘기 퇴장");
         }
     }
     #endregion
     #region 구르기모드
+    [PunRPC]
     public void RollStart()
     {
         SetAnim("Rolling", true);
         bossAim.gameObject.SetActive(false);
         SetNearestTarget();
-        Debug.Log($"구르기 진입");
         //롤카운트 기준으로 멈추고 n초후(벽에 딱붙어서 멈추지 않기 위함) 멈출것임 트리거에서 if rolling && collier.layer==wall
         rollCount = 0;
         rolling = true;
+        rollingTime = 0;
         //Debug.Log($"구르기 변화 체크 {rolling}");
         Vector2 me = transform.position;
         Vector2 u = currentTarget.position;
         direction = (u - me).normalized;
 
     }
+    /*
     public void RollEnd() 
     {
         SetAnim("Rolling", false);
         bossAim.gameObject.SetActive(true);
         Debug.Log($"구르기 퇴장");
+        //adas
+        rolling = false;
+        rollingCooltime = bossSO.rollingCooltime;
+        //구르기 패턴 종료
+    }
+    */
+    [PunRPC]
+    public void LaterRollEnd()
+    {
+        StartCoroutine(RollEnd());
+    }
+
+    IEnumerator RollEnd()
+    {
+
+
+        SetAnim("Rolling", false);
+        bossAim.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(0.3f);
+        
         rolling = false;
         rollingCooltime = bossSO.rollingCooltime;
         //구르기 패턴 종료
@@ -753,8 +804,11 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (rolling && isPhase1 && collision.gameObject.layer == LayerMask.NameToLayer("Wall") || collision.gameObject.layer == LayerMask.NameToLayer("Player"))
+        if (rolling && (collision.gameObject.layer == LayerMask.NameToLayer("Wall") || collision.gameObject.layer == LayerMask.NameToLayer("Player")))
         {
+            rollingTime = 0;
+            if (isPhase1) 
+            {
             if (rollCount % 2 == 0)
             {
                 ThornTornado1();
@@ -766,27 +820,21 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
             rollCount++;
             if (rollCount >= bossSO.endRollCount)
             {
-                Invoke("RollEnd", 0.2f);
+                PV.RPC("LaterRollEnd", RpcTarget.All);
+                //StartCoroutine(RollEnd());
+                //Invoke("RollEnd", 0.2f);
             }
-            Vector3 normal = collision.contacts[0].normal; // 법선벡터
-            direction = Vector3.Reflect(direction, normal).normalized; // 반사
-        }
-        else if (!isPhase1 && collision.gameObject.layer == LayerMask.NameToLayer("Wall") || collision.gameObject.layer ==LayerMask.NameToLayer("Player")) 
-        {
-            Vector3 normal = collision.contacts[0].normal; // 법선벡터
-            Debug.Log($"현재 방향벡터 {direction}");
-            direction = Vector3.Reflect(direction, normal).normalized; // 반사
-            Debug.Log($"튕긴 방햑벡터 {direction}");
-        }
-
-        if (rolling && collision.gameObject.layer == LayerMask.NameToLayer("Player")) 
-        {
+            }
             PlayerStatHandler player = collision.gameObject.GetComponent<PlayerStatHandler>();
             if (player != null) 
             {
 
                 player.photonView.RPC("GiveDamege",RpcTarget.All, bossSO.atk*2);
             }
+            Vector3 normal = collision.contacts[0].normal; // 법선벡터
+            Debug.Log($"현재 방향벡터 {direction}");
+            direction = Vector3.Reflect(direction, normal).normalized; // 반사
+            Debug.Log($"튕긴 방햑벡터 {direction}");
         }
     }
     public void updateclone()//업데이트 돌려야 됨 근데 업데이트 돌리면 이상할거같아서 이렇게 해둠
@@ -797,7 +845,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
             if (!isPhase1)
             {
                 time += Time.deltaTime;
-                if (time > thornTime) //0.2초마다
+                if (time > bossSO.thornTime) //0.2초마다
                 {
                     thornAngle += 2.5f;
                     photonView.RPC("Thorn", RpcTarget.All, thornAngle, 1);

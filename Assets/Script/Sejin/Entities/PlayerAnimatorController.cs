@@ -16,7 +16,7 @@ public class PlayerAnimatorController : MonoBehaviour
     private SpriteRenderer playerRenderer;
     private SpriteRenderer weaponRenderer;
     [HideInInspector]public int isBack;
-    private Animator _animation;
+    public Animator _animation;
     private Animator weaponAnimator;
     private SpriteLibrary PlayerSpritelibrary;
     private SpriteLibrary WeaponSpritelibrary;
@@ -137,7 +137,7 @@ public class PlayerAnimatorController : MonoBehaviour
     }
 
 
-    private void Regen()
+    public void Regen()
     {
         Debug.Log("∫Œ»∞");
         _animation.SetTrigger("IsRegen");

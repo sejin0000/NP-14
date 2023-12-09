@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f76e7dab80292843a8ceb8dbf8daab0, type: 3}
+  m_Name: MiniDragon_Melee_Enemy
+  m_EditorClassIdentifier: 
+  enemyName: "\uAC00\uAE4C\uC6CC\uC6A9"
+  type: 0
+  atk: 5
+  hp: 60
+  bulletSpeed: 10
+  atkDelay: 2
+  SpecialAttackDelay: 0
+  patrolDelay: 2.5
+  chaseTime: 5
+  groggyTiem: 1
+  bulletLifeTime: 6
+  breathAttackDelay: 0
+  enemyMoveSpeed: 4
+  enemyChaseSpeed: 3.5
+  viewAngle: 70
+  viewDistance: 9
+  attackRange: 2
+  dropGold: 0
+  unitScale: 0
+  enemySpriteLibrary: {fileID: 7108339969198208228, guid: bc356edf017b654408f6a7a1bb1f63ac, type: 3}
+  enemyBulletPrefab: {fileID: 7691614160748915792, guid: ac39180b8f422f349a95419f34d39b2a, type: 3}
+  bossPatternTime: 0
