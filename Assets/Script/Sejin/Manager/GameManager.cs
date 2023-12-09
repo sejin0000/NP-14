@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
     public event Action PlayerLifeCheckEvent; //플레이어 죽음
 
     public event Action ChangeGoldEvent;
-    public bool ClearStageCheck;//박민혁 추가 스테이지 클리어시 빈방 비울때 콜여부
+    public bool ClearStageCheck;              //박민혁 추가 스테이지 클리어시 빈방 비울때 콜여부
 
     public StageListInfoSO stageListInfo;
     public int curStage = 0;
@@ -191,9 +191,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("OnStageEndEvent");
         ClearStageCheck = true;
-        OnStageEndEvent?.Invoke();
-        
-        //PV.RPC("EndPlayerCheck", RpcTarget.AllBuffered);
+        OnStageEndEvent?.Invoke();            
     }
 
     int EndPlayer = 0;
@@ -201,11 +199,6 @@ public class GameManager : MonoBehaviour
     public void EndPlayerCheck()
     {
         EndPlayer++;
-        //if (EndPlayer == 1)//?????
-        //{
-        //    StageClear();
-        //    EndPlayer = 0;
-        //}
         Debug.Log($"현재 레디 : {EndPlayer} 필요 레디 : {PhotonNetwork.CurrentRoom.PlayerCount}");
         if (EndPlayer == PhotonNetwork.CurrentRoom.PlayerCount) 
         {

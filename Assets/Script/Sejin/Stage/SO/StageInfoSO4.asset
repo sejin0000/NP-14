@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67495ca0fa4f9f74580f4a969211d8be, type: 3}
   m_Name: StageInfoSO4
   m_EditorClassIdentifier: 
-  stageType: 1
+  stageType: 0
   MonsterSquadList:
   - {fileID: 11400000, guid: 6302fae35d115b249aaefce980a6774d, type: 2}
   - {fileID: 11400000, guid: 6302fae35d115b249aaefce980a6774d, type: 2}
