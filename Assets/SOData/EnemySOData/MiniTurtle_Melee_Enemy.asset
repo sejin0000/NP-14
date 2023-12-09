@@ -31,6 +31,6 @@ MonoBehaviour:
   attackRange: 2
   dropGold: 0
   unitScale: 0
-  enemySpriteLibrary: {fileID: 7108339969198208228, guid: bc356edf017b654408f6a7a1bb1f63ac, type: 3}
-  enemyBulletPrefab: {fileID: 7691614160748915792, guid: ac39180b8f422f349a95419f34d39b2a, type: 3}
+  enemySpriteLibrary: {fileID: 7108339969198208228, guid: 853e8e0d6b1f1054fb0783fdebd2232b, type: 3}
+  enemyBulletPrefab: {fileID: 7691614160748915792, guid: 9bf93b8384dd7de429f2bc54c51480a7, type: 3}
   bossPatternTime: 0

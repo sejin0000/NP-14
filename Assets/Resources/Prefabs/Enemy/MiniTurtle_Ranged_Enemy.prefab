@@ -237,7 +237,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 658357971, guid: 8bfbd286d89af674bb4ed481c052db50, type: 3}
+  m_Sprite: {fileID: 1045437845, guid: 060b810b8fa73a84fbd258388ab515ee, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -551,7 +551,7 @@ MonoBehaviour:
   navTargetPoint: {x: 0, y: 0, z: 0}
   PlayersTransform: []
   enemyAim: {fileID: 2130283397884518407}
-  enemyBulletPrefab: {fileID: 7691614160748915792, guid: ac39180b8f422f349a95419f34d39b2a, type: 3}
+  enemyBulletPrefab: {fileID: 7691614160748915792, guid: 14bba45a9f85a4144ae6eb2ec8a8171a, type: 3}
   targetMask:
     serializedVersion: 2
     m_Bits: 256
