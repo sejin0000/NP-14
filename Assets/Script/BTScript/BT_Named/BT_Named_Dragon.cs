@@ -29,7 +29,7 @@ enum EnemyStateColor
 }
 
 
-public class BT_Named_MiniDragon : MonoBehaviourPunCallbacks, IPunObservable
+public class BT_Named_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 {
     private BTRoot TreeAIState;
 
@@ -73,6 +73,7 @@ public class BT_Named_MiniDragon : MonoBehaviourPunCallbacks, IPunObservable
     public bool isChase;
     public bool isAttaking;
     public bool isGroggy;
+    public bool isBreathInProgress = false; // 브레스 실행여부 판별, 중복실행 방지
 
     //플레이어 정보
 
@@ -114,7 +115,16 @@ public class BT_Named_MiniDragon : MonoBehaviourPunCallbacks, IPunObservable
     //객체별 넉백거리
     public float knockbackDistance;
 
+    //특수패턴 - 브레스
+    public float currnetBreathDelay;
+    public ParticleSystem breathParticleObject;
+    public GameObject show_AttackArea;
+    public Collider2D breathArea;
+    public List<PlayerStatHandler> inToAreaPlayers = new List<PlayerStatHandler>();
+    public LayerMask breathTargetLayer;
+
     public float GroggyCount = 100f;
+
     void Awake()
     {
         nav = GetComponent<NavMeshAgent>();
@@ -122,7 +132,9 @@ public class BT_Named_MiniDragon : MonoBehaviourPunCallbacks, IPunObservable
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         PV = GetComponent<PhotonView>();
         spriteLibrary = GetComponentInChildren<SpriteLibrary>();
+        breathArea = show_AttackArea.GetComponentInChildren<Collider2D>(true); //비활성화된 오브젝트도 탐색<>(true)
 
+        currnetBreathDelay = enemySO.breathDelay;
         spriteLibrary.spriteLibraryAsset = enemySO.enemySpriteLibrary;
         enemyBulletPrefab = enemySO.enemyBulletPrefab;
 
@@ -224,6 +236,16 @@ public class BT_Named_MiniDragon : MonoBehaviourPunCallbacks, IPunObservable
             HandleKnockback();
         }
 
+        if (isBreathInProgress)
+        {
+            breathArea.transform.position = enemyAim.transform.position;
+            breathArea.transform.rotation = enemyAim.transform.rotation;
+
+            if (inToAreaPlayers.Count == 0)
+                return;
+
+            UpdateBreath();
+        }
 
 
         //목적지와 내 거리가 일정거리 이하거나 / nav가 멈춘 상태(그냥 정지) 가 아닌경우
@@ -425,7 +447,7 @@ public class BT_Named_MiniDragon : MonoBehaviourPunCallbacks, IPunObservable
     }
 
 
-    //정확히
+   
     [PunRPC]
     public void DecreaseHPByObject(float damage, int viewID)
     {
@@ -474,6 +496,94 @@ public class BT_Named_MiniDragon : MonoBehaviourPunCallbacks, IPunObservable
         */
 
         //수정 : gameObject 에서 Bullet으로 ->변수 형태와 용도를 통일함      
+    }
+
+
+    [PunRPC]
+    public void StartBreathCoroutine()
+    {
+        StartCoroutine(StartBreath());
+    }
+
+
+    public IEnumerator StartBreath()
+    {
+        //브레스 중복실행 방지
+        if (isBreathInProgress)
+            yield break;
+
+        isBreathInProgress = true;
+        breathArea.gameObject.SetActive(true);
+        SetAnim("isBreathAttack", true);
+        //워닝 사인 차오르는거 대기 후 브레스 파티클을 플레이
+        yield return new WaitForSeconds(2f);
+        breathParticleObject.Play();
+
+
+
+        //브레스 종료 시간 도달 (2+4f)
+        yield return new WaitForSeconds(4f);
+        isBreathInProgress = false;
+        breathArea.gameObject.SetActive(false);
+        SetAnim("isBreathAttack", false);
+        breathParticleObject.Stop();
+
+        currnetBreathDelay = enemySO.breathAttackDelay;
+    }
+
+    public void UpdateBreath()
+    {
+        currnetBreathDelay -= Time.deltaTime;
+
+        if (currnetBreathDelay <= 0)
+        {
+            Debug.Log("업데이트 브레스 들어옴");
+
+            //에어리어 리스트에 사람이 하나라도 있다면?
+            //리스트 내 모든 대상에게 레이캐스트 발사
+            //업데이트하고 있지 않으므로 위에서 리턴 날 가능성이 큼 이 부분은 역시 업데이트 조지는게 맞음 아오 졸려죽겠다
+
+            for (int i = 0; i < inToAreaPlayers.Count; i++)
+            {
+                Debug.Log("반복문 들어옴");
+                // 플레이어의 위치
+                PlayerStatHandler player = inToAreaPlayers[i];
+                Vector3 playerPosition = player.transform.position;
+                // 플레이어<->보스에임 방향 구하기
+                Vector3 directionToPlayer = (playerPosition - enemyAim.transform.position).normalized;
+                Debug.DrawLine(enemyAim.transform.position, player.transform.position, Color.white);
+
+                // 레이 발사
+                RaycastHit2D hit = Physics2D.Raycast(enemyAim.transform.position, directionToPlayer, Mathf.Infinity, breathTargetLayer);
+
+                if (hit.transform.tag != "Wall" || inToAreaPlayers.Count != 0) // hit 대상이 있거나, 벽이 아닌 경우에만 작동
+                {
+                    if (hit.transform.tag == "Player")
+                    {
+                        //일정 주기로 피해를 주기
+
+                        // 플레이어와 공격 영역의 방향 벡터
+
+
+                        // 넉백거리
+                        float knockbackDistance = 1f;
+
+
+                        // 실제 피해
+                        player.DirectDamage(enemySO.atk, PV.ViewID);
+                        // 실제 넉백
+                        player.photonView.RPC("StartKnockback", RpcTarget.All, directionToPlayer, knockbackDistance);
+                        //StartCoroutine(player.Knockback(directionToPlayer, knockbackDistance));
+
+                        Debug.Log($"2나오면 안됨 : {inToAreaPlayers.Count} 데미지는 이만큼 받음 :{enemySO.atk}");
+                        Debug.Log($"플레이어 현재 체력은 : {player.CurHP}");
+                    }
+                }
+            }
+
+            currnetBreathDelay = enemySO.breathAttackDelay;
+        }
+
     }
 
     //상태이상
@@ -622,7 +732,7 @@ public class BT_Named_MiniDragon : MonoBehaviourPunCallbacks, IPunObservable
     {
         //TODO
         PV = PhotonView.Find(viewID);
-        PV.GetComponent<BT_Named_MiniDragon>().SetColor(colorNum);
+        PV.GetComponent<BT_Named_Dragon>().SetColor(colorNum);
     }
 
     private void SetColor(int colorNum)
@@ -770,7 +880,8 @@ public class BT_Named_MiniDragon : MonoBehaviourPunCallbacks, IPunObservable
         BTChase.AddChild(attackCondition);
         EnemyState_Attack state_Attack = new EnemyState_Attack(gameObject);
         BTChase.AddChild(state_Attack);
-
+        //브레스 컨디션(쿨타임 덜 돌았으면 실패 반환)
+        //브레스 액션 (브레스 진행 중 런닝 -> 종료 후 실패 반환)
 
 
 
