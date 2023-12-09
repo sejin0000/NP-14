@@ -26,7 +26,6 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
 
     [HideInInspector] public Vector3 direction;
 
-    public Rigidbody2D _rigidbody2D;
     public float time;
     private float thornAngle = 0;
 
@@ -113,7 +112,6 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         AimSpriteRenderer = bossAim.GetComponent<SpriteRenderer>();
 
         PV = GetComponent<PhotonView>();
-        _rigidbody2D = GetComponent<Rigidbody2D>();
         
         MissilePrefab = Resources.Load<Bullet>(Enemy_PrefabPathes.BOSS_TURTLE_MISSILE_PREFAB);
         thornPrefab = Resources.Load<Bullet>(Enemy_PrefabPathes.BOSS_TURTLE_THORN_PREFAB);
@@ -815,56 +813,30 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
         if (rolling && (collision.gameObject.layer == LayerMask.NameToLayer("Wall") || collision.gameObject.layer == LayerMask.NameToLayer("Player")))
         {
             rollingTime = 0;
-            if (isPhase1) 
+            if (isPhase1)
             {
-            if (rollCount % 2 == 0)
-            {
-                ThornTornado1();
-            }
-            else
-            {
-                ThornTornado2();
-            }
-            rollCount++;
-            if (rollCount >= bossSO.endRollCount)
-            {
-                PV.RPC("LaterRollEnd", RpcTarget.All);
-                //StartCoroutine(RollEnd());
-                //Invoke("RollEnd", 0.2f);
-            }
-            }
-            PlayerStatHandler player = collision.gameObject.GetComponent<PlayerStatHandler>();
-            if (player != null) 
-            {
-
-                player.photonView.RPC("GiveDamege",RpcTarget.All, bossSO.atk*2);
-            }
-            Vector3 normal = collision.contacts[0].normal; // 법선벡터
-            Debug.Log($"현재 방향벡터 {direction}");
-            direction = Vector3.Reflect(direction, normal).normalized; // 반사
-            Debug.Log($"튕긴 방햑벡터 {direction}");
-        }
-    }
-    public void updateclone()//업데이트 돌려야 됨 근데 업데이트 돌리면 이상할거같아서 이렇게 해둠
-    {
-        if (rolling)
-        {
-            _rigidbody2D.velocity = direction * bossSO.enemyMoveSpeed * Time.deltaTime;
-            if (!isPhase1)
-            {
-                time += Time.deltaTime;
-                if (time > bossSO.thornTime) //0.2초마다
+                if (rollCount % 2 == 0)
                 {
-                    thornAngle += 2.5f;
-                    photonView.RPC("Thorn", RpcTarget.All, thornAngle, 1);
-                    if (thornAngle >= 360)
-                    {
-                        thornAngle = 0;
-                    }
+                    ThornTornado1();
+                }
+                else
+                {
+                    ThornTornado2();
+                }
+                rollCount++;
+                if (rollCount >= bossSO.endRollCount)
+                {
+                    PV.RPC("LaterRollEnd", RpcTarget.All);
                 }
             }
+            PlayerStatHandler player = collision.gameObject.GetComponent<PlayerStatHandler>();
+            if (player != null)
+            {
+                player.photonView.RPC("GiveDamege", RpcTarget.All, bossSO.atk * 2);
+            }
+            Vector3 normal = collision.contacts[0].normal; // 법선벡터
+            direction = Vector3.Reflect(direction, normal).normalized; // 반사
         }
-
     }
     #endregion
 
