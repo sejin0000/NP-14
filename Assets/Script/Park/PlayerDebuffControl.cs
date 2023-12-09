@@ -87,7 +87,7 @@ public class PlayerDebuffControl : MonoBehaviourPun
             if (checkHealTime >= HealTime) 
             
             {
-
+                HealOff();
             }
         }
 
