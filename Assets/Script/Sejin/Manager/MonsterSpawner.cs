@@ -32,7 +32,7 @@ public class MonsterSpawner : MonoBehaviourPun
 
             for (int j = 0; j < stagerListInfoSO.StagerList[GameManager.Instance.curStage].MonsterSquadList[randomSquad].MonsterNum; j++)// 스분대원 수만큼 순회
             {
-                Debug.Log("몬스터 생성");
+                //Debug.Log("몬스터 생성");
                 Vector2 spawnPos;
                 spawnPos.x = Random.Range(room.x + 1, room.x + room.width);
                 spawnPos.y = Random.Range(room.y + 1, room.y + room.height);
