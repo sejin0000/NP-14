@@ -61,7 +61,11 @@ public class A1107 : MonoBehaviourPun //ÁÖº¯Èú
     {
         for (int i = 0; i < colleagueList.Count; ++i) 
         {
-            colleagueList[i].HPadd(healP);
+
+            if (!colleagueList[i].isDie) 
+            {
+                colleagueList[i].HPadd(healP);
+            }
         }
     }
 }
