@@ -31,12 +31,10 @@ public class UIStageTransition : UIBase
     public override void Initialize()
     {
         Debug.Log("[UIStageTransition] initialized");
-
         CreateTower();
-        //SetupPlayer();
 
-        //MainGameManager.Instance.OnUIPlayingStateChanged += StartTransition;
-        GameManager.Instance.OnStageStartEvent += StartTransition;
+        GameManager.Instance.OnStageSettingEvent += StartTransition;
+        GameManager.Instance.OnBossStageSettingEvent += StartTransition;
     }
 
     // Tower 층수만큼 일정한 간격으로 블럭 생성
@@ -79,10 +77,10 @@ public class UIStageTransition : UIBase
     public void StartTransition()
     {
         Open();
-        StartCoroutine(ClimeTower());
+        StartCoroutine(ClimbTower());
     }
 
-    IEnumerator ClimeTower()
+    IEnumerator ClimbTower()
     {
         yield return new WaitForSecondsRealtime(1f);
         //player.GetComponent<RectTransform>().rect.height/4);
@@ -98,12 +96,13 @@ public class UIStageTransition : UIBase
         animator.SetBool("isRun", false);
         yield return new WaitForSecondsRealtime(3f);
         OnClimeTower();
+        GameManager.Instance.isTransitionPlayed = true;
     }
 
     // UI 연출이 끝나면 메인 게임 매니저의 상태 변경
     private void OnClimeTower()
     {
-        StopCoroutine(ClimeTower());
+        StopCoroutine(ClimbTower());
         currentFloor += 1;
 
         //MainGameManager.Instance.GameState = MainGameManager.GameStates.Start;
