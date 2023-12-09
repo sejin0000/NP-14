@@ -708,7 +708,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     {
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A1104>();
-        if (photonView.IsMine)
+        if (targetPlayer.GetPhotonView().IsMine)
         {
             targetPlayer.GetComponent<PlayerInputController>().Flash = true;
             playerInput = targetPlayer.GetComponent<PlayerInput>();
