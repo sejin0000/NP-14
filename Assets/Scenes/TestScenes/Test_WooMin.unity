@@ -19270,6 +19270,10 @@ MonoBehaviour:
   characterSetting: {fileID: 0}
   isDie: 0
   monsterDataList:
+  - monsterNum: 5
+    monsterType: 4
+  - monsterNum: 5
+    monsterType: 5
   - monsterNum: 1
     monsterType: 1
   currentMonsterCount: 0
