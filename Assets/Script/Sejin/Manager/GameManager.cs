@@ -2,6 +2,7 @@ using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -19,8 +20,6 @@ public class GameManager : MonoBehaviour
     public event Action OnBossStageSettingEvent; //보스 룸 시작
     public event Action OnBossStageStartEvent; //보스 룸 시작
     public event Action OnBossStageEndEvent;   //보스 룸 종료
-
-
 
     public event Action OnGameClearEvent;     //게임 클리어
     public event Action OnGameOverEvent;      //게임 오버
@@ -88,11 +87,13 @@ public class GameManager : MonoBehaviour
             OnStageStartEvent += MS.MonsterSpawn;           
         }
         OnStageStartEvent += MG.roomNodeInfo.OpenDoor;
+
     }   
 
 
     private void Start()
     {
+        AudioManager.Instance.AddComponent<AudioManagerTest>().Initialize();
         PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
         MakeSetting.MakeManager();
         TeamGold = 0;

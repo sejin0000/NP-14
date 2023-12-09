@@ -25,12 +25,11 @@ public class UIPlayerMiniHUD : UIBase
     {
         foreach (var element in elements)
         {
-            var temp = element.GetComponent<ICommonUI>();
+            var temp = element.GetComponent<UIBase>();
             if (temp != null)
             {
                 Debug.Log("[CheckInterface] Init " + element.GetType());
                 temp.Initialize();
-                temp.Behavior();
             }
         }
 
@@ -42,19 +41,18 @@ public class UIPlayerMiniHUD : UIBase
         playerController = player.GetComponent<TopDownCharacterController>();
         statHandler = player.GetComponent<PlayerStatHandler>();
 
-
-        Open<UIPlayerHP>();
+        OpenChild<UIPlayerHP>();
         InitializeEvent();
     }
 
     public void InitializeEvent()
     {
-        statHandler.HitEvent += Open<UIPlayerHP>;
-        playerController.OnReloadEvent += Open<UIReloadHUD>;
-        playerController.OnEndReloadEvent += Open<UIPlayerHP>;
+        statHandler.HitEvent += OpenChild<UIPlayerHP>;
+        playerController.OnReloadEvent += OpenChild<UIReloadHUD>;
+        playerController.OnEndReloadEvent += OpenChild<UIPlayerHP>;
     }
 
-    public void Open<T>() where T : UIBase
+    public void OpenChild<T>() where T : UIBase
     {
         var new_elements = player.GetComponentInChildren<UIPlayerMiniHUD>().elements;
         foreach (var element in new_elements)
