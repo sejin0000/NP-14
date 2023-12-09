@@ -184,7 +184,7 @@ public class TestLobbyPanel : MonoBehaviourPunCallbacks
     {
         //string[] sceneFiles = Directory.GetFiles(folderPath, "*.unity").Select(Path.GetFileNameWithoutExtension).ToArray();
         // TODO
-        string[] sceneFiles = new string[2] { "Test_JiMin", "Test_WooMin" };
+        string[] sceneFiles = new string[3] { "Test_JiMin", "Test_WooMin", "MainGameScene" };
         GameObject SceneEntry;
         foreach (string sceneName in sceneFiles)
         {
