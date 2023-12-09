@@ -86,7 +86,8 @@ public class GameManager : MonoBehaviour
         if (PhotonNetwork.IsMasterClient)
         {
             OnStageSettingEvent += MG.NavMeshBakeRunTime;
-            OnStageStartEvent += MS.MonsterSpawn;           
+            OnStageStartEvent += MS.MonsterSpawn;
+            OnBossStageStartEvent += MS.BossSpawn;
         }
         OnStageStartEvent += MG.roomNodeInfo.OpenDoor;
 
