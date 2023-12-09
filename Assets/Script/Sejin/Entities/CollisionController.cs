@@ -102,6 +102,7 @@ public class CollisionController : MonoBehaviourPun
                 }
                 else
                 {
+                    playerStat._DebuffControl.Init(PlayerDebuffControl.buffName.Heal, 1f);
                     Debug.Log("체력 회복 ");
                     // ADD : 힐량 누적
                     damage = (damage + playerStat.CurHP > playerStat.HP.total)? playerStat.HP.total - playerStat.CurHP : damage;
