@@ -37,10 +37,10 @@ public class GameManager : MonoBehaviour
     public MapGenerator MG;
 
     public GameObject _fadeInfadeOutPanel;
-    private FadeInFadeOutPanel FF;
+    public FadeInFadeOutPanel FF;
 
     public GameObject _mansterSpawner;
-    private MonsterSpawner MS;
+    public MonsterSpawner MS;
 
     public Setting PS;
 
@@ -54,14 +54,11 @@ public class GameManager : MonoBehaviour
     public int TeamGold;
     public bool isTransitionPlayed;
 
-    private bool firstStart;
 
 
     private void Awake()
     {
-        firstStart = true;
         Debug.Log("GameManager - Awake()");
-
         if (Instance == null)
         {
             Instance = this;
@@ -95,15 +92,14 @@ public class GameManager : MonoBehaviour
         OnStageStartEvent += MG.roomNodeInfo.OpenDoor;
 
     }
+
+
     private void Start()
     {
         AudioManager.Instance.AddComponent<AudioManagerTest>().Initialize();
-        if (firstStart)
-        {
-            PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
-            MakeSetting.MakeManager();
-            TeamGold = 0;
-        }
+        PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
+        MakeSetting.MakeManager();
+        TeamGold = 0;
 
         if (stageListInfo.StagerList[curStage].stageType == StageType.normalStage)
         {
