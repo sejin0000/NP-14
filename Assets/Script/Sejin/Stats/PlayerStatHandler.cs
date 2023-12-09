@@ -434,11 +434,14 @@ public class PlayerStatHandler : MonoBehaviourPun
     }
     public void startHp()
     {
-        photonView.RPC("PunRpcStartHp",RpcTarget.All);
+        if (photonView.IsMine)
+        {
+            photonView.RPC("PunRpcStartHp",RpcTarget.All);
+        }    
     }
     [PunRPC]
     public void PunRpcStartHp() 
-    {
+    {        
         CurHP = HP.total;
         this.gameObject.layer = 8;
         if (ImGhost)
