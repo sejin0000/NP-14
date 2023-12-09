@@ -108,7 +108,7 @@ MonoBehaviour:
   symbolsoldierOption: {fileID: -1827386771, guid: 40e3dca47561c30499b857bc4a557136, type: 3}
   bodyImage: {fileID: 0}
   symbolImage: {fileID: 4413292869541049601}
-  symbolImageOption: {fileID: 4413292869541049601}
+  symbolImageOption: {fileID: 6017098697365401528}
 --- !u!1 &5402421190631803661
 GameObject:
   m_ObjectHideFlags: 0

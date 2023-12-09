@@ -42,7 +42,6 @@ public class A3206 : MonoBehaviourPun // 공병 생성형
     {
         if (photonView.IsMine)
         {
-            Debug.Log("스킬 종료");
             controller.playerStatHandler.useSkill = false;
             if (controller.playerStatHandler.CurSkillStack > 0)
             {

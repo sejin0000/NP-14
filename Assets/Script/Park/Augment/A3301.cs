@@ -65,7 +65,6 @@ public class A3301 : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            //스킬이 끝나면 쿨타임을 계산하고 쿨타임이 끝나면  controller.playerStatHandler.CanSkill = 진실; 로 바꿔줌
             Debug.Log("스킬 종료");
             controller.playerStatHandler.useSkill = false;
             if (controller.playerStatHandler.CurSkillStack > 0)

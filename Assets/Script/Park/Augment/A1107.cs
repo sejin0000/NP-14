@@ -62,7 +62,6 @@ public class A1107 : MonoBehaviourPun //주변힐
         for (int i = 0; i < colleagueList.Count; ++i) 
         {
             colleagueList[i].HPadd(healP);
-            Debug.Log($"힐 대상 : {colleagueList[i].photonView.ViewID}  /  대상 현제 체력 : {colleagueList[i].CurHP}");
         }
     }
 }

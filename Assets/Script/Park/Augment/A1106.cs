@@ -42,7 +42,7 @@ public class A1106 : MonoBehaviourPun
         if (targetP != null)
         {
             target.Add(targetP);
-            Debug.Log("플레이어입장");
+            Debug.Log($"입장 {target.Count}");
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -51,7 +51,7 @@ public class A1106 : MonoBehaviourPun
         if (targetP !=null)
         {
             target.Remove(targetP);
-            Debug.Log("플레이어퇴장");
+            Debug.Log($"퇴장 {target.Count}");
         }
     }
 }
