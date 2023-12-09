@@ -157,8 +157,8 @@ public class ResultManager : MonoBehaviour//vs코드
     }
     public void CallStatResult() 
     {
-        int tier = RandomTier();
-
+        //int tier = RandomTier();
+        int tier = 4;
         switch (tier) 
             {
                 case 1:
@@ -246,9 +246,12 @@ public class ResultManager : MonoBehaviour//vs코드
             picklist[i].gameObject.SetActive(true);
             list.RemoveAt(a);
         }
+        if (GameManager.Instance.ClearStageCheck) 
+        {
         countDownCheck = true;
         time.gameObject.SetActive(true);
         pickTime = 30f;
+        }
         SetActiveCheck = true;
         IsStat = false;
         
