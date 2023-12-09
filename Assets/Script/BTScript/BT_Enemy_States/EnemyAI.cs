@@ -34,6 +34,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
     //컴포넌트 및 기타 외부요소(일부 할당은 하위 노드에서 진행)
     public EnemySO enemySO;                  // Enemy 정보 [모든 Action Node에 owner로 획득시킴]
+    public float appliedATK;
     public SpriteRenderer spriteRenderer;
     public Animator anim;
     public Color originColor;
@@ -111,6 +112,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
         spriteLibrary.spriteLibraryAsset = enemySO.enemySpriteLibrary;
         enemyBulletPrefab = enemySO.enemyBulletPrefab;
+        appliedATK = enemySO.atk;
 
         /*
         if (enemySO.type == EnemyType.Melee)
@@ -440,7 +442,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         var _bullet = Instantiate(enemyBulletPrefab, enemyAim.transform.position, enemyAim.transform.rotation);
 
         _bullet.IsDamage = true;
-        _bullet.ATK = enemySO.atk;
+        _bullet.ATK = appliedATK;
         _bullet.BulletLifeTime = enemySO.bulletLifeTime;
         _bullet.BulletSpeed = enemySO.bulletSpeed;
         _bullet.targets["Player"] = (int)BulletTarget.Player;
