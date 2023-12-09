@@ -13,13 +13,13 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     public static AugmentManager Instance;//싱긍톤
     public PlayerStatHandler playerstatHandler;//정확히는 이름을 타겟 플레이어 스탯 핸들러가 맞는 표현 같기도함 // 생각할수록 맞음
     int atk = 1;
-    int hp = 2;
-    float speed = 0.051f;
-    float atkspeed = 0.025f;
+    int hp = 5;
+    float speed = 0.025f;
+    float atkspeed = 0.01f;
     float bulletSpread = -1f;
-    int cooltime = -1;
-    int critical = 4;
-    int AmmoMax = 2;
+    float cooltime = -0.25f;
+    int critical = 5;
+    int AmmoMax = 1;
 
     public PlayerInput playerInput;//이것도 사실 타켓플레이어 인풋 잘안쓰기에 함수가 따로 만들지 않음
     public GameObject targetPlayer;//실제 적용되는 타켓 플레이어 99% 경우 이걸 사용함 진짜 진짜 중요함
@@ -85,8 +85,9 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A902(int PlayerNumber)//스탯 체 티어 1
     {
-        ChangePlayerStatHandler(PlayerNumber);
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
         playerstatHandler.HP.added += hp;
+        playerstatHandler.HPadd(hp);
     }
     [PunRPC]
     private void A903(int PlayerNumber)//스탯 이속 티어 1
@@ -128,8 +129,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A912(int PlayerNumber)//스탯 체 티어 2
     {
-        ChangePlayerStatHandler(PlayerNumber);
-        playerstatHandler.HP.added += hp * 2;
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        int hpUp = hp * 2;
+        playerstatHandler.HP.added += hpUp;
+        playerstatHandler.HPadd(hpUp);
     }
     [PunRPC]
     private void A913(int PlayerNumber)//스탯 이속 티어 2
@@ -177,8 +180,10 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A922(int PlayerNumber)//스탯 체 티어 3
     {
-        ChangePlayerStatHandler(PlayerNumber);
-        playerstatHandler.HP.added += hp * 3;
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
+        int hpUp = hp * 3;
+        playerstatHandler.HP.added += hpUp;
+        playerstatHandler.HPadd(hpUp);
     }
     [PunRPC]
     private void A923(int PlayerNumber)//스탯 이속 티어 3
