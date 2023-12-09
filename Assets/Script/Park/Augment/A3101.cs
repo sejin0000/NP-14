@@ -25,11 +25,14 @@ public class A3101 : MonoBehaviourPun
     }
     private void Update()
     {
-        time += Time.deltaTime;
-        if (time >= healTime) 
+        if (photonView.IsMine)
         {
-            StayHeal();
-            time = 0f;
+            time += Time.deltaTime;
+            if (time >= healTime)
+            {
+                StayHeal();
+                time = 0f;
+            }
         }
     }
     // Update is called once per frame
@@ -37,9 +40,7 @@ public class A3101 : MonoBehaviourPun
     {
         if (photonView.IsMine) 
         {
-            Debug.Log($"3101ÈúÀü Ã¼·Â {playerStat.CurHP}");
             playerStat.HPadd(heal);
-            Debug.Log($"3101ÈúÈÄ Ã¼·Â {playerStat.CurHP}");
         }
     }
     void restartTime() 

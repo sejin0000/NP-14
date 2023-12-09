@@ -33,6 +33,7 @@ public class SetTile : MonoBehaviourPun
     private void Start()
     {
         GameManager.Instance.OnStageEndEvent += TileClear;
+        GameManager.Instance.OnBossStageEndEvent += TileClear;
     }
 
     public void TileClear()

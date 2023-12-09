@@ -37,6 +37,9 @@ public class ResultManager : MonoBehaviour//vs코드
 
 
     public bool statChance;
+    public bool countDownCheck;
+    public float pickTime;
+    public TextMeshProUGUI time;
 
     bool testsetting;
     public bool SetActiveCheck;
@@ -45,6 +48,7 @@ public class ResultManager : MonoBehaviour//vs코드
         Player = playerObj;
         IsStat = false;
         SetActiveCheck = false;
+        countDownCheck = false;
         //if (MainGameManager.Instance != null) TO DEL사실 죽은 부분 if문 전체를 지워도 된다고 판단됨
         //{
         //    gameManager = MainGameManager.Instance;
@@ -84,6 +88,19 @@ public class ResultManager : MonoBehaviour//vs코드
         ProtoList = MakeAugmentListManager.Instance.Prototype;
         Debug.Log("배포전 프로토타입 주석처리");
         statChance = false;
+    }
+    private void Update()
+    {
+        if (countDownCheck) 
+        {
+            pickTime -= Time.deltaTime;
+            time.text = pickTime.ToString("F1");
+            if (pickTime <= 0) 
+            {
+                picklist[0].pick();
+            }
+        }
+
     }
     public void SpecialResult()
     {
@@ -140,8 +157,8 @@ public class ResultManager : MonoBehaviour//vs코드
     }
     public void CallStatResult() 
     {
-        int tier = RandomTier();
-
+        //int tier = RandomTier();
+        int tier = 4;
         switch (tier) 
             {
                 case 1:
@@ -229,6 +246,12 @@ public class ResultManager : MonoBehaviour//vs코드
             picklist[i].gameObject.SetActive(true);
             list.RemoveAt(a);
         }
+        if (GameManager.Instance.ClearStageCheck) 
+        {
+        countDownCheck = true;
+        time.gameObject.SetActive(true);
+        pickTime = 30f;
+        }
         SetActiveCheck = true;
         IsStat = false;
         
@@ -256,6 +279,8 @@ public class ResultManager : MonoBehaviour//vs코드
         {
             ready();
         }
+        countDownCheck = false;
+        time.gameObject.SetActive(false);
         statChance = false;
     }
     public void ready() 
@@ -275,4 +300,5 @@ public class ResultManager : MonoBehaviour//vs코드
             SeeNowMyList = true;
         }
     }
+
 }

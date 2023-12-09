@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 95acb80495f00264e90da9f5cde41ae1, type: 3}
-  m_Name: MonsterSquadSO1
+  m_Name: MonsterSquadSO6
   m_EditorClassIdentifier: 
-  MonsterList: 010000000100000002000000
-  MonsterNum: 5
+  MonsterList: 03000000
+  MonsterNum: 1

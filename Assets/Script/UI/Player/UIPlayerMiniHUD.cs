@@ -8,9 +8,14 @@ using UnityEngine.SceneManagement;
 public class UIPlayerMiniHUD : UIBase
 {
     [SerializeField] private List<GameObject> elements;
-    private GameObject player;
+    [SerializeField] private GameObject player;
     private PlayerStatHandler statHandler;
     private TopDownCharacterController playerController;
+
+    public GameObject Player
+    {
+        get { return player; }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +28,7 @@ public class UIPlayerMiniHUD : UIBase
 
     public void InitializeData()
     {
+
         foreach (var element in elements)
         {
             var temp = element.GetComponent<UIBase>();
@@ -33,23 +39,18 @@ public class UIPlayerMiniHUD : UIBase
             }
         }
 
-        if (SceneManager.GetActiveScene().name == "Test_DoHyun")
-            player = TestGameManagerDohyun.Instance.InstantiatedPlayer.gameObject;
-        else
-            player = GameManager.Instance.clientPlayer.gameObject;
-
         playerController = player.GetComponent<TopDownCharacterController>();
         statHandler = player.GetComponent<PlayerStatHandler>();
 
-        OpenChild<UIPlayerHP>();
+        OpenChild<UIPlayerMiniHP>();
         InitializeEvent();
     }
 
     public void InitializeEvent()
     {
-        statHandler.HitEvent += OpenChild<UIPlayerHP>;
+        statHandler.HitEvent += OpenChild<UIPlayerMiniHP>;
         playerController.OnReloadEvent += OpenChild<UIReloadHUD>;
-        playerController.OnEndReloadEvent += OpenChild<UIPlayerHP>;
+        playerController.OnEndReloadEvent += OpenChild<UIPlayerMiniHP>;
     }
 
     public void OpenChild<T>() where T : UIBase

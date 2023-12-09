@@ -55,7 +55,6 @@ public class A2103 : MonoBehaviourPun
         if (target.Count>=1) 
         {
             count = target.Count;
-            Debug.Log(count);
             me.ATK.added -= AtkOldPower;
             me.AtkSpeed.added -= AtkspeedOldPower;
             me.BulletSpread.added -= BulletSpreadOldPower;

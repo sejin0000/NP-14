@@ -8,21 +8,30 @@ public class PlayerDebuffControl : MonoBehaviourPun
 {
     public ParticleSystem _speedParticle;
     public ParticleSystem _TwoMoonParticle;
+    public ParticleSystem _HealParticle;
+
     float speedTime = 0;
     float checkSpeedTime;
+
     float twoMoonTIME = 0;
     float checkMoonTime;
+
+    float HealTime = 0;
+    float checkHealTime;
+
+    bool readyHeal;
     bool readyMoon;
     bool readySpeed;
     // Start is called before the first frame update
     public enum buffName
     {
         Speed =0,
-        TwoMoon=1
+        TwoMoon=1,
+        Heal=2,
     }
     public void Init(buffName i,float time)
     {
-        if (0 == (int)i)
+        if (buffName.Speed == i)
         {
             photonView.RPC("SpeedBuffOn", RpcTarget.All);
             if (speedTime >= 0 && speedTime <= time)
@@ -32,7 +41,7 @@ public class PlayerDebuffControl : MonoBehaviourPun
                 readySpeed = true;
             }
         }
-        else 
+        else if (buffName.TwoMoon == i)
         {
             photonView.RPC("TwoMoonBuffOn", RpcTarget.All);
             if (twoMoonTIME >= 0 && twoMoonTIME <= time)
@@ -40,6 +49,16 @@ public class PlayerDebuffControl : MonoBehaviourPun
                 twoMoonTIME = time;
                 checkMoonTime = 0;
                 readyMoon = true;
+            }
+        }
+        else if (buffName.Heal == i) 
+        {
+            photonView.RPC("HealBuffOn", RpcTarget.All);
+            if (HealTime >= 0 && HealTime <= time)
+            {
+                HealTime = time;
+                checkHealTime = 0;
+                readyHeal = true;
             }
         }
 
@@ -62,6 +81,15 @@ public class PlayerDebuffControl : MonoBehaviourPun
                 SpeedOff();
             }
         }
+        if (readyHeal) 
+        {
+            checkHealTime += Time.deltaTime;
+            if (checkHealTime >= HealTime) 
+            
+            {
+                HealOff();
+            }
+        }
 
     }
     private void SpeedOff() 
@@ -79,6 +107,13 @@ public class PlayerDebuffControl : MonoBehaviourPun
         checkMoonTime = 0f;
         twoMoonTIME = 0f;
         readyMoon = false;
+    }
+    private void HealOff()
+    {
+        photonView.RPC("HealBuffOff", RpcTarget.All);
+        checkHealTime = 0f;
+        HealTime = 0f;
+        readyHeal = false;
     }
 
     [PunRPC]
@@ -100,5 +135,15 @@ public class PlayerDebuffControl : MonoBehaviourPun
     public void TwoMoonBuffOff()
     {
         _TwoMoonParticle.gameObject.SetActive(false);
+    }
+    [PunRPC]
+    public void HealBuffOn()
+    {
+        _HealParticle.gameObject.SetActive(true);
+    }
+    [PunRPC]
+    public void HealBuffOff()
+    {
+        _HealParticle.gameObject.SetActive(false);
     }
 }

@@ -11,9 +11,6 @@ public class MonsterSpawner : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.OnStageEndEvent += StageMonsterClear;
-
-        if (PhotonNetwork.IsMasterClient)
-            GameManager.Instance.OnBossStageSettingEvent += BossSpawn;
     }
 
     public void MonsterSpawn()

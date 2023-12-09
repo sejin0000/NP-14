@@ -39,13 +39,11 @@ public class A3105 : MonoBehaviourPun
         controller.playerStatHandler.useSkill = true;
         if (ready) 
         {
-            Debug.Log($"강화 전의  현재 총 공격력{playerStat.ATK.total}");
             nowPower = playerStat.ATK.total;
             playerStat.ATK.added += nowPower;
             oldPower = nowPower;
             ready = false;
             Isfirst = true;
-            Debug.Log($"강화된 현재 총 공격력{playerStat.ATK.total}");
         }
         SkillEnd();
 
@@ -57,17 +55,13 @@ public class A3105 : MonoBehaviourPun
         {
             playerStat.ATK.added -= oldPower;
             ready = true;
-            Debug.Log($"첫발을쏜 현재  총 공격력{playerStat.ATK.total}");
         }
         Isfirst = false;
-        Debug.Log($"공격하고 난 후 총 공격력{playerStat.ATK.total}");
     }
     public void SkillEnd()
     {
         if (photonView.IsMine)
         {
-            //스킬이 끝나면 쿨타임을 계산하고 쿨타임이 끝나면  controller.playerStatHandler.CanSkill = 진실; 로 바꿔줌
-            Debug.Log("스킬 종료");
             controller.playerStatHandler.useSkill = false;
             if (controller.playerStatHandler.CurSkillStack > 0)
             {

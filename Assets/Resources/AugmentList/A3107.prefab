@@ -483,7 +483,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   circleR: 1
   deg: 0
-  objSpeed: 20
+  objSpeed: 60
   target:
   - {fileID: 3620736480285940277}
   - {fileID: 743237513502095473}

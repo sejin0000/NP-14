@@ -9,25 +9,25 @@ public class GameManager : MonoBehaviour
 {
     public PhotonView PV;
 
-    public event Action OnInitEvent;          //ÃÊ±â¼¼ÆÃ
+    public event Action OnInitEvent;          //ì´ˆê¸°ì„¸íŒ…
 
-    public event Action OnStageSettingEvent;  //½ºÅ×ÀÌÁö ¼¼ÆÃ
-    public event Action OnStageStartEvent;    //½ºÅ×ÀÌÁö ½ÃÀÛ
-    public event Action OnRoomStartEvent;     //·ë ½ÃÀÛ
-    public event Action OnRoomEndEvent;       //·ë Á¾·á
-    public event Action OnStageEndEvent;      //½ºÅ×ÀÌÁö Á¾·á
+    public event Action OnStageSettingEvent;  //ìŠ¤í…Œì´ì§€ ì„¸íŒ…
+    public event Action OnStageStartEvent;    //ìŠ¤í…Œì´ì§€ ì‹œì‘
+    public event Action OnRoomStartEvent;     //ë£¸ ì‹œì‘
+    public event Action OnRoomEndEvent;       //ë£¸ ì¢…ë£Œ
+    public event Action OnStageEndEvent;      //ìŠ¤í…Œì´ì§€ ì¢…ë£Œ
 
 
-    public event Action OnBossStageSettingEvent; //º¸½º ·ë ½ÃÀÛ
-    public event Action OnBossStageStartEvent; //º¸½º ·ë ½ÃÀÛ
-    public event Action OnBossStageEndEvent;   //º¸½º ·ë Á¾·á
+    public event Action OnBossStageSettingEvent; //ë³´ìŠ¤ ë£¸ ì‹œì‘
+    public event Action OnBossStageStartEvent; //ë³´ìŠ¤ ë£¸ ì‹œì‘
+    public event Action OnBossStageEndEvent;   //ë³´ìŠ¤ ë£¸ ì¢…ë£Œ
 
-    public event Action OnGameClearEvent;     //°ÔÀÓ Å¬¸®¾î
-    public event Action OnGameOverEvent;      //°ÔÀÓ ¿À¹ö
-    public event Action PlayerLifeCheckEvent; //ÇÃ·¹ÀÌ¾î Á×À½
+    public event Action OnGameClearEvent;     //ê²Œì„ í´ë¦¬ì–´
+    public event Action OnGameOverEvent;      //ê²Œì„ ì˜¤ë²„
+    public event Action PlayerLifeCheckEvent; //í”Œë ˆì´ì–´ ì£½ìŒ
 
     public event Action ChangeGoldEvent;
-    public bool ClearStageCheck;//¹Ú¹ÎÇõ Ãß°¡ ½ºÅ×ÀÌÁö Å¬¸®¾î½Ã ºó¹æ ºñ¿ï¶§ Äİ¿©ºÎ
+    public bool ClearStageCheck;              //ë°•ë¯¼í˜ ì¶”ê°€ ìŠ¤í…Œì´ì§€ í´ë¦¬ì–´ì‹œ ë¹ˆë°© ë¹„ìš¸ë•Œ ì½œì—¬ë¶€
 
     public StageListInfoSO stageListInfo;
     public int curStage = 0;
@@ -37,10 +37,10 @@ public class GameManager : MonoBehaviour
     public MapGenerator MG;
 
     public GameObject _fadeInfadeOutPanel;
-    private FadeInFadeOutPanel FF;
+    public FadeInFadeOutPanel FF;
 
     public GameObject _mansterSpawner;
-    private MonsterSpawner MS;
+    public MonsterSpawner MS;
 
     public Setting PS;
 
@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour
     public int PartyDeathCount;
     public int TeamGold;
     public bool isTransitionPlayed;
+    public bool isStartFirst;
 
 
 
@@ -86,40 +87,45 @@ public class GameManager : MonoBehaviour
         if (PhotonNetwork.IsMasterClient)
         {
             OnStageSettingEvent += MG.NavMeshBakeRunTime;
-            OnStageStartEvent += MS.MonsterSpawn;           
+            OnStageStartEvent += MS.MonsterSpawn;
+            OnBossStageStartEvent += MS.BossSpawn;
         }
         OnStageStartEvent += MG.roomNodeInfo.OpenDoor;
 
-    }   
+        TeamGold = 0;
+        isStartFirst = true;
+    }
 
-    
+
     private void Start()
     {
-        AudioManager.Instance.AddComponent<AudioManagerTest>().Initialize();
-        PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
-        MakeSetting.MakeManager();
-        TeamGold = 0;
+        if (isStartFirst)
+        {
+            AudioManager.Instance.AddComponent<AudioManagerTest>().Initialize();
+            PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
+            MakeSetting.MakeManager();
+            isStartFirst = false;
+        }
 
         if (stageListInfo.StagerList[curStage].stageType == StageType.normalStage)
         {
             CallStageSettingEvent();
         }
-        else if(stageListInfo.StagerList[curStage].stageType == StageType.bossStage)
+        else if (stageListInfo.StagerList[curStage].stageType == StageType.bossStage)
         {
             CallBossStageSettingEvent();
         }
     }
 
-
     public void CallInitEvent()
     {
-        Debug.Log("ÃÊ±âÈ­");
+        Debug.Log("ì´ˆê¸°í™”");
         OnInitEvent?.Invoke();
     }
 
     public void CallStageSettingEvent()
     {
-        Debug.Log("ÆÄ¹Ö ½ºÅ×ÀÌÁö ¼¼ÆÃ");
+        Debug.Log("íŒŒë° ìŠ¤í…Œì´ì§€ ì„¸íŒ…");
         PartyDeathCount = 0;
         ClearStageCheck = false;
         OnStageSettingEvent?.Invoke();
@@ -129,7 +135,7 @@ public class GameManager : MonoBehaviour
 
     public void CallStageStartEvent()
     {
-        Debug.Log("½ºÅ×ÀÌÁö ½ÃÀÛ");
+        Debug.Log("ìŠ¤í…Œì´ì§€ ì‹œì‘");
         OnStageStartEvent?.Invoke();
         if (PhotonNetwork.IsMasterClient)
         {
@@ -146,7 +152,7 @@ public class GameManager : MonoBehaviour
 
     public void CallRoomStartEvent()
     {
-        Debug.Log("·ë ½ÃÀÛ");
+        Debug.Log("ë£¸ ì‹œì‘");
         PV.RPC("PunCallRoomStartEvent",RpcTarget.AllBuffered);
     }
     [PunRPC]
@@ -157,7 +163,7 @@ public class GameManager : MonoBehaviour
     [PunRPC]
     public void CallRoomEndEvent()
     {
-        Debug.Log("·ë Á¾·á");
+        Debug.Log("ë£¸ ì¢…ë£Œ");
         if (!ClearStageCheck)
         {
             PV.RPC("PunCallRoomEndEvent", RpcTarget.AllBuffered);
@@ -171,7 +177,7 @@ public class GameManager : MonoBehaviour
 
     public void CallStageEndEvent()
     {
-        Debug.Log("½ºÅ×ÀÌÁö Á¾·á");
+        Debug.Log("ìŠ¤í…Œì´ì§€ ì¢…ë£Œ");
         PV.RPC("PunCallStageEndEvent",RpcTarget.AllBuffered);
     }
 
@@ -185,9 +191,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("OnStageEndEvent");
         ClearStageCheck = true;
-        OnStageEndEvent?.Invoke();
-        
-        //PV.RPC("EndPlayerCheck", RpcTarget.AllBuffered);
+        OnStageEndEvent?.Invoke();            
     }
 
     int EndPlayer = 0;
@@ -195,12 +199,7 @@ public class GameManager : MonoBehaviour
     public void EndPlayerCheck()
     {
         EndPlayer++;
-        //if (EndPlayer == 1)//?????
-        //{
-        //    StageClear();
-        //    EndPlayer = 0;
-        //}
-        Debug.Log($"ÇöÀç ·¹µğ : {EndPlayer} ÇÊ¿ä ·¹µğ : {PhotonNetwork.CurrentRoom.PlayerCount}");
+        Debug.Log($"í˜„ì¬ ë ˆë”” : {EndPlayer} í•„ìš” ë ˆë”” : {PhotonNetwork.CurrentRoom.PlayerCount}");
         if (EndPlayer == PhotonNetwork.CurrentRoom.PlayerCount) 
         {
             StageClear();
@@ -223,7 +222,7 @@ public class GameManager : MonoBehaviour
 
     public void CallBossStageSettingEvent()
     {
-        Debug.Log("º¸½º ½ºÅ×ÀÌÁö ¼¼ÆÃ");
+        Debug.Log("ë³´ìŠ¤ ìŠ¤í…Œì´ì§€ ì„¸íŒ…");
         OnBossStageSettingEvent?.Invoke();
         FF.FadeIn();
         StartCoroutine(WaitTransition());
@@ -231,19 +230,19 @@ public class GameManager : MonoBehaviour
 
     public void CallBossStageStartEvent()
     {
-        Debug.Log("º¸½º ½ºÅ×ÀÌÁö ½ÃÀÛ");
+        Debug.Log("ë³´ìŠ¤ ìŠ¤í…Œì´ì§€ ì‹œì‘");
         OnBossStageStartEvent?.Invoke();
     }
 
     public void CallBossStageEndEvent()
     {
-        Debug.Log("º¸½º ½ºÅ×ÀÌÁö Á¾·á");
+        Debug.Log("ë³´ìŠ¤ ìŠ¤í…Œì´ì§€ ì¢…ë£Œ");
         OnBossStageEndEvent?.Invoke();
     }
 
     public void CallGameClearEvent()
     {
-        Debug.Log("°ÔÀÓ Å¬¸®¾î");
+        Debug.Log("ê²Œì„ í´ë¦¬ì–´");
         FF.FadeOut(2);
     }
     public void NextGameClearEvent()
@@ -251,9 +250,9 @@ public class GameManager : MonoBehaviour
         OnGameClearEvent?.Invoke();
     }
 
-    public void CallGameOverEvent()//¸ÊÁö¿öÁö´Â ½Ã°£ ¹ú±â
+    public void CallGameOverEvent()//ë§µì§€ì›Œì§€ëŠ” ì‹œê°„ ë²Œê¸°
     {
-        Debug.Log("°ÔÀÓ ¿À¹ö");
+        Debug.Log("ê²Œì„ ì˜¤ë²„");
         FF.FadeOut(3);
     }
     public void NextGameOverEvent()
@@ -264,7 +263,7 @@ public class GameManager : MonoBehaviour
     public void PlayerDie()
     {
         PV.RPC("AddPartyDeathCount", RpcTarget.All);
-        Debug.Log("ÇöÀç Á×Àº¼ö PartyDeath : " + PartyDeathCount.ToString());
+        Debug.Log("í˜„ì¬ ì£½ì€ìˆ˜ PartyDeath : " + PartyDeathCount.ToString());
     }
 
     [PunRPC]
@@ -282,7 +281,7 @@ public class GameManager : MonoBehaviour
     {
         CallPlayerLifeCheckEvent();
         PartyDeathCount--;
-        Debug.Log("ÇöÀç Á×Àº¼ö PartyDeath : " + PartyDeathCount.ToString());
+        Debug.Log("í˜„ì¬ ì£½ì€ìˆ˜ PartyDeath : " + PartyDeathCount.ToString());
     }
     public void CallPlayerLifeCheckEvent()
     {
