@@ -110,7 +110,7 @@ public class UIBulletIndicator : UIBase
         currentAmmo = playerStat.CurAmmo;
         Debug.Log("[UIBulletIndicator] currentAmmo: " + currentAmmo);
         int index_L = (int)(ammoMax - currentAmmo);
-        int index_R = (int)currentAmmo-1;
+        int index_R = (int)currentAmmo;
         Debug.Log("[UIBulletIndicator] index_R: " + index_R);
 
         if (index_R >= 0)

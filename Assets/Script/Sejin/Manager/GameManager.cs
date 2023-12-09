@@ -88,12 +88,12 @@ public class GameManager : MonoBehaviour
         }
         OnStageStartEvent += MG.roomNodeInfo.OpenDoor;
 
-        AudioManager.Instance.AddComponent<AudioManagerTest>().Initialize();
     }   
 
 
     private void Start()
     {
+        AudioManager.Instance.AddComponent<AudioManagerTest>().Initialize();
         PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
         MakeSetting.MakeManager();
         TeamGold = 0;
