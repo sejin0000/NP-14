@@ -23,7 +23,7 @@ public class UIStageTransition : UIBase
     [SerializeField] private float speed=0.1f;
     [SerializeField] private int maxFloor;
 
-    private int currentFloor = -1;
+    public int currentFloor = -1;
     private GameObject[] block;
 
     private float spriteHeight;
