@@ -439,6 +439,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
                         player.DirectDamage(bossSO.atk, PV.ViewID);
                         // 실제 넉백
                         player.photonView.RPC("StartKnockback", RpcTarget.All, directionToPlayer, knockbackDistance);
+                        //wall.GetComponent<StoneWall>().
                         //StartCoroutine(player.Knockback(directionToPlayer, knockbackDistance));                 
                     }
                 }
@@ -537,8 +538,9 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
                 AreaList[2].gameObject.SetActive(false); // 모든 범위 실행
                 break;
             case 4:
-                AreaList[3].gameObject.SetActive(false); // 타겟 플레이어에 원형 실행
+                //PV.RPC("MakeWall", RpcTarget.All, AreaList[3].gameObject.transform.position);
                 isTrackingFurthestTarget = false;
+                AreaList[3].gameObject.SetActive(false); // 타겟 플레이어에 원형 실행
                 break;
             case 5:
                 ;//모든 플레이어를 추적하는 원형(3,4,5)
@@ -864,9 +866,9 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
 
     [PunRPC]
-    public void MakeWall(Transform target)
+    public void MakeWall(Transform targetPos)
     {
-        Instantiate(wall, target.position, Quaternion.identity);
+        Instantiate(wall, targetPos.position, Quaternion.identity);
     }
 
 

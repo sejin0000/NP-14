@@ -34,7 +34,7 @@ public class EnemyState_Chase : BTAction
 
     public override void Initialize()
     {
-        enemyAI.PV.RPC("SetStateColor", RpcTarget.All, (int)EnemyStateColor.ColorYellow, enemyAI.PV.ViewID);
+        //enemyAI.PV.RPC("SetStateColor", RpcTarget.All, (int)EnemyStateColor.ColorYellow, enemyAI.PV.ViewID);
         enemyAI.ChangeSpeed(enemySO.enemyChaseSpeed);
         currentTime = chaseTime;
         //¼öÁ¤µÊ

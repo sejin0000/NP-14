@@ -16,7 +16,7 @@ public class StoneWall : MonoBehaviour
     }
 
     [PunRPC]
-    public void DecreaseHP(float damage)
+    public void DecreaseWallHP(float damage)
     {
         currentWallHP -= damage;
         if (currentWallHP <= 0)
