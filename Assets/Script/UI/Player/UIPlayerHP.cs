@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class UIPlayerHP : UIBase//, ICommonUI
 {
-    [SerializeField] private Slider hpGauge;
+    private Slider hpGauge;
     private PlayerStatHandler playerStats;
 
     public override void Initialize()

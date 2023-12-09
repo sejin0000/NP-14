@@ -6064,6 +6064,26 @@ PrefabInstance:
       propertyPath: m_PresetInfoIsWorld
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 819610307820716171, guid: c83e8381c1f5a9647a78e21773a0d5d8, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 819610307820716171, guid: c83e8381c1f5a9647a78e21773a0d5d8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2835067502980193550, guid: c83e8381c1f5a9647a78e21773a0d5d8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3226153165228773970, guid: c83e8381c1f5a9647a78e21773a0d5d8, type: 3}
+      propertyPath: m_Value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6542864509106072386, guid: c83e8381c1f5a9647a78e21773a0d5d8, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6863663038091082083, guid: c83e8381c1f5a9647a78e21773a0d5d8, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -6148,6 +6168,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8594541606211041091, guid: c83e8381c1f5a9647a78e21773a0d5d8, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 8735806354994587177}
     - target: {fileID: 9201082999283598699, guid: c83e8381c1f5a9647a78e21773a0d5d8, type: 3}
       propertyPath: m_Name
       value: PlayerMiniHUD
