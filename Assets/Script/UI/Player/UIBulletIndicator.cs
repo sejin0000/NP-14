@@ -108,14 +108,14 @@ public class UIBulletIndicator : UIBase
     public void ShootBullet()
     {
         currentAmmo = playerStat.CurAmmo;
-        Debug.Log("[UIBulletIndicator] currentAmmo: " + currentAmmo);
+        //Debug.Log("[UIBulletIndicator] currentAmmo: " + currentAmmo);
         int index_L = (int)(ammoMax - currentAmmo);
         int index_R = (int)currentAmmo;
-        Debug.Log("[UIBulletIndicator] index_R: " + index_R);
+        //Debug.Log("[UIBulletIndicator] index_R: " + index_R);
 
         if (index_R >= 0)
         {
-            Debug.Log("[UIBulletIndicator] index: " + index_R);
+            //Debug.Log("[UIBulletIndicator] index: " + index_R);
             bullets[index_R].GetComponent<UIBullet>().PlayAnim("Shooting");
         }
     }
