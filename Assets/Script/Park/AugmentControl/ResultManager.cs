@@ -234,6 +234,7 @@ public class ResultManager : MonoBehaviour//vs코드
     {
         if (SetActiveCheck)
         {
+            Debug.Log($"으ㅏ아아아아ㅏ아아아ㅏ아아아아ㅏ");
             picklist[0].pick();
         }
         int Count = picklist.Length;
