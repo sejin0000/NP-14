@@ -256,6 +256,7 @@ public class GameManager : MonoBehaviour
     }
     public void NextGameClearEvent()
     {
+        isGameOver = true;
         OnGameClearEvent?.Invoke();
     }
 

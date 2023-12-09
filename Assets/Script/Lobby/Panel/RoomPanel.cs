@@ -297,7 +297,8 @@ public class RoomPanel : MonoBehaviourPunCallbacks
         ChatScrollContent.GetComponent<RectTransform>().sizeDelta += new Vector2(0, increasedHeight);
         ChatScrollRect.verticalNormalizedPosition = 0f;
                 
-        ChatInputField.text = ""; 
+        ChatInputField.text = "";
+        IsChatInputActive = false;
     }
 
     [PunRPC]
