@@ -53,10 +53,14 @@ public class GameManager : MonoBehaviour
     public int PartyDeathCount;
     public int TeamGold;
 
+    private bool firstStart;
 
 
     private void Awake()
     {
+        firstStart = true;
+        Debug.Log("GameManager - Awake()");
+
         if (Instance == null)
         {
             Instance = this;
@@ -95,6 +99,14 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+
+        if (firstStart) 
+        {
+        PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
+        MakeSetting.MakeManager();
+        TeamGold = 0;
+        }
+
         if (stageListInfo.StagerList[curStage].stageType == StageType.normalStage)
         {
             CallStageStartEvent();
