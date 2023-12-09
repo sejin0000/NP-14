@@ -16,10 +16,9 @@ public class A0217_1 : MonoBehaviour
         if (targetstat != null)
         {
             target.Add(targetstat);
-            buffAmount = 1.5f;
             targetstat.AtkSpeed.added += buffAmount;
             targetstat.Speed.added += buffAmount;
-            Debug.Log("플레이어입장");
+
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -30,7 +29,6 @@ public class A0217_1 : MonoBehaviour
             target.Remove(targetstat);
             targetstat.AtkSpeed.added -= buffAmount;
             targetstat.Speed.added -= buffAmount;
-            Debug.Log("플레이어퇴장");
         }
     }
     private void FixedUpdate()
@@ -38,21 +36,7 @@ public class A0217_1 : MonoBehaviour
         time += Time.deltaTime;
         if (time >= maxtime)
         {
-            goodbye();
+            Destroy(gameObject);
         }
-    }
-    private void goodbye() 
-    {
-        if (target != null) 
-        {
-            Debug.Log($"{target.Count}");
-            for (int i = 0; i< target.Count; ++i) 
-            {
-                target[i].AtkSpeed.added -= buffAmount;
-                target[i].Speed.added -= buffAmount;
-                target.Remove(target[i]);
-            }
-        }
-        Destroy(gameObject);
     }
 }
