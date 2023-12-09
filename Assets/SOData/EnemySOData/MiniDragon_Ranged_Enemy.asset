@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1f76e7dab80292843a8ceb8dbf8daab0, type: 3}
-  m_Name: Ranged_Enemy
+  m_Name: MiniDragon_Ranged_Enemy
   m_EditorClassIdentifier: 
   enemyName: "\uBA40\uC5B4\uC6A9"
   type: 1
@@ -31,4 +31,6 @@ MonoBehaviour:
   attackRange: 8
   dropGold: 0
   unitScale: 0
+  enemySpriteLibrary: {fileID: 7108339969198208228, guid: 78e8c08b7db7b4f41b1ab9425514757b, type: 3}
+  enemyBulletPrefab: {fileID: 7691614160748915792, guid: 98253f58cce0f8a44928c7dfde37288d, type: 3}
   bossPatternTime: 0

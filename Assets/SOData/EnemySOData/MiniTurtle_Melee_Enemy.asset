@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1f76e7dab80292843a8ceb8dbf8daab0, type: 3}
-  m_Name: Melee_Enemy
+  m_Name: MiniTurtle_Melee_Enemy
   m_EditorClassIdentifier: 
-  enemyName: "\uAC00\uAE4C\uC6CC\uC6A9"
+  enemyName: "\uADFC\uAC70\uB9AC\uAC70\uBD81\uC774"
   type: 0
   atk: 5
   hp: 60
   bulletSpeed: 10
-  atkDelay: 0.2
+  atkDelay: 2
   SpecialAttackDelay: 0
   patrolDelay: 2.5
   chaseTime: 5
@@ -28,7 +28,9 @@ MonoBehaviour:
   enemyChaseSpeed: 3.5
   viewAngle: 70
   viewDistance: 9
-  attackRange: 4
+  attackRange: 2
   dropGold: 0
   unitScale: 0
+  enemySpriteLibrary: {fileID: 7108339969198208228, guid: 853e8e0d6b1f1054fb0783fdebd2232b, type: 3}
+  enemyBulletPrefab: {fileID: 7691614160748915792, guid: 9bf93b8384dd7de429f2bc54c51480a7, type: 3}
   bossPatternTime: 0

@@ -15,7 +15,7 @@ MonoBehaviour:
   enemyName: "\uC18D\uC774\uAC70\uBD81"
   type: 1
   atk: 0
-  hp: 500
+  hp: 100
   bulletSpeed: 5
   atkDelay: 5
   SpecialAttackDelay: 5
@@ -37,3 +37,5 @@ MonoBehaviour:
   missileCoolTime: 4
   rollingDamge: 2
   endRollCount: 4
+  thornTime: 0.2
+  thrronAngle: 5

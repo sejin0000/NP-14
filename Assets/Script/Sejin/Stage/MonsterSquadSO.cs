@@ -5,10 +5,12 @@ using UnityEngine;
 [System.Serializable]
 public enum MonsterName
 {
-    Test_Enemy,
-    Test_Boss,
-    MeleeEnemy,
+    Boss_Dragon,
+    MiniDragon_Ranged_Enemy,
+    MiniDragon_Melee_Enemy,
     Boss_Turtle,
+    MiniTurtle_Ranged_Enemy,
+    MiniTurtle_Melee_Enemy,
 }
 [CreateAssetMenu(fileName = "MonsterSquadSO", menuName = "MonsterSquadSO", order = 1)]
 

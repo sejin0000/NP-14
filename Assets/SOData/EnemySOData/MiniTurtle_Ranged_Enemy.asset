@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f76e7dab80292843a8ceb8dbf8daab0, type: 3}
+  m_Name: MiniTurtle_Ranged_Enemy
+  m_EditorClassIdentifier: 
+  enemyName: "\uC6D0\uAC70\uB9AC\uAC70\uBD81\uC774"
+  type: 1
+  atk: 3
+  hp: 20
+  bulletSpeed: 7
+  atkDelay: 0.5
+  SpecialAttackDelay: 0
+  patrolDelay: 3
+  chaseTime: 3
+  groggyTiem: 1.5
+  bulletLifeTime: 6
+  breathAttackDelay: 0
+  enemyMoveSpeed: 3.5
+  enemyChaseSpeed: 2.5
+  viewAngle: 60
+  viewDistance: 6
+  attackRange: 8
+  dropGold: 0
+  unitScale: 0
+  enemySpriteLibrary: {fileID: 7108339969198208228, guid: 45b96a4d64b475b42bf4c989a3fc3b30, type: 3}
+  enemyBulletPrefab: {fileID: 7691614160748915792, guid: 14bba45a9f85a4144ae6eb2ec8a8171a, type: 3}
+  bossPatternTime: 0

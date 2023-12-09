@@ -25,7 +25,8 @@ public class BossAI_Turtle_State_Attack_Rolling : BTAction
         //Debug.Log($"구르기 쿨체크 {bossAI_Turtle.rollingCooltime}");
         if (bossAI_Turtle.rollingCooltime <= 0)
         {
-            bossAI_Turtle.RollStart();
+            //bossAI_Turtle.RollStart();
+            bossAI_Turtle.PV.RPC("RollStart", RpcTarget.All);
         }
 
     }
