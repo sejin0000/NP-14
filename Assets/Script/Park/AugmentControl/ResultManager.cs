@@ -22,6 +22,7 @@ public class ResultManager : MonoBehaviour//vs코드
     public GameObject MySpecialList;
     bool SeeNowMyList;
 
+    public bool readycheck;
 
     public List<SpecialAugment> SpecialAugment1 = new List<SpecialAugment>();
     public List<SpecialAugment> SpecialAugment2 = new List<SpecialAugment>();
@@ -85,9 +86,15 @@ public class ResultManager : MonoBehaviour//vs코드
         SpecialAugment2 = MakeAugmentListManager.Instance.SpecialAugment2;
         SpecialAugment3 = MakeAugmentListManager.Instance.SpecialAugment3;
 
+        GameManager.Instance.OnBossStageStartEvent += ReadyCheck; readycheck
+        GameManager.Instance.OnStageStartEvent += ReadyCheck;
         ProtoList = MakeAugmentListManager.Instance.Prototype;
         Debug.Log("배포전 프로토타입 주석처리");
         statChance = false;
+    }
+    public void ReadyCheck() 
+    {
+        readycheck = false;
     }
     private void Update()
     {
@@ -284,7 +291,11 @@ public class ResultManager : MonoBehaviour//vs코드
     }
     public void ready() 
     {
-        GameManager.Instance.PV.RPC("EndPlayerCheck",RpcTarget.All);
+        if (!readycheck) 
+        {
+            GameManager.Instance.PV.RPC("EndPlayerCheck",RpcTarget.All);
+            readycheck = true;
+        }
     }
     public void OnOffGetList()
     {
