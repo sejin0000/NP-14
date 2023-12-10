@@ -33,6 +33,7 @@ public class GameClearPanel : UIBase
     {
         Open();
         GameManager.Instance.isGameOver = true;
+        GameManager.Instance.UnSubscribeEvent();
         if (PhotonNetwork.IsMasterClient)
         {
             GameManager.Instance._mansterSpawner.GetComponent<MonsterSpawner>().StageMonsterClear();
@@ -67,6 +68,7 @@ public class GameClearPanel : UIBase
     {
         Open();
         GameManager.Instance.isGameOver = true;
+        GameManager.Instance.UnSubscribeEvent();
         if (PhotonNetwork.IsMasterClient)
         {
             GameManager.Instance._mansterSpawner.GetComponent<MonsterSpawner>().StageMonsterClear();

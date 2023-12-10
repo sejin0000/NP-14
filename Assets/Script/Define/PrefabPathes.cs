@@ -18,5 +18,6 @@ public class PrefabPathes
     public static readonly string SYSTEM_OFF_PREFAB_PATH = "Prefabs/Setup/SystemOffPrefab";
     public static readonly string SETUP_ANNOUNCE_POPUP = "Prefabs/Setup/SetupAnnouncePopup";
     public static readonly string CHATLOG_PREFAB_PATH = "Prefabs/LobbyScene/ChatLog";
+    public static readonly string TO_LOBBY_PREFAB_PATH = "Prefabs/Setup/ToLobbyPrefab";
     #endregion
 }
