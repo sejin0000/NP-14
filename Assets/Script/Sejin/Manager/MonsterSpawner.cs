@@ -109,10 +109,12 @@ public class MonsterSpawner : MonoBehaviourPun
     public void StageMonsterClear()
     {
         Debug.Log("몬스터 전부 삭제");
+        GameManager.Instance.isStageEnd = true;
         foreach (Transform child in Case.transform)
         {
             PhotonNetwork.Destroy(child.gameObject);
         }
+        GameManager.Instance.isStageEnd = false;
         photonView.RPC("CLEAREnemyViewList", RpcTarget.All);
     }
 

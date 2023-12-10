@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour
     public bool isTransitionPlayed;
     public bool isStartFirst;
     public bool isGameOver;
+    public bool isStageEnd;
 
 
 
