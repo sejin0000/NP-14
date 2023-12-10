@@ -85,8 +85,6 @@ public class UIBulletIndicator : UIBase
         for (int i=newCount; i<prevCount; ++i)
             Destroy(bullets[i]);
 
-        bullets.Capacity = newCount;
-
         // ´Ã¾î³­¸¸Å­ ÅºÃ¢ Ãß°¡
         for (int i=prevCount; i < newCount; ++i)
         {
