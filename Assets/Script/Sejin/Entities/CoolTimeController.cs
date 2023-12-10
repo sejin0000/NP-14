@@ -73,7 +73,7 @@ public class CoolTimeController : MonoBehaviour
         //controller.playerStatHandler.Invincibility = false;
         if (controller.playerStatHandler.CurRollStack < controller.playerStatHandler.MaxRollStack)
         {
-            SkillCoolTime();
+            RollCoolTime();
         }
     }
 
