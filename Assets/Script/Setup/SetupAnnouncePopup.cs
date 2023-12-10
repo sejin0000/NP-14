@@ -12,6 +12,7 @@ public enum AnnouncementType
     NicknameSuccess,
     NicknameFailure,
     GameEnd,
+    ToLobby,
 }
 public class SetupAnnouncePopup : MonoBehaviour
 {
@@ -36,6 +37,7 @@ public class SetupAnnouncePopup : MonoBehaviour
     public static string ANNOUNCEMENT_NICKNAME_SUCCESS = "닉네임이 변경되었습니다.";
     public static string ANNOUNCEMENT_NICKNAME_FAILURE = "닉네임은 2~10 글자의 한글 / 영어 / 숫자의 조합으로만 가능합니다.";
     public static string ANNOUNCEMENT_GAME_END = "게임을 종료하시겠습니까?";
+    public static string ANNOUNCEMENT_TO_LOBBY = "당신이 떠나면, 팀원들도 같이 로비로 떠나게 됩니다. 로비로 떠나시겠습니까?";
 
 
     public void Initialize(AnnouncementType announcementType, string nickname = "")
@@ -60,7 +62,8 @@ public class SetupAnnouncePopup : MonoBehaviour
         {
             { AnnouncementType.NicknameSuccess, ANNOUNCEMENT_NICKNAME_SUCCESS },
             { AnnouncementType.NicknameFailure, ANNOUNCEMENT_NICKNAME_FAILURE },
-            { AnnouncementType.GameEnd, ANNOUNCEMENT_GAME_END }
+            { AnnouncementType.GameEnd, ANNOUNCEMENT_GAME_END },
+            { AnnouncementType.ToLobby, ANNOUNCEMENT_TO_LOBBY }
         };
     }
 
@@ -70,7 +73,8 @@ public class SetupAnnouncePopup : MonoBehaviour
         {
             { AnnouncementType.NicknameSuccess, 1 },
             { AnnouncementType.NicknameFailure, 1 },
-            { AnnouncementType.GameEnd, 2 }
+            { AnnouncementType.GameEnd, 2 },
+            { AnnouncementType.ToLobby, 2 }
         };
     }
 
@@ -114,6 +118,10 @@ public class SetupAnnouncePopup : MonoBehaviour
                 #endif
                 this.gameObject.SetActive(false);
                 break;
+            case (int)AnnouncementType.ToLobby:
+                PhotonNetwork.AutomaticallySyncScene = false;
+                PhotonNetwork.LoadLevel("LobbyScene");
+                break;
         }
     }
 
@@ -124,9 +132,9 @@ public class SetupAnnouncePopup : MonoBehaviour
             case (int)AnnouncementType.NicknameSuccess:
             case (int)AnnouncementType.NicknameFailure:
             case (int)AnnouncementType.GameEnd:
+            case (int)AnnouncementType.ToLobby:
                 this.gameObject.SetActive(false);
-                Application.Quit();
-                break;
+                break;            
         }
     }
 }

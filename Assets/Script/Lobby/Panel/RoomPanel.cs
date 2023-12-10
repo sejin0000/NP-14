@@ -269,6 +269,8 @@ public class RoomPanel : MonoBehaviourPunCallbacks
 
     public void OnStartButtonClicked()
     {
+        var props = new Hashtable() { { askReadyProp, false } };
+        PhotonNetwork.LocalPlayer.SetCustomProperties(props);
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.CurrentRoom.IsVisible = false;
         Destroy(AudioManager.Instance.gameObject);

@@ -9,7 +9,12 @@ public class MainGameNetwork : MonoBehaviourPunCallbacks
     private bool IsSucceedOver;
     public LoadingPanel loadingPanel;
 
-    
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        loadingPanel.Initialize(5f);
+        StartCoroutine(WaitLoadingPanel());        
+    }
+
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
         var GM = GameManager.Instance;
@@ -53,6 +58,7 @@ public class MainGameNetwork : MonoBehaviourPunCallbacks
             }            
         }
         IsSucceedOver = false;
+        StartCoroutine(WaitLoadingPanel());
     }
     [PunRPC]
     public void SendSucceed()
@@ -60,6 +66,12 @@ public class MainGameNetwork : MonoBehaviourPunCallbacks
         IsSucceedOver = true;
     }
 
+    public IEnumerator WaitLoadingPanel()
+    {
+        yield return new WaitForSeconds(5f);
+        PhotonNetwork.AutomaticallySyncScene = false;
+        PhotonNetwork.LoadLevel("LobbyScene");
+    }
     public IEnumerator WaitSucceed()
     {
         if (!IsSucceedOver)

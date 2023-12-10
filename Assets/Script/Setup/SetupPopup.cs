@@ -125,6 +125,9 @@ public class SetupPopup : UIBase
         SetupState = SetupIndex.System;
         ClearSetupBox();
         SetSetupPrefab(PrefabPathes.SYSTEM_OFF_PREFAB_PATH);
+
+        if (GameManager.Instance != null)
+            SetSetupPrefab(PrefabPathes.TO_LOBBY_PREFAB_PATH);
     }
 
     private void SetSetupPrefab(string path)

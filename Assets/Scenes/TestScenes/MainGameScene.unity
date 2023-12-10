@@ -1791,8 +1791,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "This is For TipText\n\uC774\uACF3\uC740 \uD301\uC744 \uC801\uB294 \uACF3\uC785\uB2C8\uB2E4.\n\uB2E4\uB978
-    \uC5B8\uC5B4\uB294 \uD560\uC904 \uBAB0\uB77C \uD759\uD759"
+  m_text: "\uD50C\uB808\uC774\uC5B4 \uD55C\uBA85\uC774 \uD0C8\uC8FC\uD558\uC600\uC2B5\uB2C8\uB2E4.\uC7A0\uC2DC
+    \uD6C4, \uB85C\uBE44\uB85C \uC9C4\uC785\uD569\uB2C8\uB2E4."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 29bf7b60dd66c9b45b9140d95a349ea2, type: 2}
   m_sharedMaterial: {fileID: -8976703866905884628, guid: 29bf7b60dd66c9b45b9140d95a349ea2, type: 2}
@@ -2590,6 +2590,7 @@ MonoBehaviour:
   TeamGold: 0
   isTransitionPlayed: 0
   isStartFirst: 0
+  isGameOver: 0
 --- !u!4 &1855578660
 Transform:
   m_ObjectHideFlags: 0
