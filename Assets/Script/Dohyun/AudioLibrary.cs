@@ -32,13 +32,6 @@ public class AudioLibrary : MonoBehaviour
     [SerializeField] private AudioClip enemy_attack;
     [SerializeField] private AudioClip enemy_hit;
 
-    [Header("Enviorment")]
-    [SerializeField] private AudioClip DoorOpen;
-    [SerializeField] private AudioClip DoorClose;
-
-    [Header("UI")]
-    [SerializeField] private AudioClip click;
-
     private GameObject player;
 
     [HideInInspector]
@@ -99,6 +92,11 @@ public class AudioLibrary : MonoBehaviour
 
         // 피격 판정 효과음
         stats.HitEvent += PlayHitSE;
+    }
+
+    public void PlayMonsterAttack()
+    {
+        AudioManager.PlayClip(enemy_attack);
     }
 
     public void PlayMonsterDead()

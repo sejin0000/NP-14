@@ -26,7 +26,6 @@ public class EnemyState_Dead : BTAction
         //골드 여기에
         //사망 시 파티클이나 기타 효과 여기에
         ParticleManager.Instance.PlayEffect("Droplet_PS", owner.transform.position);
-        AudioManager.Instance.GetComponent<AudioLibrary>().PlayMonsterDead();
 
         PhotonView photonView = PhotonView.Find(enemyAI.lastAttackPlayer);
         if (!photonView.gameObject.GetComponent<PlayerStatHandler>()) 

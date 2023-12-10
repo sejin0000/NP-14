@@ -441,12 +441,14 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void DestroyEnemy()
     {
+        AudioManager.Instance.AudioLibrary.PlayMonsterDead();
         Destroy(gameObject);
     }
 
     [PunRPC]
     public void Fire()
     {
+        AudioManager.Instance.AudioLibrary.PlayMonsterAttack();
         var _bullet = Instantiate(enemyBulletPrefab, enemyAim.transform.position, enemyAim.transform.rotation);
 
         _bullet.IsDamage = true;
