@@ -319,8 +319,15 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void DestroyEnemy()
     {
-        GameManager.Instance.CallBossStageEndEvent();
         Destroy(gameObject);
+        if (GameManager.Instance.curStage + 1 < GameManager.Instance.stageListInfo.StagerList.Count)
+        {
+            GameManager.Instance.CallBossStageEndEvent();
+        }
+        else
+        {
+            GameManager.Instance.CallGameClearEvent();
+        }
     }
 
 
