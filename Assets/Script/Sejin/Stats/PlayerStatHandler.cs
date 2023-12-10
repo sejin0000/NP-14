@@ -202,7 +202,7 @@ public class PlayerStatHandler : MonoBehaviourPun
         CanAtkBuff = true;
 
         isNoramlMove = true;
-        isCanSkill=true;
+        isCanSkill = true;
         isCanAtk = true;
         evasionPersent = 0;
         isRegen = false;
@@ -222,13 +222,13 @@ public class PlayerStatHandler : MonoBehaviourPun
         defense = 1;
 
         IsChargeAttack = false;
-        
-        _DebuffControl=GetComponent<PlayerDebuffControl>();
+
+        _DebuffControl = GetComponent<PlayerDebuffControl>();
         indicatorSprite = playerStats.indicatorSprite;
         atkClip = playerStats.atkClip;
         reloadStartClip = playerStats.reloadClip[0];
         reloadFinishClip = playerStats.reloadClip[1];
-        
+
         PlayerStatArray = new Stats[11];
         PlayerStatNameArray = new string[11]
         {
@@ -245,12 +245,12 @@ public class PlayerStatHandler : MonoBehaviourPun
             "장탄수",
         };
     }
-    private void PunRpcStageBuffReset() 
+    private void PunRpcStageBuffReset()
     {
         photonView.RPC("stageBuffReset", RpcTarget.All);
     }
     [PunRPC]
-    private void stageBuffReset() 
+    private void stageBuffReset()
     {
         if (!CanSpeedBuff)
         {
@@ -279,7 +279,7 @@ public class PlayerStatHandler : MonoBehaviourPun
         //    OnChangeCurHPEvent += SendSyncHP;
         //}
 
-        if (TestGameManager.Instance != null) 
+        if (TestGameManager.Instance != null)
         {
             viewID = photonView.ViewID;
             OnChangeCurHPEvent += SendSyncHP;
@@ -292,7 +292,7 @@ public class PlayerStatHandler : MonoBehaviourPun
         }
 
     }
-    public void StageStartSet() 
+    public void StageStartSet()
     {
         GameManager.Instance.OnStageStartEvent += RefillCoin;
         GameManager.Instance.OnStageStartEvent += startHp;
@@ -356,6 +356,7 @@ public class PlayerStatHandler : MonoBehaviourPun
                 if (CurRegenCoin > 0)
                 {
                     CurRegenCoin -= 1;
+                    isDie = false;
                     Debug.Log($"부활 : {CurRegenCoin}");
                     Regen(HP.total);
                     return;
@@ -370,11 +371,16 @@ public class PlayerStatHandler : MonoBehaviourPun
                 // Awake에서 캐싱을 해두고 null체크를 하면 이후에 추가적으로 할 필요 없음
                 TestGameManager.Instance?.DiedAfter();
                 GameManager.Instance?.PlayerDie();
-                this.gameObject.layer = 12;
+                photonView.RPC("LayerSet",RpcTarget.All);
             }
 
         }
 
+    }
+    [PunRPC]
+    public void LayerSet() 
+    {
+        this.gameObject.layer = 12;
     }
 
     public void HPadd(float addhp)
@@ -440,20 +446,24 @@ public class PlayerStatHandler : MonoBehaviourPun
     }
     [PunRPC]
     public void PunRpcStartHp() 
-    {        
-        CurHP = HP.total;
-        this.gameObject.layer = 8;
-        if (ImGhost)
-        { this.gameObject.layer = 13; }
-        if (isDie == true) 
+    {
+        if (photonView.IsMine)
         {
             PlayerInputController tempInputControl = this.gameObject.GetComponent<PlayerInputController>();
             tempInputControl.ResetSetting();
             tempInputControl.InputOn();
+        }
+        CurHP = HP.total;
+        this.gameObject.layer = 8;
+        if (ImGhost)
+        {
+            this.gameObject.layer = 13;
+        }
+        if (isDie == true)
+        {
             isDie = false;
             anime._animation.SetTrigger("IsRegen");
         }
-
     }
 
     public void SendSyncHP()

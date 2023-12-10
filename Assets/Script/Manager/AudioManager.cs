@@ -45,9 +45,8 @@ public class AudioManager : Singleton<AudioManager>
 
     public AudioMixer Mixer { get { return mixer; } }
 
-    private void Awake()
+    public override void Initialize()
     {
-        base.Awake();
         InitializeData();
         InitializeObject();
         
@@ -75,8 +74,8 @@ public class AudioManager : Singleton<AudioManager>
         GameObject bgmPlayer = new GameObject("BGMPlayer");
         GameObject sePlayer = new GameObject("SEPlayer");
 
-        bgmPlayer.transform.parent = transform;
-        sePlayer.transform.parent = transform;
+        bgmPlayer.transform.parent = Instance.transform;
+        sePlayer.transform.parent = Instance.transform;
 
         //Add Component to Objects
         BGMPlayer = bgmPlayer.AddComponent<AudioSource>();

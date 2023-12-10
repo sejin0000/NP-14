@@ -44,7 +44,7 @@ public class A0107 : MonoBehaviourPun
     // Update is called once per frame
     void MoveStartEvent()
     {
-        playerStat.AtkSpeed.added -= power; // 중요한 부분2
+        playerStat.ATK.added -= power; // 중요한 부분2
         power = 0;
         Ismove = true;
     }

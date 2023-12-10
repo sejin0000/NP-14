@@ -162,10 +162,10 @@ public class Debuff : MonoBehaviourPun
         if (targetPlayer.CanSpeedBuff) 
         {
             targetPlayer.CanSpeedBuff = false;
-            targetPlayer.Speed.added += 3f;
+            targetPlayer.Speed.added += 1f;
             targetPlayer._DebuffControl.Init(PlayerDebuffControl.buffName.Speed, endtime);
             yield return new WaitForSeconds(endtime);
-            targetPlayer.Speed.added -= 3f;
+            targetPlayer.Speed.added -= 1f;
             targetPlayer.CanSpeedBuff = true;
         }
     }
