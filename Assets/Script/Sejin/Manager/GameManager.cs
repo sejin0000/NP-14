@@ -291,6 +291,7 @@ public class GameManager : MonoBehaviour
     }
     public void NextGameOverEvent()
     {
+        isGameOver = true;
         OnGameOverEvent?.Invoke();
     }
 
