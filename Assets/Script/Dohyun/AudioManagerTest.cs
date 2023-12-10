@@ -10,13 +10,6 @@ public class AudioManagerTest : MonoBehaviour
 {
     List<GameObject> player;
     [SerializeField] GameManager manager;
-    
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        //Initialize();
-    }
 
     public void Initialize()
     {
