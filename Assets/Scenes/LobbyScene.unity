@@ -16859,8 +16859,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "This is For TipText\n\uC774\uACF3\uC740 \uD301\uC744 \uC801\uB294 \uACF3\uC785\uB2C8\uB2E4.\n\uB2E4\uB978
-    \uC5B8\uC5B4\uB294 \uD560\uC904 \uBAB0\uB77C \uD759\uD759"
+  m_text: "\uAD6C\uB974\uAE30 : SPACE\n\uC2A4\uD0AC : \uC6B0\uD074\uB9AD\n\uC0AC\uACA9
+    : \uC88C\uD074\uB9AD\n\uC774\uB3D9 : WASD"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 29bf7b60dd66c9b45b9140d95a349ea2, type: 2}
   m_sharedMaterial: {fileID: -8976703866905884628, guid: 29bf7b60dd66c9b45b9140d95a349ea2, type: 2}
