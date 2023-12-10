@@ -37,7 +37,6 @@ public class MainGameNetwork : MonoBehaviourPunCallbacks
             }
         }
         StartCoroutine(WaitSucceed());
-        UIManager.Instance.GetUIComponent<UIStageTransition>().currentFloor -= 1;
         GM.CallEmergencyProtocolEvent();
         GM.StageRestart();
         var stageType = GM.stageListInfo.StagerList[GM.curStage].stageType;
