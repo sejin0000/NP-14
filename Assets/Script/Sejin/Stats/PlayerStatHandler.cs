@@ -323,6 +323,9 @@ public class PlayerStatHandler : MonoBehaviourPun
     [PunRPC]
     public void DirectDamage(float damage, int targetID)
     {
+        if (PhotonView.Find(targetID).gameObject.layer == 12)
+            return;
+        
         if (IsInShield)
         {
             damage -= InShieldHP;
