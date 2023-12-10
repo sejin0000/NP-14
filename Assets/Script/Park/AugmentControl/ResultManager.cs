@@ -86,7 +86,7 @@ public class ResultManager : MonoBehaviour//vs코드
         SpecialAugment2 = MakeAugmentListManager.Instance.SpecialAugment2;
         SpecialAugment3 = MakeAugmentListManager.Instance.SpecialAugment3;
 
-        GameManager.Instance.OnBossStageStartEvent += ReadyCheck; readycheck
+        GameManager.Instance.OnBossStageStartEvent += ReadyCheck;
         GameManager.Instance.OnStageStartEvent += ReadyCheck;
         ProtoList = MakeAugmentListManager.Instance.Prototype;
         Debug.Log("배포전 프로토타입 주석처리");
