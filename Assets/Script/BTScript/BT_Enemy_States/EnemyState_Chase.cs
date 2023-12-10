@@ -50,7 +50,7 @@ public class EnemyState_Chase : BTAction
     {
         currentTime -= Time.deltaTime;
 
-        if (currentTime <= 0.3f)
+        if (currentTime <= 0.3f || !enemyAI.isLive)
         {
             enemyAI.isChase = false;
             enemyAI.Target = null;

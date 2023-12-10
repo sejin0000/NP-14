@@ -37,6 +37,8 @@ public class EnemyState_Attack : BTAction
 
         currentTime -= Time.deltaTime;
 
+
+
         if (currentTime <= 0)
         {
             // 공격 주기에 도달하면 공격 실행
@@ -48,7 +50,7 @@ public class EnemyState_Attack : BTAction
 
         float distanceToTarget = Vector3.Distance(owner.transform.position, target.transform.position);
 
-        if (distanceToTarget > enemySO.attackRange || target.gameObject.layer != LayerMask.NameToLayer("Player"))
+        if (distanceToTarget > enemySO.attackRange || target.gameObject.layer != LayerMask.NameToLayer("Player") || !enemyAI.isLive)
         {
             enemyAI.isAttaking = false;
             return Status.BT_Failure; // 노드 종료
