@@ -39,7 +39,7 @@
     //³ëµå Start()
     public override void Initialize()
     {
-        //enemyAI.PV.RPC("SetStateColor", RpcTarget.All, (int)EnemyStateColor.ColorOrigin, enemyAI.PV.ViewID);
+        enemyAI.PV.RPC("SetStateColor", RpcTarget.All, (int)EnemyStateColor.ColorOrigin, enemyAI.PV.ViewID);
 
         if (enemyAI.nav != null)
         {

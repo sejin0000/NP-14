@@ -31,6 +31,7 @@ public class BossAI_State_TwoWayAttack : BTAction
         if (currentTime <= 0)
         {
             bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 2);
+            Debug.Log("양방향 공격 액션에 성공함");
             return Status.BT_Success;
         }
 

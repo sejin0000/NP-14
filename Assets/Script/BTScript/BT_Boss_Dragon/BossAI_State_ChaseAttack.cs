@@ -26,6 +26,7 @@ public class BossAI_State_ChaseAttack : BTAction
 
     public override Status Update()
     {
+        Debug.Log("BossAI_State_ChaseAttack Update 호출");
         //딜레이 만큼 대기 -> 공격 -> 성공반환(다시 페이즈/스페셜 어택 체크해야함)
         currentTime -= Time.deltaTime;
 
@@ -35,6 +36,7 @@ public class BossAI_State_ChaseAttack : BTAction
             FurthestTarget();
 
             bossAI_Dragon.PV.RPC("ActiveAttackArea", RpcTarget.All, 4);
+            Debug.Log("추적공격 액션에 성공함");
             return Status.BT_Success;
         }
 
@@ -68,5 +70,7 @@ public class BossAI_State_ChaseAttack : BTAction
 
     public override void Terminate()
     {
+        Debug.Log("BossAI_State_ChaseAttack Terminate 호출");       
+        //각 공격 패턴 끝날 때 뭐 하고싶으면 여기 하셈
     }
 }

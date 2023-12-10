@@ -440,23 +440,20 @@ public class PlayerStatHandler : MonoBehaviourPun
     }
     [PunRPC]
     public void PunRpcStartHp() 
-    {
-        if (photonView.IsMine)
+    {        
+        CurHP = HP.total;
+        this.gameObject.layer = 8;
+        if (ImGhost)
+        { this.gameObject.layer = 13; }
+        if (isDie == true) 
         {
-            CurHP = HP.total;
-            this.gameObject.layer = 8;
-            if (ImGhost)
-            { this.gameObject.layer = 13; }
-            if (isDie == true)
-            {
-                PlayerInputController tempInputControl = this.gameObject.GetComponent<PlayerInputController>();
-                tempInputControl.ResetSetting();
-                tempInputControl.InputOn();
-                isDie = false;
-                anime._animation.SetTrigger("IsRegen");
-            }
-
+            PlayerInputController tempInputControl = this.gameObject.GetComponent<PlayerInputController>();
+            tempInputControl.ResetSetting();
+            tempInputControl.InputOn();
+            isDie = false;
+            anime._animation.SetTrigger("IsRegen");
         }
+
     }
 
     public void SendSyncHP()
