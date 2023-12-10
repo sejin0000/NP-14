@@ -18,10 +18,11 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
                 {
                     obj = new GameObject(typeof(T).Name);
                     instance = obj.AddComponent<T>();
+                    DontDestroyOnLoad(obj);
                 }
                 else
                 {
-                    instance = obj.GetComponent<T>();
+                    Debug.Log("[Singleton<T>] Already created " + typeof(T).Name);
                 }
             }
             return instance;
@@ -30,6 +31,21 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
     public void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+        if (instance == null)
+        {
+            instance = this as T;
+            DontDestroyOnLoad(gameObject);
+
+            Initialize();
+        }
+        else
+        {
+            DestroyImmediate(gameObject);
+        }
+    }
+
+    public virtual void Initialize()
+    {
+
     }
 }
