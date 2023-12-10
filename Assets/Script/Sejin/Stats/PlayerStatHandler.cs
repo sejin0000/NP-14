@@ -389,7 +389,7 @@ public class PlayerStatHandler : MonoBehaviourPun
         HPadd(HP);
         OnRegenEvent?.Invoke();
         OnRegenCalculateEvent?.Invoke(RegenHP);
-        if (photonView.IsMine) 
+        if (gameObject.GetPhotonView().IsMine) 
         {
             PlayerInputController tempInputControl = this.gameObject.GetComponent<PlayerInputController>();
             tempInputControl.ResetSetting();
@@ -443,7 +443,7 @@ public class PlayerStatHandler : MonoBehaviourPun
     [PunRPC]
     public void PunRpcStartHp() 
     {
-        if (photonView.IsMine)
+        if (gameObject.GetPhotonView().IsMine)
         {
             PlayerInputController tempInputControl = this.gameObject.GetComponent<PlayerInputController>();
             tempInputControl.ResetSetting();
