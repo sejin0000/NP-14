@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,7 +19,7 @@ public class MainGameCamera : MonoBehaviour
         Debug.Log("MainGameCamera - Start");
         if(MainGameManager.Instance != null)
         {
-            Target = MainGameManager.Instance.InstantiatedPlayer; 
+            Target = MainGameManager.Instance.InstantiatedPlayer;             
         }
         else
         {
@@ -29,6 +30,11 @@ public class MainGameCamera : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (Target == null)
+        {
+            PhotonNetwork.AutomaticallySyncScene = false;
+            PhotonNetwork.LoadLevel("LobbyScene");
+        }
         TargetPos = new Vector3(
             Target.transform.position.x + offsetX,
             Target.transform.position.y + offsetY,

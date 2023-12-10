@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     public event Action EmergencyProtocolEvent; // 호스트 튕겼을 시
 
     public event Action ChangeGoldEvent;
+    public List<Action> EventList;
     public bool ClearStageCheck;              //박민혁 추가 스테이지 클리어시 빈방 비울때 콜여부
 
     public StageListInfoSO stageListInfo;
@@ -68,6 +69,22 @@ public class GameManager : MonoBehaviour
         }
         ClearStageCheck = false;
 
+        EventList = new List<Action>
+        {
+            OnInitEvent,
+            OnStageEndEvent,
+            OnStageSettingEvent,
+            OnStageStartEvent,
+            OnBossStageEndEvent,
+            OnBossStageSettingEvent,
+            OnBossStageStartEvent,
+            OnRoomStartEvent,
+            OnRoomEndEvent,
+            OnGameClearEvent,
+            OnGameOverEvent,
+            PlayerLifeCheckEvent,
+        };
+
         PV = GetComponent<PhotonView>();
 
         playerInfoDictionary = new Dictionary<int, Transform>();
@@ -96,6 +113,8 @@ public class GameManager : MonoBehaviour
 
         TeamGold = 0;
         isStartFirst = true;
+
+
     }
 
 
@@ -334,6 +353,23 @@ public class GameManager : MonoBehaviour
                 CallBossStageStartEvent();
             }
             yield return null;
+        }
+    }
+
+    public void UnSubscribeEvent()
+    {
+        for (int i = 0; i < EventList.Count; i++)
+        {
+            Action handler = EventList[i];
+            if (handler != null)
+            {
+                foreach (var subscribed in handler.GetInvocationList())
+                {
+                    handler -= (Action)subscribed;
+                }
+                // 수정된 handler를 다시 리스트에 할당
+                EventList[i] = handler;
+            }
         }
     }
 }
