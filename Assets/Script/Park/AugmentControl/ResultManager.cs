@@ -157,8 +157,7 @@ public class ResultManager : MonoBehaviour//vsÄÚµå
     }
     public void CallStatResult() 
     {
-        //int tier = RandomTier();
-        int tier = 4;
+        int tier = RandomTier();
         switch (tier) 
             {
                 case 1:
