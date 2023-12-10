@@ -55,7 +55,7 @@ public class EnemyState_GroggyCondition : BTAction
 
     public override void Terminate()
     {
-        enemyAI.PV.RPC("SetStateColor", RpcTarget.All, (int)EnemyStateColor.ColorOrigin, enemyAI.PV.ViewID);
+        //enemyAI.PV.RPC("SetStateColor", RpcTarget.All, (int)StateColor.ColorOrigin, enemyAI.PV.ViewID);
     }
 
 }
