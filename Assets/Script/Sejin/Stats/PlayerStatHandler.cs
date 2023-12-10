@@ -337,6 +337,8 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     public void Damage(float damage)
     {
+        if (!isDie) 
+        {
         DamegeTemp = damage;
         GetDamege?.Invoke(DamegeTemp);
         int a = UnityEngine.Random.Range(0, 100);
@@ -374,6 +376,7 @@ public class PlayerStatHandler : MonoBehaviourPun
                 photonView.RPC("LayerSet",RpcTarget.All);
             }
 
+        }
         }
 
     }
