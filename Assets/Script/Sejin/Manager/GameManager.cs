@@ -131,7 +131,6 @@ public class GameManager : MonoBehaviour
             PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
             MakeSetting.MakeManager();
             isStartFirst = false;
-
             //EmergencyProtocolEvent += 
         }
         PartyDeathCount = 0;
@@ -310,6 +309,7 @@ public class GameManager : MonoBehaviour
     public void AddPartyDeathCount()
     {
         PartyDeathCount++;
+        Debug.Log($"죽음수 {PartyDeathCount}");
         CallPlayerLifeCheckEvent();
         if (PartyDeathCount == PhotonNetwork.CurrentRoom.PlayerCount) 
         {

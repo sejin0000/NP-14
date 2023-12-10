@@ -213,6 +213,7 @@ public class PlayerInputController : TopDownCharacterController
     public void InputOn()
     {
         playerInput.ActivateInput();
+        ResetSetting();
     }
 
 }
