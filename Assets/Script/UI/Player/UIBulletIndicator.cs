@@ -77,10 +77,15 @@ public class UIBulletIndicator : UIBase
 
     public void ResizeBullets()
     {
-        bullets.Capacity = (int)ammoMax;
         int prevCount = bullets.Count;
-        int newCount = bullets.Capacity;
+        int newCount = (int)ammoMax;
+        
+        // 30→25발로 줄어들었을 때 24~29index의 오브젝트 삭제
+        // 30→32발로 늘어난 케이스는 반복문에 걸리지 않음
+        for (int i=newCount; i<prevCount; ++i)
+            Destroy(bullets[i]);
 
+        // 늘어난만큼 탄창 추가
         for (int i=prevCount; i < newCount; ++i)
         {
             GameObject temp = Instantiate(bulletPrefab, bulletParents.transform);
