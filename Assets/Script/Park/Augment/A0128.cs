@@ -39,7 +39,7 @@ public class A0128 : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Bullet _Bullet = collision.GetComponent<Bullet>();
-        if (_Bullet != null)
+        if (_Bullet != null && _Bullet.targets.ContainsValue((int)BulletTarget.Player))
         {
             if (_Bullet.targets.ContainsValue((int)BulletTarget.Enemy))
             {
