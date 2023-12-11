@@ -17820,6 +17820,7 @@ MonoBehaviour:
   DataSettingPrefab: {fileID: 5202816797617736909, guid: aeaa042007b36a44894885df6729f270, type: 3}
   dataSetting: {fileID: 4222933106460291288, guid: aeaa042007b36a44894885df6729f270, type: 3}
   LoadP: {fileID: 1742439084}
+  audioLibrary: {fileID: 0}
 --- !u!1 &1577651395
 GameObject:
   m_ObjectHideFlags: 0
@@ -27314,7 +27315,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2100752460}
   - component: {fileID: 2100752459}
-  - component: {fileID: 2100752458}
   - component: {fileID: 2100752461}
   m_Layer: 0
   m_Name: Main Camera
@@ -27323,14 +27323,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &2100752458
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2100752457}
-  m_Enabled: 1
 --- !u!20 &2100752459
 Camera:
   m_ObjectHideFlags: 0
