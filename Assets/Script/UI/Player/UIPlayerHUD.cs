@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static LobbyPanel;
 
 public class UIPlayerHUD : UIMainGame
 {
@@ -41,11 +42,10 @@ public class UIPlayerHUD : UIMainGame
         skillGauge.Initialize();
         bulletIndicator.Initialize();
 
-        Sprite playerImage;
         string spritePath = "Images/CharClass";
-
-        player.GetComponent<PhotonView>().Owner.CustomProperties.TryGetValue("Char_Class", out object curClassType);
-        playerImage = Resources.Load<Sprite>($"{spritePath}{curClassType}");
+        PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(CustomProperyDefined.CLASS_PROPERTY, out object temp);
+        
+        Sprite playerImage = Resources.Load<Sprite>($"{spritePath}{temp}");
         portrait.sprite = playerImage;
     }
 

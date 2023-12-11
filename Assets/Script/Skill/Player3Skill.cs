@@ -5,7 +5,8 @@ using UnityEngine;
 public class Player3Skill : Skill
 {
     WeaponSystem _weaponSystem;
-
+    Sprite heal_icon;
+    Sprite atk_icon;
 
     public void Start()
     {
@@ -16,6 +17,7 @@ public class Player3Skill : Skill
             controller.SkillMinusEvent += SkillLinkOff;
         }
         _weaponSystem = GetComponent<WeaponSystem>();
+        icon = Resources.Load<Sprite>("Images/CharSkill2_2");
     }
 
     public override void SkillStart()
@@ -24,6 +26,7 @@ public class Player3Skill : Skill
         if (_weaponSystem.targets.ContainsValue((int)BulletTarget.Enemy))
         {
             Debug.Log("Èú ¸ðµå ÀüÈ¯");
+            base.icon = Resources.Load<Sprite>("Images/CharSkill2_1");
             _weaponSystem.targets.Remove("Enemy");
             _weaponSystem.targets["Player"] = (int)BulletTarget.Player;
             _weaponSystem.isDamage = false;
@@ -31,7 +34,7 @@ public class Player3Skill : Skill
         else if (_weaponSystem.targets.ContainsValue((int)BulletTarget.Player))
         {
             Debug.Log("µô ¸ðµå ÀüÈ¯");
-
+            base.icon = Resources.Load<Sprite>("Images/CharSkill2_2");
             _weaponSystem.targets.Remove("Player");
             _weaponSystem.targets["Enemy"] = (int)BulletTarget.Enemy;
             _weaponSystem.isDamage = true;
