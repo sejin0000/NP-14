@@ -89,8 +89,8 @@ public class AudioManager : SingletonPun<AudioManager>
 
             var source = SEPlayer[i].AddComponent<AudioSource>();
             source.spatialBlend = 1;
-            source.minDistance = 1;
-            source.maxDistance = 10;
+            source.minDistance = 3;
+            source.maxDistance = 15;
             source.outputAudioMixerGroup = mixer.FindMatchingGroups("Master/SE")[0];
         }
     }
