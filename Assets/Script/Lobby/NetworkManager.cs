@@ -209,7 +209,31 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             LobbyManager.Instance.RoomP.ReadyButton.gameObject.SetActive(false);
         }
     }
+    public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
+    {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
 
+        var maxPlayers = PhotonNetwork.CurrentRoom.MaxPlayers;
+        var playerCount = PhotonNetwork.CurrentRoom.PlayerCount;
+        if (maxPlayers == playerCount)
+        {
+            if (playerCount == 1)
+            {
+                LobbyManager.Instance.RoomP.StartButton.gameObject.SetActive(true);
+                return;
+            }
+            else if (LobbyManager.Instance.RoomP.CheckPlayersReady())
+            {
+                LobbyManager.Instance.RoomP.StartButton.gameObject.SetActive(true);
+                return;
+            }
+        }
+        else
+        {
+            LobbyManager.Instance.RoomP.StartButton.gameObject.SetActive(false);
+        }
+    }
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
         foreach (var hashKey in changedProps.Keys) 
