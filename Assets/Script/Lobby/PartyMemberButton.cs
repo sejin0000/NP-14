@@ -15,35 +15,19 @@ public class PartyMemberButton : MonoBehaviourPun
     {
         IsClicked = false;
         memberButton = GetComponent<Button>();
-        if (PhotonNetwork.IsMasterClient)
-        {
-            memberButton.onClick.AddListener(OnSlotButtonClicked);
-        }
+        memberButton.onClick.AddListener(OnSlotButtonClicked);
     }
 
     private void OnDisable()
     {
         IsClicked = false;
-        if (PhotonNetwork.IsMasterClient)
-        {
-            memberButton.onClick.RemoveListener(OnSlotButtonClicked);
-        }
+        memberButton.onClick.RemoveListener(OnSlotButtonClicked);        
     }
 
     [PunRPC]
     public void SlotClicked()
     {
         IsClicked = !IsClicked;
-    }
-
-
-    public void OnSlotButtonClicked()
-    {
-        if (!PhotonNetwork.IsMasterClient)
-            return;
-
-        photonView.RPC("SlotClicked", RpcTarget.All);
-
         if (IsClicked)
         {
             SlotText.text = "½½·Ô ¿­±â";
@@ -58,5 +42,14 @@ public class PartyMemberButton : MonoBehaviourPun
             GetComponent<Image>().color = new Color(249f / 255f, 250f / 255f, 251f / 255);
             PhotonNetwork.CurrentRoom.MaxPlayers += 1;
         }
+    }
+
+
+    public void OnSlotButtonClicked()
+    {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
+        photonView.RPC("SlotClicked", RpcTarget.All);
     }
 }
