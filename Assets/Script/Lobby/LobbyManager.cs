@@ -142,6 +142,10 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         Debug.Log($"{otherPlayer.NickName} Επΐε");
 
         RoomP.SetPartyPlayerInfo();
+        if (PhotonNetwork.IsMasterClient)
+        {
+            RoomP.StartButton.gameObject.SetActive(RoomP.CheckPlayersReady());
+        }
     }
 
     public void SetTestRoomPanel()

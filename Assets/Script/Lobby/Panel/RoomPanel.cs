@@ -317,6 +317,7 @@ public class RoomPanel : MonoBehaviourPunCallbacks
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
         SetPlayerReady(false);
 
+        ResetPartyBox();
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.CurrentRoom.IsVisible = false;
         Destroy(AudioManager.Instance.gameObject);
