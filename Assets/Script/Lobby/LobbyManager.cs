@@ -102,8 +102,6 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         // DESC : AudioLibrary Ä³½Ì
         audioLibrary = AudioManager.Instance.AudioLibrary;
-
-        instantiatedPlayer.AddComponent<AudioListener>();
     }
 
     public void SetRoomPanel()
