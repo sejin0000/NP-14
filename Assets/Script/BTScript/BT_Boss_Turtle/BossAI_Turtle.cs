@@ -319,8 +319,15 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
     [PunRPC]
     public void DestroyEnemy()
     {
-        GameManager.Instance.CallBossStageEndEvent();
         Destroy(gameObject);
+        if (GameManager.Instance.curStage + 1 < GameManager.Instance.stageListInfo.StagerList.Count)
+        {
+            GameManager.Instance.CallBossStageEndEvent();
+        }
+        else
+        {
+            GameManager.Instance.CallGameClearEvent();
+        }
     }
 
 
@@ -832,7 +839,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
             PlayerStatHandler player = collision.gameObject.GetComponent<PlayerStatHandler>();
             if (player != null)
             {
-                player.photonView.RPC("GiveDamege", RpcTarget.All, bossSO.atk * 2);
+                player.photonView.RPC("DirectDamage", RpcTarget.All, bossSO.atk * 2, PV.ViewID);
             }
             Vector3 normal = collision.contacts[0].normal; // 법선벡터
             direction = Vector3.Reflect(direction, normal).normalized; // 반사

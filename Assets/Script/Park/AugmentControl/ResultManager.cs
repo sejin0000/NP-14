@@ -7,6 +7,7 @@ using System.Net.NetworkInformation;
 using TMPro;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using static MainGameManager;
 
@@ -21,7 +22,9 @@ public class ResultManager : MonoBehaviour//vs코드
     public List<IAugment> stat3;
     public GameObject MySpecialList;
     bool SeeNowMyList;
+    PlayerInput playerinput;
 
+    public bool readycheck;
 
     public List<SpecialAugment> SpecialAugment1 = new List<SpecialAugment>();
     public List<SpecialAugment> SpecialAugment2 = new List<SpecialAugment>();
@@ -59,6 +62,7 @@ public class ResultManager : MonoBehaviour//vs코드
         GameManager.Instance.OnBossStageEndEvent += SpecialResult;
         SeeNowMyList = false;
         pv = GetComponent<PhotonView>();
+        playerinput = Player.GetComponent<PlayerInput>();
     }
     void Awake()
     {
@@ -85,9 +89,15 @@ public class ResultManager : MonoBehaviour//vs코드
         SpecialAugment2 = MakeAugmentListManager.Instance.SpecialAugment2;
         SpecialAugment3 = MakeAugmentListManager.Instance.SpecialAugment3;
 
+        GameManager.Instance.OnBossStageStartEvent += ReadyCheck;
+        GameManager.Instance.OnStageStartEvent += ReadyCheck;
         ProtoList = MakeAugmentListManager.Instance.Prototype;
         Debug.Log("배포전 프로토타입 주석처리");
         statChance = false;
+    }
+    public void ReadyCheck() 
+    {
+        readycheck = false;
     }
     private void Update()
     {
@@ -157,8 +167,7 @@ public class ResultManager : MonoBehaviour//vs코드
     }
     public void CallStatResult() 
     {
-        //int tier = RandomTier();
-        int tier = 4;
+        int tier = RandomTier();
         switch (tier) 
             {
                 case 1:
@@ -211,6 +220,8 @@ public class ResultManager : MonoBehaviour//vs코드
   
     void PickStatList(List<IAugment> origin)// 고른게 안사리지는 타입 = 일반스탯
     {
+        playerinput.actions.FindAction("Attack").Disable();
+
         if (SetActiveCheck) 
         {
             picklist[0].pick();
@@ -232,6 +243,8 @@ public class ResultManager : MonoBehaviour//vs코드
 
     void PickSpecialList(List<SpecialAugment> origin) // 고른게 사라지는 타입 == 플레이변화 증강
     {
+        playerinput.actions.FindAction("Attack").Disable();
+
         if (SetActiveCheck)
         {
             picklist[0].pick();
@@ -258,6 +271,8 @@ public class ResultManager : MonoBehaviour//vs코드
     }
     public void close()//목록에서 골랐다면 띄운 ui를 닫아줌
     {
+        playerinput.actions.FindAction("Attack").Enable();
+
         int Count = picklist.Length;
         for (int i = 0; i < Count; ++i)
         {
@@ -285,7 +300,11 @@ public class ResultManager : MonoBehaviour//vs코드
     }
     public void ready() 
     {
-        GameManager.Instance.PV.RPC("EndPlayerCheck",RpcTarget.All);
+        if (!readycheck) 
+        {
+            GameManager.Instance.PV.RPC("EndPlayerCheck",RpcTarget.All);
+            readycheck = true;
+        }
     }
     public void OnOffGetList()
     {

@@ -24,13 +24,7 @@ public class Setting : MonoBehaviour
 
     private void Awake()
     {
-        PV = GetComponent<PhotonView>();
-        GameManager.Instance.OnBossStageSettingEvent += BossStage;
-    }
-
-    private void BossStage()
-    {
-        GameManager.Instance.clientPlayer.transform.position = Vector3.zero;
+        PV = GetComponent<PhotonView>();        
     }
 
     public void InstantiatePlayer()
