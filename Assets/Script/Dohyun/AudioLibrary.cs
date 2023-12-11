@@ -70,6 +70,8 @@ public class AudioLibrary : MonoBehaviour
     
     public void SetupPlayerSE()
     {
+        if (player == null)
+            return;
         var stats = player.GetComponent<PlayerStatHandler>();
         player_attack = stats.atkClip;
         reloadStart = stats.reloadStartClip;
