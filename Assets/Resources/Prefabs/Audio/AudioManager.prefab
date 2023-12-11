@@ -49,6 +49,8 @@ MonoBehaviour:
   SEPlayerSize: 16
   SEClips: []
   BGMClips: []
+  minLength: 0
+  maxLength: 13
   AudioLibrary: {fileID: 0}
 --- !u!114 &5924062456417362254
 MonoBehaviour:

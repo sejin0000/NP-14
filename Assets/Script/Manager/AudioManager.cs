@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using Photon.Pun;
+using UnityEngine.UIElements;
 
 public enum ClipType
 {
@@ -35,6 +36,9 @@ public class AudioManager : SingletonPun<AudioManager>
 
     [SerializeField] private Dictionary<string, AudioClip> clipDict;
 
+    [SerializeField] private float minLength;
+    [SerializeField] private float maxLength;
+
     // ADDED
     [Header("AudioLibrary")]
     public AudioLibrary AudioLibrary;
@@ -53,7 +57,7 @@ public class AudioManager : SingletonPun<AudioManager>
         photonView.ViewID = 10;
     }
 
-    // Dictinonary¿¡ ¿Àµð¿À Å¬¸³ Ãß°¡
+    // Dictinonaryï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ ï¿½ß°ï¿½
     public void InitializeData()
     {
         clipDict = new Dictionary<string, AudioClip>();
@@ -67,7 +71,7 @@ public class AudioManager : SingletonPun<AudioManager>
             clipDict.Add(clip.name, clip);
     }
 
-    // AudioManagerÀÇ ÀÚ½ÄÀ¸·Î AudioSource ÄÄÆ÷³ÍÆ® ¿ÀºêÁ§Æ® Ãß°¡, Mixer ¼³Á¤
+    // AudioManagerï¿½ï¿½ ï¿½Ú½ï¿½ï¿½ï¿½ï¿½ï¿½ AudioSource ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ß°ï¿½, Mixer ï¿½ï¿½ï¿½ï¿½
     public void InitializeObject()
     {
         GameObject bgmPlayer = new GameObject("BGMPlayer");
@@ -88,16 +92,13 @@ public class AudioManager : SingletonPun<AudioManager>
             SEPlayer[i].transform.SetParent(sePlayer.transform);
 
             var source = SEPlayer[i].AddComponent<AudioSource>();
-            source.spatialBlend = 1;
-            source.minDistance = 3;
-            source.maxDistance = 15;
             source.outputAudioMixerGroup = mixer.FindMatchingGroups("Master/SE")[0];
         }
     }
 
     /// <summary>
-    /// <para>BGM ¿Àµð¿À Å¬¸³À» ½ÇÇàÇÕ´Ï´Ù. Å¬¸³ÀÌ Á¸ÀçÇÏÁö ¾ÊÀ¸¸é Ä³½ÌÇÕ´Ï´Ù.</para>
-    /// <para>Ä³½Ì °æ·Î´Â Resources/Audio/BGM/... ÀÔ´Ï´Ù.</para>
+    /// <para>BGM ï¿½ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½. Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä³ï¿½ï¿½ï¿½Õ´Ï´ï¿½.</para>
+    /// <para>Ä³ï¿½ï¿½ ï¿½ï¿½Î´ï¿½ Resources/Audio/BGM/... ï¿½Ô´Ï´ï¿½.</para>
     /// </summary>
     /// <param name="clipName"></param>
     /// <param name="loop"></param>
@@ -130,8 +131,8 @@ public class AudioManager : SingletonPun<AudioManager>
     //}
 
     /// <summary>
-    /// <para>SE ¿Àµð¿À Å¬¸³À» ½ÇÇàÇÕ´Ï´Ù. Å¬¸³ÀÌ Á¸ÀçÇÏÁö ¾ÊÀ¸¸é Ä³½ÌÇÕ´Ï´Ù.</para>
-    /// <para>Ä³½Ì °æ·Î´Â Resources/Audio/SE/... ÀÔ´Ï´Ù.</para>
+    /// <para>SE ï¿½ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½. Å¬ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä³ï¿½ï¿½ï¿½Õ´Ï´ï¿½.</para>
+    /// <para>Ä³ï¿½ï¿½ ï¿½ï¿½Î´ï¿½ Resources/Audio/SE/... ï¿½Ô´Ï´ï¿½.</para>
     /// </summary>
     /// <param name="clipName"></param>
     static public void PlaySE(string clipName, float volume=1f)
@@ -155,7 +156,7 @@ public class AudioManager : SingletonPun<AudioManager>
             }
         }
     }
-    static public void PlaySE(string clipName, Vector3 pos, float volume = 1f)
+    static public void PlaySE(string clipName, Vector3 pos)
     {
         var clipDict = Instance.clipDict;
 
@@ -168,9 +169,17 @@ public class AudioManager : SingletonPun<AudioManager>
             if (!source.isPlaying)
             {
                 source.clip = clipDict[clipName];
-                source.volume = volume;
                 source.loop = false;
-                source.gameObject.transform.position = pos;
+
+                // ï¿½Å¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+                Vector3 vec;
+                if (SceneManager.GetActiveScene().name != "LobbyScene")
+                   vec  = GameManager.Instance.clientPlayer.transform.position - pos;
+                else
+                   vec = LobbyManager.Instance.instantiatedPlayer.transform.position - pos;
+                float volume = Mathf.InverseLerp(Instance.maxLength, Instance.minLength, vec.magnitude);
+                source.volume = volume;
+
                 source.Play();
                 return;
             }

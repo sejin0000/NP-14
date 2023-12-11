@@ -132,8 +132,6 @@ public class GameManager : MonoBehaviour
             else
                 AudioManager.Instance.AddComponent<AudioManagerTest>().Initialize();
 
-            clientPlayer.AddComponent<AudioListener>();
-
             PlayerResultController MakeSetting = clientPlayer.GetComponent<PlayerResultController>();
             MakeSetting.MakeManager();
             isStartFirst = false;
