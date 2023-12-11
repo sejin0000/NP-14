@@ -52,7 +52,7 @@ public class MapGenerator : MonoBehaviour
         setTile.OrderSetRectTile(new RectInt(0, 0, BossMapSize.x, BossMapSize.y), setTile.wallTileMap, null, new Vector2(-(BossMapSize.x / 2), -(BossMapSize.y / 2)));
         setTile.OrderSetRectTile(new RectInt(0, 0, BossMapSize.x, BossMapSize.y), setTile.groundTileMap, setTile.groundTile, new Vector2(-(BossMapSize.x / 2), -(BossMapSize.y / 2)));
 
-        roomNodeInfo.porTal.GetComponent<Portal>().portalSetting(0, 20);
+        //roomNodeInfo.porTal.GetComponent<Portal>().portalSetting(0, 20);
     }
     public void MapMake()
     {
