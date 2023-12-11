@@ -33,7 +33,7 @@ public class A1106 : MonoBehaviourPun
         float giveDamege = StatHandler.DamegeTemp;
         for (int i = 0; i < target.Count; ++i) 
         {
-            target[i].photonView.RPC("DirectDamage", RpcTarget.All,giveDamege);
+            target[i].photonView.RPC("GiveDamege", RpcTarget.All,giveDamege);
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)

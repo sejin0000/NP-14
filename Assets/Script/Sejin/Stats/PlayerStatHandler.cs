@@ -348,7 +348,7 @@ public class PlayerStatHandler : MonoBehaviourPun
             if (evasionPersent <= a)
             {
                 DamegeTemp = DamegeTemp * defense;
-                CurHP -= DamegeTemp;
+                
                 HitEvent?.Invoke();
                 HitEvent2?.Invoke(DamegeTemp);//이게 값이 필요한경우와 필요 없는경우가 있는데 한개로 할수가 있는지 모르겠음 일단 이렇게함
 
@@ -371,7 +371,10 @@ public class PlayerStatHandler : MonoBehaviourPun
                     GameManager.Instance?.PlayerDie();
                     photonView.RPC("LayerSet", RpcTarget.All);
                 }
-
+                else
+                {
+                    CurHP -= DamegeTemp;
+                }
             }
         }
 

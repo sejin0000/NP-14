@@ -304,14 +304,19 @@ public class GameManager : MonoBehaviour
 
     public void PlayerDie()
     {
+        PV.RPC("SendPlayerID", RpcTarget.All, clientPlayer.GetPhotonView().ViewID);
         PV.RPC("AddPartyDeathCount", RpcTarget.All);
+    }
+    [PunRPC]
+    public void SendPlayerID(int viewID)
+    {
+        Debug.Log($"GameManager[SendPlayerID] : PlayerDeathCOunt By {viewID}");
     }
 
     [PunRPC]
     public void AddPartyDeathCount()
     {
-        PartyDeathCount++;
-        Debug.Log($"GameManger[PlayerDie] : PlayerDeathCount By {clientPlayer.GetPhotonView().ViewID}");
+        PartyDeathCount++;        
         Debug.Log($"GameManger[AddPartyDeathCount] - PartyDeathCount : {PartyDeathCount}");
         CallPlayerLifeCheckEvent();
         if (PartyDeathCount == PhotonNetwork.CurrentRoom.PlayerCount) 
