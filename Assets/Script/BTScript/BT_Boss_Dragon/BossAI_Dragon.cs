@@ -443,7 +443,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
 
                         // 실제 피해
-                        player.DirectDamage(bossSO.atk, PV.ViewID);
+                        player.photonView.RPC("DirectDamage", RpcTarget.All, bossSO.atk, PV.ViewID);
                         // 실제 넉백
                         player.photonView.RPC("StartKnockback", RpcTarget.All, directionToPlayer, knockbackDistance);
                         //StartCoroutine(player.Knockback(directionToPlayer, knockbackDistance));
@@ -626,7 +626,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
             StartCoroutine(player.Knockback(directionToPlayer, knockbackDistance));
 
             // 실제 피해
-            player.DirectDamage(bossSO.atk * attackCoefficient, PV.ViewID);
+            player.photonView.RPC("DirectDamage", RpcTarget.All, bossSO.atk * attackCoefficient, PV.ViewID); 
         }
     }
 
