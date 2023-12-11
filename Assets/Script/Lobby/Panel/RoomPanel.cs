@@ -96,7 +96,8 @@ public class RoomPanel : MonoBehaviourPunCallbacks
     {
         // DESC : 플레이어 레디 초기화
         PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(askReadyProp, out object isPlayerReady);
-        if (isPlayerReady == null)
+        if (isPlayerReady == null
+            && PhotonNetwork.CurrentRoom.PlayerCount == 1)
         {
             PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { askReadyProp, false } });
         }
@@ -126,6 +127,7 @@ public class RoomPanel : MonoBehaviourPunCallbacks
     }
     public void Start()
     {
+
         // DESC : 버튼 연결
         ReadyButton.onClick.AddListener(OnReadyButtonClicked);
         StartButton.onClick.AddListener(OnStartButtonClicked);
@@ -176,6 +178,32 @@ public class RoomPanel : MonoBehaviourPunCallbacks
         }
     }
 
+    public void ResetPartyBox()
+    {
+        for (int i = 0; i < PartyBox.transform.childCount; i++)
+        {
+            var ChildGO = PartyBox.transform.GetChild(i);
+            for (int j = 0; j < ChildGO.childCount; j++)
+            {
+                var GrandChildGO = ChildGO.GetChild(j);
+                if (GrandChildGO.GetComponent<PartyPlayerInfo>() != null)
+                {
+                    Destroy(GrandChildGO.gameObject);
+                }
+                if (GrandChildGO.GetComponent<PartyMemberButton>() != null)
+                {
+                    GrandChildGO.gameObject.SetActive(true);
+                    GrandChildGO.GetComponent<PartyMemberButton>().ResetButton();
+                }
+            }
+        }
+    }
+    [PunRPC]
+    public void RemotePartyPlayerInfo()
+    {
+        SetPartyPlayerInfo();
+    }
+
     public void SetPartyPlayerInfo()
     {
         _playerPartyDict = LobbyManager.Instance.playerPartyDict;
@@ -211,38 +239,32 @@ public class RoomPanel : MonoBehaviourPunCallbacks
             var memberButton = playerInfoParentTrans.GetChild(0).GetComponent<PartyMemberButton>();
             if (memberButton.IsClicked)
             {
-                continue;
+                cnt++;                
             }
             else
             {
                 memberButton.transform.gameObject.SetActive(false);
-                GameObject playerInfoPrefab = Instantiate(Resources.Load<GameObject>(PrefabPathes.PLAYER_INROOM_PARTY_ELEMENT), PartyBox.transform.GetChild(cnt), false);            
-                playerInfoPrefab.transform.localScale = Vector3.one;
-                var partyPlayerInfo = playerInfoPrefab.GetComponent<PartyPlayerInfo>();
-                partyPlayerInfo.Initialize(cnt, p);
+            }
+            GameObject playerInfoPrefab = Instantiate(Resources.Load<GameObject>(PrefabPathes.PLAYER_INROOM_PARTY_ELEMENT), PartyBox.transform.GetChild(cnt), false);            
+            playerInfoPrefab.transform.localScale = Vector3.one;
+            var partyPlayerInfo = playerInfoPrefab.GetComponent<PartyPlayerInfo>();
+            partyPlayerInfo.Initialize(cnt, p);
+            cnt++;
 
-                var readyProp = p.CustomProperties[askReadyProp];
-                bool isReady;
-                if (readyProp == null)
-                {
-                    isReady = false;
-                }
-                else
-                {
-                    isReady = (bool)p.CustomProperties[askReadyProp];
-                }
-                //p.CustomProperties.TryGetValue(askReadyProp, out object isReady);
-                //if (isReady == null)
-                //{
-                //    isReady = false;
-                //}
-                Debug.Log($"Player : {p.ActorNumber} / IsReady : {(bool)isReady}");
-                partyPlayerInfo.SetReady((bool)isReady);
-
-                _playerPartyDict.Add(p.ActorNumber, playerInfoPrefab);
+            var readyProp = p.CustomProperties[askReadyProp];
+            bool isReady;
+            if (readyProp == null)
+            {
+                isReady = false;
+            }
+            else
+            {
+                isReady = (bool)p.CustomProperties[askReadyProp];
             }
 
-            cnt++;
+            partyPlayerInfo.SetReady((bool)isReady);
+
+            _playerPartyDict.Add(p.ActorNumber, playerInfoPrefab);         
         }
     }
 

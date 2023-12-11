@@ -126,7 +126,7 @@ public class MainLobbyPanel : MonoBehaviourPun
         else
         {
             Debug.Log("MainLobbyPanel : cachedRoomList is Not Null");
-            PhotonNetwork.JoinRandomRoom(CustomRoomProperties, 3);            
+            PhotonNetwork.JoinRandomRoom(CustomRoomProperties, 0);            
         }
     }
 

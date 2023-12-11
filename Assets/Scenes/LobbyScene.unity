@@ -15333,9 +15333,9 @@ MonoBehaviour:
   ChatScrollContent: {fileID: 376548891}
   ChatScrollRect: {fileID: 429708782}
   PartyBox: {fileID: 1857915279}
-  FirstPartyMember: {fileID: 0}
-  SecondPartyMember: {fileID: 0}
-  ThirdPartyMember: {fileID: 0}
+  FirstPartyMember: {fileID: 854672987}
+  SecondPartyMember: {fileID: 1447721583}
+  ThirdPartyMember: {fileID: 977564477}
 --- !u!114 &1397847049
 MonoBehaviour:
   m_ObjectHideFlags: 0
