@@ -544,6 +544,7 @@ MonoBehaviour:
   currentHP: 0
   roomNum: 0
   enemySO: {fileID: 11400000, guid: 49d891388b6297940a93668e4856e717, type: 2}
+  appliedATK: 0
   spriteRenderer: {fileID: 4177654815849828240}
   anim: {fileID: 7115190298825662037}
   originColor: {r: 0, g: 0, b: 0, a: 0}

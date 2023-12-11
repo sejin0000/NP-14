@@ -110,7 +110,6 @@ MonoBehaviour:
   isPhase1: 0
   rollingTime: 0
   direction: {x: 0, y: 0, z: 0}
-  _rigidbody2D: {fileID: 0}
   time: 0
   currentHP: 0
   viewAngle: 0
