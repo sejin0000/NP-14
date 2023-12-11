@@ -37,7 +37,6 @@ public class SingletonPun<T> : MonoBehaviourPun where T : MonoBehaviourPun
             instance = this as T;
 
             DontDestroyOnLoad(gameObject);
-
             Initialize();
         }
         else

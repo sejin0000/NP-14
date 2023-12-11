@@ -1,3 +1,5 @@
+using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,9 +9,11 @@ using UnityEngine.UI;
 
 public class UIPlayerSkill : UIBase, ICommonUI
 {
+    [SerializeField] private Image skillIcon;
     [SerializeField] private Image skillGauge;
     private PlayerStatHandler playerStats;
     private CoolTimeController playerCool;
+    private int playerClass;
 
     void ICommonUI.Initialize()
     {
@@ -30,13 +34,41 @@ public class UIPlayerSkill : UIBase, ICommonUI
 
     void InitializeData()
     {
+        GameObject player;
         if (SceneManager.GetActiveScene().name == "Test_DoHyun")
-            playerStats = TestGameManagerDohyun.Instance.InstantiatedPlayer.GetComponent<PlayerStatHandler>();
+            player = TestGameManagerDohyun.Instance.InstantiatedPlayer;
         else
-            playerStats = GameManager.Instance.clientPlayer.GetComponent<PlayerStatHandler>();
+            player = GameManager.Instance.clientPlayer;
 
         playerCool = GameManager.Instance.clientPlayer.GetComponent<CoolTimeController>();
         playerStats = GameManager.Instance.clientPlayer.GetComponent<PlayerStatHandler>();
+
+        PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(CustomProperyDefined.CLASS_PROPERTY, out object temp);
+        playerClass = (int)temp;
+
+        var playerInput = GameManager.Instance.clientPlayer.GetComponent<PlayerInputController>();
+        playerInput.OnSkillEvent += UpdateSkillIcon;
+
+        UpdateSkillIcon();
+    }
+
+    public void UpdateSkillIcon()
+    {
+        Debug.LogAssertion($"{playerClass}");
+        switch (playerClass)
+        {
+            default:
+                break;
+            case 0:
+                skillIcon.sprite = GameManager.Instance.clientPlayer.GetComponent<Player1Skill>().Icon;
+                break;
+            case 1:
+                skillIcon.sprite = GameManager.Instance.clientPlayer.GetComponent<Player2Skill>().Icon;
+                break;
+            case 2:
+                skillIcon.sprite = GameManager.Instance.clientPlayer.GetComponent<Player3Skill>().Icon;
+                break;
+        }
     }
 
     public void UpdateValue()
