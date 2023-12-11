@@ -39,7 +39,7 @@ public class EnemyState_Attack : BTAction
 
         if (currentTime <= 0)
         {
-            AudioManager.Instance.AudioLibrary.PlayMonsterAttack();
+            AudioManager.Instance.AudioLibrary.PlayMonsterAttack(owner.transform.position);
 
             // 공격 주기에 도달하면 공격 실행
             enemyAI.PV.RPC("Fire", RpcTarget.All);

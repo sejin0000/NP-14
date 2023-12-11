@@ -30,7 +30,13 @@ public class MonsterSpawner : MonoBehaviourPun
             RectInt room = mapGenerator.roomNodeInfo.allRoomList[i].roomRect;
             int randomSquad = Random.Range(0, MonsterSquadTypeCount);//  이번 방에 어떤 분대를 생성할지
 
-            for (int j = 0; j < stagerListInfoSO.StagerList[GameManager.Instance.curStage].MonsterSquadList[randomSquad].MonsterNum; j++)// 스분대원 수만큼 순회
+            var playerCount = PhotonNetwork.CurrentRoom.PlayerCount;
+            var spawnNum = playerCount * stagerListInfoSO.StagerList[GameManager.Instance.curStage].MonsterSquadList[randomSquad].MonsterNum;
+            if (playerCount > 2)
+            {
+                spawnNum += 2;
+            }
+            for (int j = 0; j < spawnNum; j++)// 스분대원 수만큼 순회
             {
                 //Debug.Log("몬스터 생성");
                 Vector2 spawnPos;

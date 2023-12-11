@@ -93,51 +93,50 @@ public class AudioLibrary : MonoBehaviour
         stats.HitEvent += PlayHitSE;
     }
 
-    public void PlayMonsterAttack()
+    void PlayClip(string name, Vector3 pos)
     {
         var pv = gameObject.GetPhotonView();
-        pv.RPC("SpreadClip", RpcTarget.All, enemy_attack.name);
+        pv.RPC("SpreadClip", RpcTarget.All, name, pos);
     }
 
-    public void PlayMonsterDead()
+    public void PlayMonsterAttack(Vector3 pos)
     {
-        var pv = gameObject.GetPhotonView();
-        pv.RPC("SpreadClip", RpcTarget.All, enemy_hit.name);
+        PlayClip(enemy_attack.name, pos);
+    }
+
+    public void PlayMonsterDead(Vector3 pos)
+    {
+        PlayClip(enemy_hit.name, pos);
     }
 
     void PlayShotSE()
     {
-        var pv = gameObject.GetPhotonView();
-        pv.RPC("SpreadClip", RpcTarget.All, player_attack.name); 
+        PlayClip(player_attack.name, player.transform.position);
     }
 
     void PlayRollingSE()
     {
-        var pv = gameObject.GetPhotonView();
-        pv.RPC("SpreadClip", RpcTarget.All, player_rolling.name); 
+        PlayClip(player_rolling.name, player.transform.position); 
     }
 
     void PlayHitSE()
     {
-        var pv = gameObject.GetPhotonView();
-        pv.RPC("SpreadClip", RpcTarget.All, player_hit.name); 
+       PlayClip(player_hit.name, player.transform.position); 
     }
 
     void PlayReloadStartSE()
     {
-        var pv = gameObject.GetPhotonView();
-        pv.RPC("SpreadClip", RpcTarget.All, reloadStart.name);
+        PlayClip(reloadStart.name, player.transform.position);
     }
 
     void PlayReloadFinishSE()
     {
-        var pv = gameObject.GetPhotonView();
-        pv.RPC("SpreadClip", RpcTarget.All, reloadFinish.name);
+        PlayClip(reloadFinish.name, player.transform.position);
     }
 
     [PunRPC]
-    public void SpreadClip(string name)
+    public void SpreadClip(string name, Vector3 pos)
     {
-        AudioManager.PlaySE(name);
+        AudioManager.PlaySE(name, pos);
     }
 }
