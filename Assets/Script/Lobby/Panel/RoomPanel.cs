@@ -381,6 +381,8 @@ public class RoomPanel : MonoBehaviourPunCallbacks
 
         // DESC : 다시 준비 해제..
         PhotonNetwork.LocalPlayer.CustomProperties[askReadyProp] = false;
+        ReadyButton.GetComponentInChildren<TextMeshProUGUI>().text = "준비";
+        ReadyButton.GetComponentInChildren<Image>().color = new Color(255 / 255f, 182 / 255f, 182 / 255f);
     }
 
     public bool CheckPlayersReady()
