@@ -116,7 +116,10 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         SetPanel(PanelType.RoomPanel);
         CharacterSelect.Initialize();
 
-        RoomP.SetPartyPlayerInfo();
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
+        {
+            RoomP.SetPartyPlayerInfo();
+        }
 
         audioLibrary.CallRoomSoundEvent(instantiatedPlayer);
     }
