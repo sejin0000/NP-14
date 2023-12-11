@@ -847,7 +847,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4282806665659269914, guid: 94660f1eecddc314f8d09523b43c5ee4, type: 3}
       propertyPath: BossMapSize.y
-      value: 60
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 4323504389568728521, guid: 94660f1eecddc314f8d09523b43c5ee4, type: 3}
       propertyPath: m_Layer

@@ -103,14 +103,26 @@ public class MonsterSpawner : MonoBehaviourPun
 
     public void BossSpawner(string _name, Vector2 vector)
     {
-        string testEnemy = $"Prefabs/Enemy/{_name}";
-        GameObject GO = PhotonNetwork.Instantiate(testEnemy, vector, Quaternion.identity);
-        GO.transform.parent = Case.transform;
+        StartCoroutine(WaitDoorClosed(_name, vector));
+    }
 
-        int viewID = GO.GetPhotonView().ViewID;
-        photonView.RPC("ADDEnemyViewList", RpcTarget.All, viewID);
+    IEnumerator WaitDoorClosed(string name, Vector2 vector)
+    {
+        if (!GameManager.Instance.MG.roomNodeInfo.isDoorClosed)
+        {
+            yield return new WaitForSeconds(1f);
+            StartCoroutine(WaitDoorClosed(name, vector));
+        }
+        else
+        {
+            yield return new WaitForSeconds(1f);
+            string testEnemy = $"Prefabs/Enemy/{name}";
+            GameObject GO = PhotonNetwork.Instantiate(testEnemy, vector, Quaternion.identity);
+            GO.transform.parent = Case.transform;
 
-        // TODO : 용과 거북이 생성 위치 다르게
+            int viewID = GO.GetPhotonView().ViewID;
+            photonView.RPC("ADDEnemyViewList", RpcTarget.All, viewID);
+        }
     }
 
     public void StageMonsterClear()
