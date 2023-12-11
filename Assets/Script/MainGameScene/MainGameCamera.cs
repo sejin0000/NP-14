@@ -13,6 +13,8 @@ public class MainGameCamera : MonoBehaviour
 
     public float CameraSpeed = 10.0f;       // 카메라의 속도
     Vector3 TargetPos;                      // 타겟의 위치
+    Vector3 OtherTargetPos;
+    int OtherTargetViewID;
 
     private void Start()
     {
@@ -29,18 +31,56 @@ public class MainGameCamera : MonoBehaviour
     }
 
     void FixedUpdate()
-    {
+    {        
         if (Target == null)
         {
             PhotonNetwork.AutomaticallySyncScene = false;
             PhotonNetwork.LoadLevel("LobbyScene");
         }
-        TargetPos = new Vector3(
-            Target.transform.position.x + offsetX,
-            Target.transform.position.y + offsetY,
-            Target.transform.position.z + offsetZ
-            );
+        if (Target.GetComponent<PlayerStatHandler>().isDie)
+        {
+            ChangeTarget();
+            DiedAfterTarget();
+            TargetPos = OtherTargetPos;
+        }
+        else
+        {
+            TargetPos = new Vector3(
+                Target.transform.position.x + offsetX,
+                Target.transform.position.y + offsetY,
+                Target.transform.position.z + offsetZ
+                );
+        }
 
         transform.position = Vector3.Lerp(transform.position, TargetPos, Time.deltaTime * CameraSpeed);
+    }
+
+    public void DiedAfterTarget()
+    {
+        var playerInfoDictionary = GameManager.Instance.playerInfoDictionary;
+        foreach (var viewID in playerInfoDictionary.Keys)
+        {
+            if (viewID != GameManager.Instance.clientPlayer.gameObject.GetPhotonView().ViewID)
+            {
+                OtherTargetPos = playerInfoDictionary[viewID].position;
+                OtherTargetViewID = viewID;
+            }
+        }
+    }
+
+    public void ChangeTarget()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            var playerInfoDictionary = GameManager.Instance.playerInfoDictionary;
+            foreach (var viewID in playerInfoDictionary.Keys)
+            {
+                if (viewID != GameManager.Instance.clientPlayer.gameObject.GetPhotonView().ViewID
+                    && viewID != OtherTargetViewID)
+                {
+                    OtherTargetPos = playerInfoDictionary[viewID].position;
+                }
+            }
+        }
     }
 }
