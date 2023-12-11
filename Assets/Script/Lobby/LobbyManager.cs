@@ -72,7 +72,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     [HideInInspector]
     public event Action<PanelType> OnLeaveRoom;
-    private AudioLibrary audioLibrary;
+    public AudioLibrary audioLibrary;
 
     public void Awake()
     {

@@ -72,6 +72,3 @@ MonoBehaviour:
   player_hit: {fileID: 8300000, guid: 0d8ddd3a840d3414784247f7dfe9a796, type: 3}
   enemy_attack: {fileID: 8300000, guid: 92710c1289e39de4c8ed5d574ff8a708, type: 3}
   enemy_hit: {fileID: 8300000, guid: d80d1af9b134d02439d06ab1cc48383d, type: 3}
-  DoorOpen: {fileID: 0}
-  DoorClose: {fileID: 0}
-  click: {fileID: 0}

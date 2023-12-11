@@ -26,6 +26,8 @@ public class Player2Skill : Skill
             isLink = true;
             controller.SkillMinusEvent += SkillLinkOff;
         }
+        icon = Resources.Load<Sprite>("Images/CharSkill1");
+
     }
     public override void SkillStart()
     {

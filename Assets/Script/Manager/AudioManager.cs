@@ -1,12 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Net.WebSockets;
-using System.Threading;
-using Unity.VisualScripting;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Audio;
+using Photon.Pun;
 
 public enum ClipType
 {
@@ -24,7 +20,7 @@ public enum BGMList
     Strike_Witches_Get_Bitches,
 }
 
-public class AudioManager : Singleton<AudioManager>
+public class AudioManager : SingletonPun<AudioManager>
 {
     private AudioSource BGMPlayer;
     private AudioSource[] SEPlayer;
@@ -52,6 +48,9 @@ public class AudioManager : Singleton<AudioManager>
         
         // ADDED
         AudioLibrary = this.gameObject.GetComponent<AudioLibrary>();
+
+        gameObject.AddComponent<PhotonView>();
+        photonView.ViewID = 10;
     }
 
     // Dictinonary에 오디오 클립 추가
@@ -199,7 +198,7 @@ public class AudioManager : Singleton<AudioManager>
     }
 
     // ADDED
-    static string EncodeBGMEnum(BGMList bgmEnum)
+    static private string EncodeBGMEnum(BGMList bgmEnum)
     {
         string bgmName = Enum.GetName(typeof(BGMList), bgmEnum);
         string encodedName = bgmName.Replace('_', ' ');

@@ -37,10 +37,10 @@ public class EnemyState_Attack : BTAction
 
         currentTime -= Time.deltaTime;
 
-
-
         if (currentTime <= 0)
         {
+            AudioManager.Instance.AudioLibrary.PlayMonsterAttack();
+
             // 공격 주기에 도달하면 공격 실행
             enemyAI.PV.RPC("Fire", RpcTarget.All);
             currentTime = enemySO.atkDelay;
