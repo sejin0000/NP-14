@@ -5607,7 +5607,6 @@ GameObject:
   - component: {fileID: 6315678254743216955}
   - component: {fileID: 7564274348363360787}
   - component: {fileID: 2512666008385423343}
-  - component: {fileID: -7943754296452484367}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -6031,14 +6030,6 @@ MonoBehaviour:
   _speedParticle: {fileID: 1952749043820446558}
   _TwoMoonParticle: {fileID: 2802370339389916276}
   _HealParticle: {fileID: 6722928328183335482}
---- !u!81 &-7943754296452484367
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8735806354994587177}
-  m_Enabled: 1
 --- !u!1 &8785234895090611360
 GameObject:
   m_ObjectHideFlags: 0
