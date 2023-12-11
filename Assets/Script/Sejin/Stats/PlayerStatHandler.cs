@@ -323,6 +323,9 @@ public class PlayerStatHandler : MonoBehaviourPun
     [PunRPC]
     public void DirectDamage(float damage, int targetID)
     {
+        if (PhotonView.Find(targetID).gameObject.layer == 12)
+            return;
+        
         if (IsInShield)
         {
             damage -= InShieldHP;
@@ -337,43 +340,42 @@ public class PlayerStatHandler : MonoBehaviourPun
 
     public void Damage(float damage)
     {
-        DamegeTemp = damage;
-        GetDamege?.Invoke(DamegeTemp);
-        int a = UnityEngine.Random.Range(0, 100);
-        if (evasionPersent <= a)
+        if (!isDie)
         {
-            DamegeTemp = DamegeTemp * defense;
-            CurHP -= DamegeTemp;
-            HitEvent?.Invoke();
-            HitEvent2?.Invoke(DamegeTemp);//이게 값이 필요한경우와 필요 없는경우가 있는데 한개로 할수가 있는지 모르겠음 일단 이렇게함
-
-            if (CurHP - DamegeTemp <= 0)
+            DamegeTemp = damage;
+            GetDamege?.Invoke(DamegeTemp);
+            int a = UnityEngine.Random.Range(0, 100);
+            if (evasionPersent <= a)
             {
-                CurHP -= DamegeTemp;
-                isDie = true;
-                OnDieEvent?.Invoke();
+                DamegeTemp = DamegeTemp * defense;
+                
+                HitEvent?.Invoke();
+                HitEvent2?.Invoke(DamegeTemp);//이게 값이 필요한경우와 필요 없는경우가 있는데 한개로 할수가 있는지 모르겠음 일단 이렇게함
 
-                if (CurRegenCoin > 0)
+                if (CurHP - DamegeTemp <= 0)
                 {
-                    CurRegenCoin -= 1;
-                    isDie = false;
-                    Debug.Log($"부활 : {CurRegenCoin}");
-                    Regen(HP.total);
-                    return;
+                    CurHP -= DamegeTemp;
+                    isDie = true;
+                    OnDieEvent?.Invoke();
+
+                    if (CurRegenCoin > 0)
+                    {
+                        CurRegenCoin -= 1;
+                        isDie = false;
+                        Debug.Log($"부활 : {CurRegenCoin}");
+                        Regen(HP.total);
+                        return;
+                    }
+
+                    TestGameManager.Instance?.DiedAfter();
+                    GameManager.Instance?.PlayerDie();
+                    photonView.RPC("LayerSet", RpcTarget.All);
                 }
-                //if (MainGameManager.Instance != null)  메인게임매니저가 현재 안씀
-                //{
-                //    MainGameManager.Instance.DiedAfter();
-                //}
-
-                // 초창기에 캐싱을 해놓고 동작만 시키는 것 (안되면 체크 할수 있게)
-                // ?. 로 
-                // Awake에서 캐싱을 해두고 null체크를 하면 이후에 추가적으로 할 필요 없음
-                TestGameManager.Instance?.DiedAfter();
-                GameManager.Instance?.PlayerDie();
-                photonView.RPC("LayerSet",RpcTarget.All);
+                else
+                {
+                    CurHP -= DamegeTemp;
+                }
             }
-
         }
 
     }
@@ -393,7 +395,7 @@ public class PlayerStatHandler : MonoBehaviourPun
         HPadd(HP);
         OnRegenEvent?.Invoke();
         OnRegenCalculateEvent?.Invoke(RegenHP);
-        if (photonView.IsMine) 
+        if (gameObject.GetPhotonView().IsMine) 
         {
             PlayerInputController tempInputControl = this.gameObject.GetComponent<PlayerInputController>();
             tempInputControl.ResetSetting();
@@ -447,7 +449,7 @@ public class PlayerStatHandler : MonoBehaviourPun
     [PunRPC]
     public void PunRpcStartHp() 
     {
-        if (photonView.IsMine)
+        if (gameObject.GetPhotonView().IsMine)
         {
             PlayerInputController tempInputControl = this.gameObject.GetComponent<PlayerInputController>();
             tempInputControl.ResetSetting();

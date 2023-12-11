@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour
     public bool isTransitionPlayed;
     public bool isStartFirst;
     public bool isGameOver;
+    public bool isStageEnd;
 
 
 
@@ -102,14 +103,17 @@ public class GameManager : MonoBehaviour
         OnStageSettingEvent += MG.MapMake;
         MG.roomNodeInfo = MG.GetComponent<RoomNodeInfo>();
         OnStageSettingEvent += MG.roomNodeInfo.CloseDoor;
+        OnBossStageSettingEvent += MG.roomNodeInfo.CloseDoor;
         OnBossStageSettingEvent += MG.BossMapMake;
         if (PhotonNetwork.IsMasterClient)
         {
+            OnBossStageSettingEvent += MG.NavMeshBakeRunTime;
             OnStageSettingEvent += MG.NavMeshBakeRunTime;
             OnStageStartEvent += MS.MonsterSpawn;
             OnBossStageStartEvent += MS.BossSpawn;
         }
         OnStageStartEvent += MG.roomNodeInfo.OpenDoor;
+        OnBossStageStartEvent += MG.roomNodeInfo.OpenDoor;
 
         TeamGold = 0;
         isStartFirst = true;
@@ -134,6 +138,7 @@ public class GameManager : MonoBehaviour
             //EmergencyProtocolEvent += 
         }
         PartyDeathCount = 0;
+        Debug.Log($"GameManger - PartyDeathCount : {PartyDeathCount}");
         if (stageListInfo.StagerList[curStage].stageType == StageType.normalStage)
         {
             CallStageSettingEvent();
@@ -154,6 +159,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("파밍 스테이지 세팅");
         PartyDeathCount = 0;
+        Debug.Log($"GameManger - PartyDeathCount : {PartyDeathCount}");
         ClearStageCheck = false;
         OnStageSettingEvent?.Invoke();
         FF.FadeIn();
@@ -301,15 +307,20 @@ public class GameManager : MonoBehaviour
 
     public void PlayerDie()
     {
+        PV.RPC("SendPlayerID", RpcTarget.All, clientPlayer.GetPhotonView().ViewID);
         PV.RPC("AddPartyDeathCount", RpcTarget.All);
-        Debug.Log("현재 죽은수 PartyDeath : " + PartyDeathCount.ToString());
+    }
+    [PunRPC]
+    public void SendPlayerID(int viewID)
+    {
+        Debug.Log($"GameManager[SendPlayerID] : PlayerDeathCOunt By {viewID}");
     }
 
     [PunRPC]
     public void AddPartyDeathCount()
     {
-        PartyDeathCount++;
-        Debug.Log($"죽음수 {PartyDeathCount}");
+        PartyDeathCount++;        
+        Debug.Log($"GameManger[AddPartyDeathCount] - PartyDeathCount : {PartyDeathCount}");
         CallPlayerLifeCheckEvent();
         if (PartyDeathCount == PhotonNetwork.CurrentRoom.PlayerCount) 
         {
@@ -321,6 +332,7 @@ public class GameManager : MonoBehaviour
     {
         CallPlayerLifeCheckEvent();
         PartyDeathCount--;
+        Debug.Log($"GameManger[RemovePartyDeathCount] - PartyDeathCount : {PartyDeathCount}");
         Debug.Log("현재 죽은수 PartyDeath : " + PartyDeathCount.ToString());
     }
     public void CallPlayerLifeCheckEvent()

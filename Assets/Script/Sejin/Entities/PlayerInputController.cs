@@ -45,10 +45,6 @@ public class PlayerInputController : TopDownCharacterController
             Destroy(GetComponent<PlayerInputController>());
         }
     }
-    private void OnEnable()
-    {
-        ResetSetting();
-    }
     public void ResetSetting()
     {
         if (photonView.IsMine) 

@@ -13,6 +13,8 @@ public class RoomNodeInfo : MonoBehaviour
 
     PhotonView PV;
     public MapGenerator mapGenerator;
+    public bool isDoorClosed;
+
 
     private void Awake()
     {
@@ -23,7 +25,9 @@ public class RoomNodeInfo : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.OnRoomStartEvent += CloseDoor;
+        GameManager.Instance.OnRoomStartEvent += CloseBool;
         GameManager.Instance.OnRoomEndEvent += OpenDoor;
+        GameManager.Instance.OnRoomEndEvent += OpenBool;
     }
 
     public void ChooseRoom()
@@ -45,7 +49,15 @@ public class RoomNodeInfo : MonoBehaviour
 
     }
 
+    public void ChooseBossRoom()
+    {
+        startRoom = mapGenerator.lastRoomList[0];
+        mapGenerator.lastRoomList[0].thisRoomClear = true;
+        endRoom = mapGenerator.lastRoomList[mapGenerator.lastRoomList.Count - 1];
 
+        allRoomList = mapGenerator.allRoomList;
+        allRoomList.Remove(startRoom);
+    }
 
     public void PlayerPositionSetting()
     {
@@ -63,8 +75,14 @@ public class RoomNodeInfo : MonoBehaviour
         vector.x = Random.Range(startRoom.x + 1, startRoom.x + widthHeight.x - 1);
         vector.y = Random.Range(startRoom.y + 1, startRoom.y + widthHeight.y - 1);
 
+        var playerTransform = GameManager.Instance.clientPlayer.transform;
+        playerTransform.position = vector;        
+    }
 
-        GameManager.Instance.clientPlayer.transform.position = vector;
+    [PunRPC]
+    private void PunPlayerPositionSettingInBossRoom()
+    {
+
     }
 
     public void CloseDoor()
@@ -72,10 +90,22 @@ public class RoomNodeInfo : MonoBehaviour
         PV.RPC("PunCloseDoor",RpcTarget.All);
     }
 
+
     [PunRPC]
     private void PunCloseDoor()
     {
         mapGenerator.setTile.doorTileMap.gameObject.SetActive(true);
+    }
+
+    public void CloseBool()
+    {
+        PV.RPC("PunCloseBool", RpcTarget.All);
+    }
+
+    [PunRPC]
+    private void PunCloseBool()
+    {
+        isDoorClosed = true;
     }
 
     public void OpenDoor()
@@ -86,7 +116,18 @@ public class RoomNodeInfo : MonoBehaviour
     [PunRPC]
     private void PunOpenDoor()
     {
-        mapGenerator.setTile.doorTileMap.gameObject.SetActive(false);
+        mapGenerator.setTile.doorTileMap.gameObject.SetActive(false);        
+    }
+
+    public void OpenBool()
+    {
+        PV.RPC("PunOpenBool", RpcTarget.All);
+    }
+
+    [PunRPC]
+    private void PunOpenBool()
+    {
+        isDoorClosed = false;
     }
 
     [PunRPC]

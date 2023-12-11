@@ -828,7 +828,10 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     {
         base.OnDisable();
         //Debug.Log("몬스터 죽음요");
-        PV.RPC("DeadSync", RpcTarget.MasterClient);
+        if (!GameManager.Instance.isStageEnd)
+        {
+            PV.RPC("DeadSync", RpcTarget.MasterClient);
+        }
     }
 
     [PunRPC]
