@@ -77,6 +77,9 @@ public class RoomPanel : MonoBehaviourPunCallbacks
 
     [Header("PartyBox")]
     public GameObject PartyBox;
+    public Button FirstPartyMember;
+    public Button SecondPartyMember;
+    public Button ThirdPartyMember;
 
     [HideInInspector]
     private string askReadyProp;
@@ -93,7 +96,8 @@ public class RoomPanel : MonoBehaviourPunCallbacks
     {
         // DESC : 플레이어 레디 초기화
         PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue(askReadyProp, out object isPlayerReady);
-        if (isPlayerReady == null)
+        if (isPlayerReady == null
+            && PhotonNetwork.CurrentRoom.PlayerCount == 1)
         {
             PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { askReadyProp, false } });
         }
@@ -123,6 +127,7 @@ public class RoomPanel : MonoBehaviourPunCallbacks
     }
     public void Start()
     {
+
         // DESC : 버튼 연결
         ReadyButton.onClick.AddListener(OnReadyButtonClicked);
         StartButton.onClick.AddListener(OnStartButtonClicked);
@@ -173,6 +178,32 @@ public class RoomPanel : MonoBehaviourPunCallbacks
         }
     }
 
+    public void ResetPartyBox()
+    {
+        for (int i = 0; i < PartyBox.transform.childCount; i++)
+        {
+            var ChildGO = PartyBox.transform.GetChild(i);
+            for (int j = 0; j < ChildGO.childCount; j++)
+            {
+                var GrandChildGO = ChildGO.GetChild(j);
+                if (GrandChildGO.GetComponent<PartyPlayerInfo>() != null)
+                {
+                    Destroy(GrandChildGO.gameObject);
+                }
+                if (GrandChildGO.GetComponent<PartyMemberButton>() != null)
+                {
+                    GrandChildGO.gameObject.SetActive(true);
+                    GrandChildGO.GetComponent<PartyMemberButton>().ResetButton();
+                }
+            }
+        }
+    }
+    [PunRPC]
+    public void RemotePartyPlayerInfo()
+    {
+        SetPartyPlayerInfo();
+    }
+
     public void SetPartyPlayerInfo()
     {
         _playerPartyDict = LobbyManager.Instance.playerPartyDict;
@@ -186,19 +217,39 @@ public class RoomPanel : MonoBehaviourPunCallbacks
 
         for (int i = 0; i < PartyBox.transform.childCount; i++)
         {
-            if (PartyBox.transform.GetChild(i).childCount > 0)
+            var ChildGO = PartyBox.transform.GetChild(i);
+            for (int j = 0; j <  ChildGO.childCount; j++)
             {
-                Destroy(PartyBox.transform.GetChild(i).GetChild(0).gameObject);
+                var GrandChildGO = ChildGO.GetChild(j);
+                if (GrandChildGO.GetComponent<PartyPlayerInfo>() != null)
+                {
+                    Destroy(GrandChildGO.gameObject);
+                }
+                if (GrandChildGO.GetComponent<PartyMemberButton>() != null) 
+                {
+                    GrandChildGO.gameObject.SetActive(true);
+                }
             }
         }
 
         int cnt = 0;
         foreach (Player p in PhotonNetwork.PlayerList)
         {
+            var playerInfoParentTrans = PartyBox.transform.GetChild(cnt);
+            var memberButton = playerInfoParentTrans.GetChild(0).GetComponent<PartyMemberButton>();
+            if (memberButton.IsClicked)
+            {
+                cnt++;                
+            }
+            else
+            {
+                memberButton.transform.gameObject.SetActive(false);
+            }
             GameObject playerInfoPrefab = Instantiate(Resources.Load<GameObject>(PrefabPathes.PLAYER_INROOM_PARTY_ELEMENT), PartyBox.transform.GetChild(cnt), false);            
             playerInfoPrefab.transform.localScale = Vector3.one;
             var partyPlayerInfo = playerInfoPrefab.GetComponent<PartyPlayerInfo>();
             partyPlayerInfo.Initialize(cnt, p);
+            cnt++;
 
             var readyProp = p.CustomProperties[askReadyProp];
             bool isReady;
@@ -210,17 +261,10 @@ public class RoomPanel : MonoBehaviourPunCallbacks
             {
                 isReady = (bool)p.CustomProperties[askReadyProp];
             }
-            //p.CustomProperties.TryGetValue(askReadyProp, out object isReady);
-            //if (isReady == null)
-            //{
-            //    isReady = false;
-            //}
-            Debug.Log($"Player : {p.ActorNumber} / IsReady : {(bool)isReady}");
+
             partyPlayerInfo.SetReady((bool)isReady);
 
-            _playerPartyDict.Add(p.ActorNumber, playerInfoPrefab);
-
-            cnt++;
+            _playerPartyDict.Add(p.ActorNumber, playerInfoPrefab);         
         }
     }
 
@@ -271,6 +315,8 @@ public class RoomPanel : MonoBehaviourPunCallbacks
     {
         var props = new Hashtable() { { askReadyProp, false } };
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+        SetPlayerReady(false);
+
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.CurrentRoom.IsVisible = false;
         Destroy(AudioManager.Instance.gameObject);
@@ -335,6 +381,8 @@ public class RoomPanel : MonoBehaviourPunCallbacks
 
         // DESC : 다시 준비 해제..
         PhotonNetwork.LocalPlayer.CustomProperties[askReadyProp] = false;
+        ReadyButton.GetComponentInChildren<TextMeshProUGUI>().text = "준비";
+        ReadyButton.GetComponentInChildren<Image>().color = new Color(255 / 255f, 182 / 255f, 182 / 255f);
     }
 
     public bool CheckPlayersReady()
@@ -344,10 +392,12 @@ public class RoomPanel : MonoBehaviourPunCallbacks
             return false;
         }
 
+    
         if (PhotonNetwork.PlayerList.Count() < PhotonNetwork.CurrentRoom.MaxPlayers)
         {
             return false;
         }
+
         foreach (Player p in PhotonNetwork.PlayerList)
         {
             if (p.CustomProperties.TryGetValue(askReadyProp, out object isPlayerReady))

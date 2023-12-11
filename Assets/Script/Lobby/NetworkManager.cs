@@ -8,6 +8,7 @@ using Random = UnityEngine.Random;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using Unity.VisualScripting;
 using System.Linq;
+using UnityEngine.UI;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
@@ -136,9 +137,21 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(CustomProperyDefined.TEST_OR_NOT, out object testProperty);
         LobbyManager.Instance.SetRoomPanelEntered();
+        if (PhotonNetwork.IsMasterClient)
+        {
+            var FirstPartyMember = LobbyManager.Instance.RoomP.FirstPartyMember;
+            var FirstPartyState = FirstPartyMember.GetComponent<PartyMemberButton>();
+            FirstPartyMember.gameObject.GetPhotonView().RPC("GetCurrentMemberButtonState", RpcTarget.Others, FirstPartyState.IsClicked);
+            var SecondPartyMember = LobbyManager.Instance.RoomP.SecondPartyMember;
+            var SecondPartyState = SecondPartyMember.GetComponent<PartyMemberButton>();
+            SecondPartyMember.gameObject.GetPhotonView().RPC("GetCurrentMemberButtonState", RpcTarget.Others, SecondPartyState.IsClicked);
+            var ThirdPartyMember = LobbyManager.Instance.RoomP.ThirdPartyMember;
+            var ThirdPartyState = ThirdPartyMember.GetComponent<PartyMemberButton>();
+            ThirdPartyMember.gameObject.GetPhotonView().RPC("GetCurrentMemberButtonState", RpcTarget.Others, ThirdPartyState.IsClicked);
+        }
         if (!(bool)testProperty) 
         {
-            LobbyManager.Instance.RoomP.SetPartyPlayerInfo();
+            LobbyManager.Instance.RoomP.gameObject.GetPhotonView().RPC("RemotePartyPlayerInfo", RpcTarget.All);
         }        
     }
 
@@ -146,7 +159,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(CustomProperyDefined.TEST_OR_NOT, out object testProperty);
         if (!(bool)testProperty)
-        {
+        {            
             LobbyManager.Instance.SetRoomPanelLeft(otherPlayer);
         }
     }
@@ -164,6 +177,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         {
             Debug.Log($"LobbyManager - LeftRoom : Client State : {PhotonNetwork.NetworkClientState}{Enum.GetName(typeof(ClientState), PhotonNetwork.NetworkClientState)}");
             PhotonNetwork.LocalPlayer.CustomProperties[CustomProperyDefined.ASK_READY_PROPERTY] = false;
+            LobbyManager.Instance.RoomP.ResetPartyBox();
             LobbyManager.Instance.SetPanel(PanelType.MainLobbyPanel);
             PhotonNetwork.ConnectUsingSettings();
 
