@@ -11,6 +11,9 @@ public class Skill : MonoBehaviourPun
     protected PlayerStatHandler playerStats;
     public bool isLink;
 
+    protected Sprite icon;
+    public Sprite Icon {  get { return icon; } }
+
     public void Awake()
     {
         controller = GetComponent<TopDownCharacterController>();
