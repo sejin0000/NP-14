@@ -12429,7 +12429,7 @@ GameObject:
   - component: {fileID: 1136339319}
   - component: {fileID: 1136339318}
   m_Layer: 5
-  m_Name: AnnouncementKeyText
+  m_Name: ML_KeyText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12752,7 +12752,7 @@ GameObject:
   - component: {fileID: 1139260645}
   - component: {fileID: 1139260644}
   m_Layer: 5
-  m_Name: AnnouncementText
+  m_Name: ML_AnnouncementText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25156,12 +25156,12 @@ GameObject:
   - component: {fileID: 1782529102}
   - component: {fileID: 1782529101}
   m_Layer: 5
-  m_Name: RoomAnouncementPopup
+  m_Name: MLAnnouncePopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1782529100
 RectTransform:
   m_ObjectHideFlags: 0
@@ -25179,10 +25179,10 @@ RectTransform:
   m_Father: {fileID: 2099533331}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -144, y: 118}
-  m_SizeDelta: {x: -1250, y: -700}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -144, y: -10}
+  m_SizeDelta: {x: 670, y: 380}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1782529101
 MonoBehaviour:
@@ -28517,6 +28517,9 @@ MonoBehaviour:
   settingButton: {fileID: 525797080}
   backButton: {fileID: 1954548457}
   SetupPopup: {fileID: 2089042467}
+  MLAnnouncePopup: {fileID: 1782529099}
+  ML_KeyText: {fileID: 1136339318}
+  ML_AnnounceText: {fileID: 1139260644}
   Gold: {fileID: 1221515335}
 --- !u!114 &2099533335
 MonoBehaviour:
