@@ -1,10 +1,7 @@
-using Photon.Realtime;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Net.WebSockets;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using Photon.Pun;
 
 [System.Serializable]
 public class CustomClip
@@ -96,36 +93,49 @@ public class AudioLibrary : MonoBehaviour
 
     public void PlayMonsterAttack()
     {
-        AudioManager.PlayClip(enemy_attack);
+        var pv = gameObject.GetPhotonView();
+        pv.RPC("SpreadClip", RpcTarget.All, enemy_attack.name);
     }
 
     public void PlayMonsterDead()
     {
-        AudioManager.PlayClip(enemy_hit);
+        var pv = gameObject.GetPhotonView();
+        pv.RPC("SpreadClip", RpcTarget.All, enemy_hit.name);
     }
 
     void PlayShotSE()
     {
-        AudioManager.PlayClip(player_attack);
+        var pv = gameObject.GetPhotonView();
+        pv.RPC("SpreadClip", RpcTarget.All, player_attack.name); 
     }
 
     void PlayRollingSE()
     {
-        AudioManager.PlayClip(player_rolling);
+        var pv = gameObject.GetPhotonView();
+        pv.RPC("SpreadClip", RpcTarget.All, player_rolling.name); 
     }
 
     void PlayHitSE()
     {
-        AudioManager.PlayClip(player_hit);
+        var pv = gameObject.GetPhotonView();
+        pv.RPC("SpreadClip", RpcTarget.All, player_hit.name); 
     }
 
     void PlayReloadStartSE()
     {
-       AudioManager.PlayClip(reloadStart);
+        var pv = gameObject.GetPhotonView();
+        pv.RPC("SpreadClip", RpcTarget.All, reloadStart.name);
     }
 
     void PlayReloadFinishSE()
     {
-        AudioManager.PlayClip(reloadFinish);
+        var pv = gameObject.GetPhotonView();
+        pv.RPC("SpreadClip", RpcTarget.All, reloadFinish.name);
+    }
+
+    [PunRPC]
+    public void SpreadClip(string name)
+    {
+        AudioManager.PlaySE(name);
     }
 }
