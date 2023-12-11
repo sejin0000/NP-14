@@ -23,7 +23,7 @@ public enum BGMList
 public class AudioManager : SingletonPun<AudioManager>
 {
     private AudioSource BGMPlayer;
-    private AudioSource[] SEPlayer;
+    private GameObject[] SEPlayer;
 
     [Header("Data")]
     [SerializeField] private AudioMixer mixer;
@@ -78,18 +78,20 @@ public class AudioManager : SingletonPun<AudioManager>
 
         //Add Component to Objects
         BGMPlayer = bgmPlayer.AddComponent<AudioSource>();
-        SEPlayer = new AudioSource[SEPlayerSize];
+        SEPlayer = new GameObject[SEPlayerSize];
 
         BGMPlayer.outputAudioMixerGroup = mixer.FindMatchingGroups("Master/BGM")[0];
 
         for(int i=0; i<SEPlayerSize; ++i)
         {
-            SEPlayer[i] = new AudioSource();
-            SEPlayer[i] = sePlayer.AddComponent<AudioSource>();
-            SEPlayer[i].spatialBlend = 1;
-            SEPlayer[i].minDistance = 1;
-            SEPlayer[i].maxDistance = 10;
-            SEPlayer[i].outputAudioMixerGroup = mixer.FindMatchingGroups("Master/SE")[0];
+            SEPlayer[i] = new GameObject("se_obj");
+            SEPlayer[i].transform.SetParent(sePlayer.transform);
+
+            var source = SEPlayer[i].AddComponent<AudioSource>();
+            source.spatialBlend = 1;
+            source.minDistance = 1;
+            source.maxDistance = 10;
+            source.outputAudioMixerGroup = mixer.FindMatchingGroups("Master/SE")[0];
         }
     }
 
@@ -141,13 +143,14 @@ public class AudioManager : SingletonPun<AudioManager>
 
         foreach (var player in Instance.SEPlayer)
         {
-            if (!player.isPlaying)
+            var source = player.GetComponent<AudioSource>();
+            if (!source.isPlaying)
             {
-                player.clip = clipDict[clipName];
-                player.volume = volume;
-                player.loop = false;
-                player.gameObject.transform.position = Vector3.zero;
-                player.Play();
+                source.clip = clipDict[clipName];
+                source.volume = volume;
+                source.loop = false;
+                source.gameObject.transform.position = Vector3.zero;
+                source.Play();
                 return;
             }
         }
@@ -161,13 +164,14 @@ public class AudioManager : SingletonPun<AudioManager>
 
         foreach (var player in Instance.SEPlayer)
         {
-            if (!player.isPlaying)
+            var source = player.GetComponent<AudioSource>();
+            if (!source.isPlaying)
             {
-                player.clip = clipDict[clipName];
-                player.volume = volume;
-                player.loop = false;
-                player.gameObject.transform.position = pos;
-                player.Play();
+                source.clip = clipDict[clipName];
+                source.volume = volume;
+                source.loop = false;
+                source.gameObject.transform.position = pos;
+                source.Play();
                 return;
             }
         }
@@ -178,12 +182,13 @@ public class AudioManager : SingletonPun<AudioManager>
     {
         foreach (var player in Instance.SEPlayer)
         {
-            if (!player.isPlaying)
+            var temp = player.GetComponent<AudioSource>();
+            if (!temp.isPlaying)
             {
-                player.clip = clip;
-                player.volume = volume;
-                player.loop = false;
-                player.Play();
+                temp.clip = clip;
+                temp.volume = volume;
+                temp.loop = false;
+                temp.Play();
                 return;
             }
         }
