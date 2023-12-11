@@ -830,8 +830,13 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     [PunRPC]
     private void A1303(int PlayerNumber)
     {
-        ChangeOnlyPlayer(PlayerNumber);
+        ChangePlayerAndPlayerStatHandler(PlayerNumber);
         targetPlayer.AddComponent<A1303>();
+        if (targetPlayer.GetComponent<Player2Skill>() != null)
+        {
+            playerstatHandler.AmmoMax.added += 29;
+            playerstatHandler.CurAmmo += 29;
+        }
     }
     [PunRPC]
     private void A1304(int PlayerNumber)// 기회비용 힐모드 변경 x 딜모드 딜량증가
