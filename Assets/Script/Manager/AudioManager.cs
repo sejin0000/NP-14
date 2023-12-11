@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using Photon.Pun;
 using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
 
 public enum ClipType
 {
