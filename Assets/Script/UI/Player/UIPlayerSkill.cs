@@ -54,7 +54,7 @@ public class UIPlayerSkill : UIBase, ICommonUI
 
     public void UpdateSkillIcon()
     {
-        Debug.LogAssertion($"{playerClass}");
+        //Debug.LogAssertion($"{playerClass}");
         switch (playerClass)
         {
             default:
