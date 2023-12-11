@@ -84,8 +84,10 @@ public class AudioManager : SingletonPun<AudioManager>
 
         for(int i=0; i<SEPlayerSize; ++i)
         {
-            GameObject player = Instantiate(new GameObject("se_obj"), sePlayer.transform);
-            var source = player.AddComponent<AudioSource>();
+            SEPlayer[i] = new GameObject("se_obj");
+            SEPlayer[i].transform.SetParent(sePlayer.transform);
+
+            var source = SEPlayer[i].AddComponent<AudioSource>();
             source.spatialBlend = 1;
             source.minDistance = 1;
             source.maxDistance = 10;
