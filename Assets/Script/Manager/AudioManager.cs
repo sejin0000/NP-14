@@ -20,7 +20,7 @@ public enum BGMList
     Strike_Witches_Get_Bitches,
 }
 
-public class AudioManager : Singleton<AudioManager>
+public class AudioManager : SingletonPun<AudioManager>
 {
     private AudioSource BGMPlayer;
     private AudioSource[] SEPlayer;
@@ -48,6 +48,9 @@ public class AudioManager : Singleton<AudioManager>
         
         // ADDED
         AudioLibrary = this.gameObject.GetComponent<AudioLibrary>();
+
+        gameObject.AddComponent<PhotonView>();
+        photonView.ViewID = 10;
     }
 
     // Dictinonary에 오디오 클립 추가
