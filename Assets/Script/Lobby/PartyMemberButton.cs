@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PartyMemberButton : MonoBehaviour
+public class PartyMemberButton : MonoBehaviourPun
 {
     public TextMeshProUGUI SlotText;
     public Button memberButton;
@@ -30,9 +30,20 @@ public class PartyMemberButton : MonoBehaviour
         }
     }
 
-    public void OnSlotButtonClicked()
+    [PunRPC]
+    public void SlotClicked()
     {
         IsClicked = !IsClicked;
+    }
+
+
+    public void OnSlotButtonClicked()
+    {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
+        photonView.RPC("SlotClicked", RpcTarget.All);
+
         if (IsClicked)
         {
             SlotText.text = "½½·Ô ¿­±â";
