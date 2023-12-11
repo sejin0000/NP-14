@@ -25,6 +25,8 @@ public class EnemyState_Attack : BTAction
 
     public override void Initialize()
     {
+        AudioManager.Instance.AudioLibrary.PlayMonsterAttack();
+
         currentTime = enemySO.atkDelay;
         enemyAI.PV.RPC("SetStateColor", RpcTarget.All, (int)EnemyStateColor.ColorBlack, enemyAI.PV.ViewID);
 

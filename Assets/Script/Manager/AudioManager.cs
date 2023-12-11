@@ -1,12 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Net.WebSockets;
-using System.Threading;
-using Unity.VisualScripting;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.Audio;
+using Photon.Pun;
 
 public enum ClipType
 {
@@ -199,7 +195,7 @@ public class AudioManager : Singleton<AudioManager>
     }
 
     // ADDED
-    static string EncodeBGMEnum(BGMList bgmEnum)
+    static private string EncodeBGMEnum(BGMList bgmEnum)
     {
         string bgmName = Enum.GetName(typeof(BGMList), bgmEnum);
         string encodedName = bgmName.Replace('_', ' ');
