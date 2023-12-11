@@ -87,8 +87,8 @@ public class AudioManager : SingletonPun<AudioManager>
             SEPlayer[i] = new AudioSource();
             SEPlayer[i] = sePlayer.AddComponent<AudioSource>();
             SEPlayer[i].spatialBlend = 1;
-            SEPlayer[i].minDistance = 0;
-            SEPlayer[i].maxDistance = 15;
+            SEPlayer[i].minDistance = 1;
+            SEPlayer[i].maxDistance = 10;
             SEPlayer[i].outputAudioMixerGroup = mixer.FindMatchingGroups("Master/SE")[0];
         }
     }
@@ -146,6 +146,7 @@ public class AudioManager : SingletonPun<AudioManager>
                 player.clip = clipDict[clipName];
                 player.volume = volume;
                 player.loop = false;
+                player.gameObject.transform.position = Vector3.zero;
                 player.Play();
                 return;
             }
@@ -165,7 +166,8 @@ public class AudioManager : SingletonPun<AudioManager>
                 player.clip = clipDict[clipName];
                 player.volume = volume;
                 player.loop = false;
-                AudioSource.PlayClipAtPoint(player.clip, pos);
+                player.gameObject.transform.position = pos;
+                player.Play();
                 return;
             }
         }
