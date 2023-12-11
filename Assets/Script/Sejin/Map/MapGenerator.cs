@@ -46,13 +46,51 @@ public class MapGenerator : MonoBehaviour
 
     public void BossMapMake()
     {
-        root = new Node(new RectInt(0, 0, BossMapSize.x, BossMapSize.y)); //전체 맵 크기의 루트노드를 만듬 
 
-        setTile.OrderSetRectTile(new RectInt(0, 0, BossMapSize.x + 20, BossMapSize.y + 10), setTile.wallTileMap, setTile.wallTile, new Vector2(-((BossMapSize.x + 20) / 2), -((BossMapSize.y + 10) / 2)));
-        setTile.OrderSetRectTile(new RectInt(0, 0, BossMapSize.x, BossMapSize.y), setTile.wallTileMap, null, new Vector2(-(BossMapSize.x / 2), -(BossMapSize.y / 2)));
-        setTile.OrderSetRectTile(new RectInt(0, 0, BossMapSize.x, BossMapSize.y), setTile.groundTileMap, setTile.groundTile, new Vector2(-(BossMapSize.x / 2), -(BossMapSize.y / 2)));
+        //setTile.OrderSetRectTile(new RectInt(0, 0, BossMapSize.x + 20, BossMapSize.y + 10), setTile.wallTileMap, setTile.wallTile, new Vector2(-((BossMapSize.x + 20) / 2), -((BossMapSize.y + 10) / 2)));
+        //setTile.OrderSetRectTile(new RectInt(0, 0, BossMapSize.x, BossMapSize.y), setTile.wallTileMap, null, new Vector2(-(BossMapSize.x / 2), -(BossMapSize.y / 2)));
+        //setTile.OrderSetRectTile(new RectInt(0, 0, BossMapSize.x, BossMapSize.y), setTile.groundTileMap, setTile.groundTile, new Vector2(-(BossMapSize.x / 2), -(BossMapSize.y / 2)));
 
-        //roomNodeInfo.porTal.GetComponent<Portal>().portalSetting(0, 20);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            root = new Node(new RectInt(0, 0, BossMapSize.x, BossMapSize.y)); //전체 맵 크기의 루트노드를 만듬
+
+            setTile.OrderSetRectTile(new RectInt(0, 0, BossMapSize.x + 20, BossMapSize.y + 10), setTile.wallTileMap, setTile.wallTile, new Vector2(-10, -5));
+
+            Divide(root, 2);
+            GenerateRoom(root, 2);
+
+            for (int i = 0; i < 1; i++)
+            {
+                parentsNodes.Clear();
+
+                nodeDepth = i;
+                NodeSelection(root, 2);
+                ConnectAdjacentNodes();
+            }
+            allRoomList.Clear();
+            for (int i = 0; i < L_childrenNode.Count; i++)
+            {
+                allRoomList.Add(L_childrenNode[i]);
+            }
+            for (int i = 0; i < R_childrenNode.Count; i++)
+            {
+                allRoomList.Add(R_childrenNode[i]);
+            }
+
+
+            lastRoomList.Clear();
+            for (int i = 0; i < allRoomList.Count; i++)
+            {
+                if (allRoomList[i].roadCount == 1)
+                {
+                    lastRoomList.Add(allRoomList[i]);
+                }
+            }
+            roomNodeInfo.ChooseBossRoom();
+            roomNodeInfo.PlayerPositionSetting();
+        }
+        
     }
     public void MapMake()
     {

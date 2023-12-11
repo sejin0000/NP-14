@@ -103,14 +103,17 @@ public class GameManager : MonoBehaviour
         OnStageSettingEvent += MG.MapMake;
         MG.roomNodeInfo = MG.GetComponent<RoomNodeInfo>();
         OnStageSettingEvent += MG.roomNodeInfo.CloseDoor;
+        OnBossStageSettingEvent += MG.roomNodeInfo.CloseDoor;
         OnBossStageSettingEvent += MG.BossMapMake;
         if (PhotonNetwork.IsMasterClient)
         {
+            OnBossStageSettingEvent += MG.NavMeshBakeRunTime;
             OnStageSettingEvent += MG.NavMeshBakeRunTime;
             OnStageStartEvent += MS.MonsterSpawn;
             OnBossStageStartEvent += MS.BossSpawn;
         }
         OnStageStartEvent += MG.roomNodeInfo.OpenDoor;
+        OnBossStageStartEvent += MG.roomNodeInfo.OpenDoor;
 
         TeamGold = 0;
         isStartFirst = true;

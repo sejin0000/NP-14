@@ -52,18 +52,25 @@ public class MonsterSpawner : MonoBehaviourPun
 
         int MonsterSquadTypeCount = stagerListInfoSO.StagerList[GameManager.Instance.curStage].MonsterSquadList.Count;// 현재 스테이지에 몬스터 분대 수 
         int randomSquad = Random.Range(0, MonsterSquadTypeCount);//  이번 방에 어떤 분대를 생성할지
-        int randamMonster = Random.Range(0, stagerListInfoSO.StagerList[GameManager.Instance.curStage].MonsterSquadList[randomSquad].MonsterList.Count);// 랜덤한 분대원 생성을 위한
+        int randomMonster = Random.Range(0, stagerListInfoSO.StagerList[GameManager.Instance.curStage].MonsterSquadList[randomSquad].MonsterList.Count);// 랜덤한 분대원 생성을 위한
 
-        MonsterName monster = stagerListInfoSO.StagerList[GameManager.Instance.curStage].MonsterSquadList[randomSquad].MonsterList[randamMonster];
+        MonsterName monster = stagerListInfoSO.StagerList[GameManager.Instance.curStage].MonsterSquadList[randomSquad].MonsterList[randomMonster];
+        RectInt room = mapGenerator.roomNodeInfo.allRoomList[0].roomRect;
+        Vector2 spawnPos = new Vector2(room.x, room.y);        
+        
 
-        var dragonVector = new Vector2(0,10);
-        var turtleVector = new Vector2(3,3);
+
+        
         if (monster == MonsterName.Boss_Dragon)
         {
+            var dragonVector = new Vector2(spawnPos.x + room.width * 0.5f, spawnPos.y + room.height);
             BossSpawner(monster.ToString(), dragonVector);
         }
         if (monster == MonsterName.Boss_Turtle)
         {
+            var turtlePosX = Random.Range(room.x + 1, room.x + room.width);
+            var turtlePosY = Random.Range(room.y + 1, room.y + room.height);
+            var turtleVector = new Vector2(turtlePosX, turtlePosY);
             BossSpawner(monster.ToString(), turtleVector);
         }
     }

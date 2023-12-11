@@ -45,7 +45,15 @@ public class RoomNodeInfo : MonoBehaviour
 
     }
 
+    public void ChooseBossRoom()
+    {
+        startRoom = mapGenerator.lastRoomList[0];
+        mapGenerator.lastRoomList[0].thisRoomClear = true;
+        endRoom = mapGenerator.lastRoomList[mapGenerator.lastRoomList.Count - 1];
 
+        allRoomList = mapGenerator.allRoomList;
+        allRoomList.Remove(startRoom);
+    }
 
     public void PlayerPositionSetting()
     {
@@ -63,8 +71,14 @@ public class RoomNodeInfo : MonoBehaviour
         vector.x = Random.Range(startRoom.x + 1, startRoom.x + widthHeight.x - 1);
         vector.y = Random.Range(startRoom.y + 1, startRoom.y + widthHeight.y - 1);
 
+        var playerTransform = GameManager.Instance.clientPlayer.transform;
+        playerTransform.position = vector;        
+    }
 
-        GameManager.Instance.clientPlayer.transform.position = vector;
+    [PunRPC]
+    private void PunPlayerPositionSettingInBossRoom()
+    {
+
     }
 
     public void CloseDoor()
