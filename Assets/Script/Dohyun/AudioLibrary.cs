@@ -68,7 +68,7 @@ public class AudioLibrary : MonoBehaviour
         AudioManager.PlayBGM(BGMList.Dragao_Inkomodo);
     }
     
-    void SetupPlayerSE()
+    public void SetupPlayerSE()
     {
         var stats = player.GetComponent<PlayerStatHandler>();
         player_attack = stats.atkClip;

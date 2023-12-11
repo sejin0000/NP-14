@@ -35,7 +35,7 @@ public class PlayerDataSetting : MonoBehaviourPun
             case (int)CharClass.Soldier:                
                 statSO.CharacterChange(soldierSO);
                 DelComponent(statSO.gameObject);
-                statSO.gameObject.AddComponent<Player1Skill>();               
+                statSO.gameObject.AddComponent<Player1Skill>();                
                 break;
             case (int)CharClass.Shotgun:                
                 statSO.CharacterChange(shotGunSO);
@@ -48,6 +48,8 @@ public class PlayerDataSetting : MonoBehaviourPun
                 statSO.gameObject.AddComponent<Player3Skill>();
                 break;
         }
+
+        LobbyManager.Instance.audioLibrary.SetupPlayerSE();
     }
 
     public void DelComponent(GameObject GO)
