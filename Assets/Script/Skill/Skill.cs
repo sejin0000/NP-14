@@ -11,13 +11,15 @@ public class Skill : MonoBehaviourPun
     protected PlayerStatHandler playerStats;
     public bool isLink;
 
-    protected Sprite icon;
-    public Sprite Icon {  get { return icon; } }
+    protected Sprite[] icons;
+    protected Sprite skillIcon;
+    public Sprite Skillicon { get { return skillIcon; } }
 
     public void Awake()
     {
         controller = GetComponent<TopDownCharacterController>();
         playerStats = GetComponent<PlayerStatHandler>();
+        icons = Resources.LoadAll<Sprite>("Images/Skill_icon-Sheet");
     }
 
     public void SkillLinkOff()
