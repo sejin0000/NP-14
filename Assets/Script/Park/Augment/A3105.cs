@@ -39,7 +39,7 @@ public class A3105 : MonoBehaviourPun
         controller.playerStatHandler.useSkill = true;
         if (ready) 
         {
-            nowPower = playerStat.ATK.total;
+            nowPower = playerStat.ATK.total * 2f;
             playerStat.ATK.added += nowPower;
             oldPower = nowPower;
             ready = false;
