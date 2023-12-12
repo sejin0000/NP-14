@@ -21,7 +21,7 @@ MonoBehaviour:
   bulletSpread: 30
   bulletLifeTime: 1
   BulletSprite: {fileID: -2077390248, guid: 32dde5c63421a4043acc0dcb87475936, type: 3}
-  reloadCoolTime: 0
+  reloadCoolTime: 0.2
   skillCoolTime: 5
   rollCoolTime: 5
   ammoMax: 1

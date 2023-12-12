@@ -9,7 +9,7 @@ public class A3101 : MonoBehaviourPun
     private PlayerStatHandler playerStat;
     private CoolTimeController coolTimeController;
 
-    public float heal=5f;
+    public float heal=12f;
     public float healTime = 5f;
     float time = 0f;
     private void Awake()

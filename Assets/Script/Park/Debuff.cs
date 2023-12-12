@@ -24,12 +24,15 @@ public class Debuff : MonoBehaviourPun
     public void GiveFire(GameObject gameObject , float totalpower , int myPVID) 
     {
         float power = totalpower * 0.2f;
-
-        if (gameObject.tag == "Enemy" && gameObject.GetComponent<EnemyAI>().CanFire) 
+        EnemyAI target = gameObject.GetComponent<EnemyAI>();
+        if (gameObject.tag == "Enemy" && target!= null) 
         {
+            if (target.CanFire) 
+            {
             PhotonView pv = gameObject.GetComponent<PhotonView>();
             int viewID = pv.ViewID;
             photonView.RPC("FireGive", RpcTarget.All, power, viewID,myPVID);
+            }
         }
     }
 

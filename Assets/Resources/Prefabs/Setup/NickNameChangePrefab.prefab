@@ -573,6 +573,7 @@ GameObject:
   - component: {fileID: 5540669766045461862}
   - component: {fileID: 3142152163480134262}
   - component: {fileID: 1825476989592214008}
+  - component: {fileID: 7353698344856752814}
   m_Layer: 5
   m_Name: NickNameInputField
   m_TagString: Untagged
@@ -737,6 +738,19 @@ MonoBehaviour:
   m_isRichTextEditingAllowed: 0
   m_LineLimit: 0
   m_InputValidator: {fileID: 0}
+--- !u!114 &7353698344856752814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6890943139510339605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc33a39070010f94fb1c2dd721c1286d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showHtmlElement: 0
 --- !u!1 &7171056519763632772
 GameObject:
   m_ObjectHideFlags: 0
@@ -843,6 +857,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nickNameInput: {fileID: 1825476989592214008}
   SubmitButton: {fileID: 5498202800402799860}
+  setupPopup: {fileID: 0}
 --- !u!1 &8056802715240110725
 GameObject:
   m_ObjectHideFlags: 0
