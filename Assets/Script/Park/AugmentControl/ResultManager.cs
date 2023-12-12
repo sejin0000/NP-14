@@ -281,8 +281,8 @@ public class ResultManager : MonoBehaviour//vs코드
                 int target= picklist[i].stat.Code;
                 //리스트에서 이름 찾아서 제거
                 int index = tempList.FindIndex(x => x.Code.Equals(target));
-                MySpecialListSocket newSocket = Instantiate(Socketprefab);
-                newSocket.transform.SetParent(ViewListContent);
+                MySpecialListSocket newSocket = Instantiate(Socketprefab);//
+                newSocket.transform.SetParent(ViewListContent,false);//월드포지션 유지하면서 스케일이 유지될수가 있음 맞았음 월드포지션펄스하니까해결됨
                 newSocket.Init(tempList[index].Name, tempList[index].func, tempList[index].Rare, tempList[index].Code);
 
                 tempList.Remove(tempList[index]);
