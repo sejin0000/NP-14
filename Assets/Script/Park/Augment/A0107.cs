@@ -33,8 +33,8 @@ public class A0107 : MonoBehaviourPun
     {
         if (!Ismove && photonView.IsMine) 
         {
-            playerStat.ATK.added += (Time.deltaTime) * 0.1f;
-            power += Time.deltaTime * 0.1f;
+            playerStat.ATK.added += (Time.deltaTime) * 1f;
+            power += Time.deltaTime * 1f;
             powerTime += Time.deltaTime;
 
         }

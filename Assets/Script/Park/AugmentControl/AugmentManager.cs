@@ -221,6 +221,19 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.AmmoMax.added += AmmoMax + 1;
     }
+    [PunRPC]
+    private void A999(int PlayerNumber)//공 체 이속 공속 정밀도  스킬 쿨타임 치명타 장탄
+    {
+        ChangePlayerStatHandler(PlayerNumber);
+        playerstatHandler.ATK.added += atk;
+        playerstatHandler.HP.added += hp;
+        playerstatHandler.Speed.added += speed;
+        playerstatHandler.AtkSpeed.added += atkspeed;
+        playerstatHandler.BulletSpread.added += bulletSpread;
+        playerstatHandler.SkillCoolTime.added += cooltime;
+        playerstatHandler.Critical.added += critical;
+        playerstatHandler.AmmoMax.added +=AmmoMax;
+    }
     #endregion
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@공용1티어
     #region ALL1
@@ -277,17 +290,17 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         targetPlayer.AddComponent<A0108>();
     }
     [PunRPC]
-    private void A109(int PlayerNumber)// 소형화 //테스트안해봄
+    private void A109(int PlayerNumber)// 소형화
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
-        float x = (targetPlayer.transform.localScale.x * 0.75f);//절반
-        float y = (targetPlayer.transform.localScale.y * 0.75f);//절반
+        float x = (targetPlayer.transform.localScale.x * 0.75f);
+        float y = (targetPlayer.transform.localScale.y * 0.75f);
         targetPlayer.transform.localScale = new Vector2(x, y);
         playerstatHandler.HP.coefficient *= 0.8f;
         playerstatHandler.Speed.coefficient *= 1.2f;
     }
     [PunRPC]
-    private void A110(int PlayerNumber)//대형화 // 테스트안해봄
+    private void A110(int PlayerNumber)//대형화 
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         float x = (targetPlayer.transform.localScale.x * 1.25f);
@@ -425,7 +438,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         //PhotonView photonView = PhotonView.Find(PlayerPvNumber);
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         targetPlayer.AddComponent<A0124>();//A0124에서 화면어둡게 하는 프리팹 만들고 스테이지시작에 ON 끝에 OFF
-        playerstatHandler.AtkSpeed.added += 15;
+        playerstatHandler.AtkSpeed.added += 1;
         playerstatHandler.ReloadCoolTime.added += 2;
     }
 
@@ -606,7 +619,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A0220>();
         A0220 drainComponent = targetPlayer.GetComponent<A0220>();
-        drainComponent.PercentUp(20);
+        drainComponent.PercentUp(5);
     }
     [PunRPC]
     private void A221(int PlayerNumber)
@@ -679,6 +692,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.LaunchVolume.coefficient *= 2;
     }
+
     #endregion
     #region Sniper1
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@스나이퍼 1티어
@@ -798,6 +812,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         targetPlayer.AddComponent<A1207>();
+        playerstatHandler.ATK.coefficient *= 1.5f;
         if (targetPlayer.GetPhotonView().IsMine) 
         {
             PlayerInputController inputController = targetPlayer.GetComponent<PlayerInputController>();
@@ -864,7 +879,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     private void A2102(int PlayerNumber) ///와다다다ㅏ다다 
     {
         ChangePlayerStatHandler(PlayerNumber);
-        playerstatHandler.AtkSpeed.coefficient *= 2;
+        playerstatHandler.AtkSpeed.coefficient *= 1.5f;
         playerstatHandler.ATK.coefficient *= 0.5f;
     }
     [PunRPC]
@@ -887,8 +902,8 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         Player1Skill skill = targetPlayer.GetComponent<Player1Skill>();
         if (skill != null) 
         {
-            skill.applicationAtkSpeed += 2f;
-            skill.applicationspeed += 2f;
+            skill.applicationAtkSpeed += 1f;
+            skill.applicationspeed += 0.5f;
         }
 
     }
@@ -958,7 +973,8 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         ChangePlayerStatHandler(PlayerNumber);
         float changePower = playerstatHandler.AmmoMax.total - 1;
         playerstatHandler.AmmoMax.added -= playerstatHandler.AmmoMax.total - 1;
-        playerstatHandler.ATK.added += changePower * 0.5f;
+        playerstatHandler.ATK.added += changePower * 3f;
+        playerstatHandler.ReloadCoolTime.added += 1f;
     }
     [PunRPC]
     private void A2302(int PlayerNumber)// 유도탄
@@ -1049,15 +1065,15 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     private void A3201(int PlayerNumber) //굴러서 장전 << 구르기 2초증가 장탄수 +3으로 재장전
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
-        playerstatHandler.RollCoolTime.added += 2f;
+        playerstatHandler.RollCoolTime.added += 1f;
         targetPlayer.AddComponent<A3201>();
     }
     [PunRPC]
-    private void A3202(int PlayerNumber)//저는 저는 펌프 액션 샷건이 싫어요최대 장탄수가 5 증가 하며 연사속도 를 얻고 공격력을 조금 잃습니다.
+    private void A3202(int PlayerNumber)//저는 저는 펌프 액션 샷건이 싫어요최대 장탄수가 5 증가 하며 연사속도 를 얻고
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         playerstatHandler.AmmoMax.added += 5;
-        playerstatHandler.AtkSpeed.coefficient *= 1.2f;
+        playerstatHandler.AtkSpeed.coefficient *= 1.1f;
     }
     [PunRPC]
     private void A3203(int PlayerNumber)//사이즈업 몸2배체력3배
@@ -1091,7 +1107,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         targetPlayer.AddComponent<A3206>();
-        playerstatHandler.SkillCoolTime.added += 5f;
+        playerstatHandler.SkillCoolTime.added += 3f;
     }
     [PunRPC]
     private void A3207(int PlayerNumber)//보호 모드
@@ -1107,7 +1123,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
     }
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@샷건 3티어
     [PunRPC]
-    private void A3301(int PlayerNumber)//총알부분 처리안함 아군 총알에 밀접한 관계가 있음 
+    private void A3301(int PlayerNumber)//
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         targetPlayer.AddComponent<A3301>();

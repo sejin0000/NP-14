@@ -27,6 +27,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     public bool CanIce;
 
     public float currentHP;                  // 현재 체력 계산
+    public float maxHP;                     
+
     private float viewAngle;                  // 시야각 (기본120도)
     private float viewDistance;               // 시야 거리 (기본 10)
 
@@ -112,7 +114,12 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
 
         spriteLibrary.spriteLibraryAsset = enemySO.enemySpriteLibrary;
         enemyBulletPrefab = enemySO.enemyBulletPrefab;
+
+
         appliedATK = enemySO.atk;
+        maxHP = enemySO.hp;
+
+        currentHP = maxHP;
 
         /*
         if (enemySO.type == EnemyType.Melee)
@@ -134,7 +141,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         originColor = spriteRenderer.color;
         //게임 오브젝트 활성화 시, 행동 트리 생성
         CreateTreeAIState();
-        currentHP = enemySO.hp;
+
         viewAngle = enemySO.viewAngle;
         viewDistance = enemySO.viewDistance;
         isLive = true;
@@ -390,7 +397,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     }
     private void GaugeUpdate()
     {
-        images_Gauge.fillAmount = (float)currentHP / enemySO.hp; //체력
+        images_Gauge.fillAmount = (float)currentHP / maxHP; //체력
     }
 
     [PunRPC]
@@ -398,8 +405,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
     {
         currentHP += damage;
 
-        if (currentHP > enemySO.hp)
-            currentHP = enemySO.hp;
+        if (currentHP > maxHP)
+            currentHP = maxHP;
 
         GaugeUpdate();
     }

@@ -17,6 +17,6 @@ public class A1101 : MonoBehaviourPun
     // Update is called once per frame
     void HitPlusDamege()
     {
-        playerStat.ATK.added += 0.01f; // 중요한 부분2
+        playerStat.ATK.added += 0.5f; // 중요한 부분2
     }
 }

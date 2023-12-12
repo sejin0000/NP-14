@@ -131,20 +131,20 @@ public class ResultManager : MonoBehaviour//vs코드
     {
         int tier = GameManager.Instance.curStage;
         int random = Random.Range(1, 12); // 현재 층수에 비례하여 티어 가중치 타겟3도 있었는데 필요없어서 지움 10-나머지 값
-        int target1 = 5;
+        int target1 = 4;
         int target2 = 3;
         int target3 = 2;
         if (tier <= 6 && tier >= 4)
         {
             target1 = 3;
-            target2 = 5;
+            target2 = 4;
             target3 = 2;
         }
         else if (tier >= 6)
         {
             target1 = 2;
             target2 = 3;
-            target3 = 5;
+            target3 = 4;
         }
         int type = 0;
         if (random <= target1)
@@ -168,7 +168,9 @@ public class ResultManager : MonoBehaviour//vs코드
     public void CallStatResult() 
     {
         int tier = RandomTier();
-        switch (tier) 
+        if (tier <= 3)
+        {
+            switch (tier)
             {
                 case 1:
                     PickStatList(stat1);
@@ -181,11 +183,20 @@ public class ResultManager : MonoBehaviour//vs코드
                 case 3:
                     PickStatList(stat3);
                     break;
-                 case 4:
-                statChance = true;
+            }
+        }
+        else 
+        {
+            int chance = Random.Range(1, 11);
+            statChance = true;
+            if (chance > 6)
+            {
+                PickSpecialList(SpecialAugment2);
+            }
+            else 
+            {
                 PickSpecialList(SpecialAugment1);
-                break;
-
+            }
         }
     }
     public void CallSpecialResult()
@@ -281,11 +292,18 @@ public class ResultManager : MonoBehaviour//vs코드
                 int target= picklist[i].stat.Code;
                 //리스트에서 이름 찾아서 제거
                 int index = tempList.FindIndex(x => x.Code.Equals(target));
-                MySpecialListSocket newSocket = Instantiate(Socketprefab);
-                newSocket.transform.SetParent(ViewListContent);
+                tempList.Remove(tempList[index]);
+                if (tempList.Count <= 2) 
+                {
+                    SpecialAugment AllStat = new SpecialAugment("All Stat",999,"힘쌔고 강한 올스탯", 3);
+                    tempList.Add(AllStat);
+                }
+
+
+                MySpecialListSocket newSocket = Instantiate(Socketprefab);//
+                newSocket.transform.SetParent(ViewListContent,false);//월드포지션 유지하면서 스케일이 유지될수가 있음 맞았음 월드포지션펄스하니까해결됨
                 newSocket.Init(tempList[index].Name, tempList[index].func, tempList[index].Rare, tempList[index].Code);
 
-                tempList.Remove(tempList[index]);
             }
             picklist[i].gameObject.SetActive(false);
             

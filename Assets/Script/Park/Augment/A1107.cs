@@ -11,7 +11,7 @@ public class A1107 : MonoBehaviourPun //ÁÖº¯Èú
 {
     float time = 0;
     List<PlayerStatHandler> colleagueList = new List<PlayerStatHandler>();
-    int healP=2;
+    int healP=4;
     public GameObject Player;
 
  
@@ -48,7 +48,7 @@ public class A1107 : MonoBehaviourPun //ÁÖº¯Èú
     private void FixedUpdate()
     {
         time += Time.deltaTime;
-        if (time >= 2f && (colleagueList.Count>=1)) 
+        if (time >= 1f && (colleagueList.Count>=1)) 
         {
             if (colleagueList.Count >= 1) 
             {
