@@ -13,6 +13,9 @@ public class Player1Skill : Skill
     private PlayerStatHandler statHandler;
     private PlayerDebuffControl debuffControl;
 
+    private Sprite skillIcon;
+    public Sprite Skillicon { get { return skillIcon; } }
+
     //디버프 클래스 안에 절반효과를 주는 열광전염이 있음 1f기준으로 설계되있기에 수정시 같이 수정바람
     public void Start()
     {
@@ -23,7 +26,7 @@ public class Player1Skill : Skill
             controller.SkillMinusEvent += SkillLinkOff;
             debuffControl= GetComponent<PlayerStatHandler>()._DebuffControl;       
         }
-        icon = Resources.Load<Sprite>("Images/CharSkill0");
+        skillIcon = icons[0]; // Soldier skill icon
     }
     public override void SkillStart()
     {
