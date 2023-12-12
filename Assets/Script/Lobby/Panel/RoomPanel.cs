@@ -84,6 +84,12 @@ public class RoomPanel : MonoBehaviourPunCallbacks
     public Button SecondPartyMember;
     public Button ThirdPartyMember;
 
+    [Header("AnnouncePopup")]
+    [SerializeField] private GameObject RoomAnnouncePopup;
+    [SerializeField] private TextMeshProUGUI Room_KeyText;
+    [SerializeField] private TextMeshProUGUI Room_AnnouncementText;
+
+
     [HideInInspector]
     private string askReadyProp;
     private Dictionary<int, GameObject> _playerPartyDict;
@@ -137,7 +143,7 @@ public class RoomPanel : MonoBehaviourPunCallbacks
     }
     public void Start()
     {
-
+        GetButtonEventTrigger();
         // DESC : 버튼 연결
         ReadyButton.onClick.AddListener(OnReadyButtonClicked);
         StartButton.onClick.AddListener(OnStartButtonClicked);
@@ -168,7 +174,7 @@ public class RoomPanel : MonoBehaviourPunCallbacks
             entryEnter.callback.AddListener(
                 (data) =>
                 {
-
+                    ActivateRoomPopup(button);
                 });
 
             EventTrigger.Entry entryExit = new EventTrigger.Entry();
@@ -176,7 +182,7 @@ public class RoomPanel : MonoBehaviourPunCallbacks
             entryExit.callback.AddListener(
                 (data) =>
                 {
-
+                    DeActivateRoomPopup();
                 });
 
             buttonEvent.triggers.Add(entryEnter);
@@ -187,7 +193,51 @@ public class RoomPanel : MonoBehaviourPunCallbacks
 
     private void ActivateRoomPopup(Button button)
     {
+        if (!button.gameObject.activeSelf)
+        {
+            return;
+        }
 
+        RoomAnnouncePopup.SetActive(true);
+        var RARect = RoomAnnouncePopup.GetComponent<RectTransform>();
+
+        if (button == FirstPartyMember)
+        {
+            //-443
+            RARect.localPosition = new Vector2(-443, 216);
+            SetMemberAnnounce(button.GetComponent<PartyMemberButton>().IsClicked);
+        }
+        else if (button == SecondPartyMember)
+        {
+            //-244
+            RARect.localPosition = new Vector2(-244, 216);
+            SetMemberAnnounce(button.GetComponent<PartyMemberButton>().IsClicked);
+        }
+        else if (button == ThirdPartyMember)
+        {
+            //-6
+            RARect.localPosition = new Vector2(-6, 216);
+            SetMemberAnnounce(button.GetComponent<PartyMemberButton>().IsClicked);
+        }
+    }
+
+    private void DeActivateRoomPopup()
+    {
+        RoomAnnouncePopup.SetActive(false);
+    }
+
+    private void SetMemberAnnounce(bool isClicked)
+    {
+        if (isClicked)
+        {
+            Room_KeyText.text = "- 슬롯 열기 - ";
+            Room_AnnouncementText.text = "파티원을 추가로 모집하려면 클릭하세요.";
+        }
+        else
+        {
+            Room_KeyText.text = "- 슬롯 닫기 - ";
+            Room_AnnouncementText.text = "파티원의 수를 제한하려면 클릭하세요.";
+        }
     }
 
     public void ActivateChatMode()
