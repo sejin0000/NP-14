@@ -31,7 +31,7 @@ public class A0208 : MonoBehaviourPun//피해를 입지않은 시간이 길어질수록 강해집�
 
     void HitDAHit()
     {
-        playerStat.AtkSpeed.added -= power;
+        playerStat.ATK.added -= power;
         power = 0;
     }
 
