@@ -26,7 +26,7 @@ public class Player2Skill : Skill
             isLink = true;
             controller.SkillMinusEvent += SkillLinkOff;
         }
-        icon = Resources.Load<Sprite>("Images/CharSkill1");
+        skillIcon = icons[1]; // Shotgun skill icon
 
     }
     public override void SkillStart()
