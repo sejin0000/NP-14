@@ -30,6 +30,11 @@ public class MainGameCamera : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        ChangeTarget();
+    }
+
     void FixedUpdate()
     {        
         if (Target == null)
@@ -39,8 +44,8 @@ public class MainGameCamera : MonoBehaviour
         }
         if (Target.GetComponent<PlayerStatHandler>().isDie)
         {
-            ChangeTarget();
-            DiedAfterTarget();
+            //ChangeTarget();
+            //DiedAfterTarget();
             TargetPos = OtherTargetPos;
         }
         else
@@ -70,8 +75,10 @@ public class MainGameCamera : MonoBehaviour
 
     public void ChangeTarget()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        //여따 타겟 포스 업데이트
+        if (Input.GetKeyDown(KeyCode.Q))
         {
+            Debug.Log("사망 시점 전환됨");
             var playerInfoDictionary = GameManager.Instance.playerInfoDictionary;
             foreach (var viewID in playerInfoDictionary.Keys)
             {
