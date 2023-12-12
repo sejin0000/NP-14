@@ -62,7 +62,7 @@ public class MainGameCamera : MonoBehaviour
         {
             if (viewID != GameManager.Instance.clientPlayer.gameObject.GetPhotonView().ViewID)
             {
-                OtherTargetPos = playerInfoDictionary[viewID].position;
+                OtherTargetPos = new Vector3(playerInfoDictionary[viewID].position.x, playerInfoDictionary[viewID].position.y, -10f);
                 OtherTargetViewID = viewID;
             }
         }
@@ -78,7 +78,7 @@ public class MainGameCamera : MonoBehaviour
                 if (viewID != GameManager.Instance.clientPlayer.gameObject.GetPhotonView().ViewID
                     && viewID != OtherTargetViewID)
                 {
-                    OtherTargetPos = playerInfoDictionary[viewID].position;
+                    OtherTargetPos = new Vector3(playerInfoDictionary[viewID].position.x, playerInfoDictionary[viewID].position.y, -10f);
                 }
             }
         }
