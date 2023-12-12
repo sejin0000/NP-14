@@ -104,6 +104,7 @@ public class MonsterSpawner : MonoBehaviourPun
 
         float result = (float)Math.Pow(baseNumber, exponent);
         _enemyAI.currentHP *= result;
+        _enemyAI.maxHP *= result;
         _enemyAI.appliedATK += exponent;
     }
 
