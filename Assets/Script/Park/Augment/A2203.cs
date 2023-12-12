@@ -13,7 +13,7 @@ public class A2203 : MonoBehaviour
     private void Awake()
     {
         target= new List<PlayerStatHandler>();
-        healP = 2;
+        healP = 4;
         maxtime = 5;
         stack = 0;
     }

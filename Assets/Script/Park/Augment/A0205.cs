@@ -30,7 +30,7 @@ public class A0205 : MonoBehaviourPun//퍼플방전 첫공업
     {
         if (ready) 
         {
-            nowPower = playerStat.ATK.total;
+            nowPower = playerStat.ATK.total * 0.5f;
             playerStat.ATK.added += nowPower;
             oldPower = nowPower;
             ready = false;

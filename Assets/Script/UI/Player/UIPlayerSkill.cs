@@ -60,13 +60,13 @@ public class UIPlayerSkill : UIBase, ICommonUI
             default:
                 break;
             case 0:
-                skillIcon.sprite = GameManager.Instance.clientPlayer.GetComponent<Player1Skill>().Icon;
+                skillIcon.sprite = GameManager.Instance.clientPlayer.GetComponent<Player1Skill>().Skillicon;
                 break;
             case 1:
-                skillIcon.sprite = GameManager.Instance.clientPlayer.GetComponent<Player2Skill>().Icon;
+                skillIcon.sprite = GameManager.Instance.clientPlayer.GetComponent<Player2Skill>().Skillicon;
                 break;
             case 2:
-                skillIcon.sprite = GameManager.Instance.clientPlayer.GetComponent<Player3Skill>().Icon;
+                skillIcon.sprite = GameManager.Instance.clientPlayer.GetComponent<Player3Skill>().Skillicon;
                 break;
         }
     }

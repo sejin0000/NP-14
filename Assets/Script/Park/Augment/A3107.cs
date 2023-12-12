@@ -9,7 +9,7 @@ public class A3107 : MonoBehaviourPun
 {
     // Start is called before the first frame update
     int objSize;// 돌아가는 투사체 갯수
-    public float circleR=1f; //반지름
+    public float circleR=1.5f; //반지름
     public float deg; //각도
     public float objSpeed= 120f; //원운동 속도
     public GameObject[] target;
@@ -21,7 +21,7 @@ public class A3107 : MonoBehaviourPun
     {
         objSize = target.Length;
         transform.localPosition = Vector3.zero;
-        objSpeed = 120f;
+        objSpeed = 160f;
     }
     public void Init(GameObject pl)
     {

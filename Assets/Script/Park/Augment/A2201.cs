@@ -20,6 +20,6 @@ public class A2201 : MonoBehaviourPun
     }
     void RollingCoolTime()
     {
-        playerCool.curRollCool -= 0.5f;
+        playerCool.curRollCool -= 0.25f;
     }
 }

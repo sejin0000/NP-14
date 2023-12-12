@@ -119,7 +119,7 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
 
         for (var i = 0; i < data.Count; i++)
         {
-            SpecialAugment a = new SpecialAugment();
+            SpecialAugment a = new SpecialAugment((string)data[i]["Name"], (int)data[i]["Code"],(string)data[i]["Func"],(int)data[i]["Rare"]);
             a.Name = (string)data[i]["Name"];
             a.func = (string)data[i]["Func"];
             a.Code = (int)data[i]["Code"];
