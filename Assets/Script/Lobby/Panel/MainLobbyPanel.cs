@@ -32,6 +32,11 @@ public class MainLobbyPanel : MonoBehaviourPun
 
     [Header("SetupPopup")]
     [SerializeField] public GameObject SetupPopup;
+
+    [Header("MLAnnouncePopup")]
+    [SerializeField] private GameObject MLAnnouncePopup;
+    [SerializeField] private TextMeshProUGUI ML_KeyText;
+    [SerializeField] private TextMeshProUGUI ML_AnnounceText;
     //
 
     public TextMeshProUGUI Gold; // TODO : 뒤끝베이스에 골드량 추가 예정
@@ -92,11 +97,21 @@ public class MainLobbyPanel : MonoBehaviourPun
 
             EventTrigger.Entry entryEnter = new EventTrigger.Entry();
             entryEnter.eventID = EventTriggerType.PointerEnter;
-            entryEnter.callback.AddListener((data) => { selectedMark.SetActive(true); });
+            entryEnter.callback.AddListener(
+                (data) => 
+                { 
+                    selectedMark.SetActive(true);
+                    ActivateMLPopup(button);
+                });
 
             EventTrigger.Entry entryExit = new EventTrigger.Entry();
             entryExit.eventID = EventTriggerType.PointerExit;
-            entryExit.callback.AddListener((data) => { selectedMark.SetActive(false); });
+            entryExit.callback.AddListener(
+                (data) => 
+                { 
+                    selectedMark.SetActive(false);
+                    DeActivateMLPopup(button);
+                });
 
             buttonEvent.triggers.Add(entryEnter);
             buttonEvent.triggers.Add(entryExit);
@@ -104,7 +119,36 @@ public class MainLobbyPanel : MonoBehaviourPun
         }
     }
 
-    
+    private void ActivateMLPopup(Button button)
+    {
+         MLAnnouncePopup.SetActive(true);
+        var buttonRect = button.GetComponent<RectTransform>();
+        var MLRect = MLAnnouncePopup.GetComponent<RectTransform>();
+        var MLRectLocalPosY = buttonRect.localPosition.y;
+        var MLRectHeight = buttonRect.sizeDelta.y;
+        MLRect.localPosition = new Vector2(-144, MLRectLocalPosY - MLRectHeight);
+
+        if (button == findRoomButton)
+        {
+            ML_KeyText.text = "- 방 찾기 -";
+            ML_AnnounceText.text = "직접 방을 만들거나, 구할 수 있습니다.";
+        }
+        else if (button == quickStartButton)
+        {
+            ML_KeyText.text = "- 빠른 시작 -";
+            ML_AnnounceText.text = "랜덤한 플레이어와 매칭합니다.";
+        }
+        else
+        {
+            ML_KeyText.text = "- 설정 -";
+            ML_AnnounceText.text = " 소리 및 계정, 게임 종료를 할 수 있습니다.";
+        }
+    }
+
+    private void DeActivateMLPopup(Button button)
+    {
+        MLAnnouncePopup.SetActive(false);
+    }
 
     #region Buttons
     private void OnQuickStartButtonClicked()
