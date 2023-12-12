@@ -6,7 +6,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
@@ -20,6 +22,7 @@ public class RoomPanel : MonoBehaviourPunCallbacks
     [SerializeField] public Button StartButton;
     [SerializeField] private Button BackButton;
     [SerializeField] private Button characterSelectButton;
+    private List<Button> ButtonList;
 
     [Header("Chat")]
     public TMP_InputField ChatInputField;
@@ -90,6 +93,13 @@ public class RoomPanel : MonoBehaviourPunCallbacks
     {
         askReadyProp = CustomProperyDefined.ASK_READY_PROPERTY;
         ChatLog = Resources.Load<GameObject>(PrefabPathes.CHATLOG_PREFAB_PATH);
+        ButtonList = new List<Button>
+        {
+            FirstPartyMember,
+            SecondPartyMember,
+            ThirdPartyMember,
+            ReadyButton,
+        };
     }
 
     public void OnEnable()
@@ -142,6 +152,42 @@ public class RoomPanel : MonoBehaviourPunCallbacks
         {
             ActivateChatMode();
         }
+    }
+
+    private void GetButtonEventTrigger()
+    {
+        foreach (Button button in ButtonList)
+        {
+            button.AddComponent<EventTrigger>();
+            var buttonEvent = button.GetComponent<EventTrigger>();
+
+
+
+            EventTrigger.Entry entryEnter = new EventTrigger.Entry();
+            entryEnter.eventID = EventTriggerType.PointerEnter;
+            entryEnter.callback.AddListener(
+                (data) =>
+                {
+
+                });
+
+            EventTrigger.Entry entryExit = new EventTrigger.Entry();
+            entryExit.eventID = EventTriggerType.PointerExit;
+            entryExit.callback.AddListener(
+                (data) =>
+                {
+
+                });
+
+            buttonEvent.triggers.Add(entryEnter);
+            buttonEvent.triggers.Add(entryExit);
+
+        }
+    }
+
+    private void ActivateRoomPopup(Button button)
+    {
+
     }
 
     public void ActivateChatMode()
