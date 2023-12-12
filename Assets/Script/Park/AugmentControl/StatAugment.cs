@@ -28,4 +28,8 @@ public class SpecialAugment : IAugment
         this.func = func;
         Rare = rare;
     }
+    public SpecialAugment() 
+    {
+
+    }
 }
