@@ -73,6 +73,11 @@ public class MainGameCamera : MonoBehaviour
         }
     }
 
+    public void UpdateDiedView()
+    {
+
+    }
+
     public void ChangeTarget()
     {
         //여따 타겟 포스 업데이트
@@ -86,6 +91,7 @@ public class MainGameCamera : MonoBehaviour
                     && viewID != OtherTargetViewID)
                 {
                     OtherTargetPos = new Vector3(playerInfoDictionary[viewID].position.x, playerInfoDictionary[viewID].position.y, -10f);
+                    OtherTargetViewID = viewID;
                 }
             }
         }
