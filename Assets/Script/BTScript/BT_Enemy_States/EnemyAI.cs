@@ -518,8 +518,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             leftBoundary = -leftBoundary;
         }
 
-        Debug.DrawRay(transform.position, rightBoundary * viewDistance, Color.yellow);
-        Debug.DrawRay(transform.position, leftBoundary * viewDistance, Color.yellow);
+        //Debug.DrawRay(transform.position, rightBoundary * viewDistance, Color.yellow);
+       // Debug.DrawRay(transform.position, leftBoundary * viewDistance, Color.yellow);
 
         FindPlayer(rightBoundary, leftBoundary);
     }
@@ -542,8 +542,8 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
         Vector2 rightBoundary = Quaternion.Euler(0, 0,-viewAngle * 0.5f) * directionToTarget;
         Vector2 leftBoundary = Quaternion.Euler(0, 0, viewAngle * 0.5f) * directionToTarget;
 
-        Debug.DrawRay(transform.position, rightBoundary * viewDistance, Color.black);
-        Debug.DrawRay(transform.position, leftBoundary * viewDistance, Color.black);
+       // Debug.DrawRay(transform.position, rightBoundary * viewDistance, Color.black);
+       // Debug.DrawRay(transform.position, leftBoundary * viewDistance, Color.black);
 
         FindPlayer(rightBoundary, leftBoundary);
     }
@@ -575,7 +575,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
                 {
                     isChase = true;
                     Target = PlayersTransform[i];  // 시야각 안에 있는 플레이어로 currentTargetPlayer 설정
-                    Debug.DrawRay(transform.position, directionToPlayer * viewDistance, Color.red);
+                    //Debug.DrawRay(transform.position, directionToPlayer * viewDistance, Color.red);
                     Debug.Log($"타겟 수집{Target}");
                     break;
                 }

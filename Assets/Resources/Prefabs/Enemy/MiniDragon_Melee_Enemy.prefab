@@ -627,6 +627,7 @@ MonoBehaviour:
   CanWater: 0
   CanIce: 0
   currentHP: 0
+  maxHP: 0
   roomNum: 0
   enemySO: {fileID: 11400000, guid: 92a5293b29bd74c4b9d82802290b70d7, type: 2}
   appliedATK: 0
