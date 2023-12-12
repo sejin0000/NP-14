@@ -36,6 +36,11 @@ public class MonsterSpawner : MonoBehaviourPun
             {
                 spawnNum += 2;
             }
+            if (playerCount == 1
+                && GameManager.Instance.curStage > 3)
+            {
+                spawnNum += 2;
+            }
             for (int j = 0; j < spawnNum; j++)// 스분대원 수만큼 순회
             {
                 //Debug.Log("몬스터 생성");
