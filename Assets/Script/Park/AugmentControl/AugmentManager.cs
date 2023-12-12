@@ -221,6 +221,19 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.AmmoMax.added += AmmoMax + 1;
     }
+    [PunRPC]
+    private void A999(int PlayerNumber)//공 체 이속 공속 정밀도  스킬 쿨타임 치명타 장탄
+    {
+        ChangePlayerStatHandler(PlayerNumber);
+        playerstatHandler.ATK.added += atk;
+        playerstatHandler.HP.added += hp;
+        playerstatHandler.Speed.added += speed;
+        playerstatHandler.AtkSpeed.added += atkspeed;
+        playerstatHandler.BulletSpread.added += bulletSpread;
+        playerstatHandler.SkillCoolTime.added += cooltime;
+        playerstatHandler.Critical.added += critical;
+        playerstatHandler.AmmoMax.added +=AmmoMax;
+    }
     #endregion
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@공용1티어
     #region ALL1
@@ -679,6 +692,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         ChangePlayerStatHandler(PlayerNumber);
         playerstatHandler.LaunchVolume.coefficient *= 2;
     }
+
     #endregion
     #region Sniper1
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@스나이퍼 1티어

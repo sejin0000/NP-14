@@ -21,4 +21,11 @@ public class SpecialAugment : IAugment
     public int Code { get; set; }
     public string func { get; set; }
     public int Rare { get; set; }
+    public SpecialAugment(string name, int code, string func, int rare)
+    {
+        Name = name;
+        Code = code;
+        this.func = func;
+        Rare = rare;
+    }
 }
