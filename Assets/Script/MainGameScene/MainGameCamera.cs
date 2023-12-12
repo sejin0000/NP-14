@@ -18,10 +18,14 @@ public class MainGameCamera : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("MainGameCamera - Start");
-        if(MainGameManager.Instance != null)
+        SetInitialTarget();
+    }
+
+    private void SetInitialTarget()
+    {
+        if (MainGameManager.Instance != null)
         {
-            Target = MainGameManager.Instance.InstantiatedPlayer;             
+            Target = MainGameManager.Instance.InstantiatedPlayer;
         }
         else
         {
@@ -45,7 +49,7 @@ public class MainGameCamera : MonoBehaviour
         if (Target.GetComponent<PlayerStatHandler>().isDie)
         {
             //ChangeTarget();
-            //DiedAfterTarget();
+            UpdateDiedView();
             TargetPos = OtherTargetPos;
         }
         else
@@ -60,39 +64,45 @@ public class MainGameCamera : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, TargetPos, Time.deltaTime * CameraSpeed);
     }
 
-    public void DiedAfterTarget()
+
+    public void UpdateDiedView()
     {
         var playerInfoDictionary = GameManager.Instance.playerInfoDictionary;
         foreach (var viewID in playerInfoDictionary.Keys)
         {
             if (viewID != GameManager.Instance.clientPlayer.gameObject.GetPhotonView().ViewID)
             {
-                OtherTargetPos = new Vector3(playerInfoDictionary[viewID].position.x, playerInfoDictionary[viewID].position.y, -10f);
+                OtherTargetPos = new Vector3(playerInfoDictionary[viewID].position.x, playerInfoDictionary[viewID].position.y, offsetZ);
                 OtherTargetViewID = viewID;
+                break; // 첫 번째 다른 플레이어만 선택하도록 변경
             }
         }
     }
 
-    public void UpdateDiedView()
-    {
-
-    }
-
     public void ChangeTarget()
     {
+            var playerInfoDictionary = GameManager.Instance.playerInfoDictionary;
+
         //여따 타겟 포스 업데이트
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            Debug.Log("사망 시점 전환됨");
-            var playerInfoDictionary = GameManager.Instance.playerInfoDictionary;
+            bool foundNewTarget = false;
             foreach (var viewID in playerInfoDictionary.Keys)
             {
                 if (viewID != GameManager.Instance.clientPlayer.gameObject.GetPhotonView().ViewID
                     && viewID != OtherTargetViewID)
                 {
-                    OtherTargetPos = new Vector3(playerInfoDictionary[viewID].position.x, playerInfoDictionary[viewID].position.y, -10f);
+                    OtherTargetPos = new Vector3(playerInfoDictionary[viewID].position.x, playerInfoDictionary[viewID].position.y, offsetZ);
                     OtherTargetViewID = viewID;
+                    foundNewTarget = true;
+                    break; // 첫 번째 다른 플레이어만 선택하도록 변경
                 }
+            }
+
+            // Q 입력 시 다른 플레이어를 찾지 못한 경우 초기 타겟
+            if (!foundNewTarget)
+            {
+                SetInitialTarget();
             }
         }
     }
