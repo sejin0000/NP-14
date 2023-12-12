@@ -22,6 +22,6 @@ public class A0106 : MonoBehaviourPun
     // Update is called once per frame
     void DrainPower()
     {
-        playerStat.ATK.added += 0.05f;
+        playerStat.ATK.added += 1f;
     }
 }

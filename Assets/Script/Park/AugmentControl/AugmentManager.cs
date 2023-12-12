@@ -277,17 +277,17 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         targetPlayer.AddComponent<A0108>();
     }
     [PunRPC]
-    private void A109(int PlayerNumber)// 소형화 //테스트안해봄
+    private void A109(int PlayerNumber)// 소형화
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
-        float x = (targetPlayer.transform.localScale.x * 0.75f);//절반
-        float y = (targetPlayer.transform.localScale.y * 0.75f);//절반
+        float x = (targetPlayer.transform.localScale.x * 0.75f);
+        float y = (targetPlayer.transform.localScale.y * 0.75f);
         targetPlayer.transform.localScale = new Vector2(x, y);
         playerstatHandler.HP.coefficient *= 0.8f;
         playerstatHandler.Speed.coefficient *= 1.2f;
     }
     [PunRPC]
-    private void A110(int PlayerNumber)//대형화 // 테스트안해봄
+    private void A110(int PlayerNumber)//대형화 
     {
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         float x = (targetPlayer.transform.localScale.x * 1.25f);
@@ -425,7 +425,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         //PhotonView photonView = PhotonView.Find(PlayerPvNumber);
         ChangePlayerAndPlayerStatHandler(PlayerNumber);
         targetPlayer.AddComponent<A0124>();//A0124에서 화면어둡게 하는 프리팹 만들고 스테이지시작에 ON 끝에 OFF
-        playerstatHandler.AtkSpeed.added += 15;
+        playerstatHandler.AtkSpeed.added += 1;
         playerstatHandler.ReloadCoolTime.added += 2;
     }
 
@@ -606,7 +606,7 @@ public class AugmentManager : MonoBehaviourPunCallbacks //실질적으로 증강
         ChangeOnlyPlayer(PlayerNumber);
         targetPlayer.AddComponent<A0220>();
         A0220 drainComponent = targetPlayer.GetComponent<A0220>();
-        drainComponent.PercentUp(20);
+        drainComponent.PercentUp(5);
     }
     [PunRPC]
     private void A221(int PlayerNumber)

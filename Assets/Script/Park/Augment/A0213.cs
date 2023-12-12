@@ -33,7 +33,7 @@ public class A0213 : MonoBehaviourPun
             playerStat.AtkSpeed.added -= 0.5f;
             playerStat.BulletSpread.added -= 5f;
             playerStat.SkillCoolTime.added -= 2f;
-            playerStat.Critical.added -= 20f;
+            playerStat.Critical.added -= 40f;
         }
         statupdesuka=false;
     }
@@ -48,7 +48,7 @@ public class A0213 : MonoBehaviourPun
             playerStat.AtkSpeed.added += 0.5f;
             playerStat.BulletSpread.added += 5f;
             playerStat.SkillCoolTime.added += 2f;
-            playerStat.Critical.added += 20f;
+            playerStat.Critical.added += 40f;
         }
     }
 }

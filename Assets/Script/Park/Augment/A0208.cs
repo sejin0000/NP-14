@@ -14,6 +14,8 @@ public class A0208 : MonoBehaviourPun//피해를 입지않은 시간이 길어질수록 강해집�
         {
             playerStat = GetComponent<PlayerStatHandler>();
             playerStat.HitEvent += HitDAHit;
+            GameManager.Instance.OnStageStartEvent += HitDAHit;
+            GameManager.Instance.OnBossStageStartEvent += HitDAHit;
             power = 0;
         }
     }
@@ -21,8 +23,8 @@ public class A0208 : MonoBehaviourPun//피해를 입지않은 시간이 길어질수록 강해집�
     {
         if (photonView.IsMine)
         {
-            playerStat.ATK.added += (Time.deltaTime) * 0.3f;
-            power += Time.deltaTime * 0.3f;
+            playerStat.ATK.added += (Time.deltaTime) * 1f;
+            power += Time.deltaTime * 1f;
         }
 
     }
