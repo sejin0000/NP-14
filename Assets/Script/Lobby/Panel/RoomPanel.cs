@@ -6,7 +6,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
@@ -20,6 +22,7 @@ public class RoomPanel : MonoBehaviourPunCallbacks
     [SerializeField] public Button StartButton;
     [SerializeField] private Button BackButton;
     [SerializeField] private Button characterSelectButton;
+    private List<Button> ButtonList;
 
     [Header("Chat")]
     public TMP_InputField ChatInputField;
@@ -81,6 +84,12 @@ public class RoomPanel : MonoBehaviourPunCallbacks
     public Button SecondPartyMember;
     public Button ThirdPartyMember;
 
+    [Header("AnnouncePopup")]
+    [SerializeField] private GameObject RoomAnnouncePopup;
+    [SerializeField] private TextMeshProUGUI Room_KeyText;
+    [SerializeField] private TextMeshProUGUI Room_AnnouncementText;
+
+
     [HideInInspector]
     private string askReadyProp;
     private Dictionary<int, GameObject> _playerPartyDict;
@@ -90,6 +99,13 @@ public class RoomPanel : MonoBehaviourPunCallbacks
     {
         askReadyProp = CustomProperyDefined.ASK_READY_PROPERTY;
         ChatLog = Resources.Load<GameObject>(PrefabPathes.CHATLOG_PREFAB_PATH);
+        ButtonList = new List<Button>
+        {
+            FirstPartyMember,
+            SecondPartyMember,
+            ThirdPartyMember,
+            ReadyButton,
+        };
     }
 
     public void OnEnable()
@@ -127,7 +143,7 @@ public class RoomPanel : MonoBehaviourPunCallbacks
     }
     public void Start()
     {
-
+        GetButtonEventTrigger();
         // DESC : 버튼 연결
         ReadyButton.onClick.AddListener(OnReadyButtonClicked);
         StartButton.onClick.AddListener(OnStartButtonClicked);
@@ -141,6 +157,86 @@ public class RoomPanel : MonoBehaviourPunCallbacks
         if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
         {
             ActivateChatMode();
+        }
+    }
+
+    private void GetButtonEventTrigger()
+    {
+        foreach (Button button in ButtonList)
+        {
+            button.AddComponent<EventTrigger>();
+            var buttonEvent = button.GetComponent<EventTrigger>();
+
+
+
+            EventTrigger.Entry entryEnter = new EventTrigger.Entry();
+            entryEnter.eventID = EventTriggerType.PointerEnter;
+            entryEnter.callback.AddListener(
+                (data) =>
+                {
+                    ActivateRoomPopup(button);
+                });
+
+            EventTrigger.Entry entryExit = new EventTrigger.Entry();
+            entryExit.eventID = EventTriggerType.PointerExit;
+            entryExit.callback.AddListener(
+                (data) =>
+                {
+                    DeActivateRoomPopup();
+                });
+
+            buttonEvent.triggers.Add(entryEnter);
+            buttonEvent.triggers.Add(entryExit);
+
+        }
+    }
+
+    private void ActivateRoomPopup(Button button)
+    {
+        if (!button.gameObject.activeSelf)
+        {
+            return;
+        }
+
+        RoomAnnouncePopup.SetActive(true);
+        var RARect = RoomAnnouncePopup.GetComponent<RectTransform>();
+
+        if (button == FirstPartyMember)
+        {
+            //-443
+            RARect.localPosition = new Vector2(-443, 216);
+            SetMemberAnnounce(button.GetComponent<PartyMemberButton>().IsClicked);
+        }
+        else if (button == SecondPartyMember)
+        {
+            //-244
+            RARect.localPosition = new Vector2(-244, 216);
+            SetMemberAnnounce(button.GetComponent<PartyMemberButton>().IsClicked);
+        }
+        else if (button == ThirdPartyMember)
+        {
+            //-6
+            RARect.localPosition = new Vector2(-6, 216);
+            SetMemberAnnounce(button.GetComponent<PartyMemberButton>().IsClicked);
+        }
+    }
+
+    private void DeActivateRoomPopup()
+    {
+        RoomAnnouncePopup.SetActive(false);
+    }
+
+    private void SetMemberAnnounce(bool isClicked)
+    {
+        if (isClicked)
+        {
+            Room_KeyText.text = "- 슬롯 열기 - ";
+            Room_AnnouncementText.text = "파티원을 추가로 모집하려면 클릭하세요.";
+        }
+        else
+        {
+            Room_KeyText.text = "- 슬롯 닫기 - ";
+            Room_AnnouncementText.text = "파티원의 수를 제한하려면 클릭하세요.";
         }
     }
 
