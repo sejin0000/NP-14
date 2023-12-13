@@ -400,9 +400,9 @@
 |UIPlayerMiniHUD|플레이어의 머리 위에 표시되는 MiniHUD를 관리한다.|[UIPlayerMiniHUD.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/UI/Player/UIPlayerMiniHUD.cs)||
 |UIPlayerMiniHP|플레이어의 머리 위에 표시되는 체력 게이지를 관리한다.|[UIPlayerMiniHP.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/UI/Player/UIPlayerMiniHP.cs)||
 |UIReloadHUD|플레이어의 머리 위에 표시되는 재장전 게이지를 관리한다.|[UIReloadHUD.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/UI/Player/UIReloadHUD.cs)||
-|SetupPopupPrefab|환경설정 UI를 표시한다. |||
-|GameClearPanel|게임오버, 클리어 시 해당 UI를 표시한다.|||
-|LoadingPanel|다른 화면으로 이동할 때(로딩 시) 표시한다.|||
+|SetupPopupPrefab|환경설정 UI를 표시한다. |[SetupPopup.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/Setup/SetupPopup.cs)||
+|GameClearPanel|게임오버, 클리어 시 해당 UI를 표시한다.|[GameClearPanel.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/MainGameScene/UI/GameClearPanel.cs)||
+|LoadingPanel|다른 화면으로 이동할 때(로딩 시) 표시한다.|[LoadingPanel.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/Lobby/Panel/LoadingPanel.cs)||
 |Minimap|인 게임에서 표시되는 미니맵 관련 UI입니다.|||
 
 
@@ -413,7 +413,7 @@
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|ParticleManager|파티클 오브젝트를 특정 좌표(Vector3)에 표시한다.|[ParticleManager.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/Manager/ParticleManager.cs)||
+|ParticleManager|파티클 오브젝트를 캐싱하여 관리한다.|[ParticleManager.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/Manager/ParticleManager.cs)||
 |PlayEffectLocal|파티클 오브젝트를 특정 좌표(Vector3)에 로컬 플레이어에게 표시한다.||[PlayEffectLocal](https://github.com/sejin0000/NP-14/blob/79ebeacfed23a3de591d273c01396b0c271cd740/Assets/Script/Manager/ParticleManager.cs#L41C8-L41C8)|
 |SendEffect|파티클 오브젝트를 특정 좌표(Vector3)에 모든 플레이어에게 표시한다.||[SendEffect](https://github.com/sejin0000/NP-14/blob/79ebeacfed23a3de591d273c01396b0c271cd740/Assets/Script/Manager/ParticleManager.cs#L91C16-L91C16)|
 
@@ -434,8 +434,8 @@
 |PlayClip|모든 플레이어에게 사운드를 출력한다.||[PlayClip](https://github.com/sejin0000/NP-14/blob/79ebeacfed23a3de591d273c01396b0c271cd740/Assets/Script/Dohyun/AudioLibrary.cs#L96C12-L96C12)|
 |AudioManagerTest|지정된 배경음/효과음을 타 객체의 이벤트에 등록한다.|AudioManagerTest.cs||
 |PlayStageBGM|지정된 배경음/효과음을 타 객체의 이벤트에 등록한다.||[PlayStageBGM](https://github.com/sejin0000/NP-14/blob/79ebeacfed23a3de591d273c01396b0c271cd740/Assets/Script/Dohyun/AudioManagerTest.cs#L32C24-L32C24)|
-|BGMPlayer|배경음을 플레이하는 오브젝트를 담아놓는 부모 오브젝트이다.|||
-|SEPlayer|효과음을 플레이하는 오브젝트를 담아놓은 부모 오브젝트이다.|||
+|BGMPlayer|배경음을 플레이하는 오브젝트를 담아놓는 부모 오브젝트이다.|GameObject||
+|SEPlayer|효과음을 플레이하는 오브젝트를 담아놓은 부모 오브젝트이다.|GameObject||
 
 <br>
 
