@@ -289,9 +289,10 @@
 |AugmentManager|증강(아이템)의 데이터 베이스로 해당 증강의 Code를 호출시 해당 효과를 플레이어에게 적용 시켜줍니다.|[AugmentManager.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/AugmentManager.cs#L11)||
 |ResultManager|옵저버 패턴을 통해 룸,스테이지 클리어시 호출 되어 플레이어는 보상을 선택 할 수 있습니다.|[ResultManager.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/ResultManager.cs#L14)||
 |GameManager|||
-|UIManager|||
-|UI_Root|||
-|ParticleManager|||
+|UIManager|UI_Root에서 사용하는 UI_Base 객체를 Initialize한다. 이때 이벤트 등록 등의 작업을 처리한다.|[UIManager.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/Manager/UIManager.cs)|
+|UI_Root|Scene에서 표시되는 Canvas 오브젝트이다.||
+|ParticleManager|특정 좌표에 파티클 오브젝트를 생성한다.|[ParticleManager.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/Manager/ParticleManager.cs)|
+|AudioManager|특정 좌표에 파티클 오브젝트를 생성한다.|[AudioManager.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/Manager/AudioManager.cs)|
 |portal|||
 |MainGameNetwork|플레이어 탈퇴 시, 로딩 패널을 노출된다.|[MainGameNetwork.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/MainGameScene/Network/MainGameNetwork.cs#L7)|
 |MinimapCamera|||
@@ -374,8 +375,13 @@
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|UIManager|해당 신에서 사용하는 UI_Base 객체를 Initialize 하는 작업을 수행|||
-|||||
+|Layer|`UIManager`에서 관리할 UI 오브젝트를 담아놓는 리스트|[UIManager.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/Manager/UIManager.cs)||
+|Initialize|Layer에 담겨있는 UI_Base 객체의 Initialize 함수를 실행한다.||[Initialize](https://github.com/sejin0000/NP-14/blob/e771c254484ecb7ef191ebf19c1a7fb79b270577/Assets/Script/Manager/UIManager.cs#L29)|
+|Open|해당 UI 오브젝트의 Active를 True로 변경한다.||[Open](https://github.com/sejin0000/NP-14/blob/e771c254484ecb7ef191ebf19c1a7fb79b270577/Assets/Script/Manager/UIManager.cs#L50C5-L50C5)|
+|Close|해당 UI 오브젝트의 Active를 False로 변경한다.||[Close](https://github.com/sejin0000/NP-14/blob/e771c254484ecb7ef191ebf19c1a7fb79b270577/Assets/Script/Manager/UIManager.cs#L60C7-L60C7)|
+|GetUIComponent|UI 매니저에 등록된 UI에서 특정 컴포넌트를 찾아서 반환한다.||[GetUIComponent](https://github.com/sejin0000/NP-14/blob/e771c254484ecb7ef191ebf19c1a7fb79b270577/Assets/Script/Manager/UIManager.cs#L84C14-L84C28)|
+|GetUIObject|UI 매니저에 등록된 UI에서 특정 이름의 오브젝트를 찾아서 반환한다.||[GetUIObject](https://github.com/sejin0000/NP-14/blob/e771c254484ecb7ef191ebf19c1a7fb79b270577/Assets/Script/Manager/UIManager.cs#L100)|
+
 
 <br>
 
@@ -384,12 +390,21 @@
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|StageTransition|스테이지가 시작될 때 탑을 오르는 연출을 담당|||
-|PlayerHUD|플레이어의 체력, 회피(구르기), 탄창을 표시|||
-|SetupPopupPrefab|환경설정, 로비로 이동 관련 UI 표시|||
-|GameClearPanel|게임오버, 클리어시 표시되는 UI입니다.|||
-|LoadingPanel|다른 화면으로 이동할 때 표시되는 UI|||
-|Minimap|인 게임에서 표시되는 미니맵 관련 UI|||
+|UIStageTransition|스테이지가 시작될 때 탑을 오르는 연출을 표시한다.|[UITransition.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/UI/Transition/UIStageTransition.cs)||
+|UIStageBlock|`UIStageTransition`에서 사용하는 블럭을 관리한다.|[UIStageBlock.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/UI/Transition/UIStageBlock.cs)||
+|UIPlayerHUD|플레이어의 체력/회피/스킬 게이지를 관리한다.|[UIPlayerHUD.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/UI/Player/UIPlayerHUD.cs)||
+|UIPlayerHP|플레이어의 체력 게이지를 관리한다.|[UIPlayerHP.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/UI/Player/UIPlayerHP.cs)||
+|UIPlayerDodge|플레이어의 회피 쿨타임 게이지를 관리한다.|[UIPlayerDodge.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/UI/Player/UIPlayerDodge.cs)||
+|UIPlayerSkill|플레이어의 스킬 쿨타임 게이지를 관리한다.|[UIPlayerSkill.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/UI/Player/UIPlayerSkill.cs)||
+|UIBulletIndicator|플레이어의 탄창을 표시한다.|[UIBulletIndicator.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/UI/Player/UIBulletIndicator.cs)||
+|UIPlayerMiniHUD|플레이어의 머리 위에 표시되는 MiniHUD를 관리한다.|[UIPlayerMiniHUD.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/UI/Player/UIPlayerMiniHUD.cs)||
+|UIPlayerMiniHP|플레이어의 머리 위에 표시되는 체력 게이지를 관리한다.|[UIPlayerMiniHP.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/UI/Player/UIPlayerMiniHP.cs)||
+|UIReloadHUD|플레이어의 머리 위에 표시되는 재장전 게이지를 관리한다.|[UIReloadHUD.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/UI/Player/UIReloadHUD.cs)||
+|SetupPopupPrefab|환경설정 UI를 표시한다. |||
+|GameClearPanel|게임오버, 클리어 시 해당 UI를 표시한다.|||
+|LoadingPanel|다른 화면으로 이동할 때(로딩 시) 표시한다.|||
+|Minimap|인 게임에서 표시되는 미니맵 관련 UI입니다.|||
+
 
 <br>
 
@@ -398,18 +413,20 @@
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|ParticleManager|파티클을 특정 좌표(Vector3)에 표시합니다.|||
-|||||
+|ParticleManager|파티클 오브젝트를 특정 좌표(Vector3)에 표시한다.|||
 
 <br>
 
-##### 3-11. ParticleManager 
+##### 3-12. AudioManager 
 
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|ParticleManager||||
-|||||
+|AudioManager|배경음/효과음을 `Dictionary`에 등록하여 캐싱하고 출력한다.|||
+|AudioLibrary|AudioManagerTest에서 출력할 효과음을 지정한다.|AudioLibrary.cs||
+|AudioManagerTest|지정된 배경음/효과음을 타 객체의 이벤트에 등록한다.|||
+|BGMPlayer|배경음을 플레이하는 오브젝트를 담아놓는 부모 오브젝트이다.|||
+|SEPlayer|효과음을 플레이하는 오브젝트를 담아놓은 부모 오브젝트이다.|||
 
 <br>
 
