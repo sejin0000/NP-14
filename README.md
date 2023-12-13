@@ -284,19 +284,54 @@
 
 <br>
 
-### C. Enemy AI
+### C. Enemy
 
 ##### 1. 설명
 
-설명 본문 입력
+일반 몬스터 및 보스 몬스터의 Behaviour Tree, Navmesh Agent, 패턴 메서드, 동기화, 정보SO 를 관리한다.
 
 ##### 2. 상세 설명
 
 ####
 |기능 이름|기능 설명|스크립트|
 |:---:|:---:|:---:|
-|EnemyAI|||
-|Deade|||
+|EnemyAI|일반 몬스터의 행동과 스프라이트를 일괄적으로 관리한다.|[EnemyAI.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Enemy_States/EnemyAI.cs#L21)|
+|BossAI_Dragon|보스 몬스터인 용의 행동을 관리한다.|[BossAI_Dragon.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Dragon/BossAI_Dragon.cs#L32)|
+|BossAI_Turtle|보스 몬스터인 거북이의 행동을 관리한다.|[BossAI_Turtle.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Turtle/BossAI_Turtle.cs#L14C14-L14C27)|
 
+
+##### 3. 기능 별 설명
+
+##### 3-1. EnemyAI 
+
+####
+|기능 이름|기능 설명|스크립트|메서드|
+|:---:|:---:|:---:|:---:|
+|몬스터 초기화(모든 Enemy에 적용)|Navmesh Agent를 호스트만 사용하도록 제한한다. 또한 모든 플레이어의 정보를 가져온다.|[EnemyAI.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Enemy_States/EnemyAI.cs#L21)|[Awake()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Enemy_States/EnemyAI.cs#L164)|
+|몬스터 동기화(모든 Enemy에 적용)|게스트는 호스트가 보내주는 위치 정보를 통해 보간 작업만을 업데이트 한다. 몬스터의 모든 행동 실행은 호스트만 진행하도록 제한 한다.|[EnemyAI.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Enemy_States/EnemyAI.cs#L21)|[Update()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Enemy_States/EnemyAI.cs#L194)|
+|시야각|지정된 각도 내에 플레이어가 들어온다면 상태 bool값 전환과 타겟 변경을 진행한다.|[EnemyAI.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Enemy_States/EnemyAI.cs#L21)|[FindPlayer()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Enemy_States/EnemyAI.cs#L552)|
+|일반 몬스터BT|일반 몬스터의 행동 트리를 생성한다. 첫 트리이며 2개의 계층으로 구성되어 있다.|[EnemyAI.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Enemy_States/EnemyAI.cs#L21)|[CreateTreeAIState()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Enemy_States/EnemyAI.cs#L738C10-L738C29)|
+
+<br>
+
+##### 3-2. BossAI_Dragon 
+
+####
+|기능 이름|기능 설명|스크립트|메서드|
+|:---:|:---:|:---:|:---:|
+|브레스 패턴|용의 패턴인 브레스를 시작하고, 플레이어의 피격 여부를 판단한다.|[BossAI_Dragon.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Dragon/BossAI_Dragon.cs#L32)|[StartBreath()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Dragon/BossAI_Dragon.cs#L379) & [UpdateBreath()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Dragon/BossAI_Dragon.cs#L407C17-L407C29)|
+|보스 몬스터(용) BT|보스 몬스터인 용의 행동 트리를 생성한다. 두 번째 트리이며 3개의 계층으로 구성되어 있다.|[BossAI_Dragon.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Dragon/BossAI_Dragon.cs#L32)|[CreateTreeAIState()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Dragon/BossAI_Dragon.cs#L875C10-L875C27)|
+
+<br>
+
+##### 3-3. BossAI_Turtle 
+
+####
+|기능 이름|기능 설명|스크립트|메서드|
+|:---:|:---:|:---:|:---:|
+|MinimapCamera||||
+|구르기 패턴|거북이의 패턴인 구르기를 시작한다.|[BossAI_Turtle.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Turtle/BossAI_Turtle.cs#L14C14-L14C27)|[RollStart()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Turtle/BossAI_Turtle.cs#L719)|
+
+<br>
 ## 🕶 팀원 소개
 
