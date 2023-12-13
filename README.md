@@ -100,12 +100,87 @@
 ##### 2. 상세 설명
 
 ####
+|기능 이름|기능 설명|스크립트|
+|:---:|:---:|:---:|
+|LobbyManager|플레이어가 어떤 패널에 있는 지 (어떤 상태인지) 정의하고, 관련된 상태에 대한 오브젝트들을 호출한다.|[LobbyManager.cs](https://github.com/sejin0000/NP-14/blob/74c9fd910eb7af5f3fecb5874af04b7550233f83/Assets/Script/Lobby/LobbyManager.cs#L29-L31)|
+|NetworkManager|플레이어의 네트워크 상태를 통해 MonoBehaviorPuncallbacks를 상속받아, 특정 상태에서의 이벤트를 관리한다.|[NetworkManager.cs](https://github.com/sejin0000/NP-14/blob/b5465df3a705bf84b3ad18c4c8ea192d84f6eb40/Assets/Script/Lobby/NetworkManager.cs#L13)|
+|LoginPanel|시작 시, 게임 화면 및 닉네임 입력 팝업을 노출시킨다.|[LoginPanel.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Lobby/Panel/LoginPanel.cs#L12)|
+|MainLobbyPanel|설정, 빠른 시작, 방 탐색 패널을 선택하여 입장시킨다.|[MainLobbyPanel.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Lobby/Panel/MainLobbyPanel.cs#L14)|
+|RoomFindPanel|특정 이름의 방을 검색하여 참여하거나, 방을 직접 만든다.|[RoomFindPanel.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Lobby/Panel/RoomFindPanel.cs#L14)|
+|RoomPanel|방 인원 수를 조정하거나, 플레이어의 레디 여부에 따라 호스트에게 게임을 시작하게 하여 MainGameScene으로 전환한다.|[RoomPanel.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Lobby/Panel/RoomPanel.cs#L18)|
+|LoadingPanel|특정 패널간의 이동시, 노출한다.|[LoadingPanel.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Lobby/Panel/LoadingPanel.cs#L8)|
+
+<br>
+
+##### 3. 스크립트 별 설명
+
+##### 3-1. LobbyManager 
+
+####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|LobbyManager|플레이어가 어떤 패널에 있는 지 (어떤 상태인지) 정의하고, 관련된 상태에 대한 오브젝트들을 호출한다|[LobbyManager.cs](https://github.com/sejin0000/NP-14/blob/74c9fd910eb7af5f3fecb5874af04b7550233f83/Assets/Script/Lobby/LobbyManager.cs#L29-L31)||
-|SetPanel|특정 패널을 보여주고, 특정 패널의 상태임을 저장한다.|LobbyManager.cs|[SetPanel()](https://github.com/sejin0000/NP-14/blob/b5465df3a705bf84b3ad18c4c8ea192d84f6eb40/Assets/Script/Lobby/LobbyManager.cs#L206)|
-|NetworkManager|플레이어의 네트워크 상태를 통해 MonoBehaviorPuncallbacks를 상속받아, 특정 상태에서의 이벤트를 관리한다.|[NetworkManager.cs](https://github.com/sejin0000/NP-14/blob/b5465df3a705bf84b3ad18c4c8ea192d84f6eb40/Assets/Script/Lobby/NetworkManager.cs#L13)||
-|로비 입장시 이벤트|플레이어가 로비에 입장했을 때, 실행되어야 하는 코드|NetworkManager.cs|[OnJoinedLobby()](https://github.com/sejin0000/NP-14/blob/b5465df3a705bf84b3ad18c4c8ea192d84f6eb40/Assets/Script/Lobby/NetworkManager.cs#L58)|
+|패널간 이동|특정 패널을 보여주고, 특정 패널의 상태임을 저장한다.|LobbyManager.cs|[SetPanel()](https://github.com/sejin0000/NP-14/blob/b5465df3a705bf84b3ad18c4c8ea192d84f6eb40/Assets/Script/Lobby/LobbyManager.cs#L206)|
+|캐릭터 변경 팝업 추가|캐릭터 변경 팝업을 인스턴스화 함으로써, UI에 가장 마지막에 배치되게 하여, 제일 상단에 팝업이 노출되게 한다.|LobbyManager.cs|[InstantiateCharacterSelectPopup()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Lobby/LobbyManager.cs#L187)|
+
+<br>
+
+##### 3-2. NetworkManager
+####
+|기능 이름|기능 설명|스크립트|메서드|
+|:---:|:---:|:---:|:---:|
+|로비 입장 시 이벤트|플레이어가 로비에 입장했을 때, 실행되어야 하는 코드|NetworkManager.cs|[OnJoinedLobby()](https://github.com/sejin0000/NP-14/blob/b5465df3a705bf84b3ad18c4c8ea192d84f6eb40/Assets/Script/Lobby/NetworkManager.cs#L58)|
+|룸 입장 시 이벤트|플레이어가 룸에 입장했을 때, 로비매니저에서의 상태에 따라 실행되는 코드. 파티를 보여주는 파티박스를 최신화하고 , 다른 플레이어의 상태(선택한 직업)를 적용시킨다.|NetworkManager.cs|[OnJoinedRoom()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Lobby/NetworkManager.cs#L99)|
+|타 플레이어가 룸 입장 시 이벤트|다른 플레이어가 룸에 입장했을 때, 실행되는 코드. 파티를 보여주는 파티박스를 최신화하고, 레디 여부를 |NetworkManager.cs|[OnPlayerEnteredRoom()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Lobby/NetworkManager.cs#L136)|
+|룸 퇴장 시 이벤트|플레이어가 룸에서 퇴장했을 때, 로비매니저에서의 상태에 따라 실행되는 코드. 룸에서 탈퇴시킨 후, 다시 연결을 함.|NetworkManager.cs|[OnLeftRoom()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Lobby/NetworkManager.cs#L166C26-L166C38)|
+|타 플레이어가 룸 퇴장 시 이벤트|다른 플레이어가 룸에서 퇴장했을 때, 실행되는 코드. 플레이어 ActorNumber를 key, 플레이어 오브젝트를 value로 하는 딕셔너리에서 해당 플레이어를 삭제시키고, 레디 여부를 확인하는 코드를 재실행한다.|NetworkManager.cs|[OnPlayerLeftRoom()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Lobby/NetworkManager.cs#L158)|
+|룸 프로퍼티 변경 시 이벤트|룸 프로퍼티가 변경됬을 때, 해당 게임에서는 룸의 최대 인원수가 조정되었을 때, 실행되는 코드.|NetworkManager.cs|[OnRoomPropertiesUpdate()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Lobby/NetworkManager.cs#L212C26-L212C48)|
+|플레이어 프로퍼티 변경 시 이벤트|플레이어의 프로퍼티가 변경됬을 때, 해당 게임에서는 플레이어가 선택한 직업, 레디 여부가 변경되었을 때 실행되는 코드.|NetworkManager.cs|[OnPlayerPropertiesUpdate()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Lobby/NetworkManager.cs#L237)|
+
+
+<br>
+
+
+##### 3-4. LoginPanel
+
+####
+|기능 이름|기능 설명|스크립트|메서드|
+|:---:|:---:|:---:|:---:|
+|클릭 시 게임 시작|클릭 시, 닉네임 변경 팝업을 인스턴스화 시킨다.|LoginPanel.cs|[OnPointerClick()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Lobby/Panel/LoginPanel.cs#L44)|
+|닉네임 팝업 안내 문구 조정|닉네임 팝업의 상태에 따라, 알맞은 안내문구를 노출시킨다.|NickNamePopup.cs|[SetAnnouncement()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Setup/NickNamePopup.cs#L57)|
+|닉네임 체크|입력한 닉네임이 적합한지, 정규식을 통해 확인하고, 그 여부에 따라 적합한 닉네임 팝업의 상태로 전환하며, 버튼 별 기능을 연결한다.|NickNamePopup.cs|[CheckNickname()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Setup/NickNamePopup.cs#L78)|
+
+<br>
+
+##### 3-5. MainLobbyPanel 
+
+####
+|기능 이름|기능 설명|스크립트|메서드|
+|:---:|:---:|:---:|:---:|
+|MonsterSpawner||||
+|||||
+
+<br>
+
+##### 3-6. RoomFindPanel 
+
+####
+|기능 이름|기능 설명|스크립트|메서드|
+|:---:|:---:|:---:|:---:|
+|MonsterSpawner||||
+|||||
+
+<br>
+
+##### 3-1. MonsterSpawner 
+
+####
+|기능 이름|기능 설명|스크립트|메서드|
+|:---:|:---:|:---:|:---:|
+|MonsterSpawner||||
+|||||
+
+<br>
+
 
 ### B. MainGameScene
 ##### 1. 설명
