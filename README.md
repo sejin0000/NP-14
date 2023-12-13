@@ -232,9 +232,9 @@
 |MonsterSpawner|||
 |NavMesh2D|||
 |MapGenerator|||
-|MakeAugmentListManager|||
-|AugmentManager|||
-|ResultManager|||
+|MakeAugmentListManager|게임 시작시 플레이어의 정보를 받아 캐릭터(직업)의 정보를 외부 csv파일로 불러 리스트로 만들어 줍니다.|[MakeAugmentListManager](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/MakeAugmentListManager.cs#L9)||
+|AugmentManager|증강(아이템)의 데이터 베이스로 해당 증강의 Code를 호출시 해당 효과를 플레이어에게 적용 시켜줍니다.|[AugmentManager](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/AugmentManager.cs#L11)||
+|ResultManager|옵저버 패턴을 통해 룸,스테이지 클리어시 호출 되어 플레이어는 보상을 선택 할 수 있습니다.|[ResultManager](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/ResultManager.cs#L14)||
 |GameManager|||
 |UIManager|||
 |UI_Root|||
@@ -275,50 +275,38 @@
 
 <br>
 
-##### 3-4. Debuff //삭제요망
+##### 3-4. MakeAugmentListManager 
 
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|Debuff||||
+|makeList|플레이어의 정보를 받아 리스트를 만들어 주는 메서드|MakeAugmentListManager|[makeList](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/MakeAugmentListManager.cs#L71)|
+|SpecialAugmentSetting|csv파일의 이름,설명,레어도,코드를 리스트에 담아주는 메서드|MakeAugmentListManager|[SpecialAugmentSetting](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/MakeAugmentListManager.cs#L116)|
 
 <br>
 
-##### 3-5. MakeAugmentListManager 
+##### 3-5. AugmentManager 
 
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|MakeAugmentListManager|게임 시작시 플레이어의 정보를 받아 캐릭터(직업)의 정보를 외부 csv파일로 불러 리스트로 만들어 줍니다.|[MakeAugmentListManager](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/MakeAugmentListManager.cs#L9)||
-|makeList|플레이어의 정보를 받아 리스트를 만들어 주는 메서드||[makeList](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/MakeAugmentListManager.cs#L71)|
-|SpecialAugmentSetting|csv파일의 이름,설명,레어도,코드를 리스트에 담아주는 메서드||[SpecialAugmentSetting](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/MakeAugmentListManager.cs#L116)|
+|AugmentCall|ResultManager에게서 전달받은 Code를 해당 플레이어를 찾아 적용 시켜 줍니다.|AugmentManager|[AugmentCall](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/AugmentManager.cs#L49)|
+|A901|증강이 실질적으로 적용되는 코드로 함수명을 숫자로만 지을수 없기에 A + Code번호로 구성되며 900번대는스탯, 100~300번대는 공용, 1000,2000,3000번대는 각각 직업 스나이퍼, 솔져, 샷건의 증강 번호를 가지고 있습니다. |AugmentManager|[A901](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/AugmentManager.cs#L80)|
 
 <br>
 
-##### 3-6. AugmentManager 
+##### 3-6. ResultManager 
 
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|AugmentManager|증강(아이템)의 데이터 베이스로 해당 증강의 Code를 호출시 해당 효과를 플레이어에게 적용 시켜줍니다.|[AugmentManager](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/AugmentManager.cs#L11)||
-|AugmentCall|ResultManager에게서 전달받은 Code를 해당 플레이어를 찾아 적용 시켜 줍니다.||[AugmentCall](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/AugmentManager.cs#L49)|
-|A901|증강이 실질적으로 적용되는 코드로 함수명을 숫자로만 지을수 없기에 A + Code번호로 구성되며 900번대는스탯, 100~300번대는 공용, 1000,2000,3000번대는 각각 직업 스나이퍼, 솔져, 샷건의 증강 번호를 가지고 있습니다. ||[A901](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/AugmentManager.cs#L80)|
+|PickStatList|룸(게임의 작은 스테이지 단위)클리어시 일반 보상인 스탯을 고를수 있게 해줍니다.|ResultManager|[PickStatList](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/ResultManager.cs#L232)|
+|PickSpecialList|스테이지클리어시 스페셜 증강을 고를수 있게 해줍니다 일반 스탯 증강과 다르게 모든 플레이어가 다음 스테이지로 갈 준비가 끝났는지 판단하는 ready함수를 가지고 있습니다|ResultManager|[PickSpecialList](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/ResultManager.cs#L255)|
+|close|'PickStatList'와 'PickSpecialList'공용으로 사용되며 플레이어가 선택시 나온 UI의 액티브를 꺼주며 만약 스페셜 리스트였다면 중복뽑기를 방지해줍니다.|ResultManager|[close](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/ResultManager.cs#L283)|
 
 <br>
 
-##### 3-7. ResultManager 
-
-####
-|기능 이름|기능 설명|스크립트|메서드|
-|:---:|:---:|:---:|:---:|
-|ResultManager|옵저버 패턴을 통해 룸,스테이지 클리어시 호출 되어 플레이어는 보상을 선택 할 수 있습니다.|[ResultManager](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/ResultManager.cs#L14)||
-|PickStatList|룸(게임의 작은 스테이지 단위)클리어시 일반 보상인 스탯을 고를수 있게 해줍니다.||[PickStatList](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/ResultManager.cs#L232)|
-|PickSpecialList|스테이지클리어시 스페셜 증강을 고를수 있게 해줍니다 일반 스탯 증강과 다르게 모든 플레이어가 다음 스테이지로 갈 준비가 끝났는지 판단하는 ready함수를 가지고 있습니다||[PickSpecialList](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/ResultManager.cs#L255)|
-|close|'PickStatList'와 'PickSpecialList'공용으로 사용되며 플레이어가 선택시 나온 UI의 액티브를 꺼주며 만약 스페셜 리스트였다면 중복뽑기를 방지해줍니다.||[close](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/ResultManager.cs#L283)|
-
-<br>
-
-##### 3-8. GameManager 
+##### 3-7. GameManager 
 
 ####
 |기능 이름|기능 설명|스크립트|메서드|
@@ -328,7 +316,7 @@
 
 <br>
 
-##### 3-9. UIManager 
+##### 3-8. UIManager 
 
 ####
 |기능 이름|기능 설명|스크립트|메서드|
@@ -338,7 +326,7 @@
 
 <br>
 
-##### 3-10. UI_Root 
+##### 3-9. UI_Root 
 
 ####
 |기능 이름|기능 설명|스크립트|메서드|
@@ -352,7 +340,7 @@
 
 <br>
 
-##### 3-11. ParticleManager 
+##### 3-10. ParticleManager 
 
 ####
 |기능 이름|기능 설명|스크립트|메서드|
@@ -362,7 +350,7 @@
 
 <br>
 
-##### 3-12. ParticleManager 
+##### 3-11. ParticleManager 
 
 ####
 |기능 이름|기능 설명|스크립트|메서드|
@@ -372,7 +360,7 @@
 
 <br>
 
-##### 3-13. portal 
+##### 3-12. portal 
 
 ####
 |기능 이름|기능 설명|스크립트|메서드|
@@ -382,7 +370,7 @@
 
 <br>
 
-##### 3-14. MainGameNetwork 
+##### 3-13. MainGameNetwork 
 
 ####
 |기능 이름|기능 설명|스크립트|메서드|
@@ -392,7 +380,7 @@
 
 <br>
 
-##### 3-15. MinimapCamera 
+##### 3-14. MinimapCamera 
 
 ####
 |기능 이름|기능 설명|스크립트|메서드|
