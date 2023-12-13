@@ -8,6 +8,7 @@
 <br>
 
 ![표지](https://github.com/sejin0000/NP-14/assets/129154514/263949d3-2b93-43b7-ae64-90bdb822bd0b)
+![표지](https://github.com/sejin0000/NP-14/assets/129154514/1b9c6f1f-2f20-44fa-a38b-48377ddd0778)
 
 <br>
 
