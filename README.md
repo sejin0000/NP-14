@@ -41,6 +41,7 @@
 <img src="https://github.com/sejin0000/NP-14/assets/129154514/12d18575-3b46-4d52-977a-fceb3c291970">
 </p>
 <br>
+
 혹은, 메인로비 - 방 찾기로 특정한 룸에서 게임 플레이가 가능합니다.
 
 <p align="Left">
@@ -84,6 +85,7 @@
 <img src="https://github.com/sejin0000/NP-14/assets/129154514/99ba3781-df10-4e50-8cfd-3956f2197907">
 </p>
 <br>
+
 ### 5. 보스
 
 2개의 스테이지를 클리어할 때마다, 보스와 전투를 벌이는 보스 스테이지가 등장합니다.
@@ -92,6 +94,7 @@
 <img src="https://github.com/sejin0000/NP-14/assets/129154514/f18bba51-8168-4013-8849-ca179e5adaaf">
 </p>
 <br>
+
 ## 🕶 기본 조작법  
 ![KEY_Setting (1)](https://github.com/sejin0000/NP-14/assets/129154514/a3c91c15-39c7-4ac8-88b1-3998eaa92cf9)
 
