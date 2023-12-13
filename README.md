@@ -500,6 +500,3 @@
 <a href="https://github.com/sejin0000/NP-14/graphs/contributors">
 <img src = "https://contrib.rocks/image?repo=sejin0000/NP-14">
 </a>
-
-
--
