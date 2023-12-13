@@ -4,6 +4,7 @@
 
 ## 게임 설명
 로그라이크 탑 다운 슈팅 게임으로 1인에서 부터 최대 3인이 함께 즐길 수 있는 로그라이크 형식의 슈팅 게임입니다.
+![표지](https://github.com/sejin0000/NP-14/assets/129154514/d1e83a85-271f-470e-9216-5070ef49a48a)
 
 <br>
 ![표지](https://github.com/sejin0000/NP-14/assets/129154514/de293708-c6da-4bd2-a27e-01807eecd05d)
