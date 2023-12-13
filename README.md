@@ -220,7 +220,7 @@
 |UI_Root|||
 |ParticleManager|||
 |portal|||
-|MainGameNetwork|||
+|MainGameNetwork|플레이어 탈퇴 시, 로딩 패널을 노출된다.|[MainGameNetwork.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/MainGameScene/Network/MainGameNetwork.cs#L7)|
 |MinimapCamera|||
 
 ##### 3. 기능 별 설명
@@ -360,7 +360,7 @@
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|MainGameNetwork||||
+|플레이어 퇴장시 실행되는 이벤트|5초간 로딩 패널을 노출하고, LobbyScene으로 이동시킨다.|MainGameNetwork.cs|[OnPlayerLeftRoom()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/MainGameScene/Network/MainGameNetwork.cs#L12)|
 |||||
 
 <br>
