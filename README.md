@@ -300,9 +300,9 @@
 |BossAI_Turtle|보스 몬스터인 거북이의 행동을 관리한다.|[BossAI_Turtle.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Turtle/BossAI_Turtle.cs#L14C14-L14C27)|
 
 
-##### 3. 기능 별 설명
+##### 3. 스크립트 별 설명
 
-##### 3-1. EnemyAI 
+##### 3-1. EnemyAI.cs
 
 ####
 |기능 이름|기능 설명|스크립트|메서드|
@@ -314,7 +314,7 @@
 
 <br>
 
-##### 3-2. BossAI_Dragon 
+##### 3-2. BossAI_Dragon.cs
 
 ####
 |기능 이름|기능 설명|스크립트|메서드|
@@ -324,7 +324,7 @@
 
 <br>
 
-##### 3-3. BossAI_Turtle 
+##### 3-3. BossAI_Turtle.cs 
 
 ####
 |기능 이름|기능 설명|스크립트|메서드|
