@@ -5,5 +5,6 @@
 ## 기본 조작법(임시)  
 ![KEY_Setting](https://github.com/sejin0000/NP-14/assets/129154514/a9d583e8-a1ad-42f4-8a4c-5a620f6f3642)
 
-## 유의 사항
+## 트레일러
+[![Video Label](http://img.youtube.com/vi/1Tf4Kwndvs0&ab_channel=코끼리/0.jpg)](https://youtu.be/1Tf4Kwndvs0&ab_channel=코끼리)
 
