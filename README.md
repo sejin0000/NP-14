@@ -156,8 +156,13 @@
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|MonsterSpawner||||
-|||||
+|버튼 별 이벤트트리거 설정|ButtonList에 담겨 있는 버튼들에 이벤트 트리거 컴포넌트를 추가하여, 해당 버튼에 마우스가 들어왔을 시, 설명 팝업이 노출되도록 한다.|MainLobbyPanel.cs|[GetButtonEventTrigger()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Lobby/Panel/MainLobbyPanel.cs#L89)|
+|팝업 안내 문구 수정|ButtonList에 담겨 있는 버튼에 따라 안내 문구를 변경시킨다.|MainLobbyPanel.cs|[ActivateMLPopup()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Lobby/Panel/MainLobbyPanel.cs#L122)|
+|빠른 시작 버튼 입력|랜덤한 룸에 진입하거나, 룸에 입장한 플레이어가 없을 경우, 방을 생성한다.|MainLobbyPanel.cs|[OnQuickStartButtonClicked()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Lobby/Panel/MainLobbyPanel.cs#L154C18-L154C45)|
+|방 찾기 버튼 입력|방을 직접 생성하거나, 선택하여 입장할 수 있는 로비로 이동한다.|MainLobbyPanel.cs|[OnFindRoomButtonClicked()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Lobby/Panel/MainLobbyPanel.cs#L177)|
+|설정 버튼 입력|설정 팝업을 인스턴스화 한다.|MainLobbyPanel.cs|[OnSettingButtonClicked()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Lobby/Panel/MainLobbyPanel.cs#L187)|
+
+
 
 <br>
 
@@ -166,12 +171,12 @@
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|MonsterSpawner||||
-|||||
+|방 생성 버튼 입력|방을 직접 생성한다. 방 제목과, 랜덤 참여 여부를 설정할 수 있다.|RoomFindPanel.cs|[OnRoomCreateButtonClicked()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Lobby/Panel/RoomFindPanel.cs#L116)|
+|방 제목 검색|검색한 문구가 포함되어 있는 방을 검색한다.|RoomFindPanel.cs|[OnRoomSearchButtonClicked()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Lobby/Panel/RoomFindPanel.cs#L173)|
 
 <br>
 
-##### 3-1. MonsterSpawner 
+##### 3-7. MonsterSpawner 
 
 ####
 |기능 이름|기능 설명|스크립트|메서드|
