@@ -12,6 +12,8 @@
 
 
 ## 🕶 게임 설명
+
+
 로그라이크 탑 다운 슈팅 게임으로 1인에서 부터 최대 3인이 함께 즐길 수 있는 로그라이크 형식의 슈팅 게임.
 
 <br>
@@ -23,11 +25,17 @@
 ### 1. 닉네임 입력
 
 닉네임을 입력하여 로비에 입장할 수 있다.
+
+
 <p align="Left">
 <img src="https://github.com/sejin0000/NP-14/assets/129154514/c20a0af4-5f78-40bc-b6c0-6a4fd808943c">
 </p>
+
 <br>
+
 메인로비 - 설정에서 추가적으로 닉네임을 변경할 수 있다.
+
+<br>
 
 <p align="Left">
 <img src="https://github.com/sejin0000/NP-14/assets/129154514/eaa9af2d-bebc-4c0c-ab75-988896726e77">
@@ -38,12 +46,15 @@
 
 메인로비 - 빠른 시작으로 랜덤한 파티원과 게임 플레이가 가능하다.
 
+
 <p align="Left">
 <img src="https://github.com/sejin0000/NP-14/assets/129154514/12d18575-3b46-4d52-977a-fceb3c291970">
 </p>
 <br>
 
+
 혹은, 메인로비 - 방 찾기로 특정한 룸에서 게임 플레이가 가능하다.
+
 
 <p align="Left">
 <img src="https://github.com/sejin0000/NP-14/assets/129154514/2a566241-7794-4caa-91f6-5ed225922727">
@@ -53,6 +64,7 @@
 ### 3. 게임 플레이
 
 좌클릭으로 몬스터에게 총을 쏠 수 있다.
+
 
 <p align="Left">
 <img src="https://github.com/sejin0000/NP-14/assets/129154514/1b67cc00-ceb7-4e93-b911-0ad6dfa3da7d">
@@ -64,6 +76,7 @@
 #### 1. 라이플 : 일정 시간동안 공격속도 및 이동속도를 증가시킨다.
 #### 2. 샷건 : 일정 시간동안 자신 주위의 자신과 팀원을 지켜주는 쉴드를 생성한다.
 #### 3. 스나이퍼 : 힐모드와 딜모드로 상시 변경 가능. 딜모드는 일반 평타, 힐 모드는 파티원에게 공격을 적중시켰을 시, 힐을 부여한다.
+
 
 <p align="Left">
 <img src="https://github.com/sejin0000/NP-14/assets/129154514/c1a830cb-37ef-4d2b-9238-4d58bcdbba35">
@@ -79,6 +92,7 @@
 
 그 외에는 사용자를 강화시켜주는 일반 스탯 증강이 등장한다.
 
+
 <p align="Left">
 <img src="https://github.com/sejin0000/NP-14/assets/129154514/c1437664-a6f3-401e-a2c7-e5e26610ba10">
 </p>
@@ -93,6 +107,7 @@
 ### 5. 보스
 
 2개의 스테이지를 클리어할 때마다, 보스와 전투를 벌이는 보스 스테이지가 등장한다.
+
 
 <p align="Left">
 <img src="https://github.com/sejin0000/NP-14/assets/129154514/f18bba51-8168-4013-8849-ca179e5adaaf">
