@@ -176,13 +176,24 @@
 
 <br>
 
-##### 3-7. MonsterSpawner 
+##### 3-7. RoomPanel 
 
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|MonsterSpawner||||
-|||||
+|파티원 정보 초기화|파티원이 선택한 캐릭터, 준비 여부가 변할 때마다, 파티박스를 최신화한다.|RoomPanel.cs|[SetPartyPlayerInfo()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Lobby/Panel/RoomPanel.cs#L303)|
+|플레이어 인스턴스화|다른 클라이언트와 해당 클라이언트의 플레이어 오브젝트를 인스턴스화 한다.|RoomPanel.cs|[InstantiatePlayer()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Lobby/Panel/RoomPanel.cs#L367)|
+|플레이어 준비 상태 반영|플레이어가 준비 상태에 따라, 맞는 화면과 커스텀 프로퍼티를 등록한다.|RoomPanel.cs|[OnReadyButtonClicked()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Lobby/Panel/RoomPanel.cs#L394)|
+
+
+<br>
+
+##### 3-7. LoadingPanel 
+
+####
+|기능 이름|기능 설명|스크립트|메서드|
+|:---:|:---:|:---:|:---:|
+|로딩 패널 반영|해당 로딩 패널을 초기화한다. 파라미터로 로딩패널이 진행되는 시간을 받을 수 있다.|LoadingPanel.cs|[Initialize()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Lobby/Panel/LoadingPanel.cs#L20C17-L20C27)|
 
 <br>
 
