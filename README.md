@@ -292,7 +292,7 @@
 |UIManager|UI_Root에서 사용하는 UI_Base 객체를 Initialize한다. 이때 이벤트 등록 등의 작업을 처리한다.|[UIManager.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/Manager/UIManager.cs)|
 |UI_Root|Scene에서 표시되는 Canvas 오브젝트이다.||
 |ParticleManager|특정 좌표에 파티클 오브젝트를 생성한다.|[ParticleManager.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/Manager/ParticleManager.cs)|
-|AudioManager|특정 좌표에 파티클 오브젝트를 생성한다.|[AudioManager.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/Manager/AudioManager.cs)|
+|AudioManager|BGM/SE를 출력한다.|[AudioManager.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/Manager/AudioManager.cs)|
 |portal|||
 |MainGameNetwork|플레이어 탈퇴 시, 로딩 패널을 노출된다.|[MainGameNetwork.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/MainGameScene/Network/MainGameNetwork.cs#L7)|
 |MinimapCamera|||
@@ -413,7 +413,10 @@
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|ParticleManager|파티클 오브젝트를 특정 좌표(Vector3)에 표시한다.|||
+|ParticleManager|파티클 오브젝트를 특정 좌표(Vector3)에 표시한다.|[ParticleManager.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/Manager/ParticleManager.cs)||
+|PlayEffectLocal|파티클 오브젝트를 특정 좌표(Vector3)에 로컬 플레이어에게 표시한다.||[PlayEffectLocal](https://github.com/sejin0000/NP-14/blob/79ebeacfed23a3de591d273c01396b0c271cd740/Assets/Script/Manager/ParticleManager.cs#L41C8-L41C8)|
+|SendEffect|파티클 오브젝트를 특정 좌표(Vector3)에 모든 플레이어에게 표시한다.||[SendEffect](https://github.com/sejin0000/NP-14/blob/79ebeacfed23a3de591d273c01396b0c271cd740/Assets/Script/Manager/ParticleManager.cs#L91C16-L91C16)|
+
 
 <br>
 
@@ -422,9 +425,15 @@
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|AudioManager|배경음/효과음을 `Dictionary`에 등록하여 캐싱하고 출력한다.|||
+|AudioManager|배경음/효과음을 `Dictionary`에 등록하여 캐싱하고 출력한다.|AudioManager.cs||
+|PlayBGM|`Dictionary`에 등록된 BGM을 출력한다.||[PlayBGM](https://github.com/sejin0000/NP-14/blob/79ebeacfed23a3de591d273c01396b0c271cd740/Assets/Script/Manager/AudioManager.cs#L106C24-L106C31)|
+|PlaySE|`Dictionary`에 등록된 BGM을 출력한다.||[PlaySE](https://github.com/sejin0000/NP-14/blob/79ebeacfed23a3de591d273c01396b0c271cd740/Assets/Script/Manager/AudioManager.cs#L160)|
+|PlayClip|인자로 전달된 `AudioClip`을 출력한다.||[PlayClip](https://github.com/sejin0000/NP-14/blob/79ebeacfed23a3de591d273c01396b0c271cd740/Assets/Script/Manager/AudioManager.cs#L191)|
 |AudioLibrary|AudioManagerTest에서 출력할 효과음을 지정한다.|AudioLibrary.cs||
-|AudioManagerTest|지정된 배경음/효과음을 타 객체의 이벤트에 등록한다.|||
+|SetupPlayerSE|플레이어가 사용할 사운드 출력 함수를 이벤트에 등록한다.||[SetupPlayerSE](https://github.com/sejin0000/NP-14/blob/79ebeacfed23a3de591d273c01396b0c271cd740/Assets/Script/Dohyun/AudioLibrary.cs#L71C17-L71C30)|
+|PlayClip|모든 플레이어에게 사운드를 출력한다.||[PlayClip](https://github.com/sejin0000/NP-14/blob/79ebeacfed23a3de591d273c01396b0c271cd740/Assets/Script/Dohyun/AudioLibrary.cs#L96C12-L96C12)|
+|AudioManagerTest|지정된 배경음/효과음을 타 객체의 이벤트에 등록한다.|AudioManagerTest.cs||
+|PlayStageBGM|지정된 배경음/효과음을 타 객체의 이벤트에 등록한다.||[PlayStageBGM](https://github.com/sejin0000/NP-14/blob/79ebeacfed23a3de591d273c01396b0c271cd740/Assets/Script/Dohyun/AudioManagerTest.cs#L32C24-L32C24)|
 |BGMPlayer|배경음을 플레이하는 오브젝트를 담아놓는 부모 오브젝트이다.|||
 |SEPlayer|효과음을 플레이하는 오브젝트를 담아놓은 부모 오브젝트이다.|||
 
