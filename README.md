@@ -120,7 +120,6 @@
 |MonsterSpawner|||
 |NavMesh2D|||
 |MapGenerator|||
-|Debuff|||//삭제요망
 |MakeAugmentListManager|||
 |AugmentManager|||
 |ResultManager|||
