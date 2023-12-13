@@ -262,7 +262,7 @@ public class ResultManager : MonoBehaviour//vsÄÚµå
         }
         int Count = picklist.Length;
         List<SpecialAugment> list = origin.ToList();
-        tempList=origin;
+        tempList = origin;
         for (int i = 0; i < Count; ++i)
         {
             int a = Random.Range(0, list.Count);
@@ -270,15 +270,15 @@ public class ResultManager : MonoBehaviour//vsÄÚµå
             picklist[i].gameObject.SetActive(true);
             list.RemoveAt(a);
         }
-        if (GameManager.Instance.ClearStageCheck) 
+        if (GameManager.Instance.ClearStageCheck)
         {
-        countDownCheck = true;
-        time.gameObject.SetActive(true);
-        pickTime = 30f;
+            countDownCheck = true;
+            time.gameObject.SetActive(true);
+            pickTime = 30f;
         }
         SetActiveCheck = true;
         IsStat = false;
-        
+
     }
     public void close()//¸ñ·Ï¿¡¼­ °ñ¶ú´Ù¸é ¶ç¿î ui¸¦ ´İ¾ÆÁÜ
     {
@@ -311,13 +311,13 @@ public class ResultManager : MonoBehaviour//vsÄÚµå
         }
         if (!IsStat && !statChance)
         {
-            ready();
+            Ready();
         }
         countDownCheck = false;
         time.gameObject.SetActive(false);
         statChance = false;
     }
-    public void ready() 
+    public void Ready() 
     {
         if (!readycheck) 
         {

@@ -70,12 +70,8 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
     }
     public void makeLisk() 
     {
-        //int type = Player.
         PhotonNetwork.LocalPlayer.CustomProperties.TryGetValue("Char_Class", out object classNum);
-        //구별값으로 이게맞나?
         playerType = (int)classNum;
-        Debug.Log("이부분 코드 수정해야함");
-        //playerType = 1;
         string Ptype = "a";
         switch (playerType)
         {
@@ -112,7 +108,6 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
         }
 
     }
-    //애는 그래서 그냥 스페셜증강만 받음
     public static void SpecialAugmentSetting(List<SpecialAugment> list,string str)// 넣을 리스트 , 불러올csv파일명 csv파일을 불러와 리스트에 넣어줌
     {
         List<Dictionary<string, object>> data = CSVReader.Read("CSVReader/" + str);
@@ -124,7 +119,6 @@ public class MakeAugmentListManager : MonoBehaviour//증강 리스트를 만들어줌
             a.func = (string)data[i]["Func"];
             a.Code = (int)data[i]["Code"];
             a.Rare = (int)data[i]["Rare"];
-            //Debug.Log($"이름{a.Name}번호 {i}");
             list.Add(a);
         }
 
