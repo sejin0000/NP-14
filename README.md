@@ -329,9 +329,10 @@
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|MinimapCamera||||
-|구르기 패턴|거북이의 패턴인 구르기를 시작한다.|[BossAI_Turtle.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Turtle/BossAI_Turtle.cs#L14C14-L14C27)|[RollStart()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Turtle/BossAI_Turtle.cs#L719)|
+|구르기 패턴|거북이의 패턴인 구르기를 시작한다.|[BossAI_Turtle.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Turtle/BossAI_Turtle.cs#L14C14-L14C27)|[RollStart()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Turtle/BossAI_Turtle.cs#L719) & [OnCollisionEnter2D()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Turtle/BossAI_Turtle.cs#L818C18-L818C36) & [Update()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Turtle/BossAI_Turtle.cs#L181)|
+|보스 몬스터(거북이) BT|보스 몬스터인 거북이의 행동 트리를 생성한다. 세 번째 트리이며 3개의 계층으로 구성되어 있으며 BossAI_Dragon의 트리보다 더 완성된 구조의 행동 트리이다.|[BossAI_Turtle.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Turtle/BossAI_Turtle.cs#L14C14-L14C27)|[CreateTreeAIState()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Turtle/BossAI_Turtle.cs#L520)|
 
 <br>
+
 ## 🕶 팀원 소개
 
