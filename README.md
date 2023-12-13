@@ -216,9 +216,10 @@
 |AugmentManager|||
 |ResultManager|||
 |GameManager|||
-|UIManager|||
-|UI_Root|||
-|ParticleManager|||
+|UIManager|UI_Root에서 사용하는 UI_Base 객체를 Initialize한다. 이때 이벤트 등록 등의 작업을 처리한다.||
+|UI_Root|Scene에서 표시되는 Canvas 오브젝트이다.||
+|ParticleManager|특정 좌표에 파티클 오브젝트를 생성한다.||
+|AudioManager|특정 좌표에 파티클 오브젝트를 생성한다.||
 |portal|||
 |MainGameNetwork|플레이어 탈퇴 시, 로딩 패널을 노출된다.|[MainGameNetwork.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/MainGameScene/Network/MainGameNetwork.cs#L7)|
 |MinimapCamera|||
@@ -310,8 +311,7 @@
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|UIManager|해당 신에서 사용하는 UI_Base 객체를 Initialize 하는 작업을 수행|||
-|||||
+|UIManager|해당 신에서 사용하는 UI_Base 객체를 `Initialize`한다.|||
 
 <br>
 
@@ -320,12 +320,13 @@
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|StageTransition|스테이지가 시작될 때 탑을 오르는 연출을 담당|||
-|PlayerHUD|플레이어의 체력, 회피(구르기), 탄창을 표시|||
-|SetupPopupPrefab|환경설정, 로비로 이동 관련 UI 표시|||
-|GameClearPanel|게임오버, 클리어시 표시되는 UI입니다.|||
-|LoadingPanel|다른 화면으로 이동할 때 표시되는 UI|||
-|Minimap|인 게임에서 표시되는 미니맵 관련 UI|||
+|StageTransition|스테이지가 시작될 때 탑을 오르는 연출을 표시한다.|||
+|PlayerHUD|플레이어의 체력/회피/스킬 게이지와 탄창을 표시한다.|||
+|SetupPopupPrefab|환경설정 UI를 표시한다. |||
+|GameClearPanel|게임오버, 클리어 시 해당 UI를 표시한다.|||
+|LoadingPanel|다른 화면으로 이동할 때(로딩 시) 표시한다.|||
+|Minimap|인 게임에서 표시되는 미니맵 관련 UI입니다.|||
+
 
 <br>
 
@@ -334,18 +335,20 @@
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|ParticleManager|파티클을 특정 좌표(Vector3)에 표시합니다.|||
-|||||
+|ParticleManager|파티클 오브젝트를 특정 좌표(Vector3)에 표시한다.|||\
 
 <br>
 
-##### 3-12. ParticleManager 
+##### 3-12. AudioManager 
 
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|ParticleManager||||
-|||||
+|AudioManager|배경음/효과음을 `Dictionary`에 등록하여 캐싱하고 출력한다.|||
+|AudioLibrary|AudioManagerTest에서 출력할 효과음을 지정한다.|||
+|AudioManagerTest|지정된 배경음/효과음을 타 객체의 이벤트에 등록한다.|||
+|BGMPlayer|배경음을 플레이하는 오브젝트를 담아놓는 부모 오브젝트이다.|||
+|SEPlayer|효과음을 플레이하는 오브젝트를 담아놓은 부모 오브젝트이다.|||
 
 <br>
 
