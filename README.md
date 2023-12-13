@@ -211,7 +211,6 @@
 |MonsterSpawner|||
 |NavMesh2D|||
 |MapGenerator|||
-|Debuff|||
 |MakeAugmentListManager|||
 |AugmentManager|||
 |ResultManager|||
@@ -256,13 +255,12 @@
 
 <br>
 
-##### 3-4. Debuff 
+##### 3-4. Debuff //삭제요망
 
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
 |Debuff||||
-|||||
 
 <br>
 
@@ -271,8 +269,9 @@
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|MakeAugmentListManager||||
-|||||
+|MakeAugmentListManager|게임 시작시 플레이어의 정보를 받아 캐릭터(직업)의 정보를 외부 csv파일로 불러 리스트로 만들어 줍니다.|[MakeAugmentListManager](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/MakeAugmentListManager.cs#L9)||
+|makeList|플레이어의 정보를 받아 리스트를 만들어 주는 메서드||[makeList](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/MakeAugmentListManager.cs#L71)|
+|SpecialAugmentSetting|csv파일의 이름,설명,레어도,코드를 리스트에 담아주는 메서드||[SpecialAugmentSetting](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/MakeAugmentListManager.cs#L116)|
 
 <br>
 
@@ -281,8 +280,9 @@
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|AugmentManager||||
-|||||
+|AugmentManager|증강(아이템)의 데이터 베이스로 해당 증강의 Code를 호출시 해당 효과를 플레이어에게 적용 시켜줍니다.|[AugmentManager](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/AugmentManager.cs#L11)||
+|AugmentCall|ResultManager에게서 전달받은 Code를 해당 플레이어를 찾아 적용 시켜 줍니다.||[AugmentCall](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/AugmentManager.cs#L49)|
+|A901|증강이 실질적으로 적용되는 코드로 함수명을 숫자로만 지을수 없기에 A + Code번호로 구성되며 900번대는스탯, 100~300번대는 공용, 1000,2000,3000번대는 각각 직업 스나이퍼, 솔져, 샷건의 증강 번호를 가지고 있습니다. ||[A901](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/AugmentManager.cs#L80)|
 
 <br>
 
@@ -291,8 +291,10 @@
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|ResultManager||||
-|||||
+|ResultManager|옵저버 패턴을 통해 룸,스테이지 클리어시 호출 되어 플레이어는 보상을 선택 할 수 있습니다.|[ResultManager](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/ResultManager.cs#L14)||
+|PickStatList|룸(게임의 작은 스테이지 단위)클리어시 일반 보상인 스탯을 고를수 있게 해줍니다.||[PickStatList](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/ResultManager.cs#L232)|
+|PickSpecialList|스테이지클리어시 스페셜 증강을 고를수 있게 해줍니다 일반 스탯 증강과 다르게 모든 플레이어가 다음 스테이지로 갈 준비가 끝났는지 판단하는 ready함수를 가지고 있습니다||[PickSpecialList](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/ResultManager.cs#L255)|
+|close|'PickStatList'와 'PickSpecialList'공용으로 사용되며 플레이어가 선택시 나온 UI의 액티브를 꺼주며 만약 스페셜 리스트였다면 중복뽑기를 방지해줍니다.||[close](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/ResultManager.cs#L283)|
 
 <br>
 
@@ -382,19 +384,55 @@
 
 <br>
 
-### C. Enemy AI
+### C. Enemy
 
 ##### 1. 설명
 
-설명 본문 입력
+일반 몬스터 및 보스 몬스터의 Behaviour Tree, Navmesh Agent, 패턴 메서드, 동기화, 정보SO 를 관리한다.
 
 ##### 2. 상세 설명
 
 ####
 |기능 이름|기능 설명|스크립트|
 |:---:|:---:|:---:|
-|EnemyAI|||
-|Deade|||
+|EnemyAI|일반 몬스터의 행동과 스프라이트를 일괄적으로 관리한다.|[EnemyAI.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Enemy_States/EnemyAI.cs#L21)|
+|BossAI_Dragon|보스 몬스터인 용의 행동을 관리한다.|[BossAI_Dragon.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Dragon/BossAI_Dragon.cs#L32)|
+|BossAI_Turtle|보스 몬스터인 거북이의 행동을 관리한다.|[BossAI_Turtle.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Turtle/BossAI_Turtle.cs#L14C14-L14C27)|
+
+
+##### 3. 스크립트 별 설명
+
+##### 3-1. EnemyAI.cs
+
+####
+|기능 이름|기능 설명|스크립트|메서드|
+|:---:|:---:|:---:|:---:|
+|몬스터 초기화(모든 Enemy에 적용)|Navmesh Agent를 호스트만 사용하도록 제한한다. 또한 모든 플레이어의 정보를 가져온다.|[EnemyAI.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Enemy_States/EnemyAI.cs#L21)|[Awake()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Enemy_States/EnemyAI.cs#L164)|
+|몬스터 동기화(모든 Enemy에 적용)|게스트는 호스트가 보내주는 위치 정보를 통해 보간 작업만을 업데이트 한다. 몬스터의 모든 행동 실행은 호스트만 진행하도록 제한 한다.|[EnemyAI.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Enemy_States/EnemyAI.cs#L21)|[Update()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Enemy_States/EnemyAI.cs#L194)|
+|시야각|지정된 각도 내에 플레이어가 들어온다면 상태 bool값 전환과 타겟 변경을 진행한다.|[EnemyAI.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Enemy_States/EnemyAI.cs#L21)|[FindPlayer()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Enemy_States/EnemyAI.cs#L552)|
+|일반 몬스터BT|일반 몬스터의 행동 트리를 생성한다. 첫 트리이며 2개의 계층으로 구성되어 있다.|[EnemyAI.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Enemy_States/EnemyAI.cs#L21)|[CreateTreeAIState()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Enemy_States/EnemyAI.cs#L738C10-L738C29)|
+
+<br>
+
+##### 3-2. BossAI_Dragon.cs
+
+####
+|기능 이름|기능 설명|스크립트|메서드|
+|:---:|:---:|:---:|:---:|
+|브레스 패턴|용의 패턴인 브레스를 시작하고, 플레이어의 피격 여부를 판단한다.|[BossAI_Dragon.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Dragon/BossAI_Dragon.cs#L32)|[StartBreath()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Dragon/BossAI_Dragon.cs#L379) & [UpdateBreath()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Dragon/BossAI_Dragon.cs#L407C17-L407C29)|
+|보스 몬스터(용) BT|보스 몬스터인 용의 행동 트리를 생성한다. 두 번째 트리이며 3개의 계층으로 구성되어 있다.|[BossAI_Dragon.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Dragon/BossAI_Dragon.cs#L32)|[CreateTreeAIState()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Dragon/BossAI_Dragon.cs#L875C10-L875C27)|
+
+<br>
+
+##### 3-3. BossAI_Turtle.cs 
+
+####
+|기능 이름|기능 설명|스크립트|메서드|
+|:---:|:---:|:---:|:---:|
+|구르기 패턴|거북이의 패턴인 구르기를 시작한다.|[BossAI_Turtle.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Turtle/BossAI_Turtle.cs#L14C14-L14C27)|[RollStart()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Turtle/BossAI_Turtle.cs#L719) & [OnCollisionEnter2D()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Turtle/BossAI_Turtle.cs#L818C18-L818C36) & [Update()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Turtle/BossAI_Turtle.cs#L181)|
+|보스 몬스터(거북이) BT|보스 몬스터인 거북이의 행동 트리를 생성한다. 세 번째 트리이며 3개의 계층으로 구성되어 있으며 BossAI_Dragon의 트리보다 더 완성된 구조의 행동 트리이다.|[BossAI_Turtle.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Turtle/BossAI_Turtle.cs#L14C14-L14C27)|[CreateTreeAIState()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/BTScript/BT_Boss_Turtle/BossAI_Turtle.cs#L520)|
+
+<br>
 
 ## 🕶 팀원 소개
 
