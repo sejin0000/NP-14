@@ -603,9 +603,9 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
             return;
 
         Transform attackAreaTransform = AreaList[areaIndex].transform;
-
         for (int i = 0; i < inToAreaPlayers.Count; i++)
         {
+            Debug.Log($"반복문 들어옴 {i}");
 
             PlayerStatHandler player = inToAreaPlayers[i];
 
