@@ -5,8 +5,6 @@ using UnityEngine;
 public class Player3Skill : Skill
 {
     WeaponSystem _weaponSystem;
-    Sprite heal_icon;
-    Sprite atk_icon;
 
     public void Start()
     {
