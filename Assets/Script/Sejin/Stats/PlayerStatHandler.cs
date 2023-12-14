@@ -150,8 +150,19 @@ public class PlayerStatHandler : MonoBehaviourPun
     [HideInInspector] public bool CanReload;                              //장전   가능한지
     [HideInInspector] public bool CanSkill;                               //스킬   가능한지
     [HideInInspector] public bool CanRoll;                                //구르기 가능한지
-    public bool Invincibility;                          //무적
-
+    private bool invincibility;
+    public bool Invincibility
+    {
+        get { return invincibility; }
+        set
+        {
+            if (invincibility != value)
+            {
+                invincibility = value;
+                photonView.RPC("PunInvincibility", RpcTarget.Others, photonView.ViewID, value);
+            }
+        }
+    }
     public bool useSkill;
     public bool UseRoll;
     public bool ImGhost;
@@ -323,12 +334,12 @@ public class PlayerStatHandler : MonoBehaviourPun
     [PunRPC]
     public void DirectDamage(float damage, int targetID)
     {
-        if (photonView.gameObject.layer == 12)
+        if (gameObject.layer == 12)
             return;
 
-        if (photonView.gameObject.GetComponent<PlayerStatHandler>().Invincibility)
+        if (invincibility)
             return;
-        
+
         if (IsInShield)
         {
             damage -= InShieldHP;
@@ -351,7 +362,7 @@ public class PlayerStatHandler : MonoBehaviourPun
             if (evasionPersent <= a)
             {
                 DamegeTemp = DamegeTemp * defense;
-                
+
                 HitEvent?.Invoke();
                 HitEvent2?.Invoke(DamegeTemp);//이게 값이 필요한경우와 필요 없는경우가 있는데 한개로 할수가 있는지 모르겠음 일단 이렇게함
 
@@ -382,6 +393,14 @@ public class PlayerStatHandler : MonoBehaviourPun
         }
 
     }
+
+    [PunRPC]
+    public void PunInvincibility(int viewID, bool value)
+    {
+        var PunPlayer = PhotonView.Find(viewID);
+        PunPlayer.GetComponent<PlayerStatHandler>().invincibility = value;            
+    }
+
     [PunRPC]
     public void LayerSet() 
     {
