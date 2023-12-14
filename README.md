@@ -282,20 +282,18 @@
 ####
 |기능 이름|기능 설명|스크립트|
 |:---:|:---:|:---:|
-|MonsterSpawner|||
-|NavMesh2D|||
-|MapGenerator|||
+|MonsterSpawner|방마다 스크립터블 오브젝트를 통해 몬스터를 생성 및 삭제해주는 역할을 수행합니다.|[MonsterSpawner.cs](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/MonsterSpawner)|
+|MapGenerator|매 스테이지에서 랜덤으로 맵을 만들어주는 역할을 수행합니다.|[MapGenerator.cs](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Map/MapGenerator)|
 |MakeAugmentListManager|게임 시작시 플레이어의 정보를 받아 캐릭터(직업)의 정보를 외부 csv파일로 불러 리스트로 만들어 줍니다.|[MakeAugmentListManager.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/MakeAugmentListManager.cs#L9)||
 |AugmentManager|증강(아이템)의 데이터 베이스로 해당 증강의 Code를 호출시 해당 효과를 플레이어에게 적용 시켜줍니다.|[AugmentManager.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/AugmentManager.cs#L11)||
 |ResultManager|옵저버 패턴을 통해 룸,스테이지 클리어시 호출 되어 플레이어는 보상을 선택 할 수 있습니다.|[ResultManager.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/ResultManager.cs#L14)||
-|GameManager|||
+|GameManager|게임의 기본적인 흐름을 관리하며 옵저버 패턴을 이용해 특정상황에 맞는 이벤트를 뿌려줍니다.|[GameManager.cs]()|
 |UIManager|UI_Root에서 사용하는 UI_Base 객체를 Initialize한다. 이때 이벤트 등록 등의 작업을 처리한다.|[UIManager.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/Manager/UIManager.cs)|
-|UI_Root|Scene에서 표시되는 Canvas 오브젝트이다.||
-|ParticleManager|특정 좌표에 파티클 오브젝트를 생성한다.|[ParticleManager.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/Manager/ParticleManager.cs)|
-|AudioManager|특정 좌표에 파티클 오브젝트를 생성한다.|[AudioManager.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/Manager/AudioManager.cs)|
-|portal|||
+|UI_Root|Scene에서 표시되는 Canvas 오브젝트이다.|GameObject|
+|ParticleManager|특정 좌표에 파티클 오브젝트를 생성한다. 파티클 오브젝트를 캐싱하여 관리한다.|[ParticleManager.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/Manager/ParticleManager.cs)|
+|AudioManager|BGM/SE를 출력한다. 배경음/효과음을 `Dictionary`에 등록하여 캐싱하고 출력한다.|[AudioManager.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/Manager/AudioManager.cs)|
+|portal|스테이지의 종료를 알리는 역할을 수행합니다.|[Portal.cs](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Map/Portal.cs)|
 |MainGameNetwork|플레이어 탈퇴 시, 로딩 패널을 노출된다.|[MainGameNetwork.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/MainGameScene/Network/MainGameNetwork.cs#L7)|
-|MinimapCamera|||
 
 ##### 3. 기능 별 설명
 
@@ -304,32 +302,26 @@
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|MonsterSpawner||||
-|||||
-
+|MonsterSpawn|현재 스테이지 생성된 방의 개수를 플레이어수를 고려해 몬스터들을 방안에 생성해 줍니다.|MonsterSpawner.cs|[MonsterSpawn()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/MonsterSpawner.cs#L20)|
+|BossSpawn|현재 스테이지에 맞는 보스를 생성합니다.|MonsterSpawner.cs|[BossSpawn()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/MonsterSpawner.cs#L59)|
+|Spawn|몬스터의 종류를 enum 형태로 갖고 있는 스크립터블 오브젝트에서 enum 값을 string으로 변환해 PhotonNetwork.Instantiate()를 통해 몬스터를 생성하는 역할을 합니다|MonsterSpawner.cs|[Spawn()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/MonsterSpawner.cs#L90C1-L90C1)|
+|StageMonsterClear|스테이지가 종료후 클리어하지 않은 방에 남아있는 몬스터들을 전부 삭제해주는 역할을 수행합니다|MonsterSpawner.cs|[StageMonsterClear()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/MonsterSpawner.cs#L140C17-L140C34)|
 <br>
 
-##### 3-2. NavMesh2D
+##### 3-2. MapGenerator 
 
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|NavMesh2D||||
-|||||
+|MapMake|랜덤한 크기로 방을 만들고 그방에 통로를 연결한 후 통로 사이에 문을 만들어 랜덤맵을 만드는 역할을 수행합니다.|MapGenerator.cs|[MapMake()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Map/MapGenerator.cs#L95C17-L95C26)|
+|Divide|원하는 만큼 이진분활을 해 맵을 쪼개고 그정보를 노드를 만들어 담습니다. 그리고 나누어진 노드들은 이진분활 되기전 부모 노드가 변수로 갖고 있게 됩니다.|MapGenerator.cs|[Divide()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Map/MapGenerator.cs#L141C2-L141C2)|
+|GenerateRoom|나누어진 노드 안에 생성될 방의 크기를 랜덤으로 정해줍니다.|MapGenerator.cs|[GenerateRoom()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Map/MapGenerator.cs#L165C21-L165C33)|
+|FindNodeChildren|부모 노드를 매개 변수로 받아 그 하위 노드들을 전부 찾아 자식 노드 리스트에 담습니다|MapGenerator.cs|[FindNodeChildren()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Map/MapGenerator.cs#L202C18-L202C34)|
+|GenerateLoad|이어줄 두개의 부모 노드의 하의 노드가 담긴 두개의 리스트에서 최소 거리를 비교해 가장 짦은 길을 만들어 줍니다.|MapGenerator.cs|[GenerateLoad()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Map/MapGenerator.cs#L231C18-L231C30)|
 
 <br>
 
-##### 3-3. MapGenerator 
-
-####
-|기능 이름|기능 설명|스크립트|메서드|
-|:---:|:---:|:---:|:---:|
-|MonsterSpawner||||
-|||||
-
-<br>
-
-##### 3-4. MakeAugmentListManager 
+##### 3-3. MakeAugmentListManager 
 
 ####
 |기능 이름|기능 설명|스크립트|메서드|
@@ -339,7 +331,7 @@
 
 <br>
 
-##### 3-5. AugmentManager 
+##### 3-4. AugmentManager 
 
 ####
 |기능 이름|기능 설명|스크립트|메서드|
@@ -349,7 +341,7 @@
 
 <br>
 
-##### 3-6. ResultManager 
+##### 3-5. ResultManager 
 
 ####
 |기능 이름|기능 설명|스크립트|메서드|
@@ -360,32 +352,43 @@
 
 <br>
 
-##### 3-7. GameManager 
+##### 3-6. GameManager 
 
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|GameManager||||
-|||||
+|Awake|게임 내의 초기화 및 이벤트들을 순서에 맞게 연결해주는 역할을 수행 합니다.|GameManager.cs|[Awake()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/GameManager.cs#L64C18-L64C23)|
+|Start|스테이지가 시작할때마다 호출되어 스크립터블 오브젝트에서 현재 스테이지 정보를 읽어와 그에 맞는 이벤트들 뿌려주는 역할을 수행합니다.|GameManager.cs|[Start()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/GameManager.cs#L125C18-L125C23)|
+|CallStageSettingEvent|노말 스테이지를 세팅하는 이벤트를 뿌려줍니다.|GameManager.cs|[CallStageSettingEvent()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/GameManager.cs#L158)|
+|CallStageStartEvent|스테이지의 시작을 알리는 이벤트를 뿌려줍니다.|GameManager.cs|[CallStageStartEvent()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/GameManager.cs#L169C38-L169C38)|
+|CallRoomStartEvent|플레이어가 방에 들어가면 뿌려줘야 하는 이벤트를 뿌려줍니다.|GameManager.cs|[CallRoomStartEvent()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/GameManager.cs#L186C17-L186C35)|
+|CallStageEndEvent|스테이지의 종료 이벤트를 뿌려줍니다.|GameManager.cs|[CallStageEndEvent()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/GameManager.cs#L211C17-L211C34)|
+|StageClear|스테이지가 클리어되면 다음 스테이지가 있는지 확인하고 있다면 Start 함수를 호출하고 없다면 CallGameClearEvent 를 호출합니다.|GameManager.cs|[StageClear()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/GameManager.cs#L243C17-L243C27)|
+|CallBossStageSettingEvent|보스 스테이지를 세팅하는 이벤트를 뿌려줍니다.|GameManager.cs|[CallBossStageSettingEvent()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/GameManager.cs#L261C17-L261C42)|
+|CallBossStageStartEvent|보스 스테이지의 시작을 알리는 이벤트를 뿌려줍니다|GameManager.cs|[CallBossStageStartEvent()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/GameManager.cs#L269C17-L269C40)|
+|CallBossStageEndEvent|보스 스테이지의 종료 이벤트를 뿌려줍니다.|GameManager.cs|[CallBossStageEndEvent()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/GameManager.cs#L275C17-L275C38)|
+|CallGameClearEvent|게임이 클리어 되면 실행되야하는 이벤트를 실행해줍니다|GameManager.cs|[CallGameClearEvent()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/GameManager.cs#L281C17-L281C35)|
+|CallGameOverEvent|게임 오버가 되면 실행해야하는 이벤트를 시행해줍니다|GameManager.cs|[CallGameOverEvent()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/GameManager.cs#L292C17-L292C34)|
+
 
 <br>
 
-##### 3-8. UIManager 
+##### 3-7. UIManager 
 
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
 |Layer|`UIManager`에서 관리할 UI 오브젝트를 담아놓는 리스트|[UIManager.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/Manager/UIManager.cs)||
-|Initialize|Layer에 담겨있는 UI_Base 객체의 Initialize 함수를 실행한다.||[Initialize](https://github.com/sejin0000/NP-14/blob/e771c254484ecb7ef191ebf19c1a7fb79b270577/Assets/Script/Manager/UIManager.cs#L29)|
-|Open|해당 UI 오브젝트의 Active를 True로 변경한다.||[Open](https://github.com/sejin0000/NP-14/blob/e771c254484ecb7ef191ebf19c1a7fb79b270577/Assets/Script/Manager/UIManager.cs#L50C5-L50C5)|
-|Close|해당 UI 오브젝트의 Active를 False로 변경한다.||[Close](https://github.com/sejin0000/NP-14/blob/e771c254484ecb7ef191ebf19c1a7fb79b270577/Assets/Script/Manager/UIManager.cs#L60C7-L60C7)|
-|GetUIComponent|UI 매니저에 등록된 UI에서 특정 컴포넌트를 찾아서 반환한다.||[GetUIComponent](https://github.com/sejin0000/NP-14/blob/e771c254484ecb7ef191ebf19c1a7fb79b270577/Assets/Script/Manager/UIManager.cs#L84C14-L84C28)|
-|GetUIObject|UI 매니저에 등록된 UI에서 특정 이름의 오브젝트를 찾아서 반환한다.||[GetUIObject](https://github.com/sejin0000/NP-14/blob/e771c254484ecb7ef191ebf19c1a7fb79b270577/Assets/Script/Manager/UIManager.cs#L100)|
+|Initialize|Layer에 담겨있는 UI_Base 객체의 Initialize 함수를 실행한다.|UIManager.cs|[Initialize()](https://github.com/sejin0000/NP-14/blob/e771c254484ecb7ef191ebf19c1a7fb79b270577/Assets/Script/Manager/UIManager.cs#L29)|
+|Open|해당 UI 오브젝트의 Active를 True로 변경한다.|UIManager.cs|[Open()](https://github.com/sejin0000/NP-14/blob/e771c254484ecb7ef191ebf19c1a7fb79b270577/Assets/Script/Manager/UIManager.cs#L50C5-L50C5)|
+|Close|해당 UI 오브젝트의 Active를 False로 변경한다.|UIManager.cs|[Close()](https://github.com/sejin0000/NP-14/blob/e771c254484ecb7ef191ebf19c1a7fb79b270577/Assets/Script/Manager/UIManager.cs#L60C7-L60C7)|
+|GetUIComponent|UI 매니저에 등록된 UI에서 특정 컴포넌트를 찾아서 반환한다.|UIManager.cs|[GetUIComponent()](https://github.com/sejin0000/NP-14/blob/e771c254484ecb7ef191ebf19c1a7fb79b270577/Assets/Script/Manager/UIManager.cs#L84C14-L84C28)|
+|GetUIObject|UI 매니저에 등록된 UI에서 특정 이름의 오브젝트를 찾아서 반환한다.|UIManager.cs|[GetUIObject()](https://github.com/sejin0000/NP-14/blob/e771c254484ecb7ef191ebf19c1a7fb79b270577/Assets/Script/Manager/UIManager.cs#L100)|
 
 
 <br>
 
-##### 3-9. UI_Root 
+##### 3-8. UI_Root 
 
 ####
 |기능 이름|기능 설명|스크립트|메서드|
@@ -400,62 +403,49 @@
 |UIPlayerMiniHUD|플레이어의 머리 위에 표시되는 MiniHUD를 관리한다.|[UIPlayerMiniHUD.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/UI/Player/UIPlayerMiniHUD.cs)||
 |UIPlayerMiniHP|플레이어의 머리 위에 표시되는 체력 게이지를 관리한다.|[UIPlayerMiniHP.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/UI/Player/UIPlayerMiniHP.cs)||
 |UIReloadHUD|플레이어의 머리 위에 표시되는 재장전 게이지를 관리한다.|[UIReloadHUD.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/UI/Player/UIReloadHUD.cs)||
-|SetupPopupPrefab|환경설정 UI를 표시한다. |||
-|GameClearPanel|게임오버, 클리어 시 해당 UI를 표시한다.|||
-|LoadingPanel|다른 화면으로 이동할 때(로딩 시) 표시한다.|||
-|Minimap|인 게임에서 표시되는 미니맵 관련 UI입니다.|||
+|SetupPopupPrefab|환경설정 UI를 표시한다. |[SetupPopup.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/Setup/SetupPopup.cs)||
+|GameClearPanel|게임오버, 클리어 시 해당 UI를 표시한다.|[GameClearPanel.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/MainGameScene/UI/GameClearPanel.cs)||
+|LoadingPanel|다른 화면으로 이동할 때(로딩 시) 표시한다.|[LoadingPanel.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/Lobby/Panel/LoadingPanel.cs)||
+|Minimap|인 게임에서 표시되는 미니맵 관련 UI입니다.|GameObject||
 
 
 <br>
 
-##### 3-10. ParticleManager 
+##### 3-9. ParticleManager 
 
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|ParticleManager|파티클 오브젝트를 특정 좌표(Vector3)에 표시한다.|||
+|PlayEffectLocal|파티클 오브젝트를 특정 좌표(Vector3)에 로컬 플레이어에게 표시한다.|ParticleManager.cs|[PlayEffectLocal()](https://github.com/sejin0000/NP-14/blob/79ebeacfed23a3de591d273c01396b0c271cd740/Assets/Script/Manager/ParticleManager.cs#L41C8-L41C8)|
+|SendEffect|파티클 오브젝트를 특정 좌표(Vector3)에 모든 플레이어에게 표시한다.|ParticleManager.cs|[SendEffect()](https://github.com/sejin0000/NP-14/blob/79ebeacfed23a3de591d273c01396b0c271cd740/Assets/Script/Manager/ParticleManager.cs#L91C16-L91C16)|
+
 
 <br>
 
-##### 3-12. AudioManager 
+##### 3-10. AudioManager 
 
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|AudioManager|배경음/효과음을 `Dictionary`에 등록하여 캐싱하고 출력한다.|||
+|PlayBGM|`Dictionary`에 등록된 BGM을 출력한다.|AudioManager.cs|[PlayBGM()](https://github.com/sejin0000/NP-14/blob/79ebeacfed23a3de591d273c01396b0c271cd740/Assets/Script/Manager/AudioManager.cs#L106C24-L106C31)|
+|PlaySE|`Dictionary`에 등록된 BGM을 출력한다.|AudioManager.cs|[PlaySE()](https://github.com/sejin0000/NP-14/blob/79ebeacfed23a3de591d273c01396b0c271cd740/Assets/Script/Manager/AudioManager.cs#L160)|
+|PlayClip|인자로 전달된 `AudioClip`을 출력한다.|AudioManager.cs|[PlayClip()](https://github.com/sejin0000/NP-14/blob/79ebeacfed23a3de591d273c01396b0c271cd740/Assets/Script/Manager/AudioManager.cs#L191)|
 |AudioLibrary|AudioManagerTest에서 출력할 효과음을 지정한다.|AudioLibrary.cs||
-|AudioManagerTest|지정된 배경음/효과음을 타 객체의 이벤트에 등록한다.|||
-|BGMPlayer|배경음을 플레이하는 오브젝트를 담아놓는 부모 오브젝트이다.|||
-|SEPlayer|효과음을 플레이하는 오브젝트를 담아놓은 부모 오브젝트이다.|||
+|SetupPlayerSE|플레이어가 사용할 사운드 출력 함수를 이벤트에 등록한다.|AudioLibrary.cs|[SetupPlayerSE()](https://github.com/sejin0000/NP-14/blob/79ebeacfed23a3de591d273c01396b0c271cd740/Assets/Script/Dohyun/AudioLibrary.cs#L71C17-L71C30)|
+|PlayClip|모든 플레이어에게 사운드를 출력한다.|AudioLibrary.cs|[PlayClip()](https://github.com/sejin0000/NP-14/blob/79ebeacfed23a3de591d273c01396b0c271cd740/Assets/Script/Dohyun/AudioLibrary.cs#L96C12-L96C12)|
+|AudioManagerTest|지정된 배경음/효과음을 타 객체의 이벤트에 등록한다.|AudioManagerTest.cs||
+|PlayStageBGM|지정된 배경음/효과음을 타 객체의 이벤트에 등록한다.|AudioManagerTest.cs|[PlayStageBGM()](https://github.com/sejin0000/NP-14/blob/79ebeacfed23a3de591d273c01396b0c271cd740/Assets/Script/Dohyun/AudioManagerTest.cs#L32C24-L32C24)|
+|BGMPlayer|배경음을 플레이하는 오브젝트를 담아놓는 부모 오브젝트이다.|GameObject||
+|SEPlayer|효과음을 플레이하는 오브젝트를 담아놓은 부모 오브젝트이다.|GameObject||
 
 <br>
 
-##### 3-12. portal 
-
-####
-|기능 이름|기능 설명|스크립트|메서드|
-|:---:|:---:|:---:|:---:|
-|portal||||
-|||||
-
-<br>
-
-##### 3-13. MainGameNetwork 
+##### 3-11. MainGameNetwork 
 
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
 |플레이어 퇴장시 실행되는 이벤트|5초간 로딩 패널을 노출하고, LobbyScene으로 이동시킨다.|MainGameNetwork.cs|[OnPlayerLeftRoom()](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/MainGameScene/Network/MainGameNetwork.cs#L12)|
-|||||
-
-<br>
-
-##### 3-14. MinimapCamera 
-
-####
-|기능 이름|기능 설명|스크립트|메서드|
-|:---:|:---:|:---:|:---:|
-|MinimapCamera||||
 |||||
 
 <br>
@@ -511,4 +501,6 @@
 <br>
 
 ## 🕶 팀원 소개
-
+<a href="https://github.com/sejin0000/NP-14/graphs/contributors">
+<img src = "https://contrib.rocks/image?repo=sejin0000/NP-14">
+</a>
