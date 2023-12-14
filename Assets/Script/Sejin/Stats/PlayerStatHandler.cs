@@ -328,13 +328,20 @@ public class PlayerStatHandler : MonoBehaviourPun
     [PunRPC]
     public void GiveDamege(float damage)
     {
+        if (!photonView.IsMine)
+            return;
+
         Damage(damage);
     }
 
     [PunRPC]
     public void DirectDamage(float damage, int targetID)
     {
+<<<<<<< Updated upstream
         if (gameObject.layer == 12)
+=======
+        if (photonView.gameObject.layer == 12 || !photonView.IsMine)
+>>>>>>> Stashed changes
             return;
 
         if (invincibility)

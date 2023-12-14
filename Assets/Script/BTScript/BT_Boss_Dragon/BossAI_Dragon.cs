@@ -406,9 +406,6 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
     public void UpdateBreath()
     {
-        if (!PhotonNetwork.IsMasterClient)
-            return;
-
         currentTime -= Time.deltaTime;
 
         if (currentTime <= 0)
@@ -446,8 +443,11 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
 
                         // 실제 피해
-                        player.photonView.RPC("DirectDamage", RpcTarget.All, bossSO.atk, PV.ViewID);
-                        
+                        if (PhotonNetwork.IsMasterClient)
+                        {
+                            player.photonView.RPC("DirectDamage", RpcTarget.All, bossSO.atk, PV.ViewID);
+                        }
+
                         // 실제 넉백
                         player.photonView.RPC("StartKnockback", RpcTarget.All, directionToPlayer, knockbackDistance);
                         //StartCoroutine(player.Knockback(directionToPlayer, knockbackDistance));
@@ -602,9 +602,6 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
     //진짜 진짜 공격&넉백임
     public void AttackTargetsInArea(int areaIndex, float attackCoefficient = 1f)
     {
-        if (!PhotonNetwork.IsMasterClient)
-            return;
-
         if (inToAreaPlayers == null || areaIndex < 0 || areaIndex > AreaList.Length)
             return;
 
@@ -633,7 +630,10 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
             StartCoroutine(player.Knockback(directionToPlayer, knockbackDistance));
 
             // 실제 피해
-            player.photonView.RPC("DirectDamage", RpcTarget.All, bossSO.atk * attackCoefficient, PV.ViewID); 
+            if (PhotonNetwork.IsMasterClient)
+            {
+                player.photonView.RPC("DirectDamage", RpcTarget.All, bossSO.atk, PV.ViewID);
+            }
         }
     }
 

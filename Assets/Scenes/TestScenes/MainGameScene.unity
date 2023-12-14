@@ -1663,6 +1663,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1513788575892154710, guid: 7769f7b49d97a104b9752d2ce64fa83f, type: 3}
+      propertyPath: sceneViewId
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3710770239789521589, guid: 7769f7b49d97a104b9752d2ce64fa83f, type: 3}
       propertyPath: m_RootOrder
       value: 17
@@ -1712,7 +1716,8 @@ PrefabInstance:
       value: portal
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 9207390252728360262, guid: 7769f7b49d97a104b9752d2ce64fa83f, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7769f7b49d97a104b9752d2ce64fa83f, type: 3}
