@@ -357,8 +357,19 @@
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|Awake|게임 내의 초기화 및 이벤트들을 순서에 맞게 연결해주는 역할을 수행 합니다|GameManager.cs|[Awake()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/GameManager.cs#L64C18-L64C23)|
-|Start|스테이지가 시작할때마다 호출되어 스크립터블 오브젝트에서 현재 스테이지 정보를 읽어와 그에 맞는 이벤트들 뿌려주는 역할을 수행합니다|GameManager.cs|[Start()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/GameManager.cs#L125C18-L125C23)|
+|Awake|게임 내의 초기화 및 이벤트들을 순서에 맞게 연결해주는 역할을 수행 합니다.|GameManager.cs|[Awake()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/GameManager.cs#L64C18-L64C23)|
+|Start|스테이지가 시작할때마다 호출되어 스크립터블 오브젝트에서 현재 스테이지 정보를 읽어와 그에 맞는 이벤트들 뿌려주는 역할을 수행합니다.|GameManager.cs|[Start()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/GameManager.cs#L125C18-L125C23)|
+|CallStageSettingEvent|노말 스테이지를 세팅하는 이벤트를 뿌려줍니다.|GameManager.cs|[CallStageSettingEvent()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/GameManager.cs#L158)|
+|CallStageStartEvent|스테이지의 시작을 알리는 이벤트를 뿌려줍니다.|GameManager.cs|[CallStageStartEvent()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/GameManager.cs#L169C38-L169C38)|
+|CallRoomStartEvent|플레이어가 방에 들어가면 뿌려줘야 하는 이벤트를 뿌려줍니다.|GameManager.cs|[CallRoomStartEvent()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/GameManager.cs#L186C17-L186C35)|
+|CallStageEndEvent|스테이지의 종료 이벤트를 뿌려줍니다.|GameManager.cs|[CallStageEndEvent()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/GameManager.cs#L211C17-L211C34)|
+|StageClear|스테이지가 클리어되면 다음 스테이지가 있는지 확인하고 있다면 Start 함수를 호출하고 없다면 CallGameClearEvent 를 호출합니다.|GameManager.cs|[StageClear()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/GameManager.cs#L243C17-L243C27)|
+|CallBossStageSettingEvent|보스 스테이지를 세팅하는 이벤트를 뿌려줍니다.|GameManager.cs|[CallBossStageSettingEvent()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/GameManager.cs#L261C17-L261C42)|
+|CallBossStageStartEvent|보스 스테이지의 시작을 알리는 이벤트를 뿌려줍니다|GameManager.cs|[CallBossStageStartEvent()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/GameManager.cs#L269C17-L269C40)|
+|CallBossStageEndEvent|보스 스테이지의 종료 이벤트를 뿌려줍니다.|GameManager.cs|[CallBossStageEndEvent()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/GameManager.cs#L275C17-L275C38)|
+|CallGameClearEvent|게임이 클리어 되면 실행되야하는 이벤트를 실행해줍니다|GameManager.cs|[CallGameClearEvent()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/GameManager.cs#L281C17-L281C35)|
+|CallGameOverEvent|게임 오버가 되면 실행해야하는 이벤트를 시행해줍니다|GameManager.cs|[CallGameOverEvent()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/GameManager.cs#L292C17-L292C34)|
+|||GameManager.cs|[()]()|
 
 
 <br>
