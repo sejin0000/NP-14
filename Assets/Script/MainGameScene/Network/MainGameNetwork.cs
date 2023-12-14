@@ -3,6 +3,7 @@ using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainGameNetwork : MonoBehaviourPunCallbacks
 {
@@ -75,7 +76,9 @@ public class MainGameNetwork : MonoBehaviourPunCallbacks
     {
         yield return new WaitForSeconds(5f);
         PhotonNetwork.AutomaticallySyncScene = false;
-        PhotonNetwork.LoadLevel("LobbyScene");
+        GameManager.Instance.isGameOver = true;
+        GameManager.Instance.UnSubscribeEvent();
+        SceneManager.LoadScene(0);
     }
     public IEnumerator WaitSucceed()
     {
