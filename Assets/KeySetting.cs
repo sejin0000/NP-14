@@ -8,9 +8,5 @@ public class KeySetting : MonoBehaviour
     public void KeySettingPanelClose()
     {
         gameObject.SetActive(false);
-        if (PhotonNetwork.IsMasterClient)
-        {
-            StartCoroutine(LobbyManager.Instance.RoomP.PopRoomAnnouncePopup());
-        }
     }
 }

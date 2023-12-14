@@ -139,8 +139,9 @@ public class RoomPanel : MonoBehaviourPunCallbacks
 
         // DESC : ChatBox È°¼ºÈ­
         IsChatBoxActive = true;
-        IsChatInputActive = false;       
-        
+        IsChatInputActive = false;
+
+        StartCoroutine(PopRoomAnnouncePopup());
     }
     public void Start()
     {
@@ -244,7 +245,7 @@ public class RoomPanel : MonoBehaviourPunCallbacks
     public IEnumerator PopRoomAnnouncePopup()
     {
         RoomAnnouncePopup.SetActive(true);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(5f);
     }
     public void ActivateChatMode()
     {
