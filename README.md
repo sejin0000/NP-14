@@ -282,17 +282,17 @@
 ####
 |기능 이름|기능 설명|스크립트|
 |:---:|:---:|:---:|
-|MonsterSpawner|||
-|MapGenerator|||
+|MonsterSpawner|방마다 몬스터를 생성 및 삭제해주는 역할을 수행합니다.|[MonsterSpawner.cs](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/MonsterSpawner)|
+|MapGenerator|매 스테이지에서 랜덤으로 맵을 만들어주는 역할을 수행합니다.|[MapGenerator.cs](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Map/MapGenerator)|
 |MakeAugmentListManager|게임 시작시 플레이어의 정보를 받아 캐릭터(직업)의 정보를 외부 csv파일로 불러 리스트로 만들어 줍니다.|[MakeAugmentListManager.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/MakeAugmentListManager.cs#L9)||
 |AugmentManager|증강(아이템)의 데이터 베이스로 해당 증강의 Code를 호출시 해당 효과를 플레이어에게 적용 시켜줍니다.|[AugmentManager.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/AugmentManager.cs#L11)||
-|ResultManager|옵저버 패턴을 통해 룸,스테이지 클리어시 호출 되어 플레이어는 보상을 선택 할 수 있습니다.|[ResultManager.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/ResultManager.cs#L14)||
-|GameManager|||
+|ResultManager|옵저버 패턴을 통해 룸,스테이지 클리어시 호출 되어 플레이어는 보상을 선택 할 수 있습니다.|[ResultManager.cs](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/GameManager)(https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/ResultManager.cs#L14)||
+|GameManager|게임의 기본적인 흐름을 관리하며 옵저버 패턴을 이용해 특정상황에 맞는 이벤트를 뿌려줍니다.|[GameManager.cs]()|
 |UIManager|UI_Root에서 사용하는 UI_Base 객체를 Initialize한다. 이때 이벤트 등록 등의 작업을 처리한다.|[UIManager.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/Manager/UIManager.cs)|
 |UI_Root|Scene에서 표시되는 Canvas 오브젝트이다.|GameObject|
 |ParticleManager|특정 좌표에 파티클 오브젝트를 생성한다. 파티클 오브젝트를 캐싱하여 관리한다.|[ParticleManager.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/Manager/ParticleManager.cs)|
 |AudioManager|BGM/SE를 출력한다. 배경음/효과음을 `Dictionary`에 등록하여 캐싱하고 출력한다.|[AudioManager.cs](https://github.com/sejin0000/NP-14/blob/main/Assets/Script/Manager/AudioManager.cs)|
-|portal|||
+|portal|스테이지의 종료를 알리는 역할을 수행합니다.|[Portal.cs](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Map/Portal.cs)|
 |MainGameNetwork|플레이어 탈퇴 시, 로딩 패널을 노출된다.|[MainGameNetwork.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/MainGameScene/Network/MainGameNetwork.cs#L7)|
 
 ##### 3. 기능 별 설명
@@ -302,7 +302,7 @@
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|MonsterSpawner||||
+|MonsterSpawn|현재 스테이지 생성된 방의 개수를 플레이어수를 고려해 몬스터들을 방안에 생성해 주는 스크립트|MonsterSpawner.cs|[MonsterSpawn()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/MonsterSpawner.cs)|
 |||||
 
 
@@ -313,7 +313,7 @@
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|MonsterSpawner||||
+|MapGenerator||||
 |||||
 
 <br>
