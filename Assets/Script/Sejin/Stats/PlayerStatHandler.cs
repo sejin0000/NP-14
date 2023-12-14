@@ -150,19 +150,7 @@ public class PlayerStatHandler : MonoBehaviourPun
     [HideInInspector] public bool CanReload;                              //장전   가능한지
     [HideInInspector] public bool CanSkill;                               //스킬   가능한지
     [HideInInspector] public bool CanRoll;                                //구르기 가능한지
-    private bool invincibility;
-    public bool Invincibility
-    {
-        get { return invincibility; }
-        set
-        {
-            if (invincibility != value)
-            {
-                invincibility = value;
-                photonView.RPC("PunInvincibility", RpcTarget.Others, photonView.ViewID, value);
-            }
-        }
-    }
+    public bool Invincibility;
     public bool useSkill;
     public bool UseRoll;
     public bool ImGhost;
@@ -337,14 +325,10 @@ public class PlayerStatHandler : MonoBehaviourPun
     [PunRPC]
     public void DirectDamage(float damage, int targetID)
     {
-<<<<<<< Updated upstream
-        if (gameObject.layer == 12)
-=======
         if (photonView.gameObject.layer == 12 || !photonView.IsMine)
->>>>>>> Stashed changes
             return;
 
-        if (invincibility)
+        if (Invincibility)
             return;
 
         if (IsInShield)
@@ -405,7 +389,7 @@ public class PlayerStatHandler : MonoBehaviourPun
     public void PunInvincibility(int viewID, bool value)
     {
         var PunPlayer = PhotonView.Find(viewID);
-        PunPlayer.GetComponent<PlayerStatHandler>().invincibility = value;            
+        PunPlayer.GetComponent<PlayerStatHandler>().Invincibility = value;            
     }
 
     [PunRPC]
