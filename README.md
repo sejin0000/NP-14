@@ -317,7 +317,7 @@
 |Divide|원하는 만큼 이진분활을 해 맵을 쪼개고 그정보를 노드를 만들어 담습니다. 그리고 나누어진 노드들은 이진분활 되기전 부모 노드가 변수로 갖고 있게 됩니다.|MapGenerator.cs|[Divide()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Map/MapGenerator.cs#L141C2-L141C2)|
 |GenerateRoom|나누어진 노드 안에 생성될 방의 크기를 랜덤으로 정해줍니다.|MapGenerator.cs|[GenerateRoom()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Map/MapGenerator.cs#L165C21-L165C33)|
 |FindNodeChildren|부모 노드를 매개 변수로 받아 그 하위 노드들을 전부 찾아 자식 노드 리스트에 담습니다|MapGenerator.cs|[FindNodeChildren()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Map/MapGenerator.cs#L202C18-L202C34)|
-|GenerateLoad|이어줄 두개의 부모 노드의 하의 노드가 담긴 두개의 리스트에서 최소 거리를 비교해 가장 짦은 길을 만들어 줍니다.|MapGenerator.cs|GenerateLoad[()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Map/MapGenerator.cs#L231C18-L231C30)|
+|GenerateLoad|이어줄 두개의 부모 노드의 하의 노드가 담긴 두개의 리스트에서 최소 거리를 비교해 가장 짦은 길을 만들어 줍니다.|MapGenerator.cs|[GenerateLoad()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Map/MapGenerator.cs#L231C18-L231C30)|
 
 <br>
 
