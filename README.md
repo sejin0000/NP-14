@@ -304,7 +304,7 @@
 |:---:|:---:|:---:|:---:|
 |MonsterSpawn|현재 스테이지 생성된 방의 개수를 플레이어수를 고려해 몬스터들을 방안에 생성해 줍니다.|MonsterSpawner.cs|[MonsterSpawn()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/MonsterSpawner.cs#L20)|
 |BossSpawn|현재 스테이지에 맞는 보스를 생성합니다.|MonsterSpawner.cs|[BossSpawn()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/MonsterSpawner.cs#L59)|
-|Spawn|몬스터의 종류를 enum 형태로 갖고 있는 스크립터블 오브젝트에서 enum 값을 string으로 변환해 PhotonNetwork.Instantiate()를 통해 몬스터를 생성하는 역할을 합니다|MonsterSpawner.cs|[Spawn()]https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/MonsterSpawner.cs#L90C1-L90C1|
+|Spawn|몬스터의 종류를 enum 형태로 갖고 있는 스크립터블 오브젝트에서 enum 값을 string으로 변환해 PhotonNetwork.Instantiate()를 통해 몬스터를 생성하는 역할을 합니다|MonsterSpawner.cs|[Spawn()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/MonsterSpawner.cs#L90C1-L90C1)|
 |StageMonsterClear|스테이지가 종료후 클리어하지 않은 방에 남아있는 몬스터들을 전부 삭제해주는 역할을 수행합니다|MonsterSpawner.cs|[StageMonsterClear()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/MonsterSpawner.cs#L140C17-L140C34)|
 <br>
 
