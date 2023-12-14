@@ -844,6 +844,37 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
             Vector3 normal = collision.contacts[0].normal; // 법선벡터
             direction = Vector3.Reflect(direction, normal).normalized; // 반사
         }
+
+        if ((collision.gameObject.tag != "player")
+    && collision.gameObject.GetComponent<A0126>() == null
+    && collision.gameObject.GetComponent<A3104>() == null)
+            return;
+
+        // 계수 조정
+        float damageCoeff = 0;
+
+
+        if (collision.gameObject.GetComponent<A0126>() != null)
+        {
+            damageCoeff += collision.gameObject.GetComponent<A0126>().DamageCoeff;
+        }
+        if (collision.gameObject.GetComponent<A3104>() != null)
+        {
+            damageCoeff += collision.gameObject.GetComponent<A3104>().DamageCoeff;
+        }
+        float finalAtk = damageCoeff;
+
+
+        if (collision.gameObject.GetComponent<A0126>() != null)
+        {
+            int viewID = collision.gameObject.GetPhotonView().ViewID;
+            PV.RPC("DecreaseHPByObject", RpcTarget.All, collision.transform.GetComponent<PlayerStatHandler>().HP.total * finalAtk, viewID);
+        }
+        if (collision.gameObject.GetComponent<A3104>() != null)
+        {
+            int viewID = collision.gameObject.GetPhotonView().ViewID;
+            PV.RPC("DecreaseHPByObject", RpcTarget.All, collision.transform.GetComponent<PlayerStatHandler>().HP.total * finalAtk, viewID);
+        }
     }
     #endregion
 

@@ -369,7 +369,7 @@ public class EnemyAI : MonoBehaviourPunCallbacks, IPunObservable
             int viewID = collision.gameObject.GetPhotonView().ViewID;
             PV.RPC("DecreaseHPByObject", RpcTarget.All, collision.transform.GetComponent<PlayerStatHandler>().HP.total * damageCoeff, viewID);
         }
-        if (collision.gameObject.GetComponent<A3104>().isRoll)
+        if (collision.gameObject.GetComponent<A3104>() != null)
         {
             damageCoeff += collision.gameObject.GetComponent<A3104>().DamageCoeff;
             int viewID = collision.gameObject.GetPhotonView().ViewID;
