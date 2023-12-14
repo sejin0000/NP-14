@@ -167,6 +167,10 @@ public class ResultManager : MonoBehaviour//vsÄÚµå
     }
     public void CallStatResult() 
     {
+        Invoke("CallStatResultWindow",0.5f);
+    }
+    public void CallStatResultWindow() 
+    {
         int tier = RandomTier();
         if (tier <= 3)
         {
