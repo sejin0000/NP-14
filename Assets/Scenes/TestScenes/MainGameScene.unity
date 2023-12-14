@@ -1001,7 +1001,7 @@ PrefabInstance:
     - target: {fileID: 8135236852547256611, guid: 94660f1eecddc314f8d09523b43c5ee4, type: 3}
       propertyPath: porTal
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1800782472}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2572,6 +2572,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7769f7b49d97a104b9752d2ce64fa83f, type: 3}
+--- !u!1 &1800782472 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6858577355729195883, guid: 7769f7b49d97a104b9752d2ce64fa83f, type: 3}
+  m_PrefabInstance: {fileID: 1800782471}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1817843518
 GameObject:
   m_ObjectHideFlags: 0
