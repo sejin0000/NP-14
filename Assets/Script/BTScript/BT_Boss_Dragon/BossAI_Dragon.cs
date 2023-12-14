@@ -418,7 +418,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
             for (int i = 0; i < inToAreaPlayers.Count; i++)
             {
-                Debug.Log("반복문 들어옴");
+                Debug.Log($"반복문 들어옴 {i}");
                 // 플레이어의 위치
                 PlayerStatHandler player = inToAreaPlayers[i];
                 Vector3 playerPosition = player.transform.position;
@@ -444,6 +444,7 @@ public class BossAI_Dragon : MonoBehaviourPunCallbacks, IPunObservable
 
                         // 실제 피해
                         player.photonView.RPC("DirectDamage", RpcTarget.All, bossSO.atk, PV.ViewID);
+                        
                         // 실제 넉백
                         player.photonView.RPC("StartKnockback", RpcTarget.All, directionToPlayer, knockbackDistance);
                         //StartCoroutine(player.Knockback(directionToPlayer, knockbackDistance));
