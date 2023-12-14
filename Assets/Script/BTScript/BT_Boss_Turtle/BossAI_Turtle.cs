@@ -859,6 +859,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
             stream.SendNext(hostLocalScale);
             stream.SendNext(hosAimLocalScale);
             stream.SendNext(hostAimRotation);
+            stream.SendNext(isPhase1); //TODO isPhase1 무한 구르기 노드 초기화 부분에서 false 로 바꿔주는 부분 RPC로 변경
 
         }
         else if (stream.IsReading)
@@ -868,6 +869,7 @@ public class BossAI_Turtle : MonoBehaviourPunCallbacks, IPunObservable
             hostLocalScale = (Vector3)stream.ReceiveNext();
             hosAimLocalScale = (Vector3)stream.ReceiveNext();
             hostAimRotation = (Quaternion)stream.ReceiveNext();
+            isPhase1 = (bool)stream.ReceiveNext();
         }
 
     }
