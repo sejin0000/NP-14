@@ -28,6 +28,12 @@ public class A3104 : MonoBehaviour
             {
                 var collObject = coll.gameObject;
                 var collEnemy = collObject.GetComponent<EnemyAI>();
+
+                if (collEnemy == null)
+                {
+                    return;
+                }
+
                 collEnemy.knockbackDistance = 3f;
             }        
         }                

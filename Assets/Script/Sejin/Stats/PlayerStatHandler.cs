@@ -323,7 +323,10 @@ public class PlayerStatHandler : MonoBehaviourPun
     [PunRPC]
     public void DirectDamage(float damage, int targetID)
     {
-        if (PhotonView.Find(targetID).gameObject.layer == 12)
+        if (photonView.gameObject.layer == 12)
+            return;
+
+        if (photonView.gameObject.GetComponent<PlayerStatHandler>().Invincibility)
             return;
         
         if (IsInShield)

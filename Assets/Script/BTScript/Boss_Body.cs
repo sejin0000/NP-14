@@ -84,7 +84,7 @@ public class Boss_Body : MonoBehaviour
         {
             damageCoeff += collision.gameObject.GetComponent<A0126>().DamageCoeff;
         }
-        if (collision.gameObject.GetComponent<A3104>().isRoll)
+        if (collision.gameObject.GetComponent<A3104>() != null)
         {
             damageCoeff += collision.gameObject.GetComponent<A3104>().DamageCoeff;
         }
@@ -96,7 +96,7 @@ public class Boss_Body : MonoBehaviour
             int viewID = collision.gameObject.GetPhotonView().ViewID;
             owner.PV.RPC("DecreaseHPByObject", RpcTarget.All, collision.transform.GetComponent<PlayerStatHandler>().HP.total * finalAtk, viewID);
         }
-        if (collision.gameObject.GetComponent<A3104>().isRoll)
+        if (collision.gameObject.GetComponent<A3104>() != null)
         {
             int viewID = collision.gameObject.GetPhotonView().ViewID;
             owner.PV.RPC("DecreaseHPByObject", RpcTarget.All, collision.transform.GetComponent<PlayerStatHandler>().HP.total * finalAtk, viewID);
