@@ -18507,8 +18507,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uAD6C\uB974\uAE30 : SPACE\n\uC2A4\uD0AC : \uC6B0\uD074\uB9AD\n\uC0AC\uACA9
-    : \uC88C\uD074\uB9AD\n\uC774\uB3D9 : WASD"
+  m_text: "\uAC04\uD639\uAC00\uB2E4, \uD0C0\uC6CC\uC758 \uC774\uC0C1\uD604\uC0C1\uC73C\uB85C
+    \uBAAC\uC2A4\uD130\uAC00 \uC6B0\uAE00\uC6B0\uAE00\uD55C \uBC29\uC5D0 \uB5A8\uC5B4\uC9C8
+    \uC218 \uC788\uC73C\uB2C8, \uAE34\uC7A5\uC744 \uD480\uC9C0 \uB9C8\uC138\uC694!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 29bf7b60dd66c9b45b9140d95a349ea2, type: 2}
   m_sharedMaterial: {fileID: -8976703866905884628, guid: 29bf7b60dd66c9b45b9140d95a349ea2, type: 2}

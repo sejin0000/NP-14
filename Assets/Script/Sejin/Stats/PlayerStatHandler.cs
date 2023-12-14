@@ -323,6 +323,7 @@ public class PlayerStatHandler : MonoBehaviourPun
     [PunRPC]
     public void DirectDamage(float damage, int targetID)
     {
+        Debug.Log("DirectPunch!");
         if (photonView.gameObject.layer == 12)
             return;
 
