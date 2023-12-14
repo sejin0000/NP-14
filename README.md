@@ -282,7 +282,7 @@
 ####
 |기능 이름|기능 설명|스크립트|
 |:---:|:---:|:---:|
-|MonsterSpawner|방마다 몬스터를 생성 및 삭제해주는 역할을 수행합니다.|[MonsterSpawner.cs](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/MonsterSpawner)|
+|MonsterSpawner|방마다 스크립터블 오브젝트를 통해 몬스터를 생성 및 삭제해주는 역할을 수행합니다.|[MonsterSpawner.cs](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/MonsterSpawner)|
 |MapGenerator|매 스테이지에서 랜덤으로 맵을 만들어주는 역할을 수행합니다.|[MapGenerator.cs](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Map/MapGenerator)|
 |MakeAugmentListManager|게임 시작시 플레이어의 정보를 받아 캐릭터(직업)의 정보를 외부 csv파일로 불러 리스트로 만들어 줍니다.|[MakeAugmentListManager.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/MakeAugmentListManager.cs#L9)||
 |AugmentManager|증강(아이템)의 데이터 베이스로 해당 증강의 Code를 호출시 해당 효과를 플레이어에게 적용 시켜줍니다.|[AugmentManager.cs](https://github.com/sejin0000/NP-14/blob/9f03511281827b1875d50f7276dafc155f450de4/Assets/Script/Park/AugmentControl/AugmentManager.cs#L11)||
@@ -302,10 +302,10 @@
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|MonsterSpawn|현재 스테이지 생성된 방의 개수를 플레이어수를 고려해 몬스터들을 방안에 생성해 주는 스크립트|MonsterSpawner.cs|[MonsterSpawn()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/MonsterSpawner.cs)|
-|||||
-
-
+|MonsterSpawn|현재 스테이지 생성된 방의 개수를 플레이어수를 고려해 몬스터들을 방안에 생성해 줍니다.|MonsterSpawner.cs|[MonsterSpawn()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/MonsterSpawner.cs#L20)|
+|BossSpawn|현재 스테이지에 맞는 보스를 생성합니다.|MonsterSpawner.cs|[BossSpawn()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/MonsterSpawner.cs#L59)|
+|Spawn|몬스터의 종류를 enum 형태로 갖고 있는 스크립터블 오브젝트에서 enum 값을 string으로 변환해 PhotonNetwork.Instantiate()를 통해 몬스터를 생성하는 역할을 합니다|MonsterSpawner.cs|[Spawn()]https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/MonsterSpawner.cs#L90C1-L90C1|
+|StageMonsterClear|스테이지가 종료후 클리어하지 않은 방에 남아있는 몬스터들을 전부 삭제해주는 역할을 수행합니다|MonsterSpawner.cs|[StageMonsterClear()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/MonsterSpawner.cs#L140C17-L140C34)|
 <br>
 
 ##### 3-2. MapGenerator 
@@ -313,8 +313,11 @@
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|MapGenerator||||
-|||||
+|MapMake|랜덤한 크기로 방을 만들고 그방에 통로를 연결한 후 통로 사이에 문을 만들어 랜덤맵을 만드는 역할을 수행합니다.|MapGenerator.cs|[MapMake()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Map/MapGenerator.cs#L95C17-L95C26)|
+|Divide|원하는 만큼 이진분활을 해 맵을 쪼개고 그정보를 노드를 만들어 담습니다. 그리고 나누어진 노드들은 이진분활 되기전 부모 노드가 변수로 갖고 있게 됩니다.|MapGenerator.cs|[Divide()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Map/MapGenerator.cs#L141C2-L141C2)|
+|GenerateRoom|나누어진 노드 안에 생성될 방의 크기를 랜덤으로 정해줍니다.|MapGenerator.cs|[GenerateRoom()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Map/MapGenerator.cs#L165C21-L165C33)|
+|FindNodeChildren|부모 노드를 매개 변수로 받아 그 하위 노드들을 전부 찾아 자식 노드 리스트에 담습니다|MapGenerator.cs|[FindNodeChildren()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Map/MapGenerator.cs#L202C18-L202C34)|
+|GenerateLoad|이어줄 두개의 부모 노드의 하의 노드가 담긴 두개의 리스트에서 최소 거리를 비교해 가장 짦은 길을 만들어 줍니다.|MapGenerator.cs|GenerateLoad[()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Map/MapGenerator.cs#L231C18-L231C30)|
 
 <br>
 
@@ -354,8 +357,9 @@
 ####
 |기능 이름|기능 설명|스크립트|메서드|
 |:---:|:---:|:---:|:---:|
-|GameManager||||
-|||||
+|Awake|게임 내의 초기화 및 이벤트들을 순서에 맞게 연결해주는 역할을 수행 합니다|GameManager.cs|[Awake()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/GameManager.cs#L64C18-L64C23)|
+|Start|스테이지가 시작할때마다 호출되어 스크립터블 오브젝트에서 현재 스테이지 정보를 읽어와 그에 맞는 이벤트들 뿌려주는 역할을 수행합니다|GameManager.cs|[Start()](https://github.com/sejin0000/NP-14/blob/c5244a0a87431c254125e0ad63ca174f6284c831/Assets/Script/Sejin/Manager/GameManager.cs#L125C18-L125C23)|
+
 
 <br>
 
