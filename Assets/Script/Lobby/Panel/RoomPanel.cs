@@ -130,7 +130,7 @@ public class RoomPanel : MonoBehaviourPunCallbacks
         // DESC : 방장 레디 버튼 비활성화
         if (PhotonNetwork.IsMasterClient)
         {
-            ReadyButton.gameObject.SetActive(false);
+            ReadyButton.gameObject.SetActive(false);            
         }
         else
         {
@@ -139,7 +139,9 @@ public class RoomPanel : MonoBehaviourPunCallbacks
 
         // DESC : ChatBox 활성화
         IsChatBoxActive = true;
-        IsChatInputActive = false;        
+        IsChatInputActive = false;
+
+        StartCoroutine(PopRoomAnnouncePopup());
     }
     public void Start()
     {
@@ -204,19 +206,19 @@ public class RoomPanel : MonoBehaviourPunCallbacks
         if (button == FirstPartyMember)
         {
             //-443
-            RARect.localPosition = new Vector2(-443, 216);
+            RARect.localPosition = new Vector2(-443, 96);
             SetMemberAnnounce(button.GetComponent<PartyMemberButton>().IsClicked);
         }
         else if (button == SecondPartyMember)
         {
             //-244
-            RARect.localPosition = new Vector2(-244, 216);
+            RARect.localPosition = new Vector2(-244, 96);
             SetMemberAnnounce(button.GetComponent<PartyMemberButton>().IsClicked);
         }
         else if (button == ThirdPartyMember)
         {
             //-6
-            RARect.localPosition = new Vector2(-6, 216);
+            RARect.localPosition = new Vector2(-6, 96);
             SetMemberAnnounce(button.GetComponent<PartyMemberButton>().IsClicked);
         }
     }
@@ -231,15 +233,20 @@ public class RoomPanel : MonoBehaviourPunCallbacks
         if (isClicked)
         {
             Room_KeyText.text = "- 슬롯 열기 - ";
-            Room_AnnouncementText.text = "파티원을 추가로 모집하려면 클릭하세요.";
+            Room_AnnouncementText.text = "해당 슬롯의 파티원을 추가로 모집하려면 상단의 파티 슬롯을 클릭하세요. 파티장만 이용가능합니다. 채팅으로 건의해보세요.";
         }
         else
         {
             Room_KeyText.text = "- 슬롯 닫기 - ";
-            Room_AnnouncementText.text = "파티원의 수를 제한하려면 클릭하세요.";
+            Room_AnnouncementText.text = "해당 슬롯의 파티원의 수를 제한하려면 상단의 파티 슬롯을 클릭하세요. 파티장만 이용가능합니다. 채팅으로 건의해보세요.";
         }
     }
 
+    public IEnumerator PopRoomAnnouncePopup()
+    {
+        RoomAnnouncePopup.SetActive(true);
+        yield return new WaitForSeconds(5f);
+    }
     public void ActivateChatMode()
     {
         if (IsChatBoxActive)
