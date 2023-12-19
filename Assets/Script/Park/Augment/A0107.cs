@@ -1,15 +1,9 @@
 using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class A0107 : MonoBehaviourPun
 {
-    //private TopDownCharacterController controller;
     private PlayerStatHandler playerStat;
-    //private CoolTimeController coolTimeController;
-
     public float power;
     public float oldpower;
     bool Ismove;
@@ -18,7 +12,6 @@ public class A0107 : MonoBehaviourPun
     {
         if (photonView.IsMine)//알맞은 타이밍 //가만히 있는 시간에 비례하여 공업
         {
-            //controller = GetComponent<TopDownCharacterController>();
             playerStat = GetComponent<PlayerStatHandler>();
 
             playerStat.MoveStartEvent += MoveStartEvent;
@@ -44,7 +37,7 @@ public class A0107 : MonoBehaviourPun
     // Update is called once per frame
     void MoveStartEvent()
     {
-        playerStat.ATK.added -= power; // 중요한 부분2
+        playerStat.ATK.added -= power;
         power = 0;
         Ismove = true;
     }

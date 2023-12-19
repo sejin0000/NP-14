@@ -36,27 +36,33 @@ public class A0212 : MonoBehaviourPun
         switch (stage)
         {
             case 1:
-                bigPower = 5;
+                bigPower = 3;
                 break;
 
             case 2:
-                bigPower = 5;
+                bigPower = 3;
                 break;
 
             case 3:
-                bigPower = 5;
+                bigPower = 6;
                 break;
 
             case 4:
-                bigPower = 10;
+                bigPower = 6;
                 break;
 
             case 5:
-                bigPower = 15;
+                bigPower = 9;
                 break;
 
+            case 6:
+                bigPower = 9;
+                break;
+
+
+
             default:
-                bigPower = 20;
+                bigPower = 15;
                 break;
         }
     }

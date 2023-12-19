@@ -42,7 +42,6 @@ public class A1106 : MonoBehaviourPun
         if (targetP != null)
         {
             target.Add(targetP);
-            Debug.Log($"¿‘¿Â {target.Count}");
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -51,7 +50,6 @@ public class A1106 : MonoBehaviourPun
         if (targetP !=null)
         {
             target.Remove(targetP);
-            Debug.Log($"≈¿Â {target.Count}");
         }
     }
 }

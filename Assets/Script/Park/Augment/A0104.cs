@@ -7,7 +7,6 @@ public class A0104 : MonoBehaviourPun
 {
     private TopDownCharacterController controller;
     private PlayerStatHandler playerStat;
-    private MainGameManager gameManager;
     private float bigPower;
     private void Awake()
     {

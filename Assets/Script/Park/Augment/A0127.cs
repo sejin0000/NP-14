@@ -1,14 +1,10 @@
 using Photon.Pun;
 using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
 
 public class A0127 : MonoBehaviourPun
 {
-    //private TopDownCharacterController controller;
     private PlayerStatHandler playerStat;
-    //private CoolTimeController coolTimeController;
     int time = 5;
     float regenhp;
     WaitForSeconds autoTime;
@@ -43,7 +39,6 @@ public class A0127 : MonoBehaviourPun
     {
         while (true)
         {
-            //if(gameObject.SetActive() == true)
             if (playerStat.CurHP <= 0) 
             {
                 yield return null;

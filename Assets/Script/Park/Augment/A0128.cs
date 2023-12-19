@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class A0128 : MonoBehaviour
 {
-    // Start is called before the first frame update
     int objSize;// 돌아가는 투사체 갯수
     public float circleR = 1f; //반지름
     private float deg; //각도

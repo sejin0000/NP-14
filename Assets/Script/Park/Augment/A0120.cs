@@ -1,7 +1,4 @@
 using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 
 
@@ -13,7 +10,7 @@ public class A0120 : MonoBehaviourPun
         if (photonView.IsMine)
         {
             controller = GetComponent<TopDownCharacterController>();
-            controller.OnRollEvent += CreateWater; // 중요한부분
+            controller.OnRollEvent += CreateWater;
         }
     }
     // Update is called once per frame

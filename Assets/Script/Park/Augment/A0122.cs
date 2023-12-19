@@ -1,6 +1,4 @@
 using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class A0122 : MonoBehaviourPun
@@ -13,7 +11,7 @@ public class A0122 : MonoBehaviourPun
         {
             controller = GetComponent<TopDownCharacterController>();
             playerStatHandler= GetComponent<PlayerStatHandler>();
-            controller.OnRollEvent += CreateFire; // 중요한부분
+            controller.OnRollEvent += CreateFire;
         }
     }
     // Update is called once per frame

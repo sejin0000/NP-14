@@ -50,7 +50,6 @@ public class HumanAttackintelligentmissile : MonoBehaviour
             if (target == null) { return; }
             Vector2 dir = (target.transform.position - transform.position).normalized;
             _bullet.gameObject.transform.right = Vector3.Slerp(_bullet.gameObject.transform.right.normalized, dir, turningForce * Time.deltaTime);
-            //_bullet.gameObject.transform.right= transform.rotation;
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)
@@ -61,6 +60,5 @@ public class HumanAttackintelligentmissile : MonoBehaviour
             targeting = true;
             target= collision.gameObject;
         }
-
     }
 }

@@ -1,9 +1,5 @@
 using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
 
 public class A0124 : MonoBehaviourPun
 {

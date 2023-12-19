@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class A0125 : MonoBehaviour//참기 피격시 일정확률 데미지 무시

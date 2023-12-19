@@ -1,11 +1,6 @@
 using Photon.Pun;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
-using UnityEditor.Rendering;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 
 public class A1107 : MonoBehaviourPun //ÁÖº¯Èú
 {

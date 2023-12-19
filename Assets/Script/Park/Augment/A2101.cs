@@ -1,8 +1,4 @@
 using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class A2101 : MonoBehaviourPun
 {
     private TopDownCharacterController controller;

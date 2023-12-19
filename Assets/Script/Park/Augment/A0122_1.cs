@@ -14,7 +14,7 @@ public class A0122_1 : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Enemy")
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
             GameObject target = collision.gameObject;
             Debuff.Instance.GiveFire(target, damage, viewID);
@@ -22,7 +22,7 @@ public class A0122_1 : MonoBehaviour
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Enemy")
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
             GameObject target = collision.gameObject;
             Debuff.Instance.GiveFire(target, damage, viewID);

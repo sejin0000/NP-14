@@ -1,6 +1,4 @@
 using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class A0211 : MonoBehaviourPun
@@ -20,7 +18,6 @@ public class A0211 : MonoBehaviourPun
             playerStat.HitEvent2 += Endure;
         }
     }
-    // Update is called once per frame
     void Endure(float damege)
     {
         int Per = Random.Range(persent, maxpersent);

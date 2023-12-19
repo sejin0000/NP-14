@@ -1,6 +1,4 @@
 using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class A0111 : MonoBehaviourPun//°ø°ÝÀ» ÇÏÁö ¾ÊÀº ½Ã°£¿¡ ºñ·ÊÇÏ¿© ´ÙÀ½ °ø°ÝÀÇ °ø°Ý·ÂÀÌ Áõ°¡ ÇÕ´Ï´Ù.
@@ -18,7 +16,7 @@ public class A0111 : MonoBehaviourPun//°ø°ÝÀ» ÇÏÁö ¾ÊÀº ½Ã°£¿¡ ºñ·ÊÇÏ¿© ´ÙÀ½ °ø°
             controller = GetComponent<TopDownCharacterController>();
             playerStat = GetComponent<PlayerStatHandler>();
             power = 0f;
-            controller.OnAttackEvent += StartAtk;//ÀÌ°É µ·È¹µæ ÀÌº¥Æ®¿¡°Ë 
+            controller.OnAttackEvent += StartAtk;
             controller.OnEndAttackEvent += StopAtk;
             stop = true;
         }
@@ -31,7 +29,6 @@ public class A0111 : MonoBehaviourPun//°ø°ÝÀ» ÇÏÁö ¾ÊÀº ½Ã°£¿¡ ºñ·ÊÇÏ¿© ´ÙÀ½ °ø°
             power += Time.deltaTime * 0.5f;
         }
     }
-    // Update is called once per frame
     void StartAtk()
     {
         stop = false;
@@ -40,7 +37,7 @@ public class A0111 : MonoBehaviourPun//°ø°ÝÀ» ÇÏÁö ¾ÊÀº ½Ã°£¿¡ ºñ·ÊÇÏ¿© ´ÙÀ½ °ø°
     {
         if (!stop && photonView.IsMine) 
         {
-            playerStat.ATK.added -= power;//¿µ±¸ Áõ°¡¸é ÀÌºÎºÐ ÁÖ¼® Ã³¸® ÇÏ°í ÆÄ¿ö¸¦ »èÁ¦ ±×·±µ¥ ±×·³ ³Ê¹«»ç±â°°À½
+            playerStat.ATK.added -= power;
             power = 0f;
             stop = true;
         }

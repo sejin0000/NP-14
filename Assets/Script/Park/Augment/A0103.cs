@@ -1,8 +1,4 @@
 using Photon.Pun;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class A0103 : MonoBehaviourPun
 {
     private TopDownCharacterController controller;
@@ -18,7 +14,6 @@ public class A0103 : MonoBehaviourPun
             nowCoolGAM = playerStat.BulletSpread.total * 0.2f;
             playerStat.ReloadCoolTime.added -= nowCoolGAM;
             oldCoolGAM = nowCoolGAM;
-            Debug.Log($"재장전 시간 {oldCoolGAM} 감소");
             GameManager.Instance.OnStageStartEvent += SetCool;
             GameManager.Instance.OnBossStageStartEvent += SetCool;
         }
